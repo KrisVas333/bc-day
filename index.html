@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;600;800&display=swap">
 <style>
 :root{--ground:#FFFFFF;--surface:#F7F7F5;--ink:#0A0A0A;--muted:#595959;--line:#E5E2DE;
---accent:#D90429;--red:#FF0000;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+--accent:#D90429;--red:#FF0000;--good:#12897A;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
 --body:Inter,-apple-system,'Segoe UI',Roboto,sans-serif;--r:4px}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--ground);color:var(--ink);font-family:var(--body)}
@@ -16,66 +16,84 @@ html,body{margin:0;padding:0;background:var(--ground);color:var(--ink);font-fami
 .stage{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column}
 .eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;font-size:clamp(11px,1.6vw,14px);color:var(--accent);font-weight:700}
 h1{font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em;font-weight:800;
-font-size:clamp(28px,6vw,64px);line-height:1.08;margin:.25em 0;text-wrap:balance}
-.sub{font-size:clamp(17px,2.6vw,26px);line-height:1.45;max-width:22em}
-.slide{display:none;flex:1;padding:6vh 6vw 12vh;flex-direction:column;justify-content:center}
+font-size:clamp(26px,5.4vw,58px);line-height:1.08;margin:.25em 0;text-wrap:balance}
+.sub{font-size:clamp(16px,2.4vw,24px);line-height:1.45;max-width:26em}
+.slide{display:none;flex:1;padding:5vh 5vw 12vh;flex-direction:column;justify-content:center}
 .slide.on{display:flex}
 .center{align-items:center;text-align:center}
 .center .sub{margin-inline:auto}
 .rword{color:var(--accent)}
-.tl{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0;justify-content:center}
-.tl .step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;text-align:center;min-width:96px}
-.tl .step b{display:block;font-size:34px}
-.tl .step span{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
-.tl .arrow{align-self:center;color:var(--accent);font-weight:800;font-size:22px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:22px 0;width:100%;max-width:1050px}
+.gifslot{background:repeating-linear-gradient(45deg,#f2f0ec 0 12px,#faf9f7 12px 24px);
+border:1px dashed var(--line);border-radius:var(--r);display:grid;place-items:center;
+color:var(--muted);font-family:var(--mono);font-size:11px;text-transform:uppercase;
+letter-spacing:.06em;text-align:center;padding:8px;animation:pulse 2.4s infinite;min-height:110px}
+@keyframes pulse{50%{opacity:.6}}
+.gifwide{width:min(680px,92vw);min-height:170px;margin:14px auto}
+.tlgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:20px 0;width:100%;max-width:1080px}
+.tlb{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;cursor:pointer;text-align:center}
+.tlb b{display:block;font-size:26px}
+.tlb .nm{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.tlb .yr{display:none;color:var(--accent);font-family:var(--mono);font-weight:800;font-size:13px;margin-top:6px}
+.tlb .gifslot{display:none;margin-top:8px;min-height:70px}
+.tlb.open{border-color:var(--accent)}
+.tlb.open .yr{display:block}
+.tlb.open .gifslot{display:grid}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:20px 0;width:100%;max-width:1080px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;cursor:pointer;text-align:left}
-.card h3{font-family:var(--mono);font-size:15px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.05em}
-.card .fix{display:none;color:var(--muted);font-size:15px;margin-top:6px}
+.card h3{font-family:var(--mono);font-size:14px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.05em}
+.card .fix{display:none;color:var(--muted);font-size:14.5px;margin-top:6px}
 .card.open{border-color:var(--accent)}
 .card.open .fix{display:block}
-.card .emo{font-size:30px}
+.card .emo{font-size:28px}
+.card p{font-size:14px;color:var(--muted);margin:0}
 .boss{border:2px solid var(--accent)}
-.qbox{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:var(--r);padding:16px 18px;margin:10px 0;max-width:760px;width:100%;text-align:left}
-.qbox p{margin:0;font-size:clamp(17px,2.3vw,22px);font-weight:600}
+.qbox{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:var(--r);padding:14px 18px;margin:9px 0;max-width:780px;width:100%;text-align:left;cursor:pointer}
+.qbox p{margin:0;font-size:clamp(16px,2.2vw,21px);font-weight:600}
 .qbox .ans{display:none;color:var(--accent);font-weight:800;margin-top:8px}
 .qbox.open .ans{display:block}
-.qhint{font-family:var(--mono);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
-.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;width:100%;max-width:1050px;margin:20px 0}
-.zone{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;text-align:left}
-.zone .gif{height:130px;display:grid;place-items:center;background:
-repeating-linear-gradient(45deg,#f2f0ec 0 12px,#faf9f7 12px 24px);color:var(--muted);
-font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;animation:pulse 2s infinite}
-@keyframes pulse{50%{opacity:.65}}
-.zone .zb{padding:14px 16px}
-.zone h3{margin:0 0 4px;font-family:var(--mono);font-size:15px;text-transform:uppercase}
-.zone p{margin:0;font-size:14.5px;color:var(--muted)}
 .btn{font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;font-weight:700;
 border-radius:var(--r);border:1px solid var(--accent);cursor:pointer;padding:14px 22px;font-size:15px}
 .btn-red{background:var(--accent);color:#fff}
 .btn-ghost{background:transparent;color:var(--accent)}
+.sortgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:9px;width:100%;max-width:900px;margin:14px 0}
+.sortit{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;font-size:15px;cursor:pointer;text-align:left}
+.sortit.g{border-color:var(--good);background:#eefaf7}
+.sortit.b{border-color:var(--accent);background:#fdeef0}
+.sortit .why{display:none;font-size:12.5px;color:var(--muted);margin-top:4px}
+.sortit.g .why,.sortit.b .why{display:block}
 .choice{display:block;width:100%;max-width:640px;text-align:left;background:var(--surface);
-border:1px solid var(--line);border-radius:var(--r);padding:13px 16px;margin:7px 0;font-size:17px;cursor:pointer;font-family:var(--body)}
-.choice.ok{border-color:#12897A;background:#eefaf7}
+border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;margin:6px 0;font-size:16.5px;cursor:pointer;font-family:var(--body)}
+.choice.ok{border-color:var(--good);background:#eefaf7}
 .choice.bad{border-color:var(--accent);background:#fdeef0}
-#certCard{border:3px solid var(--accent);border-radius:var(--r);padding:30px 26px;max-width:640px;margin:16px auto;background:#fff;display:none}
-#certCard .cn{font-family:var(--mono);font-size:clamp(24px,4vw,40px);font-weight:800;text-transform:uppercase;margin:.3em 0;color:var(--accent)}
+#timer{font-family:var(--mono);font-weight:800;font-size:30px;color:var(--accent)}
+#certCard{border:3px solid var(--accent);border-radius:var(--r);padding:28px 26px;max-width:640px;margin:14px auto;background:#fff;display:none}
+#certCard .cn{font-family:var(--mono);font-size:clamp(22px,4vw,38px);font-weight:800;text-transform:uppercase;margin:.3em 0;color:var(--accent)}
 #certCard p{margin:.35em 0}
+.lvl{font-family:var(--mono);font-weight:800;font-size:clamp(20px,3vw,30px)}
 .hud{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;gap:8px;align-items:center;
 padding:10px 14px;background:rgba(255,255,255,.92);border-top:1px solid var(--line)}
 .hud button{font-family:var(--mono);font-size:12px;border:1px solid var(--line);background:#fff;border-radius:var(--r);padding:8px 12px;cursor:pointer}
 .hud .cnt{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:auto}
 #bar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:6;transition:width .3s}
-#notes{position:fixed;right:12px;bottom:56px;z-index:6;max-width:360px;background:#0A0A0A;color:#fff;
+#notes{position:fixed;right:12px;bottom:56px;z-index:6;max-width:370px;background:#0A0A0A;color:#fff;
 border-radius:var(--r);padding:14px 16px;font-size:13.5px;line-height:1.5;display:none}
 #notes b{color:#FF6B6B;font-family:var(--mono);font-size:11px;letter-spacing:.08em}
 #start{position:fixed;inset:0;z-index:10;background:var(--ground);display:flex;flex-direction:column;
 align-items:center;justify-content:center;text-align:center;padding:6vw;gap:10px}
 #start .modes{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:18px}
 .small{font-size:13px;color:var(--muted)}
-#qr{margin:14px auto;background:#fff;padding:10px;width:fit-content;border:1px solid var(--line);border-radius:var(--r)}
-input#nm{font-size:18px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);width:min(320px,80vw);font-family:var(--body)}
-.dino{font-size:clamp(60px,12vw,130px);line-height:1}
+#qr{margin:12px auto;background:#fff;padding:10px;width:fit-content;border:1px solid var(--line);border-radius:var(--r)}
+input.inp{font-size:17px;padding:11px 13px;border:1px solid var(--line);border-radius:var(--r);width:min(240px,70vw);font-family:var(--body)}
+.dino{font-size:clamp(56px,11vw,120px);line-height:1}
+#maxfx{position:fixed;inset:0;z-index:20;display:none;place-items:center;background:rgba(255,255,255,.96)}
+#maxfx.on{display:grid;animation:flashin .25s}
+#maxfx h2{font-family:var(--mono);font-weight:800;font-size:clamp(40px,10vw,120px);color:var(--accent);
+letter-spacing:.05em;animation:slam .5s cubic-bezier(.2,2.2,.4,1)}
+@keyframes slam{0%{transform:scale(4);opacity:0}70%{transform:scale(.92)}100%{transform:scale(1);opacity:1}}
+@keyframes flashin{0%{background:#D90429}100%{background:rgba(255,255,255,.96)}}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:860px;margin:16px 0}
+.vs .card{cursor:default}
+@media(max-width:640px){.vs{grid-template-columns:1fr}}
 @media print{.hud,#bar,#notes,#net{display:none!important}.slide{display:none!important}
 #certCard{display:block!important;border-width:4px}body{background:#fff}}
 </style>
@@ -83,17 +101,18 @@ input#nm{font-size:18px;padding:12px 14px;border:1px solid var(--line);border-ra
 <body>
 <canvas id="net"></canvas>
 <div id="bar"></div>
+<div id="maxfx" onclick="this.classList.remove('on')"><h2>BRAIN&nbsp;MAX</h2></div>
 
 <div id="start">
   <p class="eyebrow">BRAIN CLUB DIENA · 3–6 KLASĖ</p>
   <h1>Nebūk <span class="rword">dinozauras</span>.<br>Evoliucionuok.</h1>
-  <p class="sub">20 minučių apie tavo galingiausią įrenginį — ir kaip jį treniruoti.</p>
+  <p class="sub">Dokumentika apie tavo galingiausią įrenginį — ir 3 VR zonos jį treniruoti.</p>
   <div class="modes">
     <button class="btn btn-red" onclick="startShow('live')">🎤 Gyvas pristatymas</button>
     <button class="btn btn-ghost" onclick="startShow('voice')">🔊 Su balsu</button>
     <button class="btn btn-ghost" onclick="startShow('auto')">🤖 Auto-rodymas</button>
   </div>
-  <p class="small">⚗️ Eksperimentinis prototipas, kurtas su AI. Balsas V1 — naršyklės sintezė (tikras balsas — V2).<br>Klavišai: → kitas · ← atgal · N — vedėjo užrašai</p>
+  <p class="small">⚗️ Eksperimentinis prototipas, kurtas su AI. Balsas V2 = ElevenLabs dokumentikos balsas (ruošiamas; dabar — naršyklės sintezė).<br>Klavišai: → kitas · ← atgal · N — vedėjo užrašai</p>
 </div>
 
 <div class="stage" id="stage"></div>
@@ -109,134 +128,229 @@ input#nm{font-size:18px;padding:12px 14px;border:1px solid var(--line);border-ra
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-/* ===== KONFIGŪRACIJA ===== */
-var QR_URL = "https://krisvas.lt/go/bc-diena"; /* SET-ME: registracijos nuoroda lapeliui */
+var QR_URL = "https://krisvas.lt/go/bc-diena"; /* SET-ME: registracijos nuoroda (⚠️ brain.lt be A įrašo — nenaudoti kol nepatvirtinta) */
 
-/* ===== SKAIDRĖS ===== */
+function slot(brief, cls){return "<div class='gifslot "+(cls||"")+"' data-brief=\""+brief+"\">GIF · "+brief+"</div>"}
+
 var SL = [
+
+/* 1 — HOOK + gyvenimo ciklo GIF */
 {ey:"BRAIN CLUB DIENA", cls:"center",
  html:"<h1>Kokį įrenginį turėsi <span class='rword'>VISĄ</span> gyvenimą?</h1>"+
- "<p class='sub'>Ne telefoną. Ne kompiuterį. Ne planšetę.</p>"+
- "<div class='qbox' onclick='this.classList.add(\"open\")'><p>Spausk / spėk garsiai 👇</p><p class='ans'>SMEGENIS 🧠 — ir šiandien išmoksi jas valdyti.</p></div><p class='small' style='margin-top:14px'>🥽 Šiandien čia pat: <b>3 VR zonos su Quest 3S</b> ir robotas. Bet pirmiausia — 15 min apie tavo galingiausią ginklą.</p>",
- voice:"Labas! Pradedam nuo klausimo. Kokį įrenginį turėsi visą gyvenimą? Ne telefoną. Ne kompiuterį. Smegenis! Ir taip — šiandien išbandysi virtualią realybę. Bet pirmiausia — apie tavo galingiausią ginklą.",
- notes:{say:"Užduok klausimą GARSIAI ir palauk šūksnių. Neatskleisk per greitai.",do:"Rankos aukštyn: kas atspėjo? Paplok artimiausiam.",br:"„O iš kur smegenys visa tai sugalvoja? Prasideda nuo evoliucijos…“"}},
+ slot("Gyvenimo ciklas: kūdikis → vaikas bėga (pirmu asmeniu) → paauglys → darbas su ateities tech → kosmosas → ❓ (Higgsfield)","gifwide")+
+ "<div class='qbox' onclick='this.classList.add(\"open\")'><p>Spausk / spėk garsiai 👇</p>"+
+ "<p class='ans'>SMEGENIS 🧠 — nuo pirmo žingsnio iki žvaigždžių. Ir jos visų — skirtingos.</p></div>"+
+ "<p class='small'>🥽 Šiandien čia pat: <b>3 VR zonos su Quest 3S</b> ir robotas. Bet pirmiausia — istorija apie tavo galingiausią ginklą.</p>",
+ voice:"Įsivaizduok visą savo gyvenimą. Gimsti. Mokaisi vaikščioti. Bėgi per kiemą. Užaugi. Dirbi su technologijomis, kurių šiandien dar nėra. Galbūt — skrendi į kosmosą. Vienas įrenginys bus su tavimi kiekviename žingsnyje. Ne telefonas. Smegenys.",
+ notes:{say:"Užduok klausimą GARSIAI, palauk šūksnių. GIF sukasi fone.",do:"Rankos aukštyn: kas atspėjo? VR inkaras: „taip, zonos laukia — bet pirma istorija.“",br:"„Ta istorija prasideda prieš milijoną metų…“"}},
 
+/* 2 — EVOLIUCIJA interaktyvi */
 {ey:"EVOLIUCIJA", cls:"center",
- html:"<h1>Nuo ugnies iki <span class='rword'>AI</span></h1>"+
- "<div class='tl'><div class='step'><b>🔥</b><span>Ugnis</span></div><div class='arrow'>→</div>"+
- "<div class='step'><b>🛞</b><span>Ratas</span></div><div class='arrow'>→</div>"+
- "<div class='step'><b>✍️</b><span>Raštas</span></div><div class='arrow'>→</div>"+
- "<div class='step'><b>💡</b><span>Elektra</span></div><div class='arrow'>→</div>"+
- "<div class='step'><b>🌐</b><span>Internetas</span></div><div class='arrow'>→</div>"+
- "<div class='step'><b>🤖</b><span>AI</span></div></div>"+
- "<p class='sub'>Visus šiuos išradimus sukūrė tas pats įrenginys — <b>žmogaus smegenys</b>.<br>Evoliucija nesustojo. Dabar — <b class='rword'>tavo eilė</b>.</p>",
- voice:"Ugnis. Ratas. Raštas. Elektra. Internetas. Dirbtinis intelektas. Visus šiuos išradimus sukūrė tas pats įrenginys — žmogaus smegenys. Evoliucija nesustojo. Dabar tavo eilė.",
- notes:{say:"Eik per juostą greitai, ritmiškai. Pabrėžk: įrankiai keitėsi — smegenys tos pačios.",do:"Klausk: koks išradimas pakeitė pasaulį labiausiai? 3 atsakymai iš salės.",br:"„O kas bus toliau? Pažiūrėkim į 2030-uosius…“"}},
+ html:"<h1>Nuo ugnies iki <span class='rword'>AI</span></h1><p class='small'>Spausk kiekvieną — sužinok, PRIEŠ KIEK metų</p>"+
+ "<div class='tlgrid'>"+
+ "<div class='tlb' onclick='this.classList.toggle(\"open\")'><b>🔥</b><span class='nm'>Ugnis</span><span class='yr'>prieš ~1 mln. metų</span>"+slot("Priešistorinis laužas nakty")+"</div>"+
+ "<div class='tlb' onclick='this.classList.toggle(\"open\")'><b>🛞</b><span class='nm'>Ratas</span><span class='yr'>prieš ~5 500 m.</span>"+slot("Senovinis vežimas juda")+"</div>"+
+ "<div class='tlb' onclick='this.classList.toggle(\"open\")'><b>✍️</b><span class='nm'>Raštas</span><span class='yr'>prieš ~5 200 m.</span>"+slot("Molio lentelė → knyga")+"</div>"+
+ "<div class='tlb' onclick='this.classList.toggle(\"open\")'><b>💡</b><span class='nm'>Elektra</span><span class='yr'>prieš ~150 m.</span>"+slot("Pirmos lemputės įsižiebia")+"</div>"+
+ "<div class='tlb' onclick='this.classList.toggle(\"open\")'><b>🌕</b><span class='nm'>Mėnulis</span><span class='yr'>1969 — prieš 57 m.</span>"+slot("Apollo nusileidimas")+"</div>"+
+ "<div class='tlb' onclick='this.classList.toggle(\"open\")'><b>🌐</b><span class='nm'>Internetas</span><span class='yr'>prieš ~35 m.</span>"+slot("Pasaulis susijungia tinklu")+"</div>"+
+ "<div class='tlb' onclick='this.classList.toggle(\"open\")'><b>🤖</b><span class='nm'>AI</span><span class='yr'>DABAR</span>"+slot("Neuronų tinklas gyvai")+"</div>"+
+ "<div class='tlb' onclick='this.classList.toggle(\"open\")'><b>🚀</b><span class='nm'>Kas toliau?</span><span class='yr'>KOSMOSAS — tavo karta</span>"+slot("Raketa kyla į žvaigždes")+"</div>"+
+ "</div>",
+ voice:"Prieš milijoną metų žmogus prisijaukino ugnį. Prieš penkis su puse tūkstančio metų — išrado ratą. Raštą. Elektrą. Prieš penkiasdešimt septynerius metus žmogus žengė Mėnulyje. Tada — internetas. O dabar — dirbtinis intelektas. Kas toliau? Kosmosas. Ir tai — jau tavo kartos istorija.",
+ notes:{say:"Kviesk vaikus spausti korteles — po vieną prie ekrano arba tu spaudi, jie spėja metus.",do:"Ties Mėnuliu stabtelk: „prieš 57 metus — su MAŽIAU technologijų nei tavo telefone“.",br:"„Bet žinot, kas įdomiausia? Nė vieno iš šių dalykų nepadarė vienas žmogus…“"}},
 
-{ey:"ATEITIS · 2030", cls:"center",
- html:"<h1>Ką <span class='rword'>nešiosi</span> ir su kuo dirbsi</h1>"+
+/* 3 — IŠRADĖJAI IR KOMANDOS */
+{ey:"IŠRADĖJAI", cls:"center",
+ html:"<h1>Vienas pradeda. <span class='rword'>Komanda</span> padaro.</h1>"+
  "<div class='cards'>"+
- "<div class='card'><div class='emo'>🕶️</div><h3>Išmanūs akiniai</h3><p class='small'>ekranas — tiesiai akyse</p></div>"+
- "<div class='card'><div class='emo'>🤖</div><h3>AI agentai</h3><p class='small'>tavo skaitmeniniai padėjėjai</p></div>"+
- "<div class='card'><div class='emo'>🦿</div><h3>Humanoidai</h3><p class='small'>robotai namuose ir gamyklose</p></div></div>"+
- "<p class='sub'>Kad <b>valdytum</b> šias technologijas (o ne jos tave), reikia dviejų dalykų:<br><b class='rword'>treniruotų smegenų</b> ir <b class='rword'>draugystės įgūdžių</b> (EQ).</p>",
- voice:"Du tūkstančiai trisdešimtieji. Išmanūs akiniai. AI agentai. Humanoidai robotai. Kad valdytum šias technologijas, o ne jos tave — reikia treniruotų smegenų ir draugystės įgūdžių.",
- notes:{say:"Čia parodyk RoboDog! Gyvias demo > skaidrė.",do:"RoboDog pasirodymas 30–45 sek. Tada grąžink dėmesį į ekraną.",br:"„Bet smegenys turi priešų. Penkis. Ar žinai juos?“"}},
+ "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>⚡</div><h3>Tesla ir Edisonas</h3><p>Srovių karas</p><p class='fix'>Du išradėjai varžėsi dėl elektros ateities. Laimėjo… mes visi: Teslos kintamoji srovė šiandien maitina tavo namus.</p></div>"+
+ "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>🌐</div><h3>Internetas</h3><p>Ne vieno žmogaus kūrinys</p><p class='fix'>Jį kūrė ištisos inžinierių komandos, o Tim Berners-Lee savo WWW išradimą PADOVANOJO pasauliui — nemokamai, visiems.</p></div>"+
+ "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>🌕</div><h3>Apollo ir SpaceX</h3><p>Komandų rekordai</p><p class='fix'>Apollo programoje dirbo ~400 000 žmonių. O SpaceX komanda šiandien PAGAUNA grįžtančią raketą bokšto rankomis.</p></div></div>"+
+ "<p class='sub'>Visada prasideda nuo vieno smalsaus žmogaus. <b class='rword'>Gal tai — tu?</b><br>Bet užbaigia — komanda, sujungusi savo smegenis.</p>",
+ voice:"Tesla ir Edisonas varžėsi dėl elektros ateities. Internetą kūrė ištisos komandos, ir Tim Berners-Lee jį padovanojo pasauliui nemokamai. Apollo programoje dirbo keturi šimtai tūkstančių žmonių. Didieji išradimai prasideda nuo vieno smalsaus žmogaus — bet užbaigia juos komanda. Gal kitas išradėjas — tai tu?",
+ notes:{say:"⏱ 60 sek. 3 kortelės = 3 mini istorijos. „400 000 žmonių“ — pauzė po skaičiaus.",do:"Klausk: kas norėtų būti išradėjas? (rankos)",br:"„Praeitis aiški. O dabar — kas mūsų laukia…“"}},
 
+/* 4 — AKINIAI */
+{ey:"ATEITIS · 1 iš 3", cls:"center",
+ html:"<h1>Ekranas persikels <span class='rword'>į akis</span></h1>"+
+ "<div class='cards'>"+
+ "<div class='card'>"+slot("Even Realities G2 — tekstas atsiranda akiniuose (reklamos momentas)")+"<h3 style='margin-top:8px'>🕶️ Išmanieji akiniai</h3><p>užrašai, vertimas, navigacija — tiesiai akyse</p></div>"+
+ "<div class='card'>"+slot("Meta Quest 3S — užsideda ir įžengia į mixed reality (reklamos momentas)")+"<h3 style='margin-top:8px'>🥽 Mixed reality</h3><p>virtualūs pasauliai TAVO kambaryje</p></div></div>"+
+ "<p class='sub'>Prognozė: akiniai taps tuo, kuo tapo telefonas. Šiandien juos <b>išbandysi pats</b>.</p>",
+ voice:"Ateities prognozė numeris vienas. Ekranas persikels į akis. Išmanieji akiniai rodys užrašus, vertimą ir navigaciją tiesiai tavo akyse. O mixed reality akiniai atves virtualius pasaulius tiesiai į tavo kambarį. Šiandien juos išbandysi pats.",
+ notes:{say:"„Šitie akiniai — jau čia, salėje.“ Parodyk G2 ant savęs, jei turi.",do:"GIF'ai sukasi — nekomentuok kiekvieno, viena žinia: ekranas → akys.",br:"„Antra prognozė — tau padės skaitmeniniai padėjėjai…“"}},
+
+/* 5 — AI AGENTAI */
+{ey:"ATEITIS · 2 iš 3", cls:"center",
+ html:"<h1>Tavo komandoje — <span class='rword'>AI agentai</span></h1>"+
+ "<div class='vs'>"+
+ "<div class='card'><h3>🗣️ LLM (pokalbis)</h3><p>Atsako į klausimą, kai paklausi. Kaip labai protingas žodynas.</p></div>"+
+ "<div class='card boss'><h3>🤖 AI AGENTAS</h3><p>Gauna TIKSLĄ ir pats veikia: ieško, skaičiuoja, daro žingsnius, grįžta su rezultatu. Kaip komandos narys.</p></div></div>"+
+ slot("Neuronų tinklas mokosi — signalai bėga tarp mazgų (Higgsfield)","gifwide")+
+ "<p class='sub'>Prognozuojama, kad skaitmeninių padėjėjų bus <b>daugiau nei žmonių</b>.<br>Klausimas ne AR jie bus — o <b class='rword'>kas jiems vadovaus</b>.</p>",
+ voice:"Prognozė numeris du. Šalia žmonių dirbs milijardai skaitmeninių padėjėjų — AI agentų. Skirtumas paprastas: pokalbio robotas atsako į klausimą. Agentas gauna tikslą — ir pats veikia, kol jį pasiekia. Klausimas ne ar jie atsiras. Klausimas — kas jiems vadovaus.",
+ notes:{say:"LLM vs agentas — per pavyzdį: „paklausiau recepto“ vs „paprašiau suplanuoti gimtadienį — ir jis pats viską padarė“.",do:"Fone neuronų GIF — parodyk ranka: „taip mokosi tinklas“.",br:"„Trečia prognozė vaikšto ant dviejų kojų…“"}},
+
+/* 6 — HUMANOIDAI */
+{ey:"ATEITIS · 3 iš 3", cls:"center",
+ html:"<h1><span class='rword'>Humanoidai</span> tarp mūsų</h1>"+
+ "<div class='cards'>"+
+ "<div class='card'>"+slot("Humanoidas deda skalbinius / tvarko namus")+"<h3 style='margin-top:8px'>🧺 Namuose</h3></div>"+
+ "<div class='card'>"+slot("Humanoidai dirba gamykloje prie linijos")+"<h3 style='margin-top:8px'>🏭 Gamyklose</h3></div>"+
+ "<div class='card'>"+slot("Robotas padeda klasėje / moko")+"<h3 style='margin-top:8px'>🏫 Mokyklose</h3></div>"+
+ "<div class='card'>"+slot("Robotas tyrinėja Marsą / kosmosą")+"<h3 style='margin-top:8px'>🚀 Kosmose</h3></div></div>",
+ voice:"Prognozė numeris trys. Robotai humanoidai. Namuose jie dės skalbinius. Gamyklose dirbs prie linijų. Mokyklose padės mokytis. O kosmose — tyrinės planetas, kur žmogui per pavojinga. Tai ne fantastika. Pirmieji jau dirba šiandien.",
+ notes:{say:"ROBODOG MOMENTAS ČIA! Gyvas robotas > 4 GIF'ai.",do:"RoboDog demo 30–45 sek. Grąžink dėmesį klausimu: „o kas robotus valdys?“",br:"„Ir čia — svarbiausia viso pristatymo mintis…“"}},
+
+/* 7 — SINERGIJA + METEORITAS */
+{ey:"SVARBIAUSIA MINTIS", cls:"center",
+ html:"<h1>AI <span class='rword'>meteoritas</span> jau skrenda</h1>"+
+ "<p class='sub'>Dinozaurai išnyko ne todėl, kad buvo silpni.<br>Jie buvo galingiausi planetoje — bet <b>nesugebėjo prisitaikyti</b>.</p>"+
+ "<p class='sub'>Tavo pasirinkimas: būti nušluotam naujausių technologijų —<br>arba <b class='rword'>evoliucionuoti</b>: žmonės + agentai + robotai vienoje komandoje.<br>Bet pirmiausia reikia apsaugoti vadą — <b>savo smegenis</b>.</p>",
+ voice:"Prieš šešiasdešimt šešis milijonus metų meteoritas pakeitė viską. Dinozaurai išnyko ne todėl, kad buvo silpni — jie nesugebėjo prisitaikyti. Šiandien skrenda kitas meteoritas — dirbtinio intelekto. Vieni bus nušluoti. Kiti evoliucionuos: žmonės, agentai ir robotai vienoje komandoje. Bet pirmiausia reikia apsaugoti vadą. Tavo smegenis.",
+ notes:{say:"Dokumentikos tonas, lėčiau. Tai deko širdis — nesuskubėk.",do:"Pauzė po „savo smegenis“. Tada tamsesniu balsu: „o smegenys turi priešų“.",br:"„Penkis. Ir vieną BOSĄ.“"}},
+
+/* 8 — 5 PRIEŠAI su skaičiais + pirštai */
 {ey:"PAVOJUS", cls:"center",
- html:"<h1>5 smegenų <span class='rword'>priešai</span></h1><p class='small'>Spausk kiekvieną — sužinok, kaip nugalėti</p>"+
+ html:"<h1>5 smegenų <span class='rword'>priešai</span></h1><p class='small'>Spausk kortelę — pamatyk skaičių</p>"+
  "<div class='cards'>"+
- "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>😴</div><h3>Miego trūkumas</h3><p class='fix'>Nugalėk: 9–10 val. miego. Smegenys auga MIEGANT.</p></div>"+
- "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>🏃</div><h3>Judėjimo trūkumas</h3><p class='fix'>Nugalėk: judėk kasdien — judesys maitina smegenis deguonimi.</p></div>"+
- "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>🥦</div><h3>Prastas kuras</h3><p class='fix'>Nugalėk: tikras maistas ir vanduo. Smegenys — 2 % kūno, 20 % energijos.</p></div>"+
- "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>👥</div><h3>Draugų trūkumas</h3><p class='fix'>Nugalėk: žaisk ir kurk SU kitais — smegenys yra socialinės.</p></div>"+
- "<div class='card boss' onclick='this.classList.toggle(\"open\")'><div class='emo'>🧟</div><h3>BRAIN ROT (bosas)</h3><p class='fix'>Nugalėk: apie jį — kita skaidrė…</p></div></div>",
- voice:"Smegenys turi penkis priešus. Miego trūkumas. Judėjimo trūkumas. Prastas kuras. Draugų trūkumas. Ir bosas — brain rot.",
- notes:{say:"Kvies 5 vaikus — kiekvienas paspaudžia po vieną priešą ir perskaito garsiai.",do:"Boso kortelę palik paskutinę, sukurk įtampą.",br:"„Bosas nusipelno atskiros skaidrės.“"}},
+ "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>😴</div><h3>Miego trūkumas</h3><p class='fix'>Tavo amžiui reikia <b>9–11 val.</b> kasnakt. Smegenys auga ir tvarkosi MIEGANT.</p></div>"+
+ "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>🏃</div><h3>Judėjimo trūkumas</h3><p class='fix'>Reikia <b>60 min</b> judėjimo kasdien (PSO). Judesys varo deguonį į smegenis.</p></div>"+
+ "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>🥩</div><h3>Kuro trūkumas</h3><p class='fix'>Augančiam kūnui — apie <b>1 g baltymų</b> kiekvienam kg svorio per dieną + vanduo.</p></div>"+
+ "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>👥</div><h3>Draugų trūkumas</h3><p class='fix'>GYVAS laikas su draugais kasdien — smegenys socialinės; ekranas jo nepakeičia.</p></div>"+
+ "<div class='card boss' onclick='this.classList.toggle(\"open\")'><div class='emo'>🧟</div><h3>BRAIN ROT (bosas)</h3><p class='fix'>Begalinis pasyvus srautas. Apie jį — atskira skaidrė.</p></div></div>"+
+ "<div class='qbox'><p>✋ INTERAKTYVUS: parodyk pirštais, su KELIAIS priešais tavo smegenys kovoja dabar (0–5)</p></div>",
+ voice:"Smegenys turi penkis priešus. Miego trūkumas — tavo amžiui reikia devynių–vienuolikos valandų. Judėjimo trūkumas — reikia bent šešiasdešimties minučių kasdien. Kuro trūkumas — apie gramą baltymų kilogramui svorio. Draugų trūkumas — gyvo, ne ekraninio laiko. Ir bosas. Brain rot. Dabar sąžiningai: parodyk pirštais, su keliais priešais tavo smegenys kovoja šiandien.",
+ notes:{say:"Skaičiai — tvirtai, be moralizavimo. Pirštų momentas: pats parodyk pirmas (pvz., 2).",do:"5 vaikai spaudžia korteles. Tada visa salė — pirštai aukštyn. Apžvelk: „dauguma 2–3. Normalu. Dabar žinot priešą.“",br:"„Bosas nusipelno atskiros skaidrės…“"}},
 
+/* 9 — GERA/BLOGA žaidimas */
+{ey:"ŽAIDIMAS", cls:"center",
+ html:"<h1>Gera ar bloga <span class='rword'>smegenims</span>?</h1><p class='small'>Salė šaukia GERA / BLOGA — tada spausk ir patikrink</p>"+
+ "<div class='sortgrid'>"+
+ "<div class='sortit' data-k='g' onclick='sortPick(this)'>😴 9–11 val. miego<span class='why'>✅ GERA — smegenys tvarkosi miegant</span></div>"+
+ "<div class='sortit' data-k='b' onclick='sortPick(this)'>📱 3 val. TikTok / Shorts / Reels<span class='why'>❌ BLOGA — pasyvus srautas be mąstymo</span></div>"+
+ "<div class='sortit' data-k='g' onclick='sortPick(this)'>⚽ 60 min lauke su draugais<span class='why'>✅ GERA — judesys + gyvi draugai = dviguba treniruotė</span></div>"+
+ "<div class='sortit' data-k='b' onclick='sortPick(this)'>🎰 Begalinis free-to-play grind'as<span class='why'>❌ BLOGA — žaidimas sukurtas tave užkabinti, ne lavinti (dalis Roblox režimų — būtent tokie)</span></div>"+
+ "<div class='sortit' data-k='g' onclick='sortPick(this)'>🍳 Pusryčiai su baltymais<span class='why'>✅ GERA — kuras smegenų darbui</span></div>"+
+ "<div class='sortit' data-k='g' onclick='sortPick(this)'>🧩 Sukurti savo žaidimą<span class='why'>✅ GERA — kūryba yra brain max viršūnė</span></div>"+
+ "<div class='sortit' data-k='b' onclick='sortPick(this)'>🌙 Shorts iki 1 nakties<span class='why'>❌ DVIGUBAI BLOGA — brain rot + pavogtas miegas</span></div>"+
+ "<div class='sortit' data-k='g' onclick='sortPick(this)'>🎓 Išmokyti draugą naujo triuko<span class='why'>✅ GERA — mokydamas išmoksti pats geriausiai</span></div>"+
+ "</div><p class='small' id='sortScore'></p>",
+ voice:"Sužaiskim. Aš sakau įprotį — jūs šaukiat: gera smegenims ar bloga. Devynios valandos miego? Trys valandos trumpų video? Šešiasdešimt minučių lauke su draugais? Begalinis nemokamas žaidimas, sukurtas tave užkabinti? Šauk garsiai!",
+ notes:{say:"Greitas ritmas! Perskaitai → salė šaukia → spaudi → patvirtinimas ekrane.",do:"8 kortelės ~90 sek. Roblox eilutę sakyk tiksliai: ne „Roblox blogas“, o „dalis režimų sukurti tave laikyti, ne lavinti“.",br:"„O dabar — bosas iš arti.“"}},
+
+/* 10 — BRAIN ROT iš arti */
 {ey:"BOSAS", cls:"center",
  html:"<h1><span class='rword'>BRAIN ROT</span> 🧟</h1>"+
- "<p class='sub'>Begalinis scrollinimas. Šimtas trumpų video. Valanda praėjo — nieko neprisimeni.<br>Smegenys — ant autopiloto.</p>"+
- "<div class='qbox' onclick='this.classList.add(\"open\")'><p>Koks geriausias ginklas prieš brain rot? 👇</p>"+
- "<p class='ans'>BRAIN MAX — treniruoti smegenis taip, kad KURTI būtų įdomiau nei scrollinti.</p></div>",
- voice:"Brain rot. Begalinis scrollinimas, šimtas trumpų video, valanda praėjo — nieko neprisimeni. Geriausias ginklas prieš jį — brain max. Treniruoti smegenis taip, kad kurti būtų įdomiau negu scrollinti.",
- notes:{say:"NEMORALIZUOK. 5–6 kl. tai JŲ žodis — pasiskolink su ironija: „taip, suaugęs žmogus ką tik pasakė brain rot. Bet bosas tikras.“ Savikritika > pamokslas.",do:"Klausk: kas pagavo save scrollinant 1 val.+? (pakelk ranką pats pirmas!)",br:"„Tai kaip tas brain max veikia? Įrodymai — iš tikrų smegenų.“"}},
-
-{ey:"BRAIN MAX", cls:"center",
- html:"<h1>Mokytis = <span class='rword'>keisti smegenis</span></h1>"+
  "<div class='cards'>"+
- "<div class='card'><div class='emo'>🚕</div><h3>Londono taksistai</h3><p class='small'>išmoko 25 000 gatvių — atminties centras smegenyse <b>fiziškai UŽAUGO</b></p></div>"+
- ""+
- "<div class='card'><div class='emo'>💪</div><h3>Smegenys = raumuo</h3><p class='small'>treniruoji — auga. Netreniruoji — silpsta. Tavo pasirinkimas.</p></div></div>",
- voice:"Mokytis — tai fiziškai keisti smegenis. Londono taksistai išmoko dvidešimt penkis tūkstančius gatvių — ir jų atminties centras užaugo. Smegenys yra raumuo. Treniruoji — auga.",
- notes:{say:"⏱ MAX 45 SEK (panelės dėmesio duobė!). VIENAS faktas kaip superherojaus kilmės istorija — ne paskaita.",do:"Greitas demo: visi 10 sek. žongliruoja įsivaizduojamais kamuoliukais — kūnas pabunda.",br:"„Patikrinkim, ar jūsų smegenys jau kaista — testas!“"}},
+ "<div class='card'>"+slot("Begalinis feed scrollinimas — nykštys juda, akys stiklinės")+"<h3 style='margin-top:8px'>Kas tai?</h3><p>begalinis trumpų video srautas: TikTok, Shorts, Reels</p></div>"+
+ "<div class='card'>"+slot("Valandos praeina — laikrodis sukasi, žmogus toj pačioj pozoj")+"<h3 style='margin-top:8px'>Ką daro?</h3><p>valanda praėjo — nieko neprisimeni; smegenys ant autopiloto</p></div>"+
+ "<div class='card'>"+slot("Smegenys užmiega ant sofos — zzz animacija")+"<h3 style='margin-top:8px'>Kodėl pavojinga?</h3><p>žiūri PASYVIAI — be mąstymo ir be judesio. Smegenims tai badas</p></div></div>"+
+ "<div class='qbox' onclick='this.classList.add(\"open\")'><p>Koks geriausias ginklas prieš brain rot? 👇</p>"+
+ "<p class='ans'>Ne draudimas. KAŽKAS ĮDOMESNIO. Judesys + kūryba = BRAIN MAX.</p></div>",
+ voice:"Brain rot. Begalinis trumpų video srautas. Nykštys juda, akys stiklinės, valanda dingsta — ir nieko neprisimeni. Pavojinga ne pats ekranas. Pavojinga tai, kad žiūri pasyviai: be mąstymo ir be judesio. Smegenims tai badas. O geriausias ginklas — ne draudimas. Kažkas įdomesnio.",
+ notes:{say:"IRONIJA privaloma 5–6 kl.: „taip, suaugęs sako brain rot. Bet bosas tikras — jūs jį pažįstat geriau už mane.“",do:"Paklausk: kas vakar pagavo save scrollinant? Pats pakelk ranką PIRMAS.",br:"„Ir čia įsijungia dalykas, kurį jūs jau darot geriau nei suaugę — aura farming…“"}},
 
-{ey:"TESTAS SALEI", cls:"center",
- html:"<h1>Patikrink <span class='rword'>save</span></h1><p class='small'>Atsakykit GARSIAI, tada spausk atsakymą</p>"+
- "<div class='qbox' onclick='this.classList.add(\"open\")'><p>1. Kas sugalvojo visas pasaulio technologijas?</p><p class='ans'>Žmogaus smegenys 🧠</p></div>"+
- "<div class='qbox' onclick='this.classList.add(\"open\")'><p>2. Išvardink bent 2 smegenų priešus.</p><p class='ans'>Miego · judėjimo · maisto · draugų trūkumas · brain rot 🧟</p></div>"+
- "<div class='qbox' onclick='this.classList.add(\"open\")'><p>3. Kas yra evoliucija ŠIANDIEN?</p><p class='ans'>Mokytis mokytis · valdyti smegenis · valdyti technologijas, robotiką ir AI</p></div>",
- voice:"Patikrinkim. Kas sugalvojo visas technologijas? Išvardink bent du smegenų priešus. Ir kas yra evoliucija šiandien? Atsakykite garsiai!",
- notes:{say:"Energingai! Teisingi atsakymai = plojimai visai salei.",do:"3 klausimai → salė šaukia → tada atskleisk ekrane.",br:"„Smegenys apšilo. Dabar — treniruoklių salė. VR zonos!“"}},
+/* 11 — AURA FARMING → judesio brain max */
+{ey:"TREND'AS → TRENIRUOTĖ", cls:"center",
+ html:"<h1><span class='rword'>Aura farming</span> — bet iš tikrųjų</h1>"+
+ "<div class='cards'>"+
+ "<div class='card'>"+slot("Rayyan Arkan Dikha šoka valties priekyje (Pacu Jalur)")+"<h3 style='margin-top:8px'>🚣 Prasidėjo nuo 11-mečio</h3><p>Rayyan iš Indonezijos šoko valties priekyje — ir užkariavo internetą. NFL žvaigždės kartojo jo judesius.</p></div>"+
+ "<div class='card'>"+slot("Aura battle gatvėje — minia vertina judesius")+"<h3 style='margin-top:8px'>⚔️ Aura battles</h3><p>vaikai varžosi judesiais gatvėse — publika skiria „+1000 auros“</p></div>"+
+ "<div class='card boss'><div class='emo'>📷🤖</div><h3>MŪSŲ VERSIJA</h3><p>AI kamera seka visą tavo kūną — flossas, 6-7 ir dar 20 judesių. Judesys + AI = tikras aura farming. Statoma Brain Club'e!</p></div></div>"+
+ "<p class='sub'>Kai judi ir mokaisi naujus judesius — <b>aktyvuoji smegenų ląsteles</b>.<br>Tas pats trend'as, tik ne žiūri — <b class='rword'>DARAI</b>.</p>",
+ voice:"Girdėjot apie aura farming? Prasidėjo nuo vienuolikmečio iš Indonezijos, kuris šoko valties priekyje — ir užkariavo internetą. Dabar vaikai visame pasaulyje varžosi judesiais gatvėse. Mūsų versija: AI kamera seka visą tavo kūną, o tu mokaisi judesius. Kai judi — aktyvuoji smegenų ląsteles. Tas pats trendas. Tik ne žiūri, o darai.",
+ notes:{say:"ČIA jų teritorija — leisk vaikams papasakoti, kas žino aura farming (žinos!).",do:"Jei drąsu: 15 sek. flash-iššūkis — kas parodys geriausią judesį? +1000 auros aplodismentais.",br:"„Judesys keičia smegenis. Ir tai įrodyta — taksistų smegenimis…“"}},
 
+/* 12 — NEUROPLASTIKA */
+{ey:"ĮRODYMAS", cls:"center",
+ html:"<h1>Mokytis = <span class='rword'>keisti smegenis</span></h1>"+
+ slot("Londono taksistas + augantis smegenų žemėlapis galvoje (Higgsfield)","gifwide")+
+ "<p class='sub'>Londono taksistai išmoko atmintinai <b>25 000 gatvių</b> —<br>ir jų atminties centras smegenyse <b class='rword'>fiziškai UŽAUGO</b>.<br>Tai vadinasi <b>neuroplastiškumas</b>: smegenys — raumuo. Treniruoji — auga.</p>",
+ voice:"Ar smegenis galima užauginti? Taip. Londono taksistai išmoko atmintinai dvidešimt penkis tūkstančius gatvių — ir mokslininkai pamatė, kad jų atminties centras fiziškai užaugo. Tai vadinasi neuroplastiškumas. Smegenys yra raumuo. Treniruoji — auga. Netreniruoji — silpsta.",
+ notes:{say:"⏱ MAX 45 SEK. Vienas faktas kaip superherojaus kilmės istorija.",do:"10 sek. demo: visi žongliruoja įsivaizduojamais kamuoliukais.",br:"„Tai kaip atrodo pilna smegenų treniruotė? Štai formulė…“"}},
+
+/* 13 — BRAIN MAX hype */
+{ey:"FORMULĖ", cls:"center",
+ html:"<h1>Iš brain rot į <span class='rword'>BRAIN MAX</span></h1>"+
+ "<button class='btn btn-red' style='font-size:19px;padding:18px 34px' onclick='brainMax()'>💥 AKTYVUOTI BRAIN MAX</button>"+
+ "<div class='cards' id='maxlist' style='display:none'>"+
+ "<div class='card'><div class='emo'>😴</div><h3>Miegok giliai</h3></div>"+
+ "<div class='card'><div class='emo'>📚</div><h3>Mokykis nuolat</h3></div>"+
+ "<div class='card'><div class='emo'>🤖</div><h3>Adaptuokis prie tech</h3></div>"+
+ "<div class='card'><div class='emo'>🤝</div><h3>Statyk draugystes</h3></div>"+
+ "<div class='card'><div class='emo'>🛠️</div><h3>Kurk kietus daiktus</h3></div>"+
+ "<div class='card'><div class='emo'>🗺️</div><h3>Eik į nuotykius</h3></div>"+
+ "<div class='card'><div class='emo'>💪</div><h3>Prižiūrėk kūną</h3></div>"+
+ "<div class='card'><div class='emo'>🎓</div><h3>Mokyk kitus</h3></div>"+
+ "<div class='card'><div class='emo'>🏗️</div><h3>Statyk naujus pasaulius</h3></div></div>",
+ voice:"Brain max. Miegok giliai. Mokykis nuolat. Adaptuokis prie naujų technologijų. Statyk draugystes. Kurk kietus daiktus. Eik į nuotykius. Prižiūrėk savo kūną. Mokyk kitus to, ką išmokai. Ir statyk naujus pasaulius. Tai — brain max formulė.",
+ notes:{say:"Mygtuką spaudžia VAIKAS iš salės — blykstė + bosas per kolonėles.",do:"Po aktyvacijos perskaityk 9 punktus ritmu, kaip repą — salė gali kartoti.",br:"„Skamba gerai? Patikrinkim TAVO lygį. Testas!“"}},
+
+/* 14 — TESTAS 10 klausimų */
+{ey:"PATIKRINIMAS", cls:"center",
+ html:"<h1>Koks tavo <span class='rword'>evoliucijos lygis</span>?</h1>"+
+ "<div id='quizIntro'><p class='sub'>10 klausimų · 12 sek. kiekvienam · lygis pagal rezultatą</p>"+
+ "<p><input class='inp' id='nm' placeholder='Vardas' maxlength='20'> <input class='inp' id='ag' placeholder='Amžius' maxlength='2' style='width:90px'></p>"+
+ "<button class='btn btn-red' onclick='startQuiz()'>Pradėti testą</button></div>"+
+ "<div id='quiz'></div>"+
+ "<div id='certCard'><p class='eyebrow'>BRAIN CLUB · EVOLIUCIJOS SERTIFIKATAS</p>"+
+ "<p class='cn' id='certName'></p><p class='lvl' id='certLvl'></p><p id='certLine'></p>"+
+ "<p class='small' id='certDate'></p><button class='btn btn-ghost' onclick='window.print()'>🖨️ Spausdinti / išsaugoti</button> "+
+ "<button class='btn btn-ghost' onclick='location.reload()'>Dar kartą</button></div>",
+ voice:"Laikas patikrinti, kokiame evoliucijos lygyje esi. Dešimt klausimų. Dvylika sekundžių kiekvienam. Įrašyk vardą, amžių — ir pirmyn. Aukščiausias lygis — kosmoso smegenys.",
+ notes:{say:"SALĖJE: 1 savanoris scenoje atsakinėja, salė padeda šaukdama. NAMIE: vaikas žaidžia pats — čia dalinimosi variklis.",do:"Savanoriui — aplodismentai NEPRIKLAUSOMAI nuo lygio: „evoliucija = bandymas“.",br:"„Užteks kalbėt. Laikas IŠBANDYT. Zonos!“"}},
+
+/* 15 — VR ZONOS */
 {ey:"DABAR — IŠBANDOM", cls:"center",
  html:"<h1>3 VR <span class='rword'>zonos</span> · Quest 3S</h1>"+
- "<div class='zones'>"+
- "<div class='zone'><div class='gif' data-gif='gorilla-tag'>GIF: Gorilla Tag</div><div class='zb'><h3>🏃 Judesio zona</h3><p>3 žingsniai virtualiam pasauly — laipiok, judėk, pajusk VR</p></div></div>"+
- "<div class='zone'><div class='gif' data-gif='cubism'>GIF: Cubism</div><div class='zb'><h3>🧩 Kūrybos zona</h3><p>erdvinis galvosūkis — dėliok figūras 3D erdvėje</p></div></div>"+
- "<div class='zone'><div class='gif' data-gif='laser-tag'>GIF: mūsų Laser Tag</div><div class='zb'><h3>⚔️ Kovos zona</h3><p>MŪSŲ PAČIŲ sukurtas lazerių mūšis — 1 prieš 1!</p></div></div></div>"+
- "<p class='sub'>Po 2–3 min vienam. Eilė juda greitai. Klausyk zonos vedėjo!</p>",
- voice:"Dabar — išbandom! Trys zonos su Quest akiniais. Judesio zona — trys žingsniai virtualiame pasaulyje. Kūrybos zona — erdvinis galvosūkis. Ir kovos zona — mūsų pačių sukurtas lazerių mūšis, vienas prieš vieną. Po dvi tris minutes kiekvienam!",
- notes:{say:"ČIA didžiausias energijos šuolis — taisykles sakyk TRUMPAI ir aiškiai.",do:"Parodyk zonų vietas salėje ranka. Priminti: akiniai — su vedėju, spotteris šalia.",br:"„O žinot, kas kūrė tą lazerių mūšį? Vaikai. Su AI. Štai kaip…“"}},
-
-{ey:"MES KURIAM PATYS", cls:"center",
- html:"<h1>Tu treniruoji <span class='rword'>AI</span>.<br>AI treniruoja <span class='rword'>tave</span>.</h1>"+
- "<p class='sub'>Brain Club'e mes ne tik žaidžiam — mes <b>kuriam</b>:<br>pasakai AI savo idėją → kartu statot žaidimą → draugai jį žaidžia.<br>WebXR pasauliai · VR įrankiai · ateities profesijos jau dabar.</p>",
- voice:"Brain Klube mes ne tik žaidžiam — mes kuriam. Pasakai dirbtiniam intelektui savo idėją, kartu pastatot žaidimą, ir draugai jį žaidžia. Tu treniruoji AI, o AI treniruoja tavo smegenis.",
- notes:{say:"⏱ MAX 30 SEK — vaikai jau nori VR. Viena žinia: lazerių mūšį sukūrė VAIKAI su AI.",do:"Jokių ilgų kalbų. Jei yra 15 sek. laser tag kūrimo klipas — parodyk, jei ne — tiesiai į iššūkį.",br:"„Pasiruošęs paskutiniam bosui? Evoliucijos iššūkis!“"}},
-
-{ey:"FINALINIS BOSAS", cls:"center",
- html:"<h1>Evoliucijos <span class='rword'>iššūkis</span></h1><p class='small'>3 klausimai. Įveik — gauk sertifikatą.</p><div id='quiz'></div>"+
- "<div id='certForm' style='display:none'><p class='sub'><b>Įveikei! 🏆</b> Įrašyk vardą:</p>"+
- "<input id='nm' placeholder='Tavo vardas' maxlength='24'> <button class='btn btn-red' onclick='makeCert()'>Gauti sertifikatą</button></div>"+
- "<div id='certCard'><p class='eyebrow'>BRAIN CLUB · EVOLIUCIJOS IŠŠŪKIS</p>"+
- "<p class='cn' id='certName'></p><p><b>NE DINOZAURAS.</b> Įveikė Evoliucijos iššūkį ir žino:<br>evoliucija = mokytis mokytis · valdyti smegenis · valdyti technologijas.</p>"+
- "<p class='small' id='certDate'></p><button class='btn btn-ghost' onclick='window.print()'>🖨️ Spausdinti / išsaugoti</button></div>",
- voice:"Finalinis bosas — evoliucijos iššūkis. Trys klausimai. Atsakysi teisingai — gausi sertifikatą, kad tu tikrai ne dinozauras.",
- notes:{say:"Salėje: kviesk 1 drąsuolį atsakinėti scenoje (arba visa salė balsuoja).",do:"Namie vaikas daro pats — sertifikatas su jo vardu = dalinimosi variklis.",br:"„Įveikusiems — durys atviros. Kas mes tokie?“"}},
-
-{ey:"KAS MES", cls:"center",
- html:"<h1>BRAIN <span class='rword'>CLUB</span></h1>"+
- "<p class='sub'>Būrelis, kur <b>maksini smegenis</b>:</p>"+
  "<div class='cards'>"+
- "<div class='card'><div class='emo'>🥽</div><h3>VR / MR pasauliai</h3><p class='small'>žaidi IR kuri pats</p></div>"+
- "<div class='card'><div class='emo'>🤖</div><h3>AI treniruotės</h3><p class='small'>tu mokai AI — AI moko tave</p></div>"+
- "<div class='card'><div class='emo'>🧠</div><h3>Smegenų mokslas</h3><p class='small'>pažink savo galingiausią įrenginį</p></div>"+
- "<div class='card'><div class='emo'>🤝</div><h3>Draugai</h3><p class='small'>kuriam ir kovojam komandoj</p></div></div>",
- voice:"Brain Club — būrelis, kur maksini smegenis. Virtualūs pasauliai, kuriuos žaidi ir kuri pats. AI treniruotės. Smegenų mokslas. Ir draugai, su kuriais visa tai smagiau.",
- notes:{say:"TIK po iššūkio — uždirbta reklama. Trumpai, be pardavimo tono: faktai, ką veikiam.",do:"Parodyk 2–3 tikras vaikų darbų nuotraukas, jei yra ekrane/planšetėj.",br:"„Ir paskutinė žinutė — apie dinozaurus…“"}},
+ "<div class='card'>"+slot("Gorilla Tag — žaidėjas mojuoja rankomis, juda siena")+"<h3 style='margin-top:8px'>🏃 Judesio zona</h3><p>Gorilla Tag: judėk kaip gorila — judesys = mokymasis</p></div>"+
+ "<div class='card'>"+slot("Cubism — rankos deda skaidrius blokus mixed reality")+"<h3 style='margin-top:8px'>🧩 Galvosūkių zona</h3><p>Cubism: spręsk erdvinius galvosūkius mixed reality</p></div>"+
+ "<div class='card'>"+slot("Mūsų Laser Tag VR — du žaidėjai kaunasi (mūsų įrašas)")+"<h3 style='margin-top:8px'>⚔️ Kovos zona</h3><p>MŪSŲ sukurtas Laser Tag: taktika + komandinis darbas, 1 prieš 1</p></div></div>"+
+ "<p class='sub'>Po 2–3 min. Klausyk zonos vedėjo. Pajusk, koks jausmas būti Brain Club'e.</p>",
+ voice:"Dabar — išbandom. Trys zonos. Judesio zona — Gorilla Tag: judėk kaip gorila. Galvosūkių zona — Cubism: spręsk erdvinius galvosūkius mixed reality. Ir kovos zona — mūsų pačių sukurtas lazerių mūšis: taktika, komandinis darbas, vienas prieš vieną. Po dvi tris minutes. Pajusk, koks jausmas būti Brain Club'e.",
+ notes:{say:"TRUMPAI — energija ir taisyklės: eilė, vedėjo klausom, spotteris šalia.",do:"Parodyk zonas ranka. Laser Tag — pabrėžk MŪSŲ SUKURTAS.",br:"„O kas jį sukūrė? Vaikai. Su AI. Būtent taip mes dirbam…“"}},
 
-{ey:"FINALAS", cls:"center",
+/* 16 — MES KURIAM + BRAIN CITY */
+{ey:"MES NE ŽAIDŽIAM — MES KURIAM", cls:"center",
+ html:"<h1>Tu treniruoji <span class='rword'>AI</span>. AI treniruoja <span class='rword'>tave</span>.</h1>"+
+ "<p class='sub'>Pasakai AI savo idėją → kartu pastatot žaidimą → draugai jį žaidžia.<br>WebXR pasauliai veikia <b>tavo telefone</b>.</p>"+
+ "<div class='qbox' onclick='this.classList.add(\"open\")'><p>🏙️ O kas yra BRAIN CITY? 👇</p>"+
+ "<p class='ans'>Tavo smegenų miestas: renki skaitmeninius artefaktus, mokaisi apie smegenis, statai miestą. Kuo didesnis miestas — tuo stipresnės smegenys. Ateities profesijoms ruošiesi darydamas kietus dalykus su kietais žmonėmis.</p></div>",
+ voice:"Brain Club'e mes ne žaidžiam — mes kuriam. Pasakai dirbtiniam intelektui savo idėją, kartu pastatot žaidimą, ir draugai jį žaidžia. Statai savo Brain City — smegenų miestą: renki artefaktus, mokaisi, ir kuo didesnis tavo miestas, tuo stipresnės tavo smegenys. Taip ruošiesi ateities profesijoms — darydamas kietus dalykus su kietais žmonėmis.",
+ notes:{say:"⏱ MAX 40 SEK. Viena žinia: čia KURIA vaikai, ne vartoja.",do:"Jei yra 15 sek. laser tag kūrimo klipas — dabar jo vieta.",br:"„Liko paskutinis bosas. Reikia vieno drąsuolio…“"}},
+
+/* 17 — FINALINIS BOSAS */
+{ey:"FINALINIS BOSAS", cls:"center",
+ html:"<h1>Trys <span class='rword'>lemiami</span> klausimai</h1><p class='small'>Vienas savanoris scenoje — salė padeda</p>"+
+ "<div class='qbox' onclick='this.classList.add(\"open\")'><p>1. Kokia buvo dinozaurų problema?</p><p class='ans'>Jie NEGALĖJO EVOLIUCIONUOTI — neprisitaikė prie pokyčių.</p></div>"+
+ "<div class='qbox' onclick='this.classList.add(\"open\")'><p>2. Koks svarbiausias ateities įgūdis?</p><p class='ans'>METAKOGNICIJA — mąstymas apie savo mąstymą. Mokytis mokytis.</p></div>"+
+ "<div class='qbox' onclick='this.classList.add(\"open\")'><p>3. Su kuo kursi ateitį?</p><p class='ans'>Komandoje: žmonės + AI agentai + robotai. Ir su treniruotomis smegenimis priekyje.</p></div>",
+ voice:"Paskutinis bosas. Trys klausimai. Kokia buvo dinozaurų problema? Jie negalėjo evoliucionuoti. Koks svarbiausias ateities įgūdis? Metakognicija — mąstymas apie savo mąstymą, mokymasis mokytis. Ir su kuo kursi ateitį? Komandoje — žmonės, agentai ir robotai kartu.",
+ notes:{say:"Savanoriui — pagarba kaip bokso ringe: vardas garsiai, aplodismentai.",do:"Jei stringa — salė gelbsti. Metakogniciją paaiškink savais žodžiais: „galvoti apie tai, KAIP galvoji“.",br:"„Įveikta. Ir dabar — kvietimas…“"}},
+
+/* 18 — FINALAS + CTA */
+{ey:"KVIETIMAS", cls:"center",
  html:"<div class='dino'>🦖</div><h1>Nebūk <span class='rword'>dinozauras</span>.<br>Evoliucionuok.</h1>"+
- "<p class='sub'><b>Mokykis mokytis.</b> Valdyk savo smegenis.<br>Valdyk VR, AR ir AI — kad technologijos nevaldytų tavęs.<br><b class='rword'>Siek žvaigždžių ⭐</b></p>"+
- "<div id='qr'></div><p class='small'>Paimk lapelį → nuskenuok QR su tėvais → registruokis į Brain Club</p>",
- voice:"Dinozaurai buvo dideli ir stiprūs. Bet jie neišmoko prisitaikyti — ir išnyko. Nebūk dinozauras. Evoliucionuok. Mokykis mokytis, valdyk savo smegenis, valdyk technologijas. Ir siek žvaigždžių!",
- notes:{say:"DINOZAURO momentas — vaidink IRONIŠKAI, su komedijos laiku (6 kl. cringe slenkstis!), ne nuoširdžiu entuziazmu. 3–4 kl. juoksis bet kokiu atveju.",do:"Lapelius dalina prie durų. Priminti: QR skenuoja SU TĖVAIS.",br:"Pabaiga: „Iki susitikimo Brain Club'e!“ + plojimai dinozaurui."}}
+ "<p class='sub'>Brain Club — būrelis, kuriame maksinam smegenis:<br><b>VR/XR pasauliai · AI treniruotės · promptai ir vibe coding · smegenų mokslas · draugystės</b>.<br>AI neegzistuotų be smegenų. O smegenys stiprėja tik su kitais.</p>"+
+ "<p class='sub'><b>Mokykis mokytis. Valdyk savo smegenis. Valdyk VR, AR ir AI —<br>kad technologijos nevaldytų tavęs. <span class='rword'>Siek žvaigždžių ⭐</span></b></p>"+
+ "<div id='qr'></div><p class='small'>Paimk kvietimą → nuskenuok QR su tėvais → iki susitikimo ateityje!</p>",
+ voice:"Nebūk dinozauras. Evoliucionuok. Mokykis mokytis. Valdyk savo smegenis, valdyk virtualią realybę ir dirbtinį intelektą — kad technologijos nevaldytų tavęs. Paimk kvietimą, nuskenuok kodą kartu su tėvais. Siek žvaigždžių. Ir tikimės — iki susitikimo ateityje. Brain Club'e.",
+ notes:{say:"DINOZAURO KOSTIUMAS įbėga — vaidink IRONIŠKAI (6 kl. cringe slenkstis!).",do:"Kvietimai prie durų. Priminti: QR — SU TĖVAIS.",br:"Finalas: „Iki susitikimo Brain Club'e!“ + plojimai dinozaurui."}}
 ];
 
 /* ===== VARIKLIS ===== */
-var cur=0, MODE="live", speaking=false;
-function esc(s){return s}
+var cur=0, MODE="live";
 function build(){
   var st=document.getElementById("stage");
   SL.forEach(function(s,i){
     var d=document.createElement("section");
-    d.className="slide "+(s.cls||"");
-    d.id="s"+i;
+    d.className="slide "+(s.cls||""); d.id="s"+i;
     d.innerHTML="<p class='eyebrow'>"+s.ey+"</p>"+s.html;
     st.appendChild(d);
   });
-  buildQuiz();
   try{ new QRCode(document.getElementById("qr"),{text:QR_URL,width:150,height:150,correctLevel:QRCode.CorrectLevel.M}); }
   catch(e){ document.getElementById("qr").textContent=QR_URL; }
 }
@@ -259,49 +373,96 @@ function speakCur(){
   if(!("speechSynthesis" in window))return;
   window.speechSynthesis.cancel();
   var u=new SpeechSynthesisUtterance(SL[cur].voice);
-  u.lang="lt-LT";u.rate=0.95;
+  u.lang="lt-LT";u.rate=0.93;
   var v=window.speechSynthesis.getVoices().filter(function(x){return x.lang&&x.lang.indexOf("lt")===0});
   if(v.length)u.voice=v[0];
-  u.onend=function(){ if(MODE==="auto"&&cur<SL.length-1) setTimeout(next,1200); };
+  u.onend=function(){ if(MODE==="auto"&&cur<SL.length-1) setTimeout(next,1300); };
   window.speechSynthesis.speak(u);
 }
 document.addEventListener("keydown",function(e){
-  if(e.key==="ArrowRight"||e.key===" ")next();
+  if(e.target.tagName==="INPUT")return;
+  if(e.key==="ArrowRight")next();
   if(e.key==="ArrowLeft")prev();
   if(e.key==="n"||e.key==="N")toggleNotes();
 });
 
-/* ===== IŠŠŪKIO QUIZ ===== */
+/* ===== GERA/BLOGA ===== */
+var sortDone=0,sortOk=0;
+function sortPick(el){
+  if(el.classList.contains("g")||el.classList.contains("b"))return;
+  el.classList.add(el.getAttribute("data-k"));
+  sortDone++;
+  document.getElementById("sortScore").textContent="Atskleista: "+sortDone+" / 8";
+}
+
+/* ===== BRAIN MAX FX ===== */
+function brainMax(){
+  var fx=document.getElementById("maxfx");fx.classList.add("on");
+  document.getElementById("maxlist").style.display="grid";
+  try{
+    var A=new (window.AudioContext||window.webkitAudioContext)();
+    var o=A.createOscillator(),g=A.createGain();
+    o.type="square";o.frequency.value=55;g.gain.value=.4;
+    o.connect(g);g.connect(A.destination);o.start();
+    g.gain.exponentialRampToValueAtTime(.001,A.currentTime+.7);o.stop(A.currentTime+.75);
+  }catch(e){}
+  setTimeout(function(){fx.classList.remove("on")},1400);
+}
+
+/* ===== 10 KLAUSIMŲ TESTAS ===== */
 var QZ=[
- {q:"1. Kas yra evoliucija ŠIANDIEN?",a:["Tik dinozaurų istorija","Mokytis mokytis ir valdyti technologijas, robotiką, AI","Naujausias telefonas"],ok:1},
- {q:"2. Koks bosas naikina smegenis?",a:["Brain rot — begalinis scrollinimas","Matematikos pamoka","Lietus"],ok:0},
- {q:"3. Kaip vyksta BRAIN MAX?",a:["Žiūri daugiau trumpų video","Miegi, judi, valgai tikrą maistą, draugauji ir KURI","Perki naują planšetę"],ok:1}];
-var qi=0, correct=0;
-function buildQuiz(){qi=0;correct=0;renderQ()}
+ {q:"Kokį įrenginį turėsi visą gyvenimą?",a:["Telefoną","Smegenis","Planšetę"],ok:1},
+ {q:"Prieš kiek metų žmonės prisijaukino ugnį?",a:["Prieš ~100 metų","Prieš ~1 milijoną metų","Prieš 20 metų"],ok:1},
+ {q:"Kiek žmonių dirbo Apollo programoje?",a:["Apie 40","Apie 4 000","Apie 400 000"],ok:2},
+ {q:"Kas yra brain rot?",a:["Begalinis pasyvus video srautas","Sporto treniruotė","Naujas žaidimas"],ok:0},
+ {q:"Kiek miego reikia tavo amžiui?",a:["4–5 val.","9–11 val.","15 val."],ok:1},
+ {q:"Kiek judėjimo reikia kasdien?",a:["5 min","60 min","Nereikia visai"],ok:1},
+ {q:"Kas nutiko Londono taksistų smegenims?",a:["Nieko","Atminties centras užaugo","Sumažėjo"],ok:1},
+ {q:"Kas yra metakognicija?",a:["Mąstymas apie savo mąstymą","Robotų kalba","Žaidimo lygis"],ok:0},
+ {q:"Kuo AI agentas skiriasi nuo pokalbio roboto?",a:["Niekuo","Gauna tikslą ir pats veikia","Yra lėtesnis"],ok:1},
+ {q:"Kokia buvo dinozaurų klaida?",a:["Per daug miegojo","Nesugebėjo prisitaikyti","Per daug žaidė"],ok:1}];
+var qi=0,correct=0,tmr=null,tleft=12;
+function startQuiz(){
+  var n=(document.getElementById("nm").value||"").trim();
+  if(!n){document.getElementById("nm").focus();return}
+  document.getElementById("quizIntro").style.display="none";
+  qi=0;correct=0;renderQ();
+}
 function renderQ(){
-  var el=document.getElementById("quiz"); if(!el)return;
-  if(qi>=QZ.length){
-    el.innerHTML = (correct===QZ.length)
-      ? "" : "<p class='sub'>Surinkai "+correct+"/3. Evoliucija = bandyti dar! 💪</p><button class='btn btn-ghost' onclick='buildQuiz()'>Bandyti iš naujo</button>";
-    document.getElementById("certForm").style.display=(correct===QZ.length)?"block":"none";
-    return;
-  }
-  var q=QZ[qi], h="<p class='sub'><b>"+q.q+"</b></p>";
+  var el=document.getElementById("quiz");
+  clearInterval(tmr);
+  if(qi>=QZ.length){finishQuiz();return}
+  var q=QZ[qi];
+  var h="<p class='small'>Klausimas "+(qi+1)+" / 10 · <span id='timer'>12</span> s</p>"+
+        "<p class='sub'><b>"+q.q+"</b></p>";
   q.a.forEach(function(t,j){h+="<button class='choice' onclick='pick(this,"+j+")'>"+t+"</button>"});
   el.innerHTML=h;
+  tleft=12;
+  tmr=setInterval(function(){
+    tleft--;var t=document.getElementById("timer");if(t)t.textContent=tleft;
+    if(tleft<=0){clearInterval(tmr);qi++;renderQ();}
+  },1000);
 }
 function pick(btn,j){
+  clearInterval(tmr);
   var ok=(j===QZ[qi].ok);
   btn.classList.add(ok?"ok":"bad");
   if(ok)correct++;
-  setTimeout(function(){qi++;renderQ()},650);
+  setTimeout(function(){qi++;renderQ()},600);
 }
-function makeCert(){
+function finishQuiz(){
+  document.getElementById("quiz").innerHTML="";
+  var lvl,line;
+  if(correct===10){lvl="🚀 KOSMOSO SMEGENYS";line="Aukščiausias lygis — 10/10. Ateitis tavęs laukia.";}
+  else if(correct>=8){lvl="🧠 BRAIN MAXER";line="Rezultatas "+correct+"/10 — smegenys treniruotos!";}
+  else if(correct>=6){lvl="🐒 EVOLIUCIONIERIUS";line="Rezultatas "+correct+"/10 — evoliucija įsibėgėjo.";}
+  else {lvl="🦖 DINOZAURIUKAS";line="Rezultatas "+correct+"/10 — evoliucija = bandyti dar kartą!";}
   var n=(document.getElementById("nm").value||"").trim();
-  if(!n)return;
-  document.getElementById("certName").textContent=n;
+  var a=(document.getElementById("ag").value||"").trim();
+  document.getElementById("certName").textContent=n+(a?(", "+a+" m."):"");
+  document.getElementById("certLvl").textContent=lvl;
+  document.getElementById("certLine").textContent=line+" Žino: evoliucija = mokytis mokytis, valdyti smegenis ir technologijas.";
   document.getElementById("certDate").textContent="Brain Club Diena · "+new Date().toLocaleDateString("lt-LT");
-  document.getElementById("certForm").style.display="none";
   document.getElementById("certCard").style.display="block";
 }
 
@@ -315,7 +476,7 @@ function makeCert(){
   function step(){
     x.clearRect(0,0,W,H);
     P.forEach(function(p){p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0||p.x>W)p.vx*=-1; if(p.y<0||p.y>H)p.vy*=-1;
+      if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
       x.fillStyle="#D90429";x.beginPath();x.arc(p.x,p.y,2.2,0,7);x.fill()});
     for(var i=0;i<P.length;i++)for(var j=i+1;j<P.length;j++){
       var dx=P[i].x-P[j].x,dy=P[i].y-P[j].y,d=dx*dx+dy*dy;
@@ -325,8 +486,7 @@ function makeCert(){
   step();
 })();
 
-build(); show(0);
-if("speechSynthesis" in window){window.speechSynthesis.onvoiceschanged=function(){};}
+build();show(0);
 </script>
 </body>
 </html>
