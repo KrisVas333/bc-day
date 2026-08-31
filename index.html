@@ -94,6 +94,13 @@ letter-spacing:.05em;animation:slam .5s cubic-bezier(.2,2.2,.4,1)}
 .vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:860px;margin:16px 0}
 .vs .card{cursor:default}
 @media(max-width:640px){.vs{grid-template-columns:1fr}}
+
+.gimg{width:100%;border-radius:var(--r);object-fit:cover;display:block;min-height:110px;max-height:160px;animation:kb 14s ease-in-out infinite alternate}
+img.gifwide{max-height:340px;min-height:170px;width:min(680px,92vw);margin:14px auto}
+@keyframes kb{0%{transform:scale(1)}100%{transform:scale(1.05)}}
+@media (prefers-reduced-motion: reduce){.gimg{animation:none}}
+#dinovid{width:min(720px,94vw);border-radius:var(--r);display:block;margin:6px auto 0}
+#startlogo{width:min(260px,60vw);margin-top:22px;opacity:.92}
 @media print{.hud,#bar,#notes,#net{display:none!important}.slide{display:none!important}
 #certCard{display:block!important;border-width:4px}body{background:#fff}}
 </style>
@@ -107,12 +114,14 @@ letter-spacing:.05em;animation:slam .5s cubic-bezier(.2,2.2,.4,1)}
   <p class="eyebrow">BRAIN CLUB DIENA · 3–6 KLASĖ</p>
   <h1>Nebūk <span class="rword">dinozauras</span>.<br>Evoliucionuok.</h1>
   <p class="sub">Dokumentika apie tavo galingiausią įrenginį — ir 3 VR zonos jį treniruoti.</p>
+  <video id="dinovid" autoplay muted loop playsinline src="assets/img/dino-meteor.mp4" onerror="this.style.display='none'"></video>
   <div class="modes">
     <button class="btn btn-red" onclick="startShow('live')">🎤 Gyvas pristatymas</button>
     <button class="btn btn-ghost" onclick="startShow('voice')">🔊 Su balsu</button>
     <button class="btn btn-ghost" onclick="startShow('auto')">🤖 Auto-rodymas</button>
   </div>
-  <p class="small">⚗️ Eksperimentinis prototipas, kurtas su AI. Balsas V2 = ElevenLabs dokumentikos balsas (ruošiamas; dabar — naršyklės sintezė).<br>Klavišai: → kitas · ← atgal · N — vedėjo užrašai</p>
+  <p class="small">⚗️ Eksperimentinis prototipas, kurtas su AI. 🔊 Balsas — ElevenLabs LT dokumentikos pasakotojas.<br>Klavišai: → kitas · ← atgal · N — vedėjo užrašai</p>
+  <img id="startlogo" src="assets/img/bc-logo.png" alt="Brain Club">
 </div>
 
 <div class="stage" id="stage"></div>
@@ -130,7 +139,33 @@ letter-spacing:.05em;animation:slam .5s cubic-bezier(.2,2.2,.4,1)}
 <script>
 var QR_URL = "https://krisvas.lt/go/bc-diena"; /* SET-ME: registracijos nuoroda (⚠️ brain.lt be A įrašo — nenaudoti kol nepatvirtinta) */
 
-function slot(brief, cls){return "<div class='gifslot "+(cls||"")+"' data-brief=\""+brief+"\">GIF · "+brief+"</div>"}
+var IMGMAP={
+"Gyvenimo ciklas: kūdikis → vaikas bėga (pirmu asmeniu) → paauglys → darbas su ateities tech → kosmosas → ❓ (Higgsfield)":"01-lifecycle.jpg",
+"Priešistorinis laužas nakty":"02-ugnis.jpg","Senovinis vežimas juda":"03-ratas.jpg",
+"Molio lentelė → knyga":"04-rastas.jpg","Pirmos lemputės įsižiebia":"05-elektra.jpg",
+"Apollo nusileidimas":"23-apollo.jpg","Pasaulis susijungia tinklu":"24-internet.jpg",
+"Neuronų tinklas gyvai":"07-neural.jpg","Raketa kyla į žvaigždes":"06-kosmosas.jpg",
+"Even Realities G2 — tekstas atsiranda akiniuose (reklamos momentas)":"10-g2.jpg",
+"Meta Quest 3S — užsideda ir įžengia į mixed reality (reklamos momentas)":"11-quest.jpg",
+"Neuronų tinklas mokosi — signalai bėga tarp mazgų (Higgsfield)":"07-neural.jpg",
+"Humanoidas deda skalbinius / tvarko namus":"12-hum-namai.jpg",
+"Humanoidai dirba gamykloje prie linijos":"13-hum-fabrikas.jpg",
+"Robotas padeda klasėje / moko":"14-hum-mokykla.jpg",
+"Robotas tyrinėja Marsą / kosmosą":"15-hum-kosmosas.jpg",
+"Begalinis feed scrollinimas — nykštys juda, akys stiklinės":"16-rot-scroll.jpg",
+"Valandos praeina — laikrodis sukasi, žmogus toj pačioj pozoj":"17-rot-clock.jpg",
+"Smegenys užmiega ant sofos — zzz animacija":"18-rot-sleep.jpg",
+"Rayyan Arkan Dikha šoka valties priekyje (Pacu Jalur)":"19-rayyan.jpg",
+"Aura battle gatvėje — minia vertina judesius":"09-aura.jpg",
+"Londono taksistas + augantis smegenų žemėlapis galvoje (Higgsfield)":"08-taxi.jpg",
+"Gorilla Tag — žaidėjas mojuoja rankomis, juda siena":"20-gorilla.jpg",
+"Cubism — rankos deda skaidrius blokus mixed reality":"21-cubism.jpg",
+"Mūsų Laser Tag VR — du žaidėjai kaunasi (mūsų įrašas)":"22-laser.jpg"};
+function slot(brief, cls){
+  var f=IMGMAP[brief];
+  if(f) return "<img class='gimg "+(cls||"")+"' src='assets/img/"+f+"' alt='' loading='lazy'>";
+  return "<div class='gifslot "+(cls||"")+"' data-brief=\""+brief+"\">GIF · "+brief+"</div>";
+}
 
 var SL = [
 
@@ -369,13 +404,20 @@ function toggleNotes(){var n=document.getElementById("notes");
   n.style.display=(n.style.display==="block")?"none":"block";renderNotes()}
 function renderNotes(){var n=document.getElementById("notes");var s=SL[cur];
   n.innerHTML="<b>KĄ SAKYTI</b><br>"+s.notes.say+"<br><b>KĄ DARYTI</b><br>"+s.notes.do+"<br><b>TILTAS</b><br>"+s.notes.br}
+var VOA=new Audio();
 function speakCur(){
+  VOA.pause();
+  if("speechSynthesis" in window) window.speechSynthesis.cancel();
+  var n=cur+1, f="assets/vo/"+(n<10?"0":"")+n+".mp3";
+  VOA.src=f;
+  VOA.onended=function(){ if(MODE==="auto"&&cur<SL.length-1) setTimeout(next,1300); };
+  VOA.onerror=function(){ speakTTS(); };
+  VOA.play().catch(function(){ speakTTS(); });
+}
+function speakTTS(){
   if(!("speechSynthesis" in window))return;
-  window.speechSynthesis.cancel();
   var u=new SpeechSynthesisUtterance(SL[cur].voice);
   u.lang="lt-LT";u.rate=0.93;
-  var v=window.speechSynthesis.getVoices().filter(function(x){return x.lang&&x.lang.indexOf("lt")===0});
-  if(v.length)u.voice=v[0];
   u.onend=function(){ if(MODE==="auto"&&cur<SL.length-1) setTimeout(next,1300); };
   window.speechSynthesis.speak(u);
 }
