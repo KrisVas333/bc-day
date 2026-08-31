@@ -622,7 +622,7 @@ SL = SL.concat([
 
 /* 18 FINALAS */
 {ey:"KVIETIMAS", cls:"center",
- html:"<img src='assets/img/space-dino.gif' alt='Dino astronautas' style='width:min(560px,90vw);border-radius:var(--r);display:block;margin:4px auto' onerror="this.outerHTML=&quot;<div class='spacescene' id='spacescene'><span class='sdino'>🦖</span></div>&quot;">"+
+ html:"<img src='assets/img/space-dino.gif' alt='Dino astronautas' style='width:min(560px,90vw);border-radius:var(--r);display:block;margin:4px auto' onerror=\"spaceFallback(this)\">"+
  "<h1>Nebūk <span class='rword'>dinozauras</span>. Evoliucionuok.</h1>"+
  "<div class='picto'>"+
  "<div><span>📚</span><p>Mokykis mokytis</p></div>"+
@@ -788,6 +788,7 @@ function auraMode(){
     w.onclick=function(){camStop();w.onclick=null};
   });
 }
+function spaceFallback(el){el.outerHTML="<div class='spacescene' id='spacescene'><span class='sdino'>🦖</span></div>";}
 /* Kas yra computer vision? — vaikams suprantamas paaiškinimas (pranešėjo mygtukas) */
 function cvExplain(on){
   var b=document.getElementById("cvBox");
