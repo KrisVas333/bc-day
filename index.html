@@ -154,7 +154,106 @@ padding:26px 20px;text-align:center;user-select:none;touch-action:none;cursor:gr
 #poseCanvas{position:absolute;inset:0;pointer-events:none;transform:scaleX(-1)}
 #camLabel{position:absolute;left:6px;top:6px;background:rgba(217,4,41,.9);color:#fff;font-family:var(--mono);font-size:11px;padding:3px 7px;border-radius:3px;z-index:2}
 #auraScore{position:absolute;right:8px;top:6px;color:#fff;font-family:var(--mono);font-weight:800;font-size:20px;z-index:2;text-shadow:0 0 8px #D90429}
-@media print{.hud,#bar,#notes,#net,#camWrap{display:none!important}.slide{display:none!important}
+/* ===== V5: GIF slotai ===== */
+.gifslot.mini{min-height:78px;font-size:10px}
+.card .gimg.mini{max-height:96px;min-height:78px}
+/* ===== V5: computer vision paaiškinimas ===== */
+#cvBox{position:fixed;inset:0;z-index:22;display:none;background:rgba(255,255,255,.97);
+padding:4vh 5vw;overflow:auto;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+#cvBox.on{display:flex}
+#cvBox h2{font-family:var(--mono);text-transform:uppercase;font-size:clamp(20px,4vw,40px);margin:.2em 0;color:var(--accent)}
+#cvBox ol{list-style:none;padding:0;margin:10px 0;max-width:780px}
+#cvBox li{font-size:clamp(18px,3.1vw,30px);font-weight:600;line-height:1.35;margin:10px 0}
+#cvBox li b{font-family:var(--mono);color:var(--accent);margin-right:.35em}
+#cvSvg{width:min(880px,96vw);height:auto;margin:6px 0}
+#cvSvg .cvlbl{font-family:var(--mono);font-size:11px;fill:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+#cvSvg .cvflow{stroke:var(--accent);stroke-width:3;fill:none;stroke-dasharray:7 7;animation:cvdash 1.1s linear infinite}
+@keyframes cvdash{to{stroke-dashoffset:-28}}
+#cvSvg .cvdot{fill:var(--accent);animation:cvblink 1.6s ease-in-out infinite}
+#cvSvg .cvdot:nth-of-type(2n){animation-delay:.25s}
+#cvSvg .cvdot:nth-of-type(3n){animation-delay:.5s}
+@keyframes cvblink{0%,100%{opacity:.35}50%{opacity:1}}
+/* ===== V5: SLOT MAŠINA ===== */
+#slotWrap{display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;margin:14px 0}
+#slotBox{display:flex;gap:8px;background:var(--ink);padding:14px;border-radius:8px;border:3px solid var(--accent);
+box-shadow:0 10px 40px rgba(0,0,0,.22)}
+.reel{width:clamp(76px,13vw,116px);height:clamp(96px,16vw,140px);background:#fff;border-radius:var(--r);
+overflow:hidden;position:relative}
+.reel .strip{position:absolute;left:0;top:0;width:100%}
+.reel .sym{height:clamp(96px,16vw,140px);display:grid;place-items:center;font-size:clamp(38px,7vw,62px);line-height:1}
+.reel::after{content:"";position:absolute;inset:0;pointer-events:none;
+background:linear-gradient(rgba(0,0,0,.16),transparent 26%,transparent 74%,rgba(0,0,0,.16))}
+.reel.win{box-shadow:0 0 0 4px var(--red) inset;animation:reelwin .35s steps(1) 6}
+@keyframes reelwin{0%{background:#fff}50%{background:#FFE3E7}}
+#lever{width:34px;height:150px;position:relative;cursor:grab;touch-action:none;user-select:none}
+#lever .rod{position:absolute;left:13px;top:20px;width:8px;height:110px;background:var(--ink);border-radius:4px;transform-origin:50% 100%}
+#lever .knob{position:absolute;left:0;top:0;width:34px;height:34px;border-radius:50%;background:var(--accent);
+box-shadow:0 3px 0 #8f0219;transition:top .18s}
+#lever.pulled .knob{top:74px}
+#lever.pulled .rod{height:36px}
+#slotLbl{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:center;margin-top:6px}
+#slotMsg{font-family:var(--mono);font-weight:800;font-size:clamp(16px,2.8vw,26px);min-height:1.4em;letter-spacing:.06em}
+#slotMsg.win{color:var(--accent)}
+.slotgoal{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+.slotgoal span{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:var(--r);padding:6px 10px;background:var(--surface)}
+.slotgoal span.hit{border-color:var(--accent);color:var(--accent);font-weight:800}
+/* ===== V5: EVOLIUCIJOS PIKTOGRAMOS (animuoti žmogeliukai) ===== */
+.evorow{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:flex-end;margin:12px 0;width:100%;max-width:1000px}
+.evocell{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 8px 8px;width:clamp(112px,17vw,164px)}
+.evocell.max{border-color:var(--accent);background:#fff}
+.evocell svg{width:100%;height:clamp(92px,13vw,124px);display:block}
+.evocell p{margin:6px 0 0;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:center}
+.evocell.max p{color:var(--accent);font-weight:800}
+.fig{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.fig .hd{fill:var(--ink);stroke:none}
+.evocell.max .fig{stroke:var(--accent)}
+.evocell.max .fig .hd{fill:var(--accent)}
+.evocell svg *{transform-box:fill-box}
+/* 1 skrolintojas — kūprinasi, nykštys braukia */
+.e1 .body{animation:slump 3s ease-in-out infinite;transform-origin:50% 100%}
+.e1 .thumb{animation:swipey 1.1s ease-in-out infinite;transform-origin:0% 100%}
+@keyframes slump{0%,100%{transform:rotate(0deg)}50%{transform:rotate(4deg) translateY(2px)}}
+@keyframes swipey{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+/* 2 atsistojo / eina */
+.e2 .lgA{animation:stepA 1.6s ease-in-out infinite;transform-origin:50% 0%}
+.e2 .lgB{animation:stepB 1.6s ease-in-out infinite;transform-origin:50% 0%}
+.e2 .arA{animation:stepB 1.6s ease-in-out infinite;transform-origin:50% 0%}
+.e2 .arB{animation:stepA 1.6s ease-in-out infinite;transform-origin:50% 0%}
+@keyframes stepA{0%,100%{transform:rotate(16deg)}50%{transform:rotate(-16deg)}}
+@keyframes stepB{0%,100%{transform:rotate(-16deg)}50%{transform:rotate(16deg)}}
+/* 3 bėga */
+.e3 .lgA{animation:runA .5s ease-in-out infinite;transform-origin:50% 0%}
+.e3 .lgB{animation:runB .5s ease-in-out infinite;transform-origin:50% 0%}
+.e3 .arA{animation:runB .5s ease-in-out infinite;transform-origin:50% 0%}
+.e3 .arB{animation:runA .5s ease-in-out infinite;transform-origin:50% 0%}
+.e3 .whole{animation:hop .5s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes runA{0%,100%{transform:rotate(34deg)}50%{transform:rotate(-30deg)}}
+@keyframes runB{0%,100%{transform:rotate(-30deg)}50%{transform:rotate(34deg)}}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+/* 4 kuria / rašo su įrankiais */
+.e4 .arA{animation:typeA .34s ease-in-out infinite;transform-origin:50% 0%}
+.e4 .arB{animation:typeA .34s ease-in-out infinite .17s;transform-origin:50% 0%}
+.e4 .spark{animation:sparky 1.5s ease-in-out infinite}
+@keyframes typeA{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-9deg)}}
+@keyframes sparky{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-4px)}}
+/* 5 BRAIN MAX — švyti, rankos aukštyn */
+.e5 .whole{animation:levit 2.6s ease-in-out infinite;transform-origin:50% 100%}
+.e5 .halo{animation:halo 2.6s ease-in-out infinite;transform-origin:50% 50%}
+.e5 .ray{animation:rayp 2.2s ease-in-out infinite}
+@keyframes levit{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes halo{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+@keyframes rayp{0%,100%{opacity:.2}50%{opacity:.9}}
+@media (prefers-reduced-motion: reduce){.evocell *,#cvSvg *,.reel.win{animation:none!important}}
+/* ===== V5: EKRANO SKILIMAS ===== */
+#fxCanvas{position:fixed;inset:0;z-index:21;display:none;pointer-events:none}
+#fxCanvas.on{display:block}
+#maxfx .cssShard{position:absolute;left:50%;top:50%;width:14vmin;height:14vmin;
+background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(240,238,235,.9));
+border:1px solid rgba(217,4,41,.55);clip-path:polygon(50% 0,100% 62%,62% 100%,0 74%);
+animation:shfly .9s cubic-bezier(.2,.7,.4,1) forwards}
+@keyframes shfly{0%{transform:translate(-50%,-50%) scale(.2) rotate(0);opacity:1}
+100%{transform:translate(var(--tx),var(--ty)) scale(1.25) rotate(var(--rot));opacity:0}}
+@media print{.hud,#bar,#notes,#net,#camWrap,#cvBox,#fxCanvas{display:none!important}.slide{display:none!important}
 #certCard{display:block!important;border-width:4px}body{background:#fff}}
 </style>
 </head>
@@ -162,6 +261,52 @@ padding:26px 20px;text-align:center;user-select:none;touch-action:none;cursor:gr
 <canvas id="net"></canvas>
 <div id="bar"></div>
 <div id="maxfx" onclick="this.classList.remove('on')"><h2 id="maxTxt">BRAIN&nbsp;MAX</h2></div>
+<canvas id="fxCanvas"></canvas>
+
+<div id="cvBox" onclick="cvExplain(0)">
+  <p class="eyebrow">KAIP AI TAVE MATO</p>
+  <h2>Computer vision</h2>
+  <svg id="cvSvg" viewBox="0 0 880 190" aria-hidden="true">
+    <!-- 1 kamera -->
+    <rect x="18" y="58" width="118" height="80" rx="6" fill="none" stroke="#0A0A0A" stroke-width="4"/>
+    <circle cx="77" cy="98" r="22" fill="none" stroke="#0A0A0A" stroke-width="4"/>
+    <circle cx="77" cy="98" r="8" fill="#D90429"/>
+    <text class="cvlbl" x="34" y="162">1 · kamera</text>
+    <path class="cvflow" d="M144 98 H206"/>
+    <!-- 2 taškai ant kūno -->
+    <g stroke="#0A0A0A" stroke-width="3">
+      <line x1="272" y1="58" x2="272" y2="104"/><line x1="272" y1="72" x2="246" y2="92"/>
+      <line x1="272" y1="72" x2="298" y2="92"/><line x1="272" y1="104" x2="252" y2="140"/>
+      <line x1="272" y1="104" x2="292" y2="140"/>
+    </g>
+    <circle class="cvdot" cx="272" cy="46" r="8"/><circle class="cvdot" cx="272" cy="72" r="6"/>
+    <circle class="cvdot" cx="246" cy="92" r="6"/><circle class="cvdot" cx="298" cy="92" r="6"/>
+    <circle class="cvdot" cx="272" cy="104" r="6"/><circle class="cvdot" cx="252" cy="140" r="6"/>
+    <circle class="cvdot" cx="292" cy="140" r="6"/>
+    <text class="cvlbl" x="218" y="172">2 · taškai ant kūno</text>
+    <path class="cvflow" d="M330 98 H392"/>
+    <!-- 3 skaičiai -->
+    <rect x="400" y="52" width="146" height="92" rx="6" fill="#F7F7F5" stroke="#E5E2DE" stroke-width="2"/>
+    <text x="414" y="78" font-family="JetBrains Mono,monospace" font-size="15" fill="#0A0A0A">0.42 · 0.18</text>
+    <text x="414" y="102" font-family="JetBrains Mono,monospace" font-size="15" fill="#D90429">0.51 · 0.37</text>
+    <text x="414" y="126" font-family="JetBrains Mono,monospace" font-size="15" fill="#0A0A0A">0.63 · 0.55</text>
+    <text class="cvlbl" x="404" y="172">3 · taškai = skaičiai</text>
+    <path class="cvflow" d="M556 98 H618"/>
+    <!-- 4 smegenys lygina -->
+    <path d="M660 62 q-30 6 -28 34 q-14 14 4 30 q6 20 30 16 q10 12 26 0 q26 6 30 -18 q16 -14 0 -30 q4 -28 -26 -32 q-18 -14 -36 0 Z"
+          fill="none" stroke="#D90429" stroke-width="4"/>
+    <path d="M694 66 V148" stroke="#D90429" stroke-width="3" opacity=".5"/>
+    <text class="cvlbl" x="622" y="176">4 · AI lygina su pavyzdžiais</text>
+    <text x="800" y="106" font-size="34">🕺</text>
+  </svg>
+  <ol>
+    <li><b>1.</b> Kamera nufilmuoja tave</li>
+    <li><b>2.</b> AI uždeda <span style="color:#D90429;font-weight:800">taškus</span> ant kūno ir pirštų</li>
+    <li><b>3.</b> Kiekvienas taškas — tik du <b>skaičiai</b>: kur jis yra</li>
+    <li><b>4.</b> AI lygina tuos skaičius su milijonais matytų pavyzdžių — ir atpažįsta judesį</li>
+  </ol>
+  <p class="small">Jokios magijos. Taškai, skaičiai ir daug pavyzdžių. · Paspausk arba ESC — uždaryti</p>
+</div>
 
 <div id="start">
   <p class="eyebrow">BRAIN CLUB DIENA · 3–6 KLASĖ</p>
@@ -196,10 +341,25 @@ padding:26px 20px;text-align:center;user-select:none;touch-action:none;cursor:gr
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 var QR_URL = "https://krisvas.lt/go/bc-diena"; /* SET-ME */
+/* GIF drop-in: įrašyk failą į assets/img/ ir pridėk vieną eilutę čia — statinis jpg pats pasikeis į GIF.
+   Pvz.: "g2":"g2.gif"   ·   "priesas-scroll":"priesas-scroll.gif"                      */
+var GIFMAP={};
+/* Prieš renginį, jei GIF'ai dar nepadaryti — nustatyk false ir tuščios brūkšninės vietos tiesiog dings. */
+var SHOW_EMPTY_SLOTS=true;
 function slot(brief, cls){
-  var f=IMGMAP[brief];
-  if(f) return "<img class='gimg "+(cls||"")+"' src='assets/img/"+f+"' alt=''>";
+  var g=GIFMAP[brief], f=g||IMGMAP[brief];
+  if(f) return "<img class='gimg "+(cls||"")+"' src='assets/img/"+f+"' alt='' "+
+    "data-brief=\""+brief+"\" data-gif=\""+(g?"1":"0")+"\">";
+  if(!SHOW_EMPTY_SLOTS) return "";
   return "<div class='gifslot "+(cls||"")+"' data-brief=\""+brief+"\">GIF · "+brief+"</div>";
+}
+/* Konsolėje: listGifSlots() — parodo visus laukiančius GIF'us */
+function listGifSlots(){
+  var out=[];
+  document.querySelectorAll("[data-brief]").forEach(function(el){
+    out.push((el.dataset.gif==="1"?"✅ GIF  ":(el.tagName==="IMG"?"🖼 jpg  ":"⬜ tuščias "))+el.dataset.brief);
+  });
+  console.log(out.join("\n")); return out.length+" slotai";
 }
 var IMGMAP={
 "lifecycle":"01-lifecycle.jpg","ugnis":"02-ugnis.jpg","ratas":"03-ratas.jpg","rastas":"04-rastas.jpg",
@@ -260,7 +420,10 @@ var SL=[
  "<div class='cards'>"+
  "<div class='card'>"+slot("g2")+"<h3 style='margin-top:8px'>🕶️ Išmanieji akiniai</h3><p>užrašai, vertimas — tiesiai akyse</p></div>"+
  "<div class='card'>"+slot("quest")+"<h3 style='margin-top:8px'>🥽 Mixed reality</h3><p>pasauliai statosi TAVO kambaryje — kaip Ready Player One</p></div>"+
- "<div class='card'><svg viewBox='0 0 200 110' style='width:100%;height:130px'><polyline points='10,95 60,80 110,55 160,25 190,12' fill='none' stroke='#D90429' stroke-width='4'/><circle cx='190' cy='12' r='6' fill='#D90429'/><text x='12' y='105' font-size='11' font-family='monospace'>2020</text><text x='158' y='105' font-size='11' font-family='monospace'>2030</text></svg><h3>📈 AI + erdvinis kompiuteris</h3><p>augimas, kokio dar nebuvo</p></div></div>"+
+ "<div class='card'><svg viewBox='0 0 200 110' style='width:100%;height:130px'>"+
+ "<polyline id='growLine' points='10,95 60,80 110,55 160,25 190,12' fill='none' stroke='#D90429' stroke-width='4' stroke-linecap='round' pathLength='100' stroke-dasharray='100' stroke-dashoffset='100'><animate attributeName='stroke-dashoffset' from='100' to='0' dur='2.2s' begin='0s;growLine.click' fill='freeze'/></polyline>"+
+ "<circle cx='190' cy='12' r='6' fill='#D90429' opacity='0'><animate attributeName='opacity' from='0' to='1' dur='.3s' begin='2s' fill='freeze'/><animate attributeName='r' values='6;9;6' dur='1.4s' begin='2.3s' repeatCount='indefinite'/></circle>"+
+ "<text x='12' y='105' font-size='11' font-family='monospace'>2020</text><text x='158' y='105' font-size='11' font-family='monospace'>2030</text></svg><h3>📈 AI + erdvinis kompiuteris</h3><p>augimas, kokio dar nebuvo</p></div></div>"+
  "<div class='qbox' onclick='this.classList.add(\"open\")'><p>Telefonas pavirs… kuo? 👇</p><p class='ans'>ERDVINIU KOMPIUTERIU — ir šiandien tu jį išbandysi. Kas nori? RANKAS AUKŠTYN! ✋</p></div>",
  voice:"Prognozė numeris vienas. Ekranas persikels į akis. Išmanieji akiniai rodys užrašus tiesiai tavo akyse, o mixed reality pasauliai statysis tavo kambaryje — beveik kaip Ready Player One. Telefonas pavirs erdviniu kompiuteriu. Ir šiandien tu jį išbandysi. Kas nori? Rankas aukštyn!",
  notes:{say:"„Šitie akiniai — jau salėje.“ G2 ant savęs, jei turi.",do:"RANKŲ MOMENTAS — suskaičiuok garsiai: „o, kokia eilė bus!“",br:"„Antra prognozė — tavo komandoje atsiras skaitmeninių draugų…“"}},
@@ -304,11 +467,11 @@ var SL=[
 {ey:"PAVOJUS", cls:"center",
  html:"<h1>5 smegenų <span class='rword'>priešai</span></h1><p class='small'>Spausk kortelę — pamatyk skaičių</p>"+
  "<div class='cards'>"+
- "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>😴</div><h3>Miego trūkumas</h3><p class='fix'>Tavo amžiui reikia <b>9–11 val.</b> kasnakt. Smegenys auga MIEGANT.</p></div>"+
- "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>🛋️</div><h3>Judėjimo trūkumas</h3><p class='fix'>„Sofos bulvė“ režimas. Reikia <b>60 min</b> judėjimo kasdien (PSO).</p></div>"+
- "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>🍟</div><h3>Prastas kuras</h3><p class='fix'>Augančiam kūnui — apie <b>1 g baltymų</b> kilogramui svorio + vanduo, ne tik traškučiai.</p></div>"+
- "<div class='card' onclick='this.classList.toggle(\"open\")'><div class='emo'>👥</div><h3>Draugų trūkumas</h3><p class='fix'>GYVAS laikas su draugais kasdien — ekranas jo nepakeičia.</p></div>"+
- "<div class='card boss' onclick='this.classList.toggle(\"open\")'><div class='emo'>🧟</div><h3>BRAIN ROT (bosas)</h3><p class='fix'>TikTok · Shorts · Reels · begaliniai Roblox režimai. Atskira skaidrė.</p></div></div>"+
+ "<div class='card' onclick='this.classList.toggle(\"open\")'>"+slot("priesas-miegas","mini")+"<div class='emo'>😴</div><h3>Miego trūkumas</h3><p class='fix'>Tavo amžiui reikia <b>9–11 val.</b> kasnakt. Smegenys auga MIEGANT.</p></div>"+
+ "<div class='card' onclick='this.classList.toggle(\"open\")'>"+slot("priesas-sofa","mini")+"<div class='emo'>🛋️</div><h3>Judėjimo trūkumas</h3><p class='fix'>„Sofos bulvė“ režimas. Reikia <b>60 min</b> judėjimo kasdien (PSO).</p></div>"+
+ "<div class='card' onclick='this.classList.toggle(\"open\")'>"+slot("priesas-kuras","mini")+"<div class='emo'>🍟</div><h3>Prastas kuras</h3><p class='fix'>Augančiam kūnui — apie <b>1 g baltymų</b> kilogramui svorio + vanduo, ne tik traškučiai.</p></div>"+
+ "<div class='card' onclick='this.classList.toggle(\"open\")'>"+slot("priesas-draugai","mini")+"<div class='emo'>👥</div><h3>Draugų trūkumas</h3><p class='fix'>GYVAS laikas su draugais kasdien — ekranas jo nepakeičia.</p></div>"+
+ "<div class='card boss' onclick='this.classList.toggle(\"open\")'>"+slot("priesas-scroll","mini")+"<div class='emo'>🧟</div><h3>BRAIN ROT (bosas)</h3><p class='fix'>TikTok · Shorts · Reels · begaliniai Roblox režimai. Atskira skaidrė.</p></div></div>"+
  "<div class='qbox'><p>✋ Parodyk pirštais, su KELIAIS priešais kovoji (0–5) — <button class='btn btn-ghost' style='padding:8px 12px' onclick='camHall()'>📷 įjungti kamerą ir pamatyti salę</button></p></div>",
  voice:"Smegenys turi penkis priešus. Miego trūkumas — tau reikia devynių–vienuolikos valandų. Judėjimo trūkumas — bent šešiasdešimt minučių kasdien. Prastas kuras. Draugų trūkumas. Ir bosas — brain rot. Dabar sąžiningai: parodyk pirštais, su keliais priešais kovoja tavo smegenys.",
  notes:{say:"Skaičiai tvirtai, be pamokslo. Pats parodyk pirmas (pvz., 2 pirštus).",do:"📷 mygtukas įjungia salės vaizdą ekrane — vaikai matys save su pirštais! Uždaryti — paspausti ant vaizdo.",br:"„O dabar — žaidimas. Telefonas rankoje kasdien — patikrinkim instinktus.“"}},
@@ -341,11 +504,12 @@ SL = SL.concat([
  "<div class='cards'>"+
  "<div class='card'>"+slot("rayyan")+"<h3 style='margin-top:8px'>🚣 Prasidėjo nuo 11-mečio</h3><p>Rayyan šoko valties priekyje — NFL žvaigždės kartojo</p></div>"+
  "<div class='card'>"+slot("aura")+"<h3 style='margin-top:8px'>⚔️ Aura battles</h3><p>gatvių varžybos judesiais — publika skiria „+1000 auros“</p></div>"+
- "<div class='card boss'><div class='emo'>📷🕺</div><h3>MŪSŲ VERSIJA — DABAR</h3><p>AI kamera seka TAVO kūną kaip stickman'ą. Judesys = smegenų treniruotė.</p></div></div>"+
+ "<div class='card boss'><div class='emo'>📷🕺</div><h3>MŪSŲ VERSIJA — DABAR</h3><p>AI kamera seka TAVO kūną (skeletas) IR pirštus (taškai). Judesys = smegenų treniruotė.</p></div></div>"+
  "<p><button class='btn btn-red' onclick='auraMode()'>🕺 ĮJUNGTI AURA REŽIMĄ</button> "+
- "<button class='btn btn-ghost' onclick='auraPoint(1000)'>+1000 AURA</button> <button class='btn btn-ghost' onclick='auraPoint(-500)'>-500</button></p>",
- voice:"Girdėjot apie aura farming? Prasidėjo nuo vienuolikmečio iš Indonezijos, kuris šoko valties priekyje — ir užkariavo internetą. Dabar vaikai varžosi judesiais gatvėse visame pasaulyje. Mūsų versija: dirbtinio intelekto kamera seka visą tavo kūną. Judėk, būk kūrybingas, reaguok greitai. Judesys — smegenų treniruotė. Du drąsuoliai — į priekį!",
- notes:{say:"JŲ teritorija — leisk papasakoti, kas žino aura farming. Tada AURA REŽIMAS: 2 vaikai priekyje, muzika, kamera juos seka.",do:"AI piešia stickman'ą ant kūnų! +1000/-500 mygtukais vertink judesius. 60–90 sek šou.",br:"„Judesys keičia smegenis. Įrodyta — taksistų smegenimis…“"}},
+ "<button class='btn btn-ghost' onclick='auraPoint(1000)'>+1000 AURA</button> <button class='btn btn-ghost' onclick='auraPoint(-500)'>-500</button></p>"+
+ "<p><button class='btn btn-ghost' onclick='cvExplain()'>🧠 Kas yra computer vision?</button></p>",
+ voice:"Girdėjot apie aura farming? Prasidėjo nuo vienuolikmečio iš Indonezijos, kuris šoko valties priekyje — ir užkariavo internetą. Dabar vaikai varžosi judesiais gatvėse visame pasaulyje. Mūsų versija: dirbtinio intelekto kamera seka visą tavo kūną ir kiekvieną pirštą. Judėk, būk kūrybingas, reaguok greitai. Judesys — smegenų treniruotė. Du drąsuoliai — į priekį!",
+ notes:{say:"JŲ teritorija — leisk papasakoti, kas žino aura farming. Tada AURA REŽIMAS: 2 vaikai priekyje, muzika, kamera juos seka.",do:"AI piešia SKELETĄ ant kūno + TAŠKUS ant pirštų. +1000/-500 mygtukais vertink judesius. 60–90 sek šou. Jei klausia „kaip jis mane mato?“ — spausk 🧠 KAS YRA COMPUTER VISION (4 žingsniai, 30 sek, uždaryti = ESC arba paspaudus).",br:"„Judesys keičia smegenis. Įrodyta — taksistų smegenimis…“"}},
 
 /* 12 SMEGENYS vs LLM */
 {ey:"ĮRODYMAS", cls:"center",
@@ -360,7 +524,16 @@ SL = SL.concat([
 /* 13 BRAIN MAX */
 {ey:"FORMULĖ", cls:"center",
  html:"<h1>Iš brain rot į <span class='rword'>BRAIN MAX</span></h1>"+
- "<button class='btn btn-red' style='font-size:18px;padding:16px 30px' onclick='brainMax()'>💥 AKTYVUOTI BRAIN MAX</button>"+
+ "<p class='small'>Patrauk svirtį 👉 sustabdyk 3 dalykus, be kurių smegenys neauga</p>"+
+ "<div id='slotWrap'>"+
+ "<div><div id='slotBox'><div class='reel' id='r0'><div class='strip'></div></div>"+
+ "<div class='reel' id='r1'><div class='strip'></div></div>"+
+ "<div class='reel' id='r2'><div class='strip'></div></div></div>"+
+ "<p id='slotLbl'>😴 + 💪 + 📚 = BRAIN MAX</p></div>"+
+ "<div id='lever' title='Patrauk žemyn'><div class='rod'></div><div class='knob'></div></div></div>"+
+ "<p id='slotMsg'></p>"+
+ "<div class='slotgoal'><span id='g0'>😴 MIEGAS</span><span id='g1'>💪 JUDESYS</span><span id='g2'>📚 MOKYMASIS</span></div>"+
+ "<p style='margin-top:12px'><button class='btn btn-red' style='font-size:18px;padding:16px 30px' onclick='brainMax()'>💥 AKTYVUOTI BRAIN MAX</button></p>"+
  "<div class='cards' id='maxlist' style='display:none'>"+
  "<div class='card'><div class='emo'>😴</div><h3>Miegok giliai</h3></div>"+
  "<div class='card'><div class='emo'>📚</div><h3>Mokykis nuolat</h3></div>"+
@@ -372,12 +545,39 @@ SL = SL.concat([
  "<div class='card'><div class='emo'>🎓</div><h3>Mokyk kitus</h3></div>"+
  "<div class='card'><div class='emo'>🏗️</div><h3>Statyk naujus pasaulius</h3></div></div>",
  voice:"Brain max. Miegok giliai. Mokykis nuolat. Adaptuokis prie naujų technologijų. Statyk draugystes. Kurk kietus daiktus. Eik į nuotykius. Prižiūrėk savo kūną. Mokyk kitus. Ir statyk naujus pasaulius. Tai — brain max formulė.",
- notes:{say:"Mygtuką spaudžia VAIKAS — ekranas SKYLA + bosas per kolonėles.",do:"9 punktus skaityk ritmu kaip repą — salė kartoja.",br:"„Patikrinkim TAVO evoliucijos lygį. Testas!“"}},
+ notes:{say:"SVIRTĮ traukia VAIKAS. 1-as traukimas — beveik pataiko (2 iš 3, salė aikteli). 2-as — MIEGAS·JUDESYS·MOKYMASIS → ekranas SKYLA. Taip suplanuota, nebijok.",do:"Po laimėjimo 9 punktus skaityk ritmu kaip repą — salė kartoja. 💥 mygtukas = atsarginis variantas, jei svirtis neveiktų.",br:"„Patikrinkim TAVO evoliucijos lygį. Testas!“"}},
 
 /* 14 TESTAS */
 {ey:"PATIKRINIMAS", cls:"center",
  html:"<h1 style='font-size:clamp(20px,4vw,42px)'>Koks tavo <span class='rword'>evoliucijos lygis</span>?</h1>"+
- "<p style='font-size:clamp(22px,4vw,34px);letter-spacing:.12em'>🦠→🐟→🦖→🐒→🧍→🧠→🚀</p>"+
+ "<div class='evorow'>"+
+ "<div class='evocell'><svg viewBox='0 0 100 120' class='fig e1' aria-hidden='true'><g class='body'>"+
+   "<circle class='hd' cx='42' cy='24' r='9'/><path d='M44 33 L50 62'/>"+
+   "<path d='M50 62 L44 96'/><path d='M50 62 L60 96'/><path d='M46 43 L60 55'/>"+
+   "<rect x='58' y='45' width='13' height='19' rx='2' fill='#fff'/>"+
+   "<path class='thumb' d='M64 61 L68 53'/></g></svg><p>1 · Skrolintojas</p></div>"+
+ "<div class='evocell'><svg viewBox='0 0 100 120' class='fig e2' aria-hidden='true'>"+
+   "<circle class='hd' cx='50' cy='22' r='9'/><path d='M50 31 L50 62'/>"+
+   "<path class='arA' d='M50 40 L40 58'/><path class='arB' d='M50 40 L60 58'/>"+
+   "<path class='lgA' d='M50 62 L42 96'/><path class='lgB' d='M50 62 L58 96'/></svg><p>2 · Atsistojo</p></div>"+
+ "<div class='evocell'><svg viewBox='0 0 100 120' class='fig e3' aria-hidden='true'><g class='whole'>"+
+   "<circle class='hd' cx='52' cy='20' r='9'/><path d='M52 29 L48 60'/>"+
+   "<path class='arA' d='M51 38 L38 30'/><path class='arB' d='M51 38 L64 48'/>"+
+   "<path class='lgA' d='M48 60 L36 88'/><path class='lgB' d='M48 60 L62 84'/></g></svg><p>3 · Įsibėgėjo</p></div>"+
+ "<div class='evocell'><svg viewBox='0 0 100 120' class='fig e4' aria-hidden='true'><g class='whole'>"+
+   "<circle class='hd' cx='50' cy='20' r='8.5'/><path d='M50 29 L50 56'/>"+
+   "<path class='arA' d='M50 37 L38 52'/><path class='arB' d='M50 37 L62 52'/>"+
+   "<path d='M50 56 L43 92'/><path d='M50 56 L57 92'/>"+
+   "<path d='M32 56 L68 56'/><path d='M37 56 L44 40 L58 40'/>"+
+   "<circle class='spark hd' cx='73' cy='30' r='3'/><circle class='spark hd' cx='80' cy='22' r='2.2'/>"+
+   "<circle class='spark hd' cx='24' cy='28' r='2.6'/></g></svg><p>4 · Kūrėjas</p></div>"+
+ "<div class='evocell max'><svg viewBox='0 0 100 120' class='fig e5' aria-hidden='true'><g class='whole'>"+
+   "<circle class='halo' cx='50' cy='20' r='16' opacity='.4'/>"+
+   "<circle class='hd' cx='50' cy='20' r='9'/><path d='M50 29 L50 60'/>"+
+   "<path d='M50 38 L34 24'/><path d='M50 38 L66 24'/>"+
+   "<path d='M50 60 L42 94'/><path d='M50 60 L58 94'/>"+
+   "<path class='ray' d='M50 1 L50 7'/><path class='ray' d='M26 8 L30 13'/><path class='ray' d='M74 8 L70 13'/>"+
+   "</g></svg><p>5 · Brain Max</p></div></div>"+
  "<div id='quizIntro'><p class='sub'>10 klausimų · 12 sek. kiekvienam</p>"+
  "<p><input class='inp' id='nm' placeholder='Vardas' maxlength='20'> <input class='inp' id='ag' placeholder='Amžius' maxlength='2' style='width:90px'></p>"+
  "<button class='btn btn-red' onclick='startQuiz()'>Pradėti testą</button></div>"+
@@ -445,7 +645,7 @@ function build(){
     d.innerHTML="<p class='eyebrow'>"+s.ey+"</p>"+s.html;
     st.appendChild(d);
   });
-  buildWheel(); buildSwipe(); buildStars();
+  buildWheel(); buildSwipe(); buildStars(); buildSlot();
   try{ new QRCode(document.getElementById("qr"),{text:QR_URL,width:140,height:140,correctLevel:QRCode.CorrectLevel.M}); }
   catch(e){ document.getElementById("qr").textContent=QR_URL; }
 }
@@ -472,7 +672,7 @@ function speakCur(){
   VOA.src=f;
   VOA.onended=function(){ if(MODE==="auto"&&cur<SL.length-1) setTimeout(next,1300); };
   VOA.onerror=function(){ speakTTS(); };
-  VOA.play().catch(function(){ speakTTS(); });
+  var pr=VOA.play(); if(pr&&pr.catch) pr.catch(function(){ speakTTS(); });
 }
 function speakTTS(){
   if(!("speechSynthesis" in window))return;
@@ -486,6 +686,7 @@ document.addEventListener("keydown",function(e){
   if(e.key==="ArrowRight")next();
   if(e.key==="ArrowLeft")prev();
   if(e.key==="n"||e.key==="N")toggleNotes();
+  if(e.key==="Escape"){ var b=document.getElementById("cvBox"); if(b)b.classList.remove("on"); }
 });
 
 /* ===== AMŽIŲ JUOSTA (1 skaidrė) ===== */
@@ -562,25 +763,36 @@ function camStart(cb){
   }).catch(function(){ alert("Kamera nepasiekiama — leisk prieigą naršyklėje."); });
 }
 function camStop(){
+  visionOn=false;
   if(camStream){camStream.getTracks().forEach(function(t){t.stop()});camStream=null}
   document.getElementById("camWrap").style.display="none";
   document.getElementById("camWrap").classList.remove("big");
+  var cv=document.getElementById("poseCanvas");
+  try{cv.getContext("2d").clearRect(0,0,cv.width,cv.height)}catch(e){}
+  MP.poseRes=null; MP.handRes=null;
   auraOn=false; gestOn=false; document.getElementById("gestBtn").textContent="📷 Gestai";
 }
 function camHall(){
   camStart(function(){
     var w=document.getElementById("camWrap"); w.classList.add("big");
     document.getElementById("camLabel").textContent="✋ PARODYK PIRŠTAIS 0–5";
+    visionStart();
     w.onclick=function(){camStop();w.onclick=null};
   });
 }
 function auraMode(){
   camStart(function(){
     var w=document.getElementById("camWrap"); w.classList.add("big");
-    document.getElementById("camLabel").textContent="🕺 AURA REŽIMAS — AI SEKA KŪNĄ";
-    auraPts=0; auraOn=true; updAura(); loadPose();
+    document.getElementById("camLabel").textContent="🕺 AURA REŽIMAS — AI SEKA KŪNĄ IR PIRŠTUS";
+    auraPts=0; auraOn=true; updAura(); visionStart();
     w.onclick=function(){camStop();w.onclick=null};
   });
+}
+/* Kas yra computer vision? — vaikams suprantamas paaiškinimas (pranešėjo mygtukas) */
+function cvExplain(on){
+  var b=document.getElementById("cvBox");
+  if(on===0){b.classList.remove("on");return}
+  b.classList.toggle("on");
 }
 function auraPoint(p){auraPts+=p;updAura();
   var fx=document.getElementById("maxfx"),tx=document.getElementById("maxTxt");
@@ -592,69 +804,114 @@ function toggleGestures(){
   camStart(function(){
     gestOn=true; document.getElementById("gestBtn").textContent="📷 Gestai ✅";
     document.getElementById("camLabel").textContent="🖐️ GESTAI: mostas kairėn/dešinėn = skaidrės";
-    loadHands();
+    visionStart();
   });
 }
-/* MediaPipe Pose — stickman */
-var poseLoaded=false;
-function loadPose(){
-  if(poseLoaded){return}
-  var s1=document.createElement("script");
-  s1.src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/pose.js";
-  s1.onload=function(){
-    poseLoaded=true;
-    var pose=new Pose({locateFile:function(f){return "https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/"+f}});
-    pose.setOptions({modelComplexity:0,smoothLandmarks:true,minDetectionConfidence:0.5,minTrackingConfidence:0.5});
-    var cv=document.getElementById("poseCanvas"),cx=cv.getContext("2d"),vid=document.getElementById("cam");
-    var CONN=[[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28],[0,11],[0,12]];
-    pose.onResults(function(res){
-      cv.width=vid.videoWidth;cv.height=vid.videoHeight;
-      cx.clearRect(0,0,cv.width,cv.height);
-      if(!res.poseLandmarks)return;
-      cx.strokeStyle="#FF0000";cx.lineWidth=6;cx.lineCap="round";
-      CONN.forEach(function(c){
-        var a=res.poseLandmarks[c[0]],b=res.poseLandmarks[c[1]];
-        if(a.visibility<0.4||b.visibility<0.4)return;
-        cx.beginPath();cx.moveTo(a.x*cv.width,a.y*cv.height);cx.lineTo(b.x*cv.width,b.y*cv.height);cx.stroke();
-      });
-      var h=res.poseLandmarks[0];
-      if(h.visibility>0.4){cx.beginPath();cx.arc(h.x*cv.width,h.y*cv.height-14,20,0,7);cx.stroke();}
-    });
-    (function loop(){
-      if(!auraOn)return;
-      pose.send({image:vid}).then(function(){requestAnimationFrame(loop)});
-    })();
-  };
-  document.head.appendChild(s1);
-}
-/* MediaPipe Hands — gestų valdymas */
-var handsLoaded=false,lastX=null,lastT=0;
-function loadHands(){
-  if(handsLoaded)return;
-  var s=document.createElement("script");
-  s.src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.js";
-  s.onload=function(){
-    handsLoaded=true;
-    var hands=new Hands({locateFile:function(f){return "https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/"+f}});
-    hands.setOptions({maxNumHands:1,modelComplexity:0,minDetectionConfidence:0.6,minTrackingConfidence:0.5});
-    var vid=document.getElementById("cam");
-    hands.onResults(function(res){
-      if(!res.multiHandLandmarks||!res.multiHandLandmarks.length){lastX=null;return}
-      var x=res.multiHandLandmarks[0][0].x, now=Date.now();
-      if(lastX!==null && now-lastT>900){
-        var dx=x-lastX;
-        if(dx<-0.28){next();lastT=now;lastX=null;return}
-        if(dx>0.28){prev();lastT=now;lastX=null;return}
-      }
-      if(lastX===null)lastX=x;
-    });
-    (function loop(){
-      if(!gestOn)return;
-      hands.send({image:vid}).then(function(){setTimeout(loop,90)});
-    })();
-  };
+/* ===== V5: MediaPipe — KŪNO skeletas + PIRŠTŲ taškai vienu metu =====
+   Du sprendimai (Pose + Hands), pinned CDN, sukasi pakaitomis ant to paties vaizdo.
+   Piešimas — atskiras rAF ciklas, kad skeletas neblyksėtų tarp inferencijų. */
+var MP_POSE="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/";
+var MP_HANDS="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/";
+var MP={pose:null,hands:null,poseRes:null,handRes:null,turn:0,loading:{},drawing:false};
+var visionOn=false,lastX=null,lastT=0;
+var POSE_CONN=[[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28],[0,11],[0,12]];
+var HAND_CONN=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],
+               [9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+
+function mpScript(src,cb){
+  if(MP.loading[src])return; MP.loading[src]=1;
+  var s=document.createElement("script"); s.src=src;
+  s.onload=cb;
+  s.onerror=function(){ console.warn("MediaPipe nepasiekiamas (nėra interneto?):",src); };
   document.head.appendChild(s);
 }
+function visionStart(){
+  if(!MP.pose) mpScript(MP_POSE+"pose.js",function(){
+    try{
+      var p=new Pose({locateFile:function(f){return MP_POSE+f}});
+      p.setOptions({modelComplexity:0,smoothLandmarks:true,minDetectionConfidence:.5,minTrackingConfidence:.5});
+      p.onResults(function(r){ MP.poseRes=(r&&r.poseLandmarks)||null });
+      MP.pose=p;
+    }catch(e){console.warn(e)}
+  });
+  if(!MP.hands) mpScript(MP_HANDS+"hands.js",function(){
+    try{
+      var h=new Hands({locateFile:function(f){return MP_HANDS+f}});
+      h.setOptions({maxNumHands:2,modelComplexity:0,minDetectionConfidence:.6,minTrackingConfidence:.5});
+      h.onResults(onHands);
+      MP.hands=h;
+    }catch(e){console.warn(e)}
+  });
+  if(!visionOn){ visionOn=true; visionLoop(); drawLoop(); }
+}
+function onHands(res){
+  MP.handRes=(res&&res.multiHandLandmarks&&res.multiHandLandmarks.length)?res.multiHandLandmarks:null;
+  if(!gestOn||!MP.handRes){ if(!MP.handRes)lastX=null; return }
+  var x=MP.handRes[0][0].x, now=Date.now();
+  if(lastX!==null && now-lastT>900){
+    var dx=x-lastX;
+    if(dx<-0.28){next();lastT=now;lastX=null;return}
+    if(dx>0.28){prev();lastT=now;lastX=null;return}
+  }
+  if(lastX===null)lastX=x;
+}
+function visionLoop(){
+  if(!visionOn)return;
+  var vid=document.getElementById("cam");
+  var sols=[]; if(MP.pose)sols.push(MP.pose); if(MP.hands)sols.push(MP.hands);
+  if(!sols.length||!vid.videoWidth){ setTimeout(visionLoop,200); return }
+  var s=sols[MP.turn++%sols.length];
+  try{
+    s.send({image:vid}).then(function(){ requestAnimationFrame(visionLoop) })
+                       .catch(function(){ setTimeout(visionLoop,300) });
+  }catch(e){ setTimeout(visionLoop,400) }
+}
+function drawLoop(){
+  if(!visionOn)return;
+  var cv=document.getElementById("poseCanvas"),vid=document.getElementById("cam");
+  if(vid.videoWidth){
+    if(cv.width!==vid.videoWidth){cv.width=vid.videoWidth;cv.height=vid.videoHeight}
+    var cx=cv.getContext("2d");
+    cx.clearRect(0,0,cv.width,cv.height);
+    drawSkeleton(cx,cv);
+    drawFingers(cx,cv);
+  }
+  requestAnimationFrame(drawLoop);
+}
+function drawSkeleton(cx,cv){
+  var L=MP.poseRes; if(!L)return;
+  cx.strokeStyle="#FF0000"; cx.lineWidth=6; cx.lineCap="round";
+  POSE_CONN.forEach(function(c){
+    var a=L[c[0]],b=L[c[1]];
+    if(!a||!b||a.visibility<0.4||b.visibility<0.4)return;
+    cx.beginPath();cx.moveTo(a.x*cv.width,a.y*cv.height);cx.lineTo(b.x*cv.width,b.y*cv.height);cx.stroke();
+  });
+  var h=L[0];
+  if(h&&h.visibility>0.4){cx.beginPath();cx.arc(h.x*cv.width,h.y*cv.height-14,20,0,7);cx.stroke();}
+  /* sąnarių taškai */
+  cx.fillStyle="#fff"; cx.strokeStyle="#FF0000"; cx.lineWidth=3;
+  [11,12,13,14,15,16,23,24,25,26,27,28].forEach(function(i){
+    var p=L[i]; if(!p||p.visibility<0.4)return;
+    cx.beginPath();cx.arc(p.x*cv.width,p.y*cv.height,5,0,7);cx.fill();cx.stroke();
+  });
+}
+function drawFingers(cx,cv){
+  var H=MP.handRes; if(!H)return;
+  H.forEach(function(lm){
+    cx.strokeStyle="rgba(217,4,41,.9)"; cx.lineWidth=3; cx.lineCap="round";
+    HAND_CONN.forEach(function(c){
+      var a=lm[c[0]],b=lm[c[1]]; if(!a||!b)return;
+      cx.beginPath();cx.moveTo(a.x*cv.width,a.y*cv.height);cx.lineTo(b.x*cv.width,b.y*cv.height);cx.stroke();
+    });
+    lm.forEach(function(p,i){
+      var tip=(i===4||i===8||i===12||i===16||i===20);
+      cx.beginPath();cx.arc(p.x*cv.width,p.y*cv.height,tip?7:4.5,0,7);
+      cx.fillStyle=tip?"#D90429":"#fff"; cx.fill();
+      cx.strokeStyle="#D90429"; cx.lineWidth=2; cx.stroke();
+    });
+  });
+}
+function toggleCamBig(){}
 
 /* ===== SWIPE ŽAIDIMAS ===== */
 var SW=[
@@ -697,25 +954,223 @@ function swipe(right){
     setTimeout(function(){swI++;renderSwipe()},280);},900);
 }
 
-/* ===== ANTIDOTAS + BRAIN MAX FX ===== */
-function shatter(txt){
-  var fx=document.getElementById("maxfx"),tx=document.getElementById("maxTxt");
-  tx.textContent=txt;
-  for(var i=0;i<10;i++){var sh=document.createElement("div");sh.className="shard";
-    sh.style.transform="rotate("+(i*36+Math.random()*20)+"deg)";fx.appendChild(sh);
-    (function(el){setTimeout(function(){el.remove()},900)})(sh);}
-  fx.classList.add("on");
+/* ===== V5: EKRANO SKILIMAS — Canvas2D šukės, 0 išorinių bibliotekų ===== */
+var FX={raf:0,shards:[],grid:null,origin:{x:0,y:0},t0:0,ac:null,running:false};
+
+function fxSound(){
   try{
-    var A=new (window.AudioContext||window.webkitAudioContext)();
-    var o=A.createOscillator(),g=A.createGain();
-    o.type="square";o.frequency.value=52;g.gain.value=.4;
-    o.connect(g);g.connect(A.destination);o.start();
-    g.gain.exponentialRampToValueAtTime(.001,A.currentTime+.7);o.stop(A.currentTime+.75);
+    if(!FX.ac) FX.ac=new (window.AudioContext||window.webkitAudioContext)();
+    var A=FX.ac; if(A.state==="suspended")A.resume();
+    var now=A.currentTime;
+    /* 1. stiklo trekštelėjimas — triukšmo pliūpsnis pro bandpass */
+    var len=Math.floor(A.sampleRate*0.45), buf=A.createBuffer(1,len,A.sampleRate), d=buf.getChannelData(0);
+    for(var i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.2);
+    var src=A.createBufferSource(); src.buffer=buf;
+    var bp=A.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=3200; bp.Q.value=.8;
+    var g1=A.createGain(); g1.gain.setValueAtTime(.5,now); g1.gain.exponentialRampToValueAtTime(.001,now+.45);
+    src.connect(bp);bp.connect(g1);g1.connect(A.destination);src.start(now);
+    /* 2. šukių žvangesys */
+    [2600,3300,4100,3000].forEach(function(f,k){
+      var o=A.createOscillator(),g=A.createGain(),t=now+.06+k*.07;
+      o.type="triangle";o.frequency.value=f;
+      g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.15,t+.008);
+      g.gain.exponentialRampToValueAtTime(.0001,t+.22);
+      o.connect(g);g.connect(A.destination);o.start(t);o.stop(t+.25);
+    });
+    /* 3. smūgis */
+    var o2=A.createOscillator(),g2=A.createGain();
+    o2.type="square";o2.frequency.setValueAtTime(70,now);o2.frequency.exponentialRampToValueAtTime(38,now+.5);
+    g2.gain.setValueAtTime(.32,now);g2.gain.exponentialRampToValueAtTime(.001,now+.6);
+    o2.connect(g2);g2.connect(A.destination);o2.start(now);o2.stop(now+.65);
   }catch(e){}
-  setTimeout(function(){fx.classList.remove("on");tx.innerHTML="BRAIN&nbsp;MAX"},1500);
 }
-function antidote(){shatter("KURK, NE VARTOK")}
-function brainMax(){document.getElementById("maxlist").style.display="grid";shatter("BRAIN MAX")}
+function mkShard(pts,ox,oy){
+  var mx=0,my=0;
+  pts.forEach(function(p){mx+=p.x;my+=p.y}); mx/=pts.length; my/=pts.length;
+  var dx=mx-ox,dy=my-oy,dd=Math.max(1,Math.sqrt(dx*dx+dy*dy));
+  var sp=170+Math.random()*300;
+  return {v:pts.map(function(p){return{x:p.x-mx,y:p.y-my}}), x:mx, y:my,
+    vx:dx/dd*sp*(.7+Math.random()*.7), vy:dy/dd*sp*(.7+Math.random()*.7)-90-Math.random()*170,
+    vr:(Math.random()-.5)*5.2, vz:(Math.random()-.35)*1.2, delay:Math.min(.22,dd/2400)};
+}
+function buildShards(W,H,ox,oy){
+  var SPOKES=14, RINGS=[.07,.17,.31,.49,.72,1.05,1.5];
+  var maxR=Math.sqrt(W*W+H*H)*.62, base=Math.random()*Math.PI*2, g=[],i,j;
+  for(i=0;i<SPOKES;i++){
+    var ang=base+i*(Math.PI*2/SPOKES)+(Math.random()-.5)*.22;
+    g[i]=[];
+    for(j=0;j<RINGS.length;j++){
+      var r=maxR*RINGS[j]*(.82+Math.random()*.36);
+      g[i][j]={x:ox+Math.cos(ang)*r, y:oy+Math.sin(ang)*r};
+    }
+  }
+  var sh=[];
+  for(i=0;i<SPOKES;i++){
+    var i2=(i+1)%SPOKES;
+    sh.push(mkShard([{x:ox,y:oy},g[i][0],g[i2][0]],ox,oy));
+    for(j=0;j<RINGS.length-1;j++) sh.push(mkShard([g[i][j],g[i2][j],g[i2][j+1],g[i][j+1]],ox,oy));
+  }
+  FX.grid=g; return sh;
+}
+function drawCracks(ctx,p,W,H){
+  var g=FX.grid,ox=FX.origin.x,oy=FX.origin.y,i,j,k,pass;
+  ctx.save(); ctx.lineCap="round"; ctx.lineJoin="round";
+  for(pass=0;pass<2;pass++){
+    ctx.strokeStyle=pass?"rgba(217,4,41,.85)":"rgba(255,255,255,.95)";
+    ctx.lineWidth=pass?2.2:7;
+    ctx.shadowColor=pass?"transparent":"rgba(0,0,0,.28)"; ctx.shadowBlur=pass?0:8;
+    for(i=0;i<g.length;i++){
+      ctx.beginPath(); ctx.moveTo(ox,oy);
+      for(j=0;j<g[i].length;j++){
+        var q=Math.min(1,p*g[i].length-j); if(q<=0)break;
+        var a=(j===0)?{x:ox,y:oy}:g[i][j-1], b=g[i][j];
+        ctx.lineTo(a.x+(b.x-a.x)*q, a.y+(b.y-a.y)*q);
+      }
+      ctx.stroke();
+    }
+    for(j=0;j<g[0].length;j++){
+      var rp=p*g[0].length-j; if(rp<=0)continue;
+      ctx.globalAlpha=Math.min(1,rp)*(pass?.8:.45);
+      ctx.beginPath();
+      for(k=0;k<=g.length;k++){ var pt=g[k%g.length][j]; k?ctx.lineTo(pt.x,pt.y):ctx.moveTo(pt.x,pt.y); }
+      ctx.stroke(); ctx.globalAlpha=1;
+    }
+  }
+  ctx.shadowBlur=0;
+  var fl=1-p, rg=ctx.createRadialGradient(ox,oy,0,ox,oy,180*(.4+p));
+  rg.addColorStop(0,"rgba(255,255,255,"+(.9*fl)+")"); rg.addColorStop(1,"rgba(255,255,255,0)");
+  ctx.fillStyle=rg; ctx.fillRect(0,0,W,H);
+  ctx.restore();
+}
+function drawShards(ctx,t){
+  var G=1500;
+  ctx.save();
+  FX.shards.forEach(function(s){
+    var tt=t-s.delay; if(tt<0)tt=0;
+    var a=1-Math.min(1,tt/1.3); if(a<=0)return;
+    var x=s.x+s.vx*tt, y=s.y+s.vy*tt+.5*G*tt*tt;
+    var sc=1+s.vz*tt*.9; if(sc<.05)sc=.05;
+    ctx.save();
+    ctx.translate(x,y); ctx.rotate(s.vr*tt); ctx.scale(sc,sc);
+    ctx.beginPath();
+    s.v.forEach(function(p,i){ i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y) });
+    ctx.closePath();
+    ctx.globalAlpha=a*.94;
+    ctx.shadowColor="rgba(0,0,0,.22)"; ctx.shadowBlur=14; ctx.shadowOffsetY=7;
+    ctx.fillStyle="rgba(252,251,250,.95)"; ctx.fill();
+    ctx.shadowBlur=0; ctx.shadowOffsetY=0;
+    ctx.globalAlpha=a;
+    ctx.lineWidth=1.6; ctx.strokeStyle="rgba(217,4,41,.55)"; ctx.stroke();
+    ctx.lineWidth=.8;  ctx.strokeStyle="rgba(255,255,255,.95)"; ctx.stroke();
+    ctx.restore();
+  });
+  ctx.restore();
+}
+function revealMax(fx,tx,delayMs){
+  setTimeout(function(){ fx.classList.add("on") },delayMs);
+  setTimeout(function(){ fx.classList.remove("on"); tx.innerHTML="BRAIN&nbsp;MAX";
+    Array.prototype.slice.call(fx.querySelectorAll(".cssShard,.shard")).forEach(function(e){e.remove()});
+  },delayMs+2000);
+}
+function cssShatter(fx){   /* atsarginis variantas, jei canvas neveiktų */
+  for(var i=0;i<18;i++){
+    var el=document.createElement("div"); el.className="cssShard";
+    var a=Math.random()*Math.PI*2, d=40+Math.random()*60;
+    el.style.setProperty("--tx",(Math.cos(a)*d)+"vw");
+    el.style.setProperty("--ty",(Math.sin(a)*d+30)+"vh");
+    el.style.setProperty("--rot",(Math.random()*720-360)+"deg");
+    el.style.animationDelay=(Math.random()*.12)+"s";
+    fx.appendChild(el);
+    (function(e){setTimeout(function(){e.remove()},1300)})(el);
+  }
+}
+function screenShatter(txt,ox,oy){
+  var cvs=document.getElementById("fxCanvas"),
+      fx=document.getElementById("maxfx"), tx=document.getElementById("maxTxt"), ctx=null;
+  tx.textContent=txt||"BRAIN MAX";
+  fxSound();
+  try{ ctx=cvs.getContext("2d") }catch(e){ ctx=null }
+  if(!ctx){ fx.classList.add("on"); cssShatter(fx); revealMax(fx,tx,0); return }
+  cancelAnimationFrame(FX.raf);
+  var W=cvs.width=window.innerWidth, H=cvs.height=window.innerHeight;
+  FX.origin={x:(ox==null?W/2:ox), y:(oy==null?H*.46:oy)};
+  FX.shards=buildShards(W,H,FX.origin.x,FX.origin.y);
+  FX.t0=performance.now(); FX.running=true;
+  cvs.classList.add("on");
+  var CRACK=.34, END=1.8;
+  revealMax(fx,tx,CRACK*1000);
+  (function frame(now){
+    var t=(now-FX.t0)/1000;
+    ctx.clearRect(0,0,W,H);
+    if(t<CRACK) drawCracks(ctx,t/CRACK,W,H); else drawShards(ctx,t-CRACK);
+    if(t>=END){ cvs.classList.remove("on"); ctx.clearRect(0,0,W,H); FX.running=false; return }
+    FX.raf=requestAnimationFrame(frame);
+  })(performance.now());
+}
+function shatter(txt){ screenShatter(txt) }
+function antidote(){ screenShatter("KURK, NE VARTOK") }
+function brainMax(){ var m=document.getElementById("maxlist"); if(m)m.style.display="grid"; screenShatter("BRAIN MAX"); }
+
+/* ===== V5: BRAIN MAX SLOT MAŠINA =====
+   3 būgnai · laimi tik MIEGAS + JUDESYS + MOKYMASIS (iš pačios skaidrės turinio) */
+var SLOT=[{e:"😴",n:"MIEGAS"},{e:"💪",n:"JUDESYS"},{e:"📚",n:"MOKYMASIS"},
+          {e:"📱",n:"SCROLL"},{e:"🍟",n:"TRAŠKUČIAI"},{e:"🎰",n:"GRIND"},{e:"🧟",n:"BRAIN ROT"}];
+var SLOT_WIN=[0,1,2], slotPulls=0, slotBusy=false, slotPos=[0,0,0], SLOT_COPIES=14;
+function buildSlot(){
+  var lv=document.getElementById("lever"); if(!lv)return;
+  for(var r=0;r<3;r++){
+    var strip=document.querySelector("#r"+r+" .strip"); if(!strip)return;
+    var h="";
+    for(var c=0;c<SLOT_COPIES;c++) for(var i=0;i<SLOT.length;i++) h+="<div class='sym'>"+SLOT[i].e+"</div>";
+    strip.innerHTML=h; strip.style.transform="translateY(0)";
+  }
+  var sy=null;
+  lv.addEventListener("pointerdown",function(e){ sy=e.clientY;
+    try{lv.setPointerCapture(e.pointerId)}catch(err){} });
+  lv.addEventListener("pointermove",function(e){ if(sy!==null&&e.clientY-sy>26){sy=null;slotPull()} });
+  lv.addEventListener("pointerup",function(){ if(sy!==null){sy=null;slotPull()} });
+  lv.addEventListener("pointercancel",function(){ sy=null });
+}
+function slotPull(){
+  if(slotBusy)return; slotBusy=true; slotPulls++;
+  var lv=document.getElementById("lever");
+  lv.classList.add("pulled"); setTimeout(function(){lv.classList.remove("pulled")},380);
+  var msg=document.getElementById("slotMsg"); msg.className=""; msg.textContent="…";
+  for(var r=0;r<3;r++){ document.getElementById("r"+r).classList.remove("win");
+    document.getElementById("g"+r).classList.remove("hit"); }
+  var win=(slotPulls>=2);
+  var land=[SLOT_WIN[0],SLOT_WIN[1],SLOT_WIN[2]];
+  if(!win) land[2]=3+Math.floor(Math.random()*(SLOT.length-3));  /* 1-as traukimas: 2 iš 3 */
+  spinReel(0,land[0],1500); spinReel(1,land[1],2000); spinReel(2,land[2],2600);
+  setTimeout(function(){ slotResult(win) },2760);
+}
+function spinReel(r,idx,dur){
+  var reel=document.getElementById("r"+r), strip=reel.querySelector(".strip");
+  var cell=reel.querySelector(".sym").offsetHeight||110;
+  strip.style.transition="none";
+  strip.style.transform="translateY(-"+(slotPos[r]*cell)+"px)";
+  void strip.offsetHeight;
+  var target=(SLOT_COPIES-3)*SLOT.length+idx;
+  strip.style.transition="transform "+(dur/1000)+"s cubic-bezier(.16,.84,.3,1)";
+  strip.style.transform="translateY(-"+(target*cell)+"px)";
+  setTimeout(function(){
+    strip.style.transition="none"; slotPos[r]=idx;
+    strip.style.transform="translateY(-"+(idx*cell)+"px)";
+  },dur+60);
+}
+function slotResult(win){
+  var msg=document.getElementById("slotMsg"),r;
+  if(win){
+    msg.className="win"; msg.textContent="🧠 BRAIN MAX!";
+    for(r=0;r<3;r++){ document.getElementById("r"+r).classList.add("win");
+      document.getElementById("g"+r).classList.add("hit"); }
+    setTimeout(function(){ brainMax(); slotBusy=false; },850);
+  }else{
+    msg.textContent="Beveik! 2 iš 3 — trauk dar kartą 💪";
+    for(r=0;r<2;r++) document.getElementById("g"+r).classList.add("hit");
+    slotBusy=false;
+  }
+}
 
 /* ===== 10 KLAUSIMŲ TESTAS ===== */
 var QZ=[
