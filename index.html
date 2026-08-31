@@ -114,7 +114,7 @@ img.gifwide{max-height:340px;min-height:170px;width:min(680px,92vw);margin:14px 
   <p class="eyebrow">BRAIN CLUB DIENA · 3–6 KLASĖ</p>
   <h1>Nebūk <span class="rword">dinozauras</span>.<br>Evoliucionuok.</h1>
   <p class="sub">Dokumentika apie tavo galingiausią įrenginį — ir 3 VR zonos jį treniruoti.</p>
-  <video id="dinovid" autoplay muted loop playsinline src="assets/img/dino-meteor.mp4" onerror="this.style.display='none'"></video>
+  <img id="dinovid" src="assets/img/dino-meteor.gif" alt="Dinozauras bėga nuo meteorito">
   <div class="modes">
     <button class="btn btn-red" onclick="startShow('live')">🎤 Gyvas pristatymas</button>
     <button class="btn btn-ghost" onclick="startShow('voice')">🔊 Su balsu</button>
@@ -529,8 +529,7 @@ function finishQuiz(){
 })();
 
 build();show(0);
-var dv=document.getElementById("dinovid");
-if(dv){dv.muted=true; var dp=dv.play(); if(dp&&dp.catch)dp.catch(function(){});}
+
 </script>
 </body>
 </html>
