@@ -163,7 +163,7 @@ var IMGMAP={
 "Mūsų Laser Tag VR — du žaidėjai kaunasi (mūsų įrašas)":"22-laser.jpg"};
 function slot(brief, cls){
   var f=IMGMAP[brief];
-  if(f) return "<img class='gimg "+(cls||"")+"' src='assets/img/"+f+"' alt='' loading='lazy'>";
+  if(f) return "<img class='gimg "+(cls||"")+"' src='assets/img/"+f+"' alt=''>";
   return "<div class='gifslot "+(cls||"")+"' data-brief=\""+brief+"\">GIF · "+brief+"</div>";
 }
 
@@ -529,6 +529,8 @@ function finishQuiz(){
 })();
 
 build();show(0);
+var dv=document.getElementById("dinovid");
+if(dv){dv.muted=true; var dp=dv.play(); if(dp&&dp.catch)dp.catch(function(){});}
 </script>
 </body>
 </html>
