@@ -415,6 +415,22 @@ border:1px solid rgba(217,4,41,.55);clip-path:polygon(50% 0,100% 62%,62% 100%,0 
 animation:shfly .9s cubic-bezier(.2,.7,.4,1) forwards}
 @keyframes shfly{0%{transform:translate(-50%,-50%) scale(.2) rotate(0);opacity:1}
 100%{transform:translate(var(--tx),var(--ty)) scale(1.25) rotate(var(--rot));opacity:0}}
+/* ===== V6.4: CV gestų užuominos ===== */
+#gestHint{position:fixed;left:50%;bottom:112px;transform:translateX(-50%);z-index:8;display:none;
+gap:10px;background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:var(--r);
+padding:10px 14px;box-shadow:0 8px 30px rgba(0,0,0,.14)}
+#gestHint.on{display:flex}
+#gestHint div{text-align:center;width:104px}
+#gestHint .ic{font-size:34px;line-height:1.1}
+#gestHint p{margin:3px 0 0;font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;
+text-transform:uppercase;color:var(--muted)}
+#gestHint .up p{color:var(--good);font-weight:800}
+#gestHint .dn p{color:var(--accent);font-weight:800}
+#gestHint .fv p{color:var(--ink);font-weight:800}
+#gestHint .fire{animation:ghFire .6s ease-out}
+@keyframes ghFire{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+#camWrap.big #camLabel{font-size:14px;padding:6px 10px}
+
 /* ===== V6.3: VISOS DIENOS AURA HUD ===== */
 #auraHud{position:fixed;left:12px;top:12px;z-index:9;display:none;align-items:center;gap:10px;
 padding:8px 14px;background:rgba(10,10,10,.92);color:#fff;border-radius:var(--r);
@@ -515,6 +531,12 @@ background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:
 </div>
 
 <div class="stage" id="stage"></div>
+
+<div id="gestHint">
+  <div class="up"><div class="ic" id="ghUp">🙋‍♂️</div><p>Dešinė<br>aukštyn = +</p></div>
+  <div class="dn"><div class="ic" id="ghDn">🙋‍♀️</div><p>Kairė<br>aukštyn = −</p></div>
+  <div class="fv"><div class="ic" id="ghFv">🖐️</div><p>5 pirštai<br>= +500</p></div>
+</div>
 
 <div id="auraHud" onclick="auraReset()" title="Paspausk — nulinti aurą">
   <span class="lbl">SALĖS<br>AURA</span><span class="val" id="auraVal">0</span>
@@ -1391,7 +1413,8 @@ function camStop(){
   try{cv.getContext("2d").clearRect(0,0,cv.width,cv.height)}catch(e){}
   MP.poseRes=null; MP.handRes=null;
   auraOn=false; document.getElementById("gestBtn").textContent="📷 Aura kamera";
-  var gh=document.getElementById("gestHint"); if(gh)gh.style.display="none";
+  var gh=document.getElementById("gestHint"); if(gh)gh.classList.remove("on");
+  GEST.glow={}; GEST.cool={};
 }
 function camHall(){
   camStart(function(){
@@ -1404,7 +1427,8 @@ function camHall(){
 function auraMode(){
   camStart(function(){
     var w=document.getElementById("camWrap"); w.classList.add("big");
-    document.getElementById("camLabel").textContent="🕺 AURA REŽIMAS — AI SEKA KŪNĄ IR PIRŠTUS";
+    document.getElementById("camLabel").textContent="🕺 AURA GESTAI — DEŠINĖ ✋ = +300 · KAIRĖ = −200 · 🖐️ 5 PIRŠTAI = +500";
+    document.getElementById("gestHint").classList.add("on");
     auraOn=true; auraToggle(true); updAura(); visionStart();
     w.onclick=function(){camStop();w.onclick=null};
   });
@@ -1474,7 +1498,67 @@ function visionStart(){
 /* V6.1: skaidrių valdymas gestais PAŠALINTAS.
    Kamera nebekeičia skaidrių — tik piešia skeletą ir (V6.4) skaičiuoja AURĄ.
    Skaidres visada valdo klaviatūra / mygtukai / pultas. */
-function auraGestures(){}  /* V6.4 užpildo */
+/* ===================================================================
+   V6.4 · AUROS GESTAI (savanoriams prie kameros)
+   ⚠️ SĄŽININGAI: veikia 1–3 žmonėms per ~2–4 m nuo kameros (savanoriai,
+   pirmos eilės). VISOS salės tai nenuskaito — ir taip ir sakom vaikams.
+
+   Taisyklės (paprastos = patikimos):
+     DEŠINĖ ranka virš galvos  -> +300 aura (jee)
+     KAIRĖ  ranka virš galvos  -> −200 aura (fa)
+     Atviras delnas, 5 pirštai -> +500 bonusas
+   Kiekvienam trigeriui atskiras 1,5 s atvėsimas, kad nesikartotų per kadrą.
+   =================================================================== */
+var GEST={cool:{}, glow:{}, CD:1500};
+function gestReady(k){
+  var now=Date.now();
+  if((GEST.cool[k]||0)>now) return false;
+  GEST.cool[k]=now+GEST.CD; return true;
+}
+function gestFlash(id){
+  var e=document.getElementById(id); if(!e)return;
+  e.classList.remove("fire"); void e.offsetWidth; e.classList.add("fire");
+}
+/* pirštų skaičiavimas iš vienos rankos landmarkų (MediaPipe Hands, 21 taškas) */
+function countFingers(lm){
+  if(!lm||lm.length<21)return 0;
+  var n=0,i;
+  var pairs=[[8,6],[12,10],[16,14],[20,18]];      /* tip vs PIP — ištiestas, jei tip aukščiau */
+  for(i=0;i<pairs.length;i++){
+    if(lm[pairs[i][0]].y < lm[pairs[i][1]].y - 0.02) n++;
+  }
+  /* nykštys: atstumas nuo mažylio pagrindo — nejautrus rankos pasukimui */
+  function d(a,b){var dx=lm[a].x-lm[b].x,dy=lm[a].y-lm[b].y;return Math.sqrt(dx*dx+dy*dy)}
+  if(d(4,17) > d(3,17)*1.18) n++;
+  return n;
+}
+function auraGestures(){
+  if(!auraOn)return;                       /* gestai veikia tik aura režime */
+  var L=MP.poseRes;
+  /* --- rankos virš galvos --- */
+  if(L&&L[0]){
+    var nose=L[0], R=L[16], Lw=L[15];      /* 16 = savanorio DEŠINĖ, 15 = KAIRĖ */
+    if(R&&R.visibility>0.5&&R.y<nose.y-0.03&&gestReady("R")){
+      aura(300,"dešinė ranka aukštyn ✋");
+      GEST.glow.R=Date.now()+900; gestFlash("ghUp");
+    }
+    if(Lw&&Lw.visibility>0.5&&Lw.y<nose.y-0.03&&gestReady("L")){
+      aura(-200,"kairė ranka aukštyn 👎");
+      GEST.glow.L=Date.now()+900; gestFlash("ghDn");
+    }
+  }
+  /* --- atviras delnas (5 pirštai) --- */
+  var H=MP.handRes;
+  if(H&&H.length){
+    for(var i=0;i<H.length;i++){
+      if(countFingers(H[i])>=5&&gestReady("5")){
+        aura(500,"atviras delnas 🖐️ BONUSAS");
+        GEST.glow.H=Date.now()+1100; gestFlash("ghFv");
+        break;
+      }
+    }
+  }
+}
 function onHands(res){
   MP.handRes=(res&&res.multiHandLandmarks&&res.multiHandLandmarks.length)?res.multiHandLandmarks:null;
   MP.handed=(res&&res.multiHandedness)||null;
@@ -1513,6 +1597,19 @@ function drawSkeleton(cx,cv){
   });
   var h=L[0];
   if(h&&h.visibility>0.4){cx.beginPath();cx.arc(h.x*cv.width,h.y*cv.height-14,20,0,7);cx.stroke();}
+  /* V6.4: ranka, kuri ką tik davė/atėmė aurą — šviečia žaliai / raudonai */
+  var now=Date.now();
+  [["R",16,"#2ED47A"],["L",15,"#FF0000"]].forEach(function(g){
+    if((GEST.glow[g[0]]||0)<now)return;
+    var p=L[g[1]]; if(!p)return;
+    var x=p.x*cv.width,y=p.y*cv.height;
+    cx.save(); cx.shadowColor=g[2]; cx.shadowBlur=34;
+    cx.fillStyle=g[2]; cx.globalAlpha=.55;
+    cx.beginPath();cx.arc(x,y,26,0,7);cx.fill();
+    cx.globalAlpha=1; cx.lineWidth=5; cx.strokeStyle=g[2];
+    cx.beginPath();cx.arc(x,y,26,0,7);cx.stroke();
+    cx.restore();
+  });
   /* sąnarių taškai */
   cx.fillStyle="#fff"; cx.strokeStyle="#FF0000"; cx.lineWidth=3;
   [11,12,13,14,15,16,23,24,25,26,27,28].forEach(function(i){
@@ -1522,8 +1619,11 @@ function drawSkeleton(cx,cv){
 }
 function drawFingers(cx,cv){
   var H=MP.handRes; if(!H)return;
+  var hglow=(GEST.glow.H||0)>Date.now();
   H.forEach(function(lm){
-    cx.strokeStyle="rgba(217,4,41,.9)"; cx.lineWidth=3; cx.lineCap="round";
+    cx.save();
+    if(hglow){ cx.shadowColor="#2ED47A"; cx.shadowBlur=26; }
+    cx.strokeStyle=hglow?"rgba(46,212,122,.95)":"rgba(217,4,41,.9)"; cx.lineWidth=3; cx.lineCap="round";
     HAND_CONN.forEach(function(c){
       var a=lm[c[0]],b=lm[c[1]]; if(!a||!b)return;
       cx.beginPath();cx.moveTo(a.x*cv.width,a.y*cv.height);cx.lineTo(b.x*cv.width,b.y*cv.height);cx.stroke();
@@ -1532,8 +1632,9 @@ function drawFingers(cx,cv){
       var tip=(i===4||i===8||i===12||i===16||i===20);
       cx.beginPath();cx.arc(p.x*cv.width,p.y*cv.height,tip?7:4.5,0,7);
       cx.fillStyle=tip?"#D90429":"#fff"; cx.fill();
-      cx.strokeStyle="#D90429"; cx.lineWidth=2; cx.stroke();
+      cx.strokeStyle=hglow?"#2ED47A":"#D90429"; cx.lineWidth=2; cx.stroke();
     });
+    cx.restore();
   });
 }
 
