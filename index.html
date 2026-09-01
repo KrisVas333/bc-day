@@ -415,7 +415,13 @@ border:1px solid rgba(217,4,41,.55);clip-path:polygon(50% 0,100% 62%,62% 100%,0 
 animation:shfly .9s cubic-bezier(.2,.7,.4,1) forwards}
 @keyframes shfly{0%{transform:translate(-50%,-50%) scale(.2) rotate(0);opacity:1}
 100%{transform:translate(var(--tx),var(--ty)) scale(1.25) rotate(var(--rot));opacity:0}}
-@media print{.hud,#bar,#notes,#net,#camWrap,#cvBox,#fxCanvas{display:none!important}.slide{display:none!important}
+/* ===== V6.2: garso valdiklių kampas ===== */
+#corner{position:fixed;top:10px;right:12px;z-index:9;display:flex;gap:6px}
+#corner button{font-family:var(--mono);font-size:15px;line-height:1;border:1px solid var(--line);
+background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:pointer}
+#corner button.off{opacity:.45}
+#corner button.act{border-color:var(--accent);color:var(--accent);font-weight:800}
+@media print{.hud,#bar,#notes,#net,#camWrap,#cvBox,#fxCanvas,#corner{display:none!important}.slide{display:none!important}
 #certCard{display:block!important;border-width:4px}body{background:#fff}}
 </style>
 </head>
@@ -488,6 +494,10 @@ animation:shfly .9s cubic-bezier(.2,.7,.4,1) forwards}
 </div>
 
 <div class="stage" id="stage"></div>
+
+<div id="corner">
+  <button id="muteBtn" onclick="toggleMute()" title="Nutildyti viską (S)">🔊</button>
+</div>
 
 <div id="notes"></div>
 <div id="camWrap"><span id="camLabel">📷 AI MATO</span><span id="auraScore"></span><video id="cam" autoplay playsinline muted></video><canvas id="poseCanvas"></canvas></div>
@@ -1026,6 +1036,131 @@ SL = SL.concat([
  notes:{say:"DINOZAURO KOSTIUMAS įbėga — IRONIŠKAI, su komedijos laiku!",do:"Kvietimai prie durų. QR — SU TĖVAIS. Ekrane dino skrenda raketa!",br:"Finalas: „Iki susitikimo!“ + plojimai dinozaurui."}}
 ]);
 
+/* ===================================================================
+   V6.2 · GARSO SISTEMA (SFX)
+   Vienas iškvietimas visur: sfx('fa') · sfx('jee') · sfx('tada') · sfx('victory')
+
+   Kaip veikia: pirmą kartą pareikalavus garso, bandom rasti tikrą mp3
+   assets/sfx/. Kol atsakymo dar nėra (ir jei failo nėra visai) — grojam
+   PAČIŲ sintezuotą pakaitalą per WebAudio. Todėl deck'as niekada nebyli,
+   o Kris'ui tereikia įmesti 4 failus (žr. assets/sfx/README.md).
+   =================================================================== */
+var SFX={fa:"assets/sfx/fa.mp3",jee:"assets/sfx/jee.mp3",
+         tada:"assets/sfx/tada.mp3",victory:"assets/sfx/victory.mp3"};
+var SFXST={};              /* vardas -> {mode:"probing|file|synth", el:Audio} */
+var MUTED=false, _ac=null;
+
+function AC(){
+  try{
+    if(!_ac) _ac=new (window.AudioContext||window.webkitAudioContext)();
+    if(_ac.state==="suspended") _ac.resume();
+  }catch(e){ _ac=null }
+  return _ac;
+}
+function toggleMute(){
+  MUTED=!MUTED;
+  var b=document.getElementById("muteBtn");
+  if(b){ b.textContent=MUTED?"🔇":"🔊"; b.classList.toggle("off",MUTED); }
+  if(MUTED){ try{VOA.pause()}catch(e){} try{window.speechSynthesis.cancel()}catch(e){} }
+}
+/* konsolei: kurie garsai tikri, kurie sintezuoti */
+function sfxStatus(){
+  var o=[];for(var k in SFX){o.push((SFXST[k]?({file:"✅ mp3",synth:"🎛 sintezuotas",probing:"… tikrinama"})[SFXST[k].mode]:"— dar nenaudotas")+"  "+k+"  ("+SFX[k]+")")}
+  console.log(o.join("\n"));return o;
+}
+function sfxProbe(name){
+  var st={mode:"probing",el:null};
+  SFXST[name]=st;
+  try{
+    var a=new Audio();
+    a.preload="auto";
+    a.addEventListener("canplaythrough",function(){ st.mode="file"; st.el=a; },{once:true});
+    a.addEventListener("error",function(){ st.mode="synth"; },{once:true});
+    a.src=SFX[name];
+    a.load();
+    /* jei serveris tyli — po 3 s laikom, kad failo nėra */
+    setTimeout(function(){ if(st.mode==="probing") st.mode="synth" },3000);
+  }catch(e){ st.mode="synth" }
+  return st;
+}
+function sfx(name,vol){
+  if(MUTED||!SFX[name])return;
+  var st=SFXST[name]||sfxProbe(name);
+  if(st.mode==="file"&&st.el){
+    try{
+      var c=st.el.cloneNode();        /* klonas — garsai gali persidengti */
+      c.volume=Math.max(0,Math.min(1,vol==null?1:vol));
+      var p=c.play(); if(p&&p.catch)p.catch(function(){ sfxSynth(name,vol) });
+      return;
+    }catch(e){}
+  }
+  sfxSynth(name,vol);                 /* "probing" arba "synth" -> pakaitalas */
+}
+
+/* --- sintezuoti pakaitalai (tik WebAudio, 0 bibliotekų) --- */
+function _tone(A,type,f0,f1,t0,dur,peak,dest){
+  var o=A.createOscillator(),g=A.createGain();
+  o.type=type; o.frequency.setValueAtTime(f0,t0);
+  if(f1&&f1!==f0) o.frequency.exponentialRampToValueAtTime(Math.max(1,f1),t0+dur);
+  g.gain.setValueAtTime(.0001,t0);
+  g.gain.exponentialRampToValueAtTime(Math.max(.0002,peak),t0+Math.min(.03,dur*.25));
+  g.gain.exponentialRampToValueAtTime(.0001,t0+dur);
+  o.connect(g); g.connect(dest||A.destination);
+  o.start(t0); o.stop(t0+dur+.02);
+  return o;
+}
+function _noise(A,t0,dur,peak,type,f0,f1,dest){
+  var len=Math.max(1,Math.floor(A.sampleRate*dur)),b=A.createBuffer(1,len,A.sampleRate),d=b.getChannelData(0),i;
+  for(i=0;i<len;i++) d[i]=(Math.random()*2-1)*(1-i/len);
+  var s=A.createBufferSource(); s.buffer=b;
+  var f=A.createBiquadFilter(); f.type=type||"bandpass";
+  f.frequency.setValueAtTime(f0||2000,t0);
+  if(f1) f.frequency.exponentialRampToValueAtTime(f1,t0+dur);
+  f.Q.value=1.1;
+  var g=A.createGain();
+  g.gain.setValueAtTime(peak,t0); g.gain.exponentialRampToValueAtTime(.0001,t0+dur);
+  s.connect(f); f.connect(g); g.connect(dest||A.destination); s.start(t0);
+}
+function sfxSynth(name,vol){
+  var A=AC(); if(!A)return;
+  var v=(vol==null?1:vol), n=A.currentTime+0.01;
+  try{
+    if(name==="fa"){
+      /* komiškas krentantis „wah-wah" — dvi slenkančios natos žemyn */
+      _tone(A,"sawtooth",392,196,n,.20,.20*v);
+      _tone(A,"sawtooth",294,110,n+.19,.34,.22*v);
+      _tone(A,"square", 147, 74,n+.19,.36,.09*v);
+      _noise(A,n+.50,.12,.05*v,"lowpass",900,300);
+    }
+    else if(name==="jee"){
+      /* kylantis šviesus čirpsmas + „minios" šnaresys */
+      _tone(A,"triangle",523,1568,n,.20,.20*v);
+      _tone(A,"sine",   784,2093,n+.05,.20,.13*v);
+      [1046,1319,1568,2093].forEach(function(f,k){
+        _tone(A,"triangle",f,f,n+.16+k*.045,.16,.11*v);
+      });
+      _noise(A,n+.10,.42,.05*v,"bandpass",1800,5200);   /* shimmer */
+    }
+    else if(name==="tada"){
+      /* labai trumpas 3 natų perėjimo tiktelėjimas — skamba ~30 k./renginį */
+      [880,1174,1568].forEach(function(f,k){
+        _tone(A,"triangle",f,f,n+k*.045,.055,.055*v);
+      });
+    }
+    else if(name==="victory"){
+      /* didesnė fanfara: arpedžio + galutinis akordas */
+      [523,659,784,1046].forEach(function(f,k){
+        _tone(A,"square",f,f,n+k*.10,.16,.13*v);
+        _tone(A,"triangle",f*2,f*2,n+k*.10,.16,.05*v);
+      });
+      [523,659,784,1046,1319].forEach(function(f){
+        _tone(A,"triangle",f,f,n+.46,.85,.10*v);
+      });
+      _noise(A,n+.46,.5,.05*v,"highpass",2400,6000);
+    }
+  }catch(e){}
+}
+
 /* ===== VARIKLIS ===== */
 var cur=0, MODE="live";
 function build(){
@@ -1040,8 +1175,11 @@ function build(){
   try{ new QRCode(document.getElementById("qr"),{text:QR_URL,width:140,height:140,correctLevel:QRCode.CorrectLevel.M}); }
   catch(e){ document.getElementById("qr").textContent=QR_URL; }
 }
+var _booted=false;
 function show(i){
+  var prev=cur;
   cur=Math.max(0,Math.min(SL.length-1,i));
+  if(_booted&&cur!==prev) sfx("tada",.35);   /* V6.2: subtilus perėjimo tiktelėjimas */
   document.querySelectorAll(".slide").forEach(function(el,j){el.classList.toggle("on",j===cur)});
   document.getElementById("bar").style.width=((cur+1)/SL.length*100)+"%";
   document.getElementById("cnt").textContent=(cur+1)+" / "+SL.length;
@@ -1081,6 +1219,7 @@ document.addEventListener("keydown",function(e){
   if(e.key==="ArrowRight")next();
   if(e.key==="ArrowLeft")prev();
   if(e.key==="n"||e.key==="N")toggleNotes();
+  if(e.key==="s"||e.key==="S")toggleMute();
   if(e.key==="Escape"){ var b=document.getElementById("cvBox"); if(b)b.classList.remove("on"); }
 });
 
@@ -1342,6 +1481,7 @@ function swipe(right){
   var c=document.getElementById("scard"),v=document.getElementById("sverdict");
   v.style.display="block";
   v.innerHTML=(good?"<span class='tagG'>🧠 AUGINA</span>":"<span class='tagB'>🧟 KENKIA</span>")+" — "+it[3]+(correct?" · teisingai! ✅":"");
+  if(correct) sfx("jee"); else sfx("fa");
   document.getElementById("swipeScore").textContent="Kortelė "+(swI+1)+" / "+SW.length;
   setTimeout(function(){c.classList.add(right?"right":"left");
     setTimeout(function(){swI++;renderSwipe()},280);},900);
@@ -1502,7 +1642,8 @@ function screenShatter(txt,ox,oy){
 }
 function shatter(txt){ screenShatter(txt) }
 function antidote(){ screenShatter("KURK, NE VARTOK") }
-function brainMax(){ var m=document.getElementById("maxlist"); if(m)m.style.display="grid"; screenShatter("BRAIN MAX"); }
+function brainMax(){ var m=document.getElementById("maxlist"); if(m)m.style.display="grid";
+  screenShatter("BRAIN MAX"); sfx("victory"); }
 
 /* ===== V5: BRAIN MAX SLOT MAŠINA =====
    3 būgnai · laimi tik MIEGAS + JUDESYS + MOKYMASIS (iš pačios skaidrės turinio) */
@@ -1554,12 +1695,12 @@ function spinReel(r,idx,dur){
 function slotResult(win){
   var msg=document.getElementById("slotMsg"),r;
   if(win){
-    msg.className="win"; msg.textContent="🧠 BRAIN MAX!";
+    msg.className="win"; msg.textContent="🧠 BRAIN MAX!"; sfx("jee");
     for(r=0;r<3;r++){ document.getElementById("r"+r).classList.add("win");
       document.getElementById("g"+r).classList.add("hit"); }
     setTimeout(function(){ brainMax(); slotBusy=false; },850);
   }else{
-    msg.textContent="Beveik! 2 iš 3 — trauk dar kartą 💪";
+    msg.textContent="Beveik! 2 iš 3 — trauk dar kartą 💪"; sfx("fa");
     for(r=0;r<2;r++) document.getElementById("g"+r).classList.add("hit");
     slotBusy=false;
   }
@@ -1603,7 +1744,7 @@ function pick(btn,j){
   clearInterval(tmr);
   var ok=(j===QZ[qi].ok);
   btn.classList.add(ok?"ok":"bad");
-  if(ok)correct++;
+  if(ok){correct++; sfx("jee");} else sfx("fa");
   setTimeout(function(){qi++;renderQ()},600);
 }
 function finishQuiz(){
@@ -1651,7 +1792,7 @@ function buildStars(){
   step();
 })();
 
-build();show(0);
+build();show(0);_booted=true;
 </script>
 </body>
 </html>
