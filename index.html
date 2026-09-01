@@ -61,7 +61,10 @@ border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;margin:6px
 padding:9px 12px;background:rgba(255,255,255,.93);border-top:1px solid var(--line);flex-wrap:wrap}
 .hud button{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line);background:#fff;border-radius:var(--r);padding:7px 11px;cursor:pointer}
 .hud .cnt{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:auto}
-#bar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:6;transition:width .3s}
+/* V6.5: plona eiga viršutiniame krašte — kiek deck'o įveikta */
+#barTrack{position:fixed;top:0;left:0;right:0;height:4px;background:var(--line);z-index:6}
+#bar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:7;
+transition:width .45s cubic-bezier(.2,.8,.2,1);box-shadow:0 0 10px rgba(217,4,41,.55)}
 #notes{position:fixed;right:12px;bottom:56px;z-index:6;max-width:360px;background:#0A0A0A;color:#fff;
 border-radius:var(--r);padding:13px 15px;font-size:13px;line-height:1.5;display:none}
 #notes b{color:#FF6B6B;font-family:var(--mono);font-size:11px;letter-spacing:.08em}
@@ -415,6 +418,47 @@ border:1px solid rgba(217,4,41,.55);clip-path:polygon(50% 0,100% 62%,62% 100%,0 
 animation:shfly .9s cubic-bezier(.2,.7,.4,1) forwards}
 @keyframes shfly{0%{transform:translate(-50%,-50%) scale(.2) rotate(0);opacity:1}
 100%{transform:translate(var(--tx),var(--ty)) scale(1.25) rotate(var(--rot));opacity:0}}
+/* ===== V6.5: KELIONĖS MENIU (KAS TAVĘS LAUKIA) ===== */
+.journey{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;
+width:100%;max-width:1040px;margin:18px 0}
+.jstep{position:relative;background:var(--surface);border:2px solid var(--line);border-radius:var(--r);
+padding:18px 14px 16px;text-align:center}
+.jstep .jn{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--accent);
+color:#fff;font-family:var(--mono);font-weight:800;font-size:12px;padding:3px 10px;border-radius:var(--r)}
+.jstep .je{font-size:52px;line-height:1.1;display:block;animation:bob 2.6s ease-in-out infinite}
+.jstep:nth-child(2) .je{animation-delay:.35s}.jstep:nth-child(3) .je{animation-delay:.7s}
+.jstep:nth-child(4) .je{animation-delay:1.05s}
+.jstep h3{font-family:var(--mono);text-transform:uppercase;font-size:15px;margin:8px 0 4px;letter-spacing:.04em}
+.jstep p{margin:0;font-size:14px;color:var(--muted)}
+.jstep.fin{border-color:var(--accent);background:#fff}
+.jstep.fin h3{color:var(--accent)}
+
+/* ===== V6.5: ĮKROVIMO EKRANAS ===== */
+#boot{position:fixed;inset:0;z-index:30;background:var(--ground);display:flex;flex-direction:column;
+align-items:center;justify-content:center;gap:14px;padding:6vw;text-align:center}
+#boot.done{opacity:0;pointer-events:none;transition:opacity .45s}
+#boot .bhead{font-family:var(--mono);font-weight:800;text-transform:uppercase;letter-spacing:.1em;
+font-size:clamp(15px,2.6vw,22px)}
+#bootTrack{width:min(560px,86vw);height:16px;background:var(--surface);border:2px solid var(--ink);
+border-radius:var(--r);overflow:hidden}
+#bootFill{height:100%;width:0;background:var(--accent);transition:width .3s ease-out}
+#bootLine{font-family:var(--mono);font-size:clamp(12px,2vw,16px);color:var(--muted);min-height:1.5em}
+#bootPct{font-family:var(--mono);font-weight:800;color:var(--accent);font-size:clamp(26px,6vw,54px)}
+#boot .bbrain{font-size:clamp(44px,10vw,80px);animation:bob 1.6s ease-in-out infinite}
+
+/* ===== V6.5: laikmatis užrašuose ===== */
+#notes .tmr{display:flex;gap:8px;align-items:baseline;margin:-4px 0 8px;padding-bottom:7px;
+border-bottom:1px solid rgba(255,255,255,.18);font-family:var(--mono)}
+#notes .tmr .tot{font-size:16px;font-weight:800}
+#notes .tmr .sl{font-size:12px;margin-left:auto}
+#notes .tmr .drift{font-weight:800;font-size:12px;padding:2px 7px;border-radius:3px}
+#notes .tmr .drift.g{background:#12897A;color:#fff}
+#notes .tmr .drift.a{background:#E8A317;color:#0A0A0A}
+#notes .tmr .drift.r{background:#FF0000;color:#fff}
+#notes .chatq{margin-top:8px;padding:7px 9px;border-radius:3px;background:#2B1A00;
+border-left:3px solid #E8A317;font-size:12.5px}
+#notes .chatq b{color:#E8A317}
+
 /* ===== V6.4: CV gestų užuominos ===== */
 #gestHint{position:fixed;left:50%;bottom:112px;transform:translateX(-50%);z-index:8;display:none;
 gap:10px;background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:var(--r);
@@ -458,12 +502,13 @@ padding:2px 0;animation:apopFly 1.5s ease-out forwards;text-shadow:0 2px 10px rg
 background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:pointer}
 #corner button.off{opacity:.45}
 #corner button.act{border-color:var(--accent);color:var(--accent);font-weight:800}
-@media print{.hud,#bar,#notes,#net,#camWrap,#cvBox,#fxCanvas,#corner{display:none!important}.slide{display:none!important}
+@media print{.hud,#bar,#barTrack,#boot,#auraHud,#auraPops,#gestHint,#notes,#net,#camWrap,#cvBox,#fxCanvas,#corner{display:none!important}.slide{display:none!important}
 #certCard{display:block!important;border-width:4px}body{background:#fff}}
 </style>
 </head>
 <body>
 <canvas id="net"></canvas>
+<div id="barTrack"></div>
 <div id="bar"></div>
 <div id="maxfx" onclick="this.classList.remove('on')"><h2 id="maxTxt">BRAIN&nbsp;MAX</h2></div>
 <canvas id="fxCanvas"></canvas>
@@ -511,6 +556,14 @@ background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:
     <li><b>4.</b> AI lygina tuos skaičius su milijonais matytų pavyzdžių — ir atpažįsta judesį</li>
   </ol>
   <p class="small">Jokios magijos. Taškai, skaičiai ir daug pavyzdžių. · Paspausk arba ESC — uždaryti</p>
+</div>
+
+<div id="boot">
+  <div class="bbrain">🧠</div>
+  <p class="bhead">Brain Club Diena · kraunama</p>
+  <div id="bootTrack"><div id="bootFill"></div></div>
+  <p id="bootPct">0 %</p>
+  <p id="bootLine">Kraunami neuronai…</p>
 </div>
 
 <div id="start">
@@ -842,6 +895,25 @@ var SL=[
  "<p class='small'>🥽 Šiandien čia pat: <b>3 VR zonos su Quest 3S</b> ir robotas.</p>",
  vo:1, voice:"Įsivaizduok visą savo gyvenimą. Gimsti. Mokaisi vaikščioti. Bėgi per kiemą. Užaugi. Dirbi su technologijomis, kurių šiandien dar nėra. Galbūt — skrendi į kosmosą. Vienas įrenginys bus su tavimi kiekviename žingsnyje. Ne telefonas. Smegenys.",
  notes:{say:"Klausimą GARSIAI, palauk šūksnių. Amžių juosta keičiasi pati.",do:"Rankos aukštyn: kas atspėjo? Skaidres visada valdai rodyklėmis — kamera skaidrių NEKEIČIA, ji tik aurai.",br:"„Ta istorija prasideda prieš milijoną metų…“"}},
+
+/* 1b · V6.5 KAS TAVĘS LAUKIA — kelionės meniu (pasakom apie pabaigą PRADŽIOJE) */
+{ey:"ŠIANDIENOS PLANAS", cls:"center", tag:"plan", sec:70,
+ html:"<h1>Kas tavęs <span class='rword'>laukia</span></h1>"+
+ "<p class='sub'>Keturios dalys. Paskutinė — su akiniais ant galvos.</p>"+
+ "<div class='journey'>"+
+ "<div class='jstep'><span class='jn'>1</span><span class='je'>🎬</span><h3>Dokumentika</h3>"+
+ "<p>nuo ugnies iki AI — ir kas laukia TAVO kartos</p></div>"+
+ "<div class='jstep'><span class='jn'>2</span><span class='je'>🎮</span><h3>Žaidimai</h3>"+
+ "<p>swipe, ratas, slot mašina, testas — tu prie ekrano</p></div>"+
+ "<div class='jstep'><span class='jn'>3</span><span class='je'>🏆</span><h3>Čempionatas</h3>"+
+ "<p>4 savanoriai · 3 smegenų žaidimai · vienas nugalėtojas</p></div>"+
+ "<div class='jstep fin'><span class='jn'>4</span><span class='je'>🥽</span><h3>VR zonos</h3>"+
+ "<p>Quest 3S — kiekvienas gauna eilę</p></div></div>"+
+ "<p class='sub'>Ir visą laiką skaičiuojam <b class='rword'>SALĖS AURĄ</b> — vienas bendras taškas visiems. ✨</p>",
+ voice:"Prieš pradedant — pasakau, kas tavęs laukia. Pirma: dokumentika nuo ugnies iki dirbtinio intelekto. Antra: žaidimai, kuriuose tu būsi prie ekrano. Trečia: smegenų čempionatas — keturi savanoriai, trys žaidimai, vienas nugalėtojas. Ir ketvirta, pati geriausia dalis: virtualios realybės zonos. O visą laiką kartu rinksim salės aurą.",
+ notes:{say:"PASAKYK APIE PABAIGĄ PRADŽIOJE — vaikai laukia VR, tai duok jiems, ko laukti. „Kas nori į VR zonas? Tai iškentėkim 25 minutes.“",
+ do:"Rodyk pirštu į 4 punktus. Paklausk: „kas nori būti vienas iš 4 čempionato savanorių?“ — pasižymėk 4 rankas DABAR, po 2 mergaites ir 2 berniukus.",
+ br:"„Ta istorija prasideda prieš milijoną metų…“"}},
 
 /* 2 EVOLIUCIJOS RATAS */
 {ey:"EVOLIUCIJA", cls:"center",
@@ -1211,6 +1283,63 @@ function sfxSynth(name,vol){
 }
 
 /* ===================================================================
+   V6.5 · ĮKROVIMO EKRANAS (smegenų temos juokeliai)
+   =================================================================== */
+var BOOTLINES=[
+ "Kraunami neuronai…","Jungiamos sinapsės…","Ieškoma vakar dingusio dėmesio…",
+ "Kalibruojamas dinozaurų radaras…","Šildoma auros mašina…",
+ "Atsisiunčiama 25 000 Londono gatvių…","Skenuojama, kiek miego niekas negavo…",
+ "Valomas brain rot… (užtruks)","Įkraunami VR akiniai…","Aktyvuojamas BRAIN MAX protokolas…"];
+function bootRun(){
+  var b=document.getElementById("boot"); if(!b)return;
+  var fill=document.getElementById("bootFill"), pct=document.getElementById("bootPct"),
+      line=document.getElementById("bootLine"), p=0, li=0;
+  line.textContent=BOOTLINES[0];
+  var t=setInterval(function(){
+    p+=8+Math.random()*16; if(p>100)p=100;
+    fill.style.width=p+"%";
+    pct.textContent=Math.floor(p)+" %";
+    var want=Math.min(BOOTLINES.length-1,Math.floor(p/100*BOOTLINES.length));
+    if(want!==li){ li=want; line.textContent=BOOTLINES[li]; }
+    if(p>=100){
+      clearInterval(t);
+      line.textContent="Smegenys paruoštos. 🧠";
+      setTimeout(function(){ b.classList.add("done");
+        setTimeout(function(){ b.style.display="none" },500); },520);
+    }
+  },230);
+}
+
+/* ===================================================================
+   V6.5 · VEDĖJO LAIKMATIS
+   Bendras laikas + šios skaidrės laikas prieš siūlomą (SL[i].sec).
+   Nuokrypis: 🟢 iki 60 s · 🟡 iki 150 s · 🔴 daugiau.
+   =================================================================== */
+var TIMER={t0:0, slideT0:0, tick:null};
+function timerStart(){
+  TIMER.t0=Date.now(); TIMER.slideT0=Date.now();
+  if(TIMER.tick)clearInterval(TIMER.tick);
+  TIMER.tick=setInterval(timerRender,1000);
+}
+function mmss(sec){
+  sec=Math.max(0,Math.round(sec));
+  var m=Math.floor(sec/60),s=sec%60;
+  return m+":"+(s<10?"0":"")+s;
+}
+function slideSec(i){ return (SL[i]&&SL[i].sec)||75 }
+function timerRender(){
+  var el=document.getElementById("tmrBox");
+  if(!el||!TIMER.t0)return;
+  var tot=(Date.now()-TIMER.t0)/1000, on=(Date.now()-TIMER.slideT0)/1000;
+  var budget=0,i; for(i=0;i<=cur;i++) budget+=slideSec(i);
+  var drift=tot-budget, ad=Math.abs(drift);
+  var cls=ad<=60?"g":(ad<=150?"a":"r");
+  el.innerHTML="<span class='tot'>⏱ "+mmss(tot)+"</span>"+
+    "<span class='drift "+cls+"'>"+(drift>0?"+":"−")+mmss(ad)+"</span>"+
+    "<span class='sl'>ši skaidrė "+mmss(on)+" / "+mmss(slideSec(cur))+"</span>";
+}
+
+/* ===================================================================
    V6.3 · VISOS DIENOS AURA
    Vienas API visam deck'ui:   aura(+500,"kodėl")
    Kviečia: testas · swipe · ratas · slot · čempionatas · CV gestai · pultas.
@@ -1281,7 +1410,7 @@ var _booted=false;
 function show(i){
   var prev=cur;
   cur=Math.max(0,Math.min(SL.length-1,i));
-  if(_booted&&cur!==prev) sfx("tada",.35);   /* V6.2: subtilus perėjimo tiktelėjimas */
+  if(_booted&&cur!==prev){ sfx("tada",.35); TIMER.slideT0=Date.now(); }  /* V6.2/6.5 */
   document.querySelectorAll(".slide").forEach(function(el,j){el.classList.toggle("on",j===cur)});
   document.getElementById("bar").style.width=((cur+1)/SL.length*100)+"%";
   document.getElementById("cnt").textContent=(cur+1)+" / "+SL.length;
@@ -1290,11 +1419,16 @@ function show(i){
 }
 function next(){show(cur+1)} function prev(){show(cur-1)}
 function startShow(m){MODE=m;document.getElementById("start").style.display="none";
-  if(m==="live")document.getElementById("notes").style.display="block";show(0);startAges();}
+  if(m==="live")document.getElementById("notes").style.display="block";
+  show(0);startAges();timerStart();auraToggle(true);}
 function toggleNotes(){var n=document.getElementById("notes");
   n.style.display=(n.style.display==="block")?"none":"block";renderNotes()}
 function renderNotes(){var n=document.getElementById("notes");var s=SL[cur];
-  n.innerHTML="<b>KĄ SAKYTI</b><br>"+s.notes.say+"<br><b>KĄ DARYTI</b><br>"+s.notes.do+"<br><b>TILTAS</b><br>"+s.notes.br}
+  n.innerHTML="<div class='tmr' id='tmrBox'></div>"+
+    "<b>KĄ SAKYTI</b><br>"+s.notes.say+"<br><b>KĄ DARYTI</b><br>"+s.notes.do+
+    "<br><b>TILTAS</b><br>"+s.notes.br+"<div id='notesChat'></div>";
+  timerRender();
+}
 var VOA=new Audio();
 function speakCur(){
   VOA.pause();
@@ -1985,7 +2119,7 @@ function buildStars(){
   step();
 })();
 
-build();show(0);_booted=true;
+build();show(0);_booted=true;bootRun();
 </script>
 </body>
 </html>
