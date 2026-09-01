@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>AURA PULTAS · Brain Club Diena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;600;800&display=swap">
+<style>
+:root{--ground:#FFFFFF;--surface:#F7F7F5;--ink:#0A0A0A;--muted:#595959;--line:#E5E2DE;
+--accent:#D90429;--red:#FF0000;--good:#12897A;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+--body:Inter,-apple-system,'Segoe UI',Roboto,sans-serif;--r:4px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--ground);color:var(--ink);
+font-family:var(--body);min-height:100svh;overscroll-behavior:none}
+body{display:flex;flex-direction:column;padding:14px 14px calc(14px + env(safe-area-inset-bottom))}
+header{text-align:center;flex:0 0 auto}
+.eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;
+font-size:11px;color:var(--accent);font-weight:700;margin:0}
+h1{font-family:var(--mono);text-transform:uppercase;font-size:20px;margin:4px 0 2px;letter-spacing:.02em}
+.room{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.room b{color:var(--ink);font-size:17px;letter-spacing:.14em}
+#state{font-family:var(--mono);font-size:11.5px;padding:5px 10px;border-radius:var(--r);
+display:inline-block;margin-top:7px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+#state.ok{border-color:var(--good);color:var(--good);background:#eefaf7;font-weight:700}
+#state.err{border-color:var(--accent);color:var(--accent);background:#fdeef0;font-weight:700}
+.grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+gap:12px;margin-top:14px;min-height:0}
+button.big{border:4px solid var(--ink);border-radius:var(--r);background:var(--surface);
+font-family:var(--mono);font-weight:800;cursor:pointer;display:flex;flex-direction:column;
+align-items:center;justify-content:center;gap:6px;padding:10px;transition:transform .08s;
+touch-action:manipulation;color:var(--ink)}
+button.big:active{transform:scale(.95)}
+button.big:disabled{opacity:.4}
+button.big .ic{font-size:clamp(30px,10vw,54px);line-height:1}
+button.big .t{font-size:clamp(15px,4.6vw,24px);line-height:1.1;text-align:center}
+button.big .s{font-family:var(--body);font-weight:600;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+#bPlus{border-color:var(--good);color:var(--good)}
+#bPlus .s{color:var(--good)}
+#bMinus{border-color:var(--accent);color:var(--accent)}
+#bMinus .s{color:var(--accent)}
+#bSuper{grid-column:1 / -1;border-color:var(--ink);background:var(--ink);color:#fff}
+#bSuper .s{color:#ffb3bf}
+#bConf{grid-column:1 / -1;border-color:#E8A317;background:#FFF6E4;color:#0A0A0A}
+footer{flex:0 0 auto;text-align:center;margin-top:12px}
+.small{font-size:11.5px;color:var(--muted);margin:4px 0}
+#sent{font-family:var(--mono);font-weight:800;font-size:14px;min-height:1.4em;color:var(--good)}
+</style>
+</head>
+<body>
+<header>
+  <p class="eyebrow">BRAIN CLUB DIENA</p>
+  <h1>📱 Aura pultas</h1>
+  <p class="room">Salė: <b id="roomCode">—</b></p>
+  <span id="state">jungiamasi…</span>
+</header>
+
+<div class="grid">
+  <button class="big" id="bPlus"  onclick="send(100)"><span class="ic">✨</span><span class="t">+100</span><span class="s">aura</span></button>
+  <button class="big" id="bMinus" onclick="send(-100)"><span class="ic">💀</span><span class="t">−100</span><span class="s">aura</span></button>
+  <button class="big" id="bSuper" onclick="send(500)"><span class="ic">🚀</span><span class="t">+500 SUPER</span><span class="s">didysis bonusas</span></button>
+  <button class="big" id="bConf"  onclick="confetti()"><span class="ic">🎉</span><span class="t">KONFETI</span><span class="s">šventė ekrane</span></button>
+</div>
+
+<footer>
+  <p id="sent"></p>
+  <p class="small">Mokytoja — didžiausia aura salėje ✨</p>
+  <p class="small">Veikia tik kol atidarytas šis puslapis. Nieko neįrašoma.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
+<script>
+/* ===================================================================
+   AURA PULTAS — mokytojos telefonas
+   Siunčia Supabase Realtime broadcast žinutes į deck'ą.
+   Kanalas: bc-day-aura-<ROOM>   ·   įvykiai: {type:'aura',delta} · {type:'confetti'}
+   Raktas viešas (publishable) — jokių asmens duomenų, nieko nesaugoma.
+   =================================================================== */
+var SB_URL="https://iiekmeylpppczicrsxho.supabase.co";
+var SB_KEY="sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF";
+
+function qs(k){ return new URLSearchParams(location.search).get(k) }
+var ROOM=(qs("room")||"DEMO").toUpperCase().slice(0,4);
+document.getElementById("roomCode").textContent=ROOM;
+
+var state=document.getElementById("state"), sent=document.getElementById("sent");
+var ch=null, ready=false;
+
+function setState(t,cls){ state.textContent=t; state.className=cls||"" }
+function setEnabled(on){
+  ["bPlus","bMinus","bSuper","bConf"].forEach(function(id){
+    document.getElementById(id).disabled=!on;
+  });
+}
+setEnabled(false);
+
+function connect(){
+  if(typeof supabase==="undefined"||!supabase.createClient){
+    setState("nėra ryšio su Supabase","err"); return;
+  }
+  try{
+    var client=supabase.createClient(SB_URL,SB_KEY);
+    ch=client.channel("bc-day-aura-"+ROOM,{config:{broadcast:{self:false}}});
+    ch.subscribe(function(status){
+      if(status==="SUBSCRIBED"){ ready=true; setEnabled(true); setState("✅ prisijungta prie salės "+ROOM,"ok"); }
+      else if(status==="CHANNEL_ERROR"||status==="TIMED_OUT"){
+        ready=false; setEnabled(false); setState("ryšio klaida — perkrauk puslapį","err");
+      }
+    });
+  }catch(e){ setState("klaida: "+e.message,"err") }
+}
+connect();
+
+function buzz(ms){ try{ navigator.vibrate&&navigator.vibrate(ms||30) }catch(e){} }
+function flash(t){ sent.textContent=t; setTimeout(function(){ sent.textContent="" },1400) }
+
+function send(delta){
+  if(!ready)return;
+  buzz(delta>0?30:60);
+  ch.send({type:"broadcast",event:"aura",payload:{type:"aura",delta:delta}});
+  flash((delta>0?"+":"−")+Math.abs(delta)+" išsiųsta ✅");
+}
+function confetti(){
+  if(!ready)return;
+  buzz([30,40,30]);
+  ch.send({type:"broadcast",event:"confetti",payload:{type:"confetti"}});
+  flash("🎉 konfeti išsiųsta ✅");
+}
+/* neleisk telefonui užmigti, kol pultas atidarytas */
+(function(){ try{ navigator.wakeLock&&navigator.wakeLock.request("screen").catch(function(){}) }catch(e){} })();
+</script>
+</body>
+</html>

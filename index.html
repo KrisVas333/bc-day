@@ -442,6 +442,25 @@ font-size:clamp(19px,3.6vw,38px);line-height:1.14;padding:14px 18px;letter-spaci
 .memecard .art{font-size:clamp(70px,17vw,150px);line-height:1.05;padding:8px 0 12px;background:var(--surface)}
 .memecard img{width:100%;max-height:44vh;object-fit:cover;display:block}
 
+/* ===== V6.9: AURA PULTAS (mokytojos telefonas) ===== */
+#pultBox{display:flex;gap:22px;align-items:center;justify-content:center;flex-wrap:wrap;
+background:var(--surface);border:2px solid var(--accent);border-radius:var(--r);
+padding:16px 20px;margin:14px auto;max-width:760px}
+#pultQr{background:#fff;padding:9px;border:1px solid var(--line);border-radius:var(--r);line-height:0}
+#pultQr img,#pultQr canvas{display:block}
+#pultTxt{text-align:left;max-width:380px}
+#pultTxt h3{font-family:var(--mono);text-transform:uppercase;margin:0 0 6px;font-size:16px}
+#pultTxt p{margin:4px 0;font-size:14px;color:var(--muted)}
+#pultRoom{font-family:var(--mono);font-weight:800;font-size:26px;letter-spacing:.2em;color:var(--accent)}
+#pultState{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:3px;
+border:1px solid var(--line);color:var(--muted);display:inline-block;margin-top:5px}
+#pultState.ok{border-color:var(--good);color:var(--good);background:#eefaf7;font-weight:700}
+#confetti{position:fixed;inset:0;z-index:23;pointer-events:none;display:none;overflow:hidden}
+#confetti.on{display:block}
+.conf{position:absolute;width:11px;height:16px;top:-24px;animation:confFall linear forwards}
+@keyframes confFall{to{transform:translateY(112vh) rotate(760deg)}}
+@media (prefers-reduced-motion:reduce){.conf{animation-duration:.1s!important}}
+
 /* ===================================================================
    V6.8 · SMEGENŲ ČEMPIONATAS — matmenys iš salės galo
    =================================================================== */
@@ -495,6 +514,89 @@ text-transform:uppercase;background:var(--surface)}
 font-size:clamp(24px,6vw,60px);color:var(--accent);line-height:1.1;margin:8px 0}
 .chnames{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
 gap:9px;max-width:660px;margin:10px auto}
+
+/* ===================================================================
+   V6.9 · AURA PULTAS — mokytojos telefonas per Supabase Realtime
+   Deck'as PRENUMERUOJA kanalą  bc-day-aura-<ROOM>.
+   pultas.html (tas pats repo) siunčia {type:'aura',delta} ir {type:'confetti'}.
+   Raktas viešas (publishable) — jokių asmens duomenų, nieko nesaugoma.
+   BE INTERNETO: pulto blokas pasislepia, visa kita veikia kaip veikė.
+   =================================================================== */
+var SB_URL="https://iiekmeylpppczicrsxho.supabase.co";
+var SB_KEY="sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF";
+var PULT={room:null, ch:null, ok:false};
+
+function pultRoom(){
+  if(PULT.room)return PULT.room;
+  var q=new URLSearchParams(location.search).get("room");
+  if(q){ PULT.room=q.toUpperCase().slice(0,4); return PULT.room }
+  try{                                    /* per perkrovimą kodas nesikeičia */
+    var k="bcday-room", v=sessionStorage.getItem(k);
+    if(v){ PULT.room=v; return v }
+  }catch(e){}
+  var A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789", r="";
+  for(var i=0;i<4;i++) r+=A[Math.floor(Math.random()*A.length)];
+  PULT.room=r;
+  try{ sessionStorage.setItem("bcday-room",r) }catch(e){}
+  return r;
+}
+function pultURL(){
+  var base=location.href.split("#")[0].split("?")[0];
+  base=base.replace(/[^\/]*$/,"");                 /* nukerpam index.html */
+  return base+"pultas.html?room="+pultRoom();
+}
+function pultInit(){
+  var box=document.getElementById("pultBox"); if(!box)return;
+  var room=pultRoom();
+  var rEl=document.getElementById("pultRoom"); if(rEl)rEl.textContent=room;
+  /* QR */
+  var q=document.getElementById("pultQr");
+  if(q&&!q.dataset.done){
+    try{ new QRCode(q,{text:pultURL(),width:132,height:132,correctLevel:QRCode.CorrectLevel.M});
+         q.dataset.done="1"; }
+    catch(e){ q.textContent=pultURL() }
+  }
+  /* Realtime */
+  if(typeof supabase==="undefined"||!supabase.createClient){
+    pultState("be interneto — pultas išjungtas",false);
+    box.style.opacity=".55"; return;
+  }
+  try{
+    var client=supabase.createClient(SB_URL,SB_KEY);
+    PULT.ch=client.channel("bc-day-aura-"+room,{config:{broadcast:{self:false}}});
+    PULT.ch.on("broadcast",{event:"aura"},function(m){
+      var d=(m&&m.payload&&m.payload.delta)|0;
+      if(d) aura(d,"mokytojos pultas 📱");
+    });
+    PULT.ch.on("broadcast",{event:"confetti"},function(){ confettiBurst(); });
+    PULT.ch.subscribe(function(st){
+      if(st==="SUBSCRIBED"){ PULT.ok=true; pultState("✅ pultas prijungtas",true); }
+      else if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ pultState("pultas nepasiekiamas",false) }
+    });
+  }catch(e){ pultState("pultas nepasiekiamas",false) }
+}
+function pultState(t,ok){
+  var e=document.getElementById("pultState"); if(!e)return;
+  e.textContent=t; e.classList.toggle("ok",!!ok);
+}
+function confettiBurst(n){
+  var w=document.getElementById("confetti"); if(!w)return;
+  var C=["#D90429","#FF0000","#12897A","#E8A317","#0A0A0A","#2ED47A"];
+  w.classList.add("on");
+  for(var i=0;i<(n||90);i++){
+    var d=document.createElement("div");
+    d.className="conf";
+    d.style.left=(Math.random()*100)+"%";
+    d.style.background=C[Math.floor(Math.random()*C.length)];
+    d.style.animationDuration=(1.6+Math.random()*1.6)+"s";
+    d.style.animationDelay=(Math.random()*.5)+"s";
+    d.style.transform="rotate("+(Math.random()*360)+"deg)";
+    w.appendChild(d);
+  }
+  sfx("jee",.8);
+  if(typeof emojiBurst==="function") emojiBurst(10);
+  setTimeout(function(){ w.innerHTML=""; w.classList.remove("on") },3800);
+}
 
 /* ===================================================================
    V6.8 · SMEGENŲ ČEMPIONATAS
@@ -983,7 +1085,7 @@ padding:2px 0;animation:apopFly 1.5s ease-out forwards;text-shadow:0 2px 10px rg
 background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:pointer}
 #corner button.off{opacity:.45}
 #corner button.act{border-color:var(--accent);color:var(--accent);font-weight:800}
-@media print{.hud,#bar,#barTrack,#boot,#memeBox,#streamTop,#chatPanel,#emoRain,#milestone,#auraHud,#auraPops,#gestHint,#notes,#net,#camWrap,#cvBox,#fxCanvas,#corner{display:none!important}.slide{display:none!important}
+@media print{.hud,#bar,#barTrack,#boot,#memeBox,#streamTop,#chatPanel,#emoRain,#milestone,#confetti,#auraHud,#auraPops,#gestHint,#notes,#net,#camWrap,#cvBox,#fxCanvas,#corner{display:none!important}.slide{display:none!important}
 #certCard{display:block!important;border-width:4px}body{background:#fff}}
 </style>
 </head>
@@ -1079,6 +1181,7 @@ background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:
   <div class="cfoot">suvaidintas chat'as · tikrų žmonių čia nėra</div>
 </div>
 <div id="emoRain"></div>
+<div id="confetti"></div>
 <div id="milestone" onclick="this.classList.remove('on')"></div>
 
 <div id="memeBox" onclick="memeHide()"></div>
@@ -1111,6 +1214,7 @@ background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:
   <span class="cnt" id="cnt"></span>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 var QR_URL = "https://krisvas.lt/go/bc-diena"; /* SET-ME */
@@ -1541,9 +1645,14 @@ SL = SL.concat([
  "<div class='card boss'><div class='emo'>📷🕺</div><h3>MŪSŲ VERSIJA — DABAR</h3><p>AI kamera seka TAVO kūną (skeletas) IR pirštus (taškai). Judesys = smegenų treniruotė.</p></div></div>"+
  "<p><button class='btn btn-red' onclick='auraMode()'>🕺 ĮJUNGTI AURA REŽIMĄ</button> "+
  "<button class='btn btn-ghost' onclick='auraPoint(1000)'>+1000 AURA</button> <button class='btn btn-ghost' onclick='auraPoint(-500)'>-500</button></p>"+
- "<p><button class='btn btn-ghost' onclick='cvExplain()'>🧠 Kas yra computer vision?</button></p>",
+ "<p><button class='btn btn-ghost' onclick='cvExplain()'>🧠 Kas yra computer vision?</button></p>"+
+ "<div id='pultBox'><div id='pultQr'></div><div id='pultTxt'>"+
+ "<h3>📱 MOKYTOJA — didžiausia aura salėje</h3>"+
+ "<p>Nuskenuok kodą telefonu ir valdyk salės aurą: +100 · −100 · +500 SUPER · 🎉 konfeti.</p>"+
+ "<p>Salės kodas: <span id='pultRoom'>—</span></p>"+
+ "<span id='pultState'>jungiamasi…</span></div></div>",
  vo:11, voice:"Girdėjot apie aura farming? Prasidėjo nuo vienuolikmečio iš Indonezijos, kuris šoko valties priekyje — ir užkariavo internetą. Dabar vaikai varžosi judesiais gatvėse visame pasaulyje. Mūsų versija: dirbtinio intelekto kamera seka visą tavo kūną ir kiekvieną pirštą. Judėk, būk kūrybingas, reaguok greitai. Judesys — smegenų treniruotė. Du drąsuoliai — į priekį!",
- notes:{say:"JŲ teritorija — leisk papasakoti, kas žino aura farming. Tada AURA REŽIMAS: 2 vaikai priekyje, muzika, kamera juos seka.",do:"AI piešia SKELETĄ + pirštų taškus. GESTAI: savanorio DEŠINĖ ranka virš galvos = +300, KAIRĖ = −200, atviras delnas 5 pirštai = +500 (ranka sušvyti žaliai/raudonai). ⚠️ Veikia TIK 1–3 savanoriams prie kameros (~2–4 m) — visos salės ji NEMATO; taip ir pasakyk: „kamera mato tik jus“. Atsarginis variantas visada: +/− klavišai. 60–90 sek šou. „Kaip jis mane mato?“ -> 🧠 COMPUTER VISION (ESC uždaryti).",br:"„Judesys keičia smegenis. Įrodyta — taksistų smegenimis…“"}},
+ notes:{say:"JŲ teritorija — leisk papasakoti, kas žino aura farming. Tada AURA REŽIMAS: 2 vaikai priekyje, muzika, kamera juos seka.",do:"AI piešia SKELETĄ + pirštų taškus. GESTAI: savanorio DEŠINĖ ranka virš galvos = +300, KAIRĖ = −200, atviras delnas 5 pirštai = +500 (ranka sušvyti žaliai/raudonai). ⚠️ Veikia TIK 1–3 savanoriams prie kameros (~2–4 m) — visos salės ji NEMATO; taip ir pasakyk: „kamera mato tik jus“. Atsarginis variantas visada: +/− klavišai. 60–90 sek šou. „Kaip jis mane mato?“ -> 🧠 COMPUTER VISION (ESC uždaryti). 📱 PULTAS: mokytoja nuskenuoja QR (salės kodas ekrane) ir iš telefono duoda +100/−100/+500/konfeti — pasakyk salei: „mokytoja turi didžiausią aurą“. Jei nėra interneto — pulto blokas tiesiog pilkas, viskas kita veikia.",br:"„Judesys keičia smegenis. Įrodyta — taksistų smegenimis…“"}},
 
 /* 12 SMEGENYS vs LLM */
 {ey:"ĮRODYMAS", tag:"smegenys", sec:60, cls:"center",
@@ -2916,7 +3025,7 @@ function buildStars(){
   step();
 })();
 
-build();show(0);_booted=true;bootRun();
+build();show(0);_booted=true;bootRun();pultInit();
 </script>
 </body>
 </html>
