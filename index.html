@@ -23,21 +23,21 @@ font-size:clamp(24px,4.8vw,52px);line-height:1.08;margin:.25em 0;text-wrap:balan
 .center{align-items:center;text-align:center}
 .center .sub{margin-inline:auto}
 .rword{color:var(--accent)}
-.gimg{width:100%;border-radius:var(--r);object-fit:cover;display:block;min-height:110px;max-height:160px;animation:kb 14s ease-in-out infinite alternate}
-img.gifwide{max-height:300px;min-height:150px;width:min(640px,92vw);margin:12px auto}
+.gimg{width:100%;border-radius:var(--r);object-fit:cover;display:block;min-height:140px;max-height:205px;animation:kb 14s ease-in-out infinite alternate}
+img.gifwide{max-height:380px;min-height:190px;width:min(820px,94vw);margin:12px auto}
 @keyframes kb{0%{transform:scale(1)}100%{transform:scale(1.05)}}
 @media (prefers-reduced-motion: reduce){.gimg,.dinoscene *,.picto span{animation:none!important}}
 .gifslot{background:repeating-linear-gradient(45deg,#f2f0ec 0 12px,#faf9f7 12px 24px);
 border:1px dashed var(--line);border-radius:var(--r);display:grid;place-items:center;
 color:var(--muted);font-family:var(--mono);font-size:11px;text-transform:uppercase;
-letter-spacing:.06em;text-align:center;padding:8px;min-height:100px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:18px 0;width:100%;max-width:1080px}
+letter-spacing:.06em;text-align:center;padding:8px;min-height:128px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:14px;margin:18px 0;width:100%;max-width:1180px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;cursor:pointer;text-align:left}
 .card h3{font-family:var(--mono);font-size:13.5px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.05em}
 .card .fix{display:none;color:var(--muted);font-size:14px;margin-top:6px}
 .card.open{border-color:var(--accent)}
 .card.open .fix{display:block}
-.card .emo{font-size:26px}
+.card .emo{font-size:34px}
 .card p{font-size:13.5px;color:var(--muted);margin:0}
 .boss{border:2px solid var(--accent)}
 .qbox{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:var(--r);padding:13px 16px;margin:8px 0;max-width:780px;width:100%;text-align:left;cursor:pointer}
@@ -93,8 +93,8 @@ box-shadow:0 0 24px rgba(255,80,0,.9), 0 0 60px rgba(255,140,0,.5);animation:met
 .vs .card{cursor:default}
 @media(max-width:640px){.vs{grid-template-columns:1fr}}
 /* amžiaus juosta ant lifecycle */
-.lifewrap{position:relative;width:min(640px,92vw);margin:12px auto}
-.lifewrap img{width:100%;max-height:300px;object-fit:cover;border-radius:var(--r);display:block}
+.lifewrap{position:relative;width:min(780px,94vw);margin:12px auto}
+.lifewrap img{width:100%;max-height:375px;object-fit:cover;border-radius:var(--r);display:block}
 #ageChip{position:absolute;left:12px;bottom:12px;background:rgba(10,10,10,.85);color:#fff;
 font-family:var(--mono);font-weight:800;padding:10px 16px;border-radius:var(--r);font-size:clamp(15px,2.4vw,22px);transition:opacity .4s}
 #ageChip b{color:#FF6B6B}
@@ -104,15 +104,15 @@ font-family:var(--mono);font-weight:800;padding:10px 16px;border-radius:var(--r)
 transition:transform 1.6s cubic-bezier(.2,.8,.2,1);background:conic-gradient(#fff 0deg,#F7F7F5 45deg,#fff 90deg,#F7F7F5 135deg,#fff 180deg,#F7F7F5 225deg,#fff 270deg,#F7F7F5 315deg)}
 #wheel .wit{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;display:grid;place-items:center;font-size:30px}
 #wheelPtr{font-size:34px;line-height:1;text-align:center;margin-bottom:-6px}
-#wheelCard{max-width:360px;text-align:left;background:var(--surface);border:2px solid var(--accent);border-radius:var(--r);padding:16px;min-height:220px}
-#wheelCard img{width:100%;height:130px;object-fit:cover;border-radius:var(--r)}
+#wheelCard{max-width:430px;text-align:left;background:var(--surface);border:2px solid var(--accent);border-radius:var(--r);padding:16px;min-height:220px}
+#wheelCard img{width:100%;height:165px;object-fit:cover;border-radius:var(--r)}
 #wheelCard .yr{font-family:var(--mono);color:var(--accent);font-weight:800;font-size:19px;margin:6px 0 2px}
 #wheelCard h3{margin:0;font-family:var(--mono);text-transform:uppercase}
 #wheelCard p{font-size:14px;color:var(--muted);margin:6px 0 0}
 /* išradėjų portretai */
-.pcard img{width:100%;height:150px;object-fit:cover;object-position:top;border-radius:var(--r);filter:grayscale(.2)}
+.pcard img{width:100%;height:190px;object-fit:cover;object-position:top;border-radius:var(--r);filter:grayscale(.2)}
 /* S7 meteoro scena */
-.dinoscene{position:relative;width:min(700px,94vw);height:230px;margin:8px auto;background:linear-gradient(#EAF4FA 60%,#E7E0D2 60%);border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+.dinoscene{position:relative;width:min(840px,96vw);height:288px;margin:8px auto;background:linear-gradient(#EAF4FA 60%,#E7E0D2 60%);border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
 .meteor{position:absolute;top:-30px;left:-60px;font-size:52px;animation:fall 2.6s linear infinite;filter:drop-shadow(0 0 14px rgba(255,120,0,.8))}
 .meteor b{font-family:var(--mono);font-size:20px;color:#fff;background:var(--accent);padding:2px 7px;border-radius:var(--r);margin-left:-14px;vertical-align:top}
 @keyframes fall{0%{transform:translate(0,0) rotate(20deg)}100%{transform:translate(760px,190px) rotate(20deg)}}
@@ -123,10 +123,10 @@ transition:transform 1.6s cubic-bezier(.2,.8,.2,1);background:conic-gradient(#ff
 #evoChoice{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:10px}
 #evoResult{font-size:clamp(26px,5vw,44px);min-height:1.3em;font-family:var(--mono);font-weight:800;letter-spacing:.1em}
 /* S9 swipe žaidimas */
-#swipeWrap{position:relative;width:min(420px,92vw);margin:10px auto}
+#swipeWrap{position:relative;width:min(510px,94vw);margin:10px auto}
 .scard{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.10);
 padding:26px 20px;text-align:center;user-select:none;touch-action:none;cursor:grab;transition:transform .25s,opacity .25s}
-.scard .semo{font-size:56px}
+.scard .semo{font-size:70px}
 .scard .stxt{font-size:19px;font-weight:600;margin-top:8px}
 .scard .sw{display:none;margin-top:10px;font-size:14.5px}
 .sbtns{display:flex;justify-content:space-between;margin-top:12px}
@@ -136,8 +136,8 @@ padding:26px 20px;text-align:center;user-select:none;touch-action:none;cursor:gr
 .tagG{color:var(--good);font-weight:800}.tagB{color:var(--accent);font-weight:800}
 /* pictogramos */
 .picto{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:14px 0}
-.picto div{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;width:150px}
-.picto span{display:block;font-size:34px;animation:bob 2.2s ease-in-out infinite}
+.picto div{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;width:184px}
+.picto span{display:block;font-size:44px;animation:bob 2.2s ease-in-out infinite}
 .picto div:nth-child(2) span{animation-delay:.3s}.picto div:nth-child(3) span{animation-delay:.6s}
 .picto div:nth-child(4) span{animation-delay:.9s}.picto div:nth-child(5) span{animation-delay:1.2s}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
@@ -158,8 +158,8 @@ padding:26px 20px;text-align:center;user-select:none;touch-action:none;cursor:gr
 #camLabel{position:absolute;left:6px;top:6px;background:rgba(217,4,41,.9);color:#fff;font-family:var(--mono);font-size:11px;padding:3px 7px;border-radius:3px;z-index:2}
 #auraScore{position:absolute;right:8px;top:6px;color:#fff;font-family:var(--mono);font-weight:800;font-size:20px;z-index:2;text-shadow:0 0 8px #D90429}
 /* ===== V5: GIF slotai ===== */
-.gifslot.mini{min-height:78px;font-size:10px}
-.card .gimg.mini{max-height:96px;min-height:78px}
+.gifslot.mini{min-height:98px;font-size:10px}
+.card .gimg.mini{max-height:122px;min-height:98px}
 /* ===== V5: computer vision paaiškinimas ===== */
 #cvBox{position:fixed;inset:0;z-index:22;display:none;background:rgba(255,255,255,.97);
 padding:4vh 5vw;overflow:auto;flex-direction:column;align-items:center;justify-content:center;text-align:center}
@@ -248,11 +248,11 @@ box-shadow:0 3px 0 #8f0219;transition:top .18s}
 @keyframes rayp{0%,100%{opacity:.2}50%{opacity:.9}}
 @media (prefers-reduced-motion: reduce){.evocell *,#cvSvg *,.reel.win{animation:none!important}}
 /* ===== V5.2: GYVOS SVG SCENOS (Higgsfield GIF'ų pakaitalas) ===== */
-.svgscene{width:100%;height:130px;min-height:110px;max-height:160px;border-radius:var(--r);
+.svgscene{width:100%;height:165px;min-height:140px;max-height:205px;border-radius:var(--r);
 overflow:hidden;display:block;background:#fff;border:1px solid var(--line)}
 .svgscene>svg{width:100%;height:100%;display:block}
-.card .svgscene.mini{height:88px;min-height:78px;max-height:96px}
-.svgscene.gifwide{width:min(640px,92vw);height:clamp(160px,28vh,300px);max-height:300px;margin:12px auto}
+.card .svgscene.mini{height:112px;min-height:98px;max-height:122px}
+.svgscene.gifwide{width:min(820px,94vw);height:clamp(200px,34vh,380px);max-height:380px;margin:12px auto}
 .scn{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
 .scn *{transform-box:fill-box}
 .scn .f{fill:var(--ink);stroke:none}
@@ -418,6 +418,44 @@ border:1px solid rgba(217,4,41,.55);clip-path:polygon(50% 0,100% 62%,62% 100%,0 
 animation:shfly .9s cubic-bezier(.2,.7,.4,1) forwards}
 @keyframes shfly{0%{transform:translate(-50%,-50%) scale(.2) rotate(0);opacity:1}
 100%{transform:translate(var(--tx),var(--ty)) scale(1.25) rotate(var(--rot));opacity:0}}
+/* ===== V6.6: finalinis klausimas + cliffhangeris ===== */
+#cliff{font-family:var(--mono);font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+font-size:clamp(13px,2.1vw,18px);color:var(--muted);margin:10px 0 2px}
+#cliff b{color:var(--accent)}
+.closeq{font-family:var(--mono);font-weight:800;text-transform:uppercase;
+font-size:clamp(22px,5.4vw,58px);line-height:1.08;letter-spacing:.02em;
+margin:12px auto 6px;max-width:16em;text-wrap:balance}
+.closeq span{color:var(--accent)}
+
+/* ===== V6.6: MEMŲ perdanga (vedėjo klavišas M) ===== */
+#memeBox{position:fixed;inset:0;z-index:24;display:none;place-items:center;
+background:rgba(10,10,10,.72);padding:5vw}
+#memeBox.on{display:grid;animation:memeIn .22s ease-out}
+@keyframes memeIn{from{opacity:0}to{opacity:1}}
+.memecard{background:#fff;border:5px solid var(--ink);border-radius:var(--r);
+max-width:min(760px,92vw);text-align:center;overflow:hidden;
+box-shadow:0 24px 70px rgba(0,0,0,.5);animation:memeSlam .38s cubic-bezier(.2,2,.4,1)}
+@keyframes memeSlam{0%{transform:scale(.55) rotate(-5deg)}70%{transform:scale(1.04) rotate(1deg)}100%{transform:scale(1) rotate(0)}}
+.memecard .top,.memecard .bot{font-family:var(--mono);font-weight:800;text-transform:uppercase;
+font-size:clamp(19px,3.6vw,38px);line-height:1.14;padding:14px 18px;letter-spacing:.02em}
+.memecard .bot{color:var(--accent);border-top:3px solid var(--ink)}
+.memecard .art{font-size:clamp(70px,17vw,150px);line-height:1.05;padding:8px 0 12px;background:var(--surface)}
+.memecard img{width:100%;max-height:44vh;object-fit:cover;display:block}
+
+/* ===== V6.6: greito testo dideli mygtukai (matomi iš salės galo) ===== */
+#q67{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.bigans{background:var(--surface);border:3px solid var(--ink);border-radius:var(--r);
+padding:26px 40px;cursor:pointer;font-family:var(--mono);display:block;transition:transform .15s}
+.bigans:hover{transform:translateY(-3px)}
+.bigans .n{display:block;font-size:clamp(44px,9vw,86px);font-weight:800;line-height:1}
+.bigans .u{display:block;font-size:clamp(13px,2vw,17px);color:var(--muted);
+text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+.bigans.ok{border-color:var(--good);background:#eefaf7}
+.bigans.ok .n{color:var(--good)}
+.bigans.bad{border-color:var(--accent);background:#fdeef0}
+.bigans.bad .n{color:var(--accent)}
+#q67msg{font-family:var(--mono);font-weight:800;font-size:clamp(16px,2.8vw,26px);min-height:1.5em}
+
 /* ===== V6.5: KELIONĖS MENIU (KAS TAVĘS LAUKIA) ===== */
 .journey{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;
 width:100%;max-width:1040px;margin:18px 0}
@@ -502,7 +540,7 @@ padding:2px 0;animation:apopFly 1.5s ease-out forwards;text-shadow:0 2px 10px rg
 background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:pointer}
 #corner button.off{opacity:.45}
 #corner button.act{border-color:var(--accent);color:var(--accent);font-weight:800}
-@media print{.hud,#bar,#barTrack,#boot,#auraHud,#auraPops,#gestHint,#notes,#net,#camWrap,#cvBox,#fxCanvas,#corner{display:none!important}.slide{display:none!important}
+@media print{.hud,#bar,#barTrack,#boot,#memeBox,#auraHud,#auraPops,#gestHint,#notes,#net,#camWrap,#cvBox,#fxCanvas,#corner{display:none!important}.slide{display:none!important}
 #certCard{display:block!important;border-width:4px}body{background:#fff}}
 </style>
 </head>
@@ -584,6 +622,8 @@ background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:
 </div>
 
 <div class="stage" id="stage"></div>
+
+<div id="memeBox" onclick="memeHide()"></div>
 
 <div id="gestHint">
   <div class="up"><div class="ic" id="ghUp">🙋‍♂️</div><p>Dešinė<br>aukštyn = +</p></div>
@@ -1008,6 +1048,19 @@ var SL=[
 ];
 SL = SL.concat([
 
+/* 9b · V6.6 GREITAS TESTAS — „67" atšaukimas (po swipe žaidimo) */
+{ey:"GREITAS PATIKRINIMAS", cls:"center", tag:"miegas", sec:55,
+ html:"<h1>Vienas klausimas. <span class='rword'>Be gudravimo.</span></h1>"+
+ "<p class='sub' style='font-size:clamp(20px,3.4vw,32px)'><b>Kiek valandų miego reikia TAVO smegenims?</b></p>"+
+ "<div id='q67'>"+
+ "<button class='bigans' onclick='q67(0,this)'><span class='n'>6–7</span><span class='u'>valandos</span></button>"+
+ "<button class='bigans' onclick='q67(1,this)'><span class='n'>9–11</span><span class='u'>valandų</span></button>"+
+ "</div><p id='q67msg'></p>",
+ voice:"Vienas klausimas, be gudravimo. Kiek valandų miego reikia tavo smegenims? Šeši–septyni? Ar devyni–vienuolika? Rinkis garsiai!",
+ notes:{say:"SALĖ ŠAUKIA ATSAKYMĄ. Kai kas rėks „šeši–septyni“ — nes tai memas. Tuo ir naudokis: „žinau, kad 6–7 juokinga. Bet smegenims tai per mažai.“",
+ do:"Paspausk tą variantą, kurį salė šaukia GARSIAU — net jei neteisingą. Neteisingas = fa garsas ir −100 auros, salė kaukia. Tada teisingas = +400 ir jėėė.",
+ br:"„O dabar bosas iš arti.“"}},
+
 /* 10 BRAIN ROT iš arti */
 {ey:"BOSAS", cls:"center",
  html:"<h1><span class='rword'>BRAIN ROT</span> 🧟</h1>"+
@@ -1036,9 +1089,9 @@ SL = SL.concat([
 /* 12 SMEGENYS vs LLM */
 {ey:"ĮRODYMAS", cls:"center",
  html:"<h1>Mokytis = <span class='rword'>keisti smegenis</span></h1>"+
- "<div class='vs'>"+
- "<div class='card'>"+slot("taxi")+"<h3 style='margin-top:8px'>🧠 Tavo smegenys</h3><p>Londono taksistai išmoko 25 000 gatvių — atminties centras <b>fiziškai užaugo</b>. Kartoji → jungtys storėja. Tai neuroplastiškumas.</p></div>"+
- "<div class='card'>"+slot("neural")+"<h3 style='margin-top:8px'>🤖 Dirbtinis „smegenų“ tinklas</h3><p>LLM mokosi taip pat: milijardai jungčių stiprėja su kiekvienu pavyzdžiu. AI nukopijavo TAVO smegenų triuką.</p></div></div>"+
+ slot("neural","gifwide")+
+ "<div class='cards' style='max-width:900px'>"+
+ "<div class='card boss'><h3>🧠 → 🤖 TAS PATS TRIUKAS</h3><p style='font-size:15px'>Kartoji → jungtys smegenyse <b>fiziškai storėja</b>. Tai — neuroplastiškumas. <b>Londono taksistai</b> išmoko 25 000 gatvių, ir jų atminties centras UŽAUGO. Dirbtinis tinklas mokosi lygiai taip pat: milijardai jungčių stiprėja su kiekvienu pavyzdžiu. <b class='rword'>AI nukopijavo tavo smegenų būdą.</b></p></div></div>"+
  "<p class='sub'>Kiekviena treniruotė stato tavo vidinį <b class='rword'>Brain City</b> — jungtis po jungties.</p>",
  vo:12, voice:"Ar smegenis galima užauginti? Taip. Londono taksistai išmoko dvidešimt penkis tūkstančius gatvių — ir jų atminties centras fiziškai užaugo. Įdomiausia? Dirbtinis intelektas mokosi lygiai taip pat: milijardai jungčių stiprėja su kiekvienu pavyzdžiu. AI nukopijavo tavo smegenų triuką. Kiekviena treniruotė stato tavo vidinį smegenų miestą.",
  notes:{say:"⏱ MAX 45 SEK. Kairė — smegenys, dešinė — AI: TAS PATS principas.",do:"10 sek: visi žongliruoja įsivaizduojamais kamuoliukais.",br:"„Tai kaip atrodo PILNA treniruotė? Formulė…“"}},
@@ -1152,9 +1205,11 @@ SL = SL.concat([
  "<div><span>🥽</span><p>Valdyk VR·AR·AI</p></div>"+
  "<div><span>🛡️</span><p>Nevaldomas technologijų</p></div>"+
  "<div><span>⭐</span><p>Siek žvaigždžių</p></div></div>"+
+ "<p id='cliff'>Šiandien tu pamatei tik <b>vieną pamoką</b>. Brain Club'e jų — <b>visi metai</b>.</p>"+
+ "<p class='closeq'>O kaip smegenis <span>treniruosi TU</span>?</p>"+
  "<div id='qr'></div><p class='small'>Paimk kvietimą → nuskenuok QR su tėvais → iki susitikimo Brain Club'e!</p>",
  vo:18, voice:"Nebūk dinozauras. Evoliucionuok. Mokykis mokytis. Valdyk savo smegenis. Valdyk virtualią realybę ir dirbtinį intelektą — ir neleisk technologijoms valdyti tavęs. Paimk kvietimą, nuskenuok kodą su tėvais. Siek žvaigždžių — ir iki susitikimo Brain Club'e!",
- notes:{say:"DINOZAURO KOSTIUMAS įbėga — IRONIŠKAI, su komedijos laiku!",do:"Kvietimai prie durų. QR — SU TĖVAIS. Ekrane dino skrenda raketa!",br:"Finalas: „Iki susitikimo!“ + plojimai dinozaurui."}}
+ notes:{say:"CLIFFHANGERIS: „šiandien pamatei VIENĄ pamoką — Brain Club’e jų visi metai.“ Tada UŽDUOK klausimą garsiai ir PALAUK 3 sek tyloje: „O kaip smegenis treniruosi TU?“ Tyla čia — stipriausias ginklas.",do:"Kelis atsakymus paimk iš salės (2–3, ne daugiau). Tada dinozauro kostiumas įbėga — IRONIŠKAI, su komedijos laiku. Galutinė salės AURA lieka ekrane — perskaityk ją garsiai: „šiandien surinkot X auros“. Kvietimai prie durų, QR — SU TĖVAIS.",br:"Finalas: „Iki susitikimo!“ + plojimai dinozaurui."}}
 ]);
 
 /* ===================================================================
@@ -1457,10 +1512,11 @@ document.addEventListener("keydown",function(e){
   if(e.key==="n"||e.key==="N")toggleNotes();
   if(e.key==="s"||e.key==="S")toggleMute();
   if(e.key==="a"||e.key==="A")auraToggle();
+  if(e.key==="m"||e.key==="M")memeShow();
   /* V6.3 vedėjo klavišai: + prideda 100 auros, − atima 100 (su „fa") */
   if(e.key==="+"||e.key==="="||e.key==="Add"){aura(100,"vedėjas");e.preventDefault();}
   if(e.key==="-"||e.key==="_"||e.key==="Subtract"){aura(-100,"vedėjas");e.preventDefault();}
-  if(e.key==="Escape"){ var b=document.getElementById("cvBox"); if(b)b.classList.remove("on"); }
+  if(e.key==="Escape"){ var b=document.getElementById("cvBox"); if(b)b.classList.remove("on"); memeHide(); }
 });
 
 /* ===== AMŽIŲ JUOSTA (1 skaidrė) ===== */
@@ -1770,6 +1826,60 @@ function drawFingers(cx,cv){
     });
     cx.restore();
   });
+}
+
+/* ===================================================================
+   V6.6 · ATSITIKTINIS MEMAS (vedėjo klavišas M)
+   Kai salė pradeda snūduriuoti — vienas M ir 2 s juoko.
+   Jei assets/img/styvas.jpg yra — jis įeina į rotaciją automatiškai.
+   =================================================================== */
+var MEMES=[
+ {t:"KAI MOKYTOJA SAKO",a:"\uD83D\uDC80",b:"„atsiverskim vadovėlius“"},
+ {t:"AŠ: miegosiu 9 valandas",a:"\uD83D\uDCF1\uD83D\uDD52",b:"telefonas 01:47: „dar vienas video“"},
+ {t:"SMEGENYS PO 5 VAL. SCROLLINIMO",a:"\uD83E\uDDDF",b:"„aš niekada nieko neatsimenu“"},
+ {t:"DINOZAURAI, 66 mln. m. pr. Kr.",a:"\uD83E\uDD96\u2604\uFE0F",b:"„mums nereikia keistis“"},
+ {t:"KAI PATS SUKŪRIAU ŽAIDIMĄ SU AI",a:"\uD83D\uDE0E\uD83C\uDFAE",b:"AURA: +10 000"},
+ {t:"MOKYTOJA SU AURA PULTU",a:"\uD83D\uDCF1\u2728",b:"„minus 500, visai klasei“"}
+];
+var _memeT=null, _memeStyvas=false;
+(function(){                       /* tyliai pasitikrinam, ar yra Styvo nuotrauka */
+  var im=new Image();
+  im.onload=function(){ _memeStyvas=true;
+    MEMES.push({t:"KAI KAŽKAS SAKO „BŪRELIAI NUOBODŪS“",img:"assets/img/styvas.jpg",b:"STYVAS TO NEPAKĘS"}); };
+  im.src="assets/img/styvas.jpg";
+})();
+function memeShow(){
+  var b=document.getElementById("memeBox"); if(!b)return;
+  var m=MEMES[Math.floor(Math.random()*MEMES.length)];
+  b.innerHTML="<div class='memecard'><div class='top'>"+m.t+"</div>"+
+    (m.img?("<img src='"+m.img+"' alt=''>"):("<div class='art'>"+m.a+"</div>"))+
+    "<div class='bot'>"+m.b+"</div></div>";
+  b.classList.add("on");
+  sfx("fa",.6);
+  clearTimeout(_memeT);
+  _memeT=setTimeout(memeHide,2000);
+}
+function memeHide(){
+  var b=document.getElementById("memeBox"); if(b)b.classList.remove("on");
+  clearTimeout(_memeT);
+}
+
+/* ===== V6.6: greitas „67" testas ===== */
+var q67done=false;
+function q67(i,btn){
+  var msg=document.getElementById("q67msg");
+  if(i===1){
+    btn.classList.add("ok");
+    if(!q67done){ q67done=true; aura(400,"miegas: 9–11 val ✅"); }
+    msg.style.color="var(--good)";
+    msg.textContent="TEISINGAI — 9–11 val. Smegenys AUGA miegant, ne dieną.";
+  }else{
+    btn.classList.add("bad");
+    aura(-100,"6–7 val: per mažai");
+    msg.style.color="var(--accent)";
+    msg.textContent="6–7? Tai memas, ne miegas 😅 Bandyk dar — smegenims reikia DAUGIAU.";
+    setTimeout(function(){ btn.classList.remove("bad") },1400);
+  }
 }
 
 /* ===== SWIPE ŽAIDIMAS ===== */
