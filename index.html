@@ -516,408 +516,6 @@ font-size:clamp(24px,6vw,60px);color:var(--accent);line-height:1.1;margin:8px 0}
 gap:9px;max-width:660px;margin:10px auto}
 
 /* ===================================================================
-   V6.9 · AURA PULTAS — mokytojos telefonas per Supabase Realtime
-   Deck'as PRENUMERUOJA kanalą  bc-day-aura-<ROOM>.
-   pultas.html (tas pats repo) siunčia {type:'aura',delta} ir {type:'confetti'}.
-   Raktas viešas (publishable) — jokių asmens duomenų, nieko nesaugoma.
-   BE INTERNETO: pulto blokas pasislepia, visa kita veikia kaip veikė.
-   =================================================================== */
-var SB_URL="https://iiekmeylpppczicrsxho.supabase.co";
-var SB_KEY="sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF";
-var PULT={room:null, ch:null, ok:false};
-
-function pultRoom(){
-  if(PULT.room)return PULT.room;
-  var q=new URLSearchParams(location.search).get("room");
-  if(q){ PULT.room=q.toUpperCase().slice(0,4); return PULT.room }
-  try{                                    /* per perkrovimą kodas nesikeičia */
-    var k="bcday-room", v=sessionStorage.getItem(k);
-    if(v){ PULT.room=v; return v }
-  }catch(e){}
-  var A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789", r="";
-  for(var i=0;i<4;i++) r+=A[Math.floor(Math.random()*A.length)];
-  PULT.room=r;
-  try{ sessionStorage.setItem("bcday-room",r) }catch(e){}
-  return r;
-}
-function pultURL(){
-  var base=location.href.split("#")[0].split("?")[0];
-  base=base.replace(/[^\/]*$/,"");                 /* nukerpam index.html */
-  return base+"pultas.html?room="+pultRoom();
-}
-function pultInit(){
-  var box=document.getElementById("pultBox"); if(!box)return;
-  var room=pultRoom();
-  var rEl=document.getElementById("pultRoom"); if(rEl)rEl.textContent=room;
-  /* QR */
-  var q=document.getElementById("pultQr");
-  if(q&&!q.dataset.done){
-    try{ new QRCode(q,{text:pultURL(),width:132,height:132,correctLevel:QRCode.CorrectLevel.M});
-         q.dataset.done="1"; }
-    catch(e){ q.textContent=pultURL() }
-  }
-  /* Realtime */
-  if(typeof supabase==="undefined"||!supabase.createClient){
-    pultState("be interneto — pultas išjungtas",false);
-    box.style.opacity=".55"; return;
-  }
-  try{
-    var client=supabase.createClient(SB_URL,SB_KEY);
-    PULT.ch=client.channel("bc-day-aura-"+room,{config:{broadcast:{self:false}}});
-    PULT.ch.on("broadcast",{event:"aura"},function(m){
-      var d=(m&&m.payload&&m.payload.delta)|0;
-      if(d) aura(d,"mokytojos pultas 📱");
-    });
-    PULT.ch.on("broadcast",{event:"confetti"},function(){ confettiBurst(); });
-    PULT.ch.subscribe(function(st){
-      if(st==="SUBSCRIBED"){ PULT.ok=true; pultState("✅ pultas prijungtas",true); }
-      else if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ pultState("pultas nepasiekiamas",false) }
-    });
-  }catch(e){ pultState("pultas nepasiekiamas",false) }
-}
-function pultState(t,ok){
-  var e=document.getElementById("pultState"); if(!e)return;
-  e.textContent=t; e.classList.toggle("ok",!!ok);
-}
-function confettiBurst(n){
-  var w=document.getElementById("confetti"); if(!w)return;
-  var C=["#D90429","#FF0000","#12897A","#E8A317","#0A0A0A","#2ED47A"];
-  w.classList.add("on");
-  for(var i=0;i<(n||90);i++){
-    var d=document.createElement("div");
-    d.className="conf";
-    d.style.left=(Math.random()*100)+"%";
-    d.style.background=C[Math.floor(Math.random()*C.length)];
-    d.style.animationDuration=(1.6+Math.random()*1.6)+"s";
-    d.style.animationDelay=(Math.random()*.5)+"s";
-    d.style.transform="rotate("+(Math.random()*360)+"deg)";
-    w.appendChild(d);
-  }
-  sfx("jee",.8);
-  if(typeof emojiBurst==="function") emojiBurst(10);
-  setTimeout(function(){ w.innerHTML=""; w.classList.remove("on") },3800);
-}
-
-/* ===================================================================
-   V6.8 · SMEGENŲ ČEMPIONATAS
-   Eiga: 4 savanoriai -> 1 RATAS (visi žaidžia ŽAIDIMĄ A) -> 2 silpniausi
-   iškrenta švelniai (jiems irgi aura salei) -> FINALAS (ŽAIDIMAS B) ->
-   jei lygiosios, ŽAIDIMAS C (REAKCIJA).
-   Prieš kiekvieną žaidimą savanoris NUBRAUKIA loterijos bilietą.
-   Kiekvieno žaidėjo taškai virsta AURA VISAI SALEI.
-   =================================================================== */
-var CH={
-  players:[], order:[], idx:0, round:1, phase:"setup",
-  game:null, active:null, seq:[], input:[], level:0, reactTimes:[], reactN:0, timers:[]
-};
-var CHGAMES={
-  A:{n:"SKAIČIŲ SEKA", d:"Įsimink skaičius ir pakartok didžiąja klaviatūra"},
-  B:{n:"KUBO POZICIJA", d:"Įsimink, kurie langeliai užsidegė — ir pakartok"},
-  C:{n:"REAKCIJA",      d:"Kai ekranas taps ŽALIAS — spausk. Anksčiau — falstartas!"}
-};
-function chClear(){ CH.timers.forEach(clearTimeout); CH.timers=[] }
-function chT(fn,ms){ var t=setTimeout(fn,ms); CH.timers.push(t); return t }
-function chMsg(t){ var e=document.getElementById("chMsg"); if(e)e.innerHTML=t||"" }
-function chStageTxt(t){ var e=document.getElementById("chStage"); if(e)e.textContent=t }
-
-function chStart(){
-  var i,names=[];
-  for(i=0;i<4;i++){
-    var v=(document.getElementById("chn"+i)||{}).value||"";
-    names.push((v.trim())||("Žaidėjas "+(i+1)));
-  }
-  CH.players=names.map(function(n){return {n:n,score:0,out:false}});
-  CH.order=[0,1,2,3]; CH.idx=0; CH.round=1; CH.game="A";
-  document.getElementById("chSetup").style.display="none";
-  document.getElementById("chPlay").style.display="block";
-  chRenderBracket();
-  aura(200,"čempionatas prasideda 🏆");
-  chScratch();
-}
-function chReset(){
-  chClear();
-  CH.players=[];CH.order=[];CH.idx=0;CH.round=1;CH.phase="setup";CH.game=null;
-  document.getElementById("chSetup").style.display="block";
-  document.getElementById("chPlay").style.display="none";
-  document.getElementById("chDone").style.display="none";
-  document.getElementById("chGame").innerHTML="";
-  document.getElementById("chBracket").innerHTML="";
-  chStageTxt("4 savanoriai · 3 žaidimai · 1 nugalėtojas");
-  chMsg("");
-}
-function chRenderBracket(){
-  var b=document.getElementById("chBracket"); if(!b)return;
-  b.innerHTML=CH.players.map(function(p,i){
-    var cls="chp"+(p.out?" out":"")+(CH.order[CH.idx]===i&&CH.phase==="play"?" act":"")+(p.winner?" win":"");
-    return "<div class='"+cls+"'><span class='pn'>"+p.n+"</span><span class='ps'>"+p.score+"</span></div>";
-  }).join("");
-}
-
-/* ---------- LOTERIJOS BILIETAS (nubraukimas) ---------- */
-function chScratch(){
-  CH.phase="scratch";
-  var who=CH.players[CH.order[CH.idx]];
-  chRenderBracket();
-  chStageTxt(CH.round===1?"1 RATAS · visi keturi":(CH.round===2?"FINALAS · du geriausi":"PAPILDOMAS · lygiosios"));
-  chMsg("🎟 <b>"+who.n+"</b> — nubrauk bilietą!");
-  document.getElementById("chGame").innerHTML="";
-  document.getElementById("chNextBtn").style.display="none";
-  var wrap=document.getElementById("scratchWrap"), hint=document.getElementById("scratchHint");
-  wrap.style.display="block"; hint.style.display="block";
-  var g=CHGAMES[CH.game];
-  document.getElementById("scratchUnder").innerHTML=
-    "<div><div class='g'>"+g.n+"</div><div class='d'>"+g.d+"</div></div>";
-  var cv=document.getElementById("scratchCv");
-  var r=wrap.getBoundingClientRect();
-  cv.width=Math.max(200,Math.round(r.width)); cv.height=Math.max(120,Math.round(r.height));
-  var cx=cv.getContext("2d");
-  /* sidabrinis sluoksnis su užrašu */
-  var grd=cx.createLinearGradient(0,0,cv.width,cv.height);
-  grd.addColorStop(0,"#C9C9CE");grd.addColorStop(.5,"#ECECEF");grd.addColorStop(1,"#B9B9C0");
-  cx.fillStyle=grd; cx.fillRect(0,0,cv.width,cv.height);
-  cx.fillStyle="rgba(10,10,10,.30)";
-  cx.font="800 "+Math.round(cv.width/16)+"px 'JetBrains Mono',monospace";
-  cx.textAlign="center";
-  cx.fillText("BRAIN CLUB · LOTERIJA",cv.width/2,cv.height/2-8);
-  cx.font="600 "+Math.round(cv.width/26)+"px Inter,sans-serif";
-  cx.fillText("nubrauk ir sužinok žaidimą",cv.width/2,cv.height/2+22);
-  cx.globalCompositeOperation="destination-out";
-  var down=false,done=false;
-  function pt(e){ var b=cv.getBoundingClientRect();
-    return {x:(e.clientX-b.left)*cv.width/b.width, y:(e.clientY-b.top)*cv.height/b.height} }
-  function rub(e){
-    if(!down||done)return;
-    var p=pt(e);
-    cx.beginPath(); cx.arc(p.x,p.y,Math.max(18,cv.width/18),0,7); cx.fill();
-    if(Math.random()<.12&&chScratchPct(cx,cv)>0.45){ done=true; chScratchDone(); }
-  }
-  cv.onpointerdown=function(e){down=true;try{cv.setPointerCapture(e.pointerId)}catch(x){}rub(e)};
-  cv.onpointermove=rub;
-  cv.onpointerup=function(){ down=false;
-    if(!done&&chScratchPct(cx,cv)>0.30){ done=true; chScratchDone(); } };
-  cv.onpointercancel=function(){down=false};
-  /* atsarginis variantas: dvigubas spustelėjimas atskleidžia iš karto */
-  cv.ondblclick=function(){ if(!done){done=true;chScratchDone()} };
-}
-function chScratchPct(cx,cv){
-  try{
-    var d=cx.getImageData(0,0,cv.width,cv.height).data,clear=0,i,step=40;
-    for(i=3;i<d.length;i+=4*step){ if(d[i]<40)clear++; }
-    return clear/(d.length/(4*step));
-  }catch(e){ return 1 }
-}
-function chScratchDone(){
-  document.getElementById("scratchWrap").style.display="none";
-  document.getElementById("scratchHint").style.display="none";
-  sfx("jee",.7);
-  var g=CHGAMES[CH.game];
-  chMsg("🎯 <b>"+g.n+"</b> — "+CH.players[CH.order[CH.idx]].n+", pasiruošk!");
-  chT(chPlay,900);
-}
-
-/* ---------- ŽAIDIMŲ PALEIDIMAS ---------- */
-function chPlay(){
-  CH.phase="play"; chRenderBracket();
-  if(CH.game==="A") chGameA();
-  else if(CH.game==="B") chGameB();
-  else chGameC();
-}
-/* A · SKAIČIŲ SEKA — 3,4,5,6 skaitmenys */
-function chGameA(){
-  CH.level=3; CH.seq=[]; CH.input=[];
-  chGameANext();
-}
-function chGameANext(){
-  var g=document.getElementById("chGame");
-  CH.seq=[]; CH.input=[];
-  for(var i=0;i<CH.level;i++) CH.seq.push(Math.floor(Math.random()*10));
-  g.innerHTML="<p class='chstage'>Įsimink "+CH.level+" skaitmenis</p><div class='chBig a' id='chBig'></div>";
-  var big=document.getElementById("chBig"), k=0;
-  chMsg("👀 ŽIŪRĖK…");
-  (function flash(){
-    if(k>=CH.seq.length){
-      big.textContent="?";
-      chT(chGameAInput,420);
-      return;
-    }
-    big.textContent=CH.seq[k];
-    sfx("tada",.3);
-    k++;
-    chT(function(){ big.textContent=""; chT(flash,180) },720);
-  })();
-}
-function chGameAInput(){
-  var g=document.getElementById("chGame"),h="",i;
-  chMsg("⌨️ PAKARTOK");
-  h="<div class='chBig' id='chEcho'>_</div><div class='chPad'>";
-  for(i=0;i<10;i++) h+="<button onclick='chTapNum("+i+")'>"+i+"</button>";
-  h+="</div>";
-  g.innerHTML=h;
-}
-function chTapNum(n){
-  CH.input.push(n);
-  var e=document.getElementById("chEcho");
-  if(e)e.textContent=CH.input.join(" ");
-  var i=CH.input.length-1;
-  if(CH.input[i]!==CH.seq[i]){ sfx("fa"); chScore(CH.level-3,"suklydo ties "+CH.level+" skaitmenimis"); return; }
-  sfx("tada",.3);
-  if(CH.input.length===CH.seq.length){
-    sfx("jee",.8);
-    if(CH.level>=6){ chScore(4,"įveikė visus 6 skaitmenis! 🔥"); return; }
-    CH.level++;
-    chMsg("✅ TEISINGAI — dabar "+CH.level+"!");
-    chT(chGameANext,900);
-  }
-}
-/* B · KUBO POZICIJA — 3x3 tinklelis */
-function chGameB(){
-  CH.level=3; chGameBNext();
-}
-function chGameBNext(){
-  var g=document.getElementById("chGame"),i;
-  CH.seq=[]; CH.input=[];
-  for(i=0;i<CH.level;i++) CH.seq.push(Math.floor(Math.random()*9));
-  var h="<p class='chstage'>Įsimink "+CH.level+" langelius</p><div class='chGrid' id='chGrid'>";
-  for(i=0;i<9;i++) h+="<div data-i='"+i+"'></div>";
-  h+="</div>";
-  g.innerHTML=h;
-  var cells=document.querySelectorAll("#chGrid div"), k=0;
-  chMsg("👀 ŽIŪRĖK…");
-  (function flash(){
-    if(k>=CH.seq.length){ chT(chGameBInput,380); return }
-    var c=cells[CH.seq[k]];
-    c.classList.add("lit"); sfx("tada",.3); k++;
-    chT(function(){ c.classList.remove("lit"); chT(flash,190) },640);
-  })();
-}
-function chGameBInput(){
-  chMsg("👆 PAKARTOK");
-  var cells=document.querySelectorAll("#chGrid div");
-  cells.forEach(function(c){
-    c.onclick=function(){ chTapCell(parseInt(c.dataset.i,10),c) };
-  });
-}
-function chTapCell(n,el){
-  CH.input.push(n);
-  var i=CH.input.length-1;
-  if(CH.input[i]!==CH.seq[i]){
-    el.classList.add("no"); sfx("fa");
-    chScore(CH.level-3,"suklydo ties "+CH.level+" langeliais"); return;
-  }
-  el.classList.add("ok"); sfx("tada",.3);
-  if(CH.input.length===CH.seq.length){
-    sfx("jee",.8);
-    if(CH.level>=6){ chScore(4,"įveikė visus 6 langelius! 🔥"); return }
-    CH.level++;
-    chMsg("✅ TEISINGAI — dabar "+CH.level+"!");
-    chT(chGameBNext,900);
-  }
-}
-/* C · REAKCIJA — 3 bandymai */
-function chGameC(){
-  CH.reactTimes=[]; CH.reactN=0; chGameCNext();
-}
-function chGameCNext(){
-  var g=document.getElementById("chGame");
-  g.innerHTML="<p class='chstage'>Bandymas "+(CH.reactN+1)+" / 3</p>"+
-    "<div id='chReact'>LAUK…</div>";
-  var box=document.getElementById("chReact"), armed=false, t0=0, fired=false;
-  chMsg("⏳ Kai taps ŽALIAS — SPAUSK");
-  var wait=1200+Math.random()*3200;
-  var go=chT(function(){ armed=true; t0=performance.now();
-    box.classList.add("go"); box.textContent="SPAUSK!" },wait);
-  box.onclick=function(){
-    if(fired)return;
-    if(!armed){                       /* falstartas */
-      fired=true; clearTimeout(go);
-      box.classList.add("bad"); box.textContent="FALSTARTAS!";
-      sfx("fa"); CH.reactTimes.push(900);
-      chT(chGameCAfter,1100); return;
-    }
-    fired=true;
-    var ms=Math.round(performance.now()-t0);
-    CH.reactTimes.push(ms);
-    box.classList.remove("go"); box.textContent=ms+" ms";
-    sfx("jee",.7);
-    chT(chGameCAfter,1000);
-  };
-}
-function chGameCAfter(){
-  CH.reactN++;
-  if(CH.reactN<3){ chGameCNext(); return }
-  var sum=0; CH.reactTimes.forEach(function(t){sum+=t});
-  var avg=Math.round(sum/CH.reactTimes.length);
-  var pts=Math.max(0,Math.round((900-avg)/100));
-  chScore(pts,"vidutinė reakcija "+avg+" ms");
-}
-
-/* ---------- TAŠKAI IR EIGA ---------- */
-function chScore(pts,why){
-  chClear();
-  pts=Math.max(0,pts);
-  var p=CH.players[CH.order[CH.idx]];
-  p.score+=pts;
-  chRenderBracket();
-  chMsg("<b>"+p.n+"</b>: +"+pts+" tšk. — "+why);
-  /* visa salė gauna aurą už KIEKVIENĄ žaidėją */
-  aura(150+pts*100, p.n+" · +"+pts+" tšk.");
-  document.getElementById("chNextBtn").style.display="inline-block";
-  document.getElementById("chNextBtn").textContent=
-    (CH.idx<CH.order.length-1)?"KITAS ŽAIDĖJAS →":"REZULTATAI →";
-}
-function chNext(){
-  document.getElementById("chNextBtn").style.display="none";
-  document.getElementById("chGame").innerHTML="";
-  CH.idx++;
-  if(CH.idx<CH.order.length){ chScratch(); return }
-  chRoundEnd();
-}
-function chRoundEnd(){
-  if(CH.round===1){
-    /* du silpniausi iškrenta — ŠVELNIAI */
-    var rank=CH.order.slice().sort(function(a,b){return CH.players[b].score-CH.players[a].score});
-    var out=rank.slice(2);
-    out.forEach(function(i){ CH.players[i].out=true });
-    chRenderBracket();
-    var names=out.map(function(i){return CH.players[i].n}).join(" ir ");
-    chMsg("👏 <b>"+names+"</b> — jūsų taškai jau virto aura VISAI salei. Aplodismentai!");
-    aura(500,"iškritusiems — plojimai 👏");
-    CH.round=2; CH.game="B"; CH.order=rank.slice(0,2); CH.idx=0;
-    document.getElementById("chNextBtn").style.display="inline-block";
-    document.getElementById("chNextBtn").textContent="FINALAS →";
-    document.getElementById("chNextBtn").onclick=function(){
-      this.onclick=chNext; this.style.display="none"; chScratch();
-    };
-    return;
-  }
-  /* finalas arba lygiosios */
-  var a=CH.players[CH.order[0]], b=CH.players[CH.order[1]];
-  if(a.score===b.score&&CH.round===2){
-    CH.round=3; CH.game="C"; CH.idx=0;
-    chMsg("⚖️ LYGIOSIOS! Papildomas žaidimas — REAKCIJA.");
-    document.getElementById("chNextBtn").style.display="inline-block";
-    document.getElementById("chNextBtn").textContent="REAKCIJA →";
-    document.getElementById("chNextBtn").onclick=function(){
-      this.onclick=chNext; this.style.display="none"; chScratch();
-    };
-    return;
-  }
-  chWin(a.score>=b.score?a:b);
-}
-function chWin(p){
-  p.winner=true; chRenderBracket();
-  document.getElementById("chPlay").style.display="none";
-  var d=document.getElementById("chDone"); d.style.display="block";
-  document.getElementById("chWinner").textContent="🏆 "+p.n+" — ČEMPIONAS!";
-  document.getElementById("chWinLine").innerHTML=
-    "Bet aurą uždirbo <b>visa salė</b>: "+AURA.pts.toLocaleString("lt-LT")+" ✨";
-  sfx("victory");
-  aura(1000,"🏆 čempionas: "+p.n);
-  screenShatter(p.n.toUpperCase());
-  if(typeof emojiBurst==="function") emojiBurst(20);
-}
-
-/* ===================================================================
    V6.7 · TWITCH STREAM SLUOKSNIS
    Chat NIEKADA neuždengia turinio: kai jis atidarytas, .stage pastumiama
    kairėn (padding-right), o ne uždedama ant viršaus.
@@ -2436,6 +2034,408 @@ function drawFingers(cx,cv){
     });
     cx.restore();
   });
+}
+
+/* ===================================================================
+   V6.9 · AURA PULTAS — mokytojos telefonas per Supabase Realtime
+   Deck'as PRENUMERUOJA kanalą  bc-day-aura-<ROOM>.
+   pultas.html (tas pats repo) siunčia {type:'aura',delta} ir {type:'confetti'}.
+   Raktas viešas (publishable) — jokių asmens duomenų, nieko nesaugoma.
+   BE INTERNETO: pulto blokas pasislepia, visa kita veikia kaip veikė.
+   =================================================================== */
+var SB_URL="https://iiekmeylpppczicrsxho.supabase.co";
+var SB_KEY="sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF";
+var PULT={room:null, ch:null, ok:false};
+
+function pultRoom(){
+  if(PULT.room)return PULT.room;
+  var q=new URLSearchParams(location.search).get("room");
+  if(q){ PULT.room=q.toUpperCase().slice(0,4); return PULT.room }
+  try{                                    /* per perkrovimą kodas nesikeičia */
+    var k="bcday-room", v=sessionStorage.getItem(k);
+    if(v){ PULT.room=v; return v }
+  }catch(e){}
+  var A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789", r="";
+  for(var i=0;i<4;i++) r+=A[Math.floor(Math.random()*A.length)];
+  PULT.room=r;
+  try{ sessionStorage.setItem("bcday-room",r) }catch(e){}
+  return r;
+}
+function pultURL(){
+  var base=location.href.split("#")[0].split("?")[0];
+  base=base.replace(/[^\/]*$/,"");                 /* nukerpam index.html */
+  return base+"pultas.html?room="+pultRoom();
+}
+function pultInit(){
+  var box=document.getElementById("pultBox"); if(!box)return;
+  var room=pultRoom();
+  var rEl=document.getElementById("pultRoom"); if(rEl)rEl.textContent=room;
+  /* QR */
+  var q=document.getElementById("pultQr");
+  if(q&&!q.dataset.done){
+    try{ new QRCode(q,{text:pultURL(),width:132,height:132,correctLevel:QRCode.CorrectLevel.M});
+         q.dataset.done="1"; }
+    catch(e){ q.textContent=pultURL() }
+  }
+  /* Realtime */
+  if(typeof supabase==="undefined"||!supabase.createClient){
+    pultState("be interneto — pultas išjungtas",false);
+    box.style.opacity=".55"; return;
+  }
+  try{
+    var client=supabase.createClient(SB_URL,SB_KEY);
+    PULT.ch=client.channel("bc-day-aura-"+room,{config:{broadcast:{self:false}}});
+    PULT.ch.on("broadcast",{event:"aura"},function(m){
+      var d=(m&&m.payload&&m.payload.delta)|0;
+      if(d) aura(d,"mokytojos pultas 📱");
+    });
+    PULT.ch.on("broadcast",{event:"confetti"},function(){ confettiBurst(); });
+    PULT.ch.subscribe(function(st){
+      if(st==="SUBSCRIBED"){ PULT.ok=true; pultState("✅ pultas prijungtas",true); }
+      else if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ pultState("pultas nepasiekiamas",false) }
+    });
+  }catch(e){ pultState("pultas nepasiekiamas",false) }
+}
+function pultState(t,ok){
+  var e=document.getElementById("pultState"); if(!e)return;
+  e.textContent=t; e.classList.toggle("ok",!!ok);
+}
+function confettiBurst(n){
+  var w=document.getElementById("confetti"); if(!w)return;
+  var C=["#D90429","#FF0000","#12897A","#E8A317","#0A0A0A","#2ED47A"];
+  w.classList.add("on");
+  for(var i=0;i<(n||90);i++){
+    var d=document.createElement("div");
+    d.className="conf";
+    d.style.left=(Math.random()*100)+"%";
+    d.style.background=C[Math.floor(Math.random()*C.length)];
+    d.style.animationDuration=(1.6+Math.random()*1.6)+"s";
+    d.style.animationDelay=(Math.random()*.5)+"s";
+    d.style.transform="rotate("+(Math.random()*360)+"deg)";
+    w.appendChild(d);
+  }
+  sfx("jee",.8);
+  if(typeof emojiBurst==="function") emojiBurst(10);
+  setTimeout(function(){ w.innerHTML=""; w.classList.remove("on") },3800);
+}
+
+/* ===================================================================
+   V6.8 · SMEGENŲ ČEMPIONATAS
+   Eiga: 4 savanoriai -> 1 RATAS (visi žaidžia ŽAIDIMĄ A) -> 2 silpniausi
+   iškrenta švelniai (jiems irgi aura salei) -> FINALAS (ŽAIDIMAS B) ->
+   jei lygiosios, ŽAIDIMAS C (REAKCIJA).
+   Prieš kiekvieną žaidimą savanoris NUBRAUKIA loterijos bilietą.
+   Kiekvieno žaidėjo taškai virsta AURA VISAI SALEI.
+   =================================================================== */
+var CH={
+  players:[], order:[], idx:0, round:1, phase:"setup",
+  game:null, active:null, seq:[], input:[], level:0, reactTimes:[], reactN:0, timers:[]
+};
+var CHGAMES={
+  A:{n:"SKAIČIŲ SEKA", d:"Įsimink skaičius ir pakartok didžiąja klaviatūra"},
+  B:{n:"KUBO POZICIJA", d:"Įsimink, kurie langeliai užsidegė — ir pakartok"},
+  C:{n:"REAKCIJA",      d:"Kai ekranas taps ŽALIAS — spausk. Anksčiau — falstartas!"}
+};
+function chClear(){ CH.timers.forEach(clearTimeout); CH.timers=[] }
+function chT(fn,ms){ var t=setTimeout(fn,ms); CH.timers.push(t); return t }
+function chMsg(t){ var e=document.getElementById("chMsg"); if(e)e.innerHTML=t||"" }
+function chStageTxt(t){ var e=document.getElementById("chStage"); if(e)e.textContent=t }
+
+function chStart(){
+  var i,names=[];
+  for(i=0;i<4;i++){
+    var v=(document.getElementById("chn"+i)||{}).value||"";
+    names.push((v.trim())||("Žaidėjas "+(i+1)));
+  }
+  CH.players=names.map(function(n){return {n:n,score:0,out:false}});
+  CH.order=[0,1,2,3]; CH.idx=0; CH.round=1; CH.game="A";
+  document.getElementById("chSetup").style.display="none";
+  document.getElementById("chPlay").style.display="block";
+  chRenderBracket();
+  aura(200,"čempionatas prasideda 🏆");
+  chScratch();
+}
+function chReset(){
+  chClear();
+  CH.players=[];CH.order=[];CH.idx=0;CH.round=1;CH.phase="setup";CH.game=null;
+  document.getElementById("chSetup").style.display="block";
+  document.getElementById("chPlay").style.display="none";
+  document.getElementById("chDone").style.display="none";
+  document.getElementById("chGame").innerHTML="";
+  document.getElementById("chBracket").innerHTML="";
+  chStageTxt("4 savanoriai · 3 žaidimai · 1 nugalėtojas");
+  chMsg("");
+}
+function chRenderBracket(){
+  var b=document.getElementById("chBracket"); if(!b)return;
+  b.innerHTML=CH.players.map(function(p,i){
+    var cls="chp"+(p.out?" out":"")+(CH.order[CH.idx]===i&&CH.phase==="play"?" act":"")+(p.winner?" win":"");
+    return "<div class='"+cls+"'><span class='pn'>"+p.n+"</span><span class='ps'>"+p.score+"</span></div>";
+  }).join("");
+}
+
+/* ---------- LOTERIJOS BILIETAS (nubraukimas) ---------- */
+function chScratch(){
+  CH.phase="scratch";
+  var who=CH.players[CH.order[CH.idx]];
+  chRenderBracket();
+  chStageTxt(CH.round===1?"1 RATAS · visi keturi":(CH.round===2?"FINALAS · du geriausi":"PAPILDOMAS · lygiosios"));
+  chMsg("🎟 <b>"+who.n+"</b> — nubrauk bilietą!");
+  document.getElementById("chGame").innerHTML="";
+  document.getElementById("chNextBtn").style.display="none";
+  var wrap=document.getElementById("scratchWrap"), hint=document.getElementById("scratchHint");
+  wrap.style.display="block"; hint.style.display="block";
+  var g=CHGAMES[CH.game];
+  document.getElementById("scratchUnder").innerHTML=
+    "<div><div class='g'>"+g.n+"</div><div class='d'>"+g.d+"</div></div>";
+  var cv=document.getElementById("scratchCv");
+  var r=wrap.getBoundingClientRect();
+  cv.width=Math.max(200,Math.round(r.width)); cv.height=Math.max(120,Math.round(r.height));
+  var cx=cv.getContext("2d");
+  /* sidabrinis sluoksnis su užrašu */
+  var grd=cx.createLinearGradient(0,0,cv.width,cv.height);
+  grd.addColorStop(0,"#C9C9CE");grd.addColorStop(.5,"#ECECEF");grd.addColorStop(1,"#B9B9C0");
+  cx.fillStyle=grd; cx.fillRect(0,0,cv.width,cv.height);
+  cx.fillStyle="rgba(10,10,10,.30)";
+  cx.font="800 "+Math.round(cv.width/16)+"px 'JetBrains Mono',monospace";
+  cx.textAlign="center";
+  cx.fillText("BRAIN CLUB · LOTERIJA",cv.width/2,cv.height/2-8);
+  cx.font="600 "+Math.round(cv.width/26)+"px Inter,sans-serif";
+  cx.fillText("nubrauk ir sužinok žaidimą",cv.width/2,cv.height/2+22);
+  cx.globalCompositeOperation="destination-out";
+  var down=false,done=false;
+  function pt(e){ var b=cv.getBoundingClientRect();
+    return {x:(e.clientX-b.left)*cv.width/b.width, y:(e.clientY-b.top)*cv.height/b.height} }
+  function rub(e){
+    if(!down||done)return;
+    var p=pt(e);
+    cx.beginPath(); cx.arc(p.x,p.y,Math.max(18,cv.width/18),0,7); cx.fill();
+    if(Math.random()<.12&&chScratchPct(cx,cv)>0.45){ done=true; chScratchDone(); }
+  }
+  cv.onpointerdown=function(e){down=true;try{cv.setPointerCapture(e.pointerId)}catch(x){}rub(e)};
+  cv.onpointermove=rub;
+  cv.onpointerup=function(){ down=false;
+    if(!done&&chScratchPct(cx,cv)>0.30){ done=true; chScratchDone(); } };
+  cv.onpointercancel=function(){down=false};
+  /* atsarginis variantas: dvigubas spustelėjimas atskleidžia iš karto */
+  cv.ondblclick=function(){ if(!done){done=true;chScratchDone()} };
+}
+function chScratchPct(cx,cv){
+  try{
+    var d=cx.getImageData(0,0,cv.width,cv.height).data,clear=0,i,step=40;
+    for(i=3;i<d.length;i+=4*step){ if(d[i]<40)clear++; }
+    return clear/(d.length/(4*step));
+  }catch(e){ return 1 }
+}
+function chScratchDone(){
+  document.getElementById("scratchWrap").style.display="none";
+  document.getElementById("scratchHint").style.display="none";
+  sfx("jee",.7);
+  var g=CHGAMES[CH.game];
+  chMsg("🎯 <b>"+g.n+"</b> — "+CH.players[CH.order[CH.idx]].n+", pasiruošk!");
+  chT(chPlay,900);
+}
+
+/* ---------- ŽAIDIMŲ PALEIDIMAS ---------- */
+function chPlay(){
+  CH.phase="play"; chRenderBracket();
+  if(CH.game==="A") chGameA();
+  else if(CH.game==="B") chGameB();
+  else chGameC();
+}
+/* A · SKAIČIŲ SEKA — 3,4,5,6 skaitmenys */
+function chGameA(){
+  CH.level=3; CH.seq=[]; CH.input=[];
+  chGameANext();
+}
+function chGameANext(){
+  var g=document.getElementById("chGame");
+  CH.seq=[]; CH.input=[];
+  for(var i=0;i<CH.level;i++) CH.seq.push(Math.floor(Math.random()*10));
+  g.innerHTML="<p class='chstage'>Įsimink "+CH.level+" skaitmenis</p><div class='chBig a' id='chBig'></div>";
+  var big=document.getElementById("chBig"), k=0;
+  chMsg("👀 ŽIŪRĖK…");
+  (function flash(){
+    if(k>=CH.seq.length){
+      big.textContent="?";
+      chT(chGameAInput,420);
+      return;
+    }
+    big.textContent=CH.seq[k];
+    sfx("tada",.3);
+    k++;
+    chT(function(){ big.textContent=""; chT(flash,180) },720);
+  })();
+}
+function chGameAInput(){
+  var g=document.getElementById("chGame"),h="",i;
+  chMsg("⌨️ PAKARTOK");
+  h="<div class='chBig' id='chEcho'>_</div><div class='chPad'>";
+  for(i=0;i<10;i++) h+="<button onclick='chTapNum("+i+")'>"+i+"</button>";
+  h+="</div>";
+  g.innerHTML=h;
+}
+function chTapNum(n){
+  CH.input.push(n);
+  var e=document.getElementById("chEcho");
+  if(e)e.textContent=CH.input.join(" ");
+  var i=CH.input.length-1;
+  if(CH.input[i]!==CH.seq[i]){ sfx("fa"); chScore(CH.level-3,"suklydo ties "+CH.level+" skaitmenimis"); return; }
+  sfx("tada",.3);
+  if(CH.input.length===CH.seq.length){
+    sfx("jee",.8);
+    if(CH.level>=6){ chScore(4,"įveikė visus 6 skaitmenis! 🔥"); return; }
+    CH.level++;
+    chMsg("✅ TEISINGAI — dabar "+CH.level+"!");
+    chT(chGameANext,900);
+  }
+}
+/* B · KUBO POZICIJA — 3x3 tinklelis */
+function chGameB(){
+  CH.level=3; chGameBNext();
+}
+function chGameBNext(){
+  var g=document.getElementById("chGame"),i;
+  CH.seq=[]; CH.input=[];
+  for(i=0;i<CH.level;i++) CH.seq.push(Math.floor(Math.random()*9));
+  var h="<p class='chstage'>Įsimink "+CH.level+" langelius</p><div class='chGrid' id='chGrid'>";
+  for(i=0;i<9;i++) h+="<div data-i='"+i+"'></div>";
+  h+="</div>";
+  g.innerHTML=h;
+  var cells=document.querySelectorAll("#chGrid div"), k=0;
+  chMsg("👀 ŽIŪRĖK…");
+  (function flash(){
+    if(k>=CH.seq.length){ chT(chGameBInput,380); return }
+    var c=cells[CH.seq[k]];
+    c.classList.add("lit"); sfx("tada",.3); k++;
+    chT(function(){ c.classList.remove("lit"); chT(flash,190) },640);
+  })();
+}
+function chGameBInput(){
+  chMsg("👆 PAKARTOK");
+  var cells=document.querySelectorAll("#chGrid div");
+  cells.forEach(function(c){
+    c.onclick=function(){ chTapCell(parseInt(c.dataset.i,10),c) };
+  });
+}
+function chTapCell(n,el){
+  CH.input.push(n);
+  var i=CH.input.length-1;
+  if(CH.input[i]!==CH.seq[i]){
+    el.classList.add("no"); sfx("fa");
+    chScore(CH.level-3,"suklydo ties "+CH.level+" langeliais"); return;
+  }
+  el.classList.add("ok"); sfx("tada",.3);
+  if(CH.input.length===CH.seq.length){
+    sfx("jee",.8);
+    if(CH.level>=6){ chScore(4,"įveikė visus 6 langelius! 🔥"); return }
+    CH.level++;
+    chMsg("✅ TEISINGAI — dabar "+CH.level+"!");
+    chT(chGameBNext,900);
+  }
+}
+/* C · REAKCIJA — 3 bandymai */
+function chGameC(){
+  CH.reactTimes=[]; CH.reactN=0; chGameCNext();
+}
+function chGameCNext(){
+  var g=document.getElementById("chGame");
+  g.innerHTML="<p class='chstage'>Bandymas "+(CH.reactN+1)+" / 3</p>"+
+    "<div id='chReact'>LAUK…</div>";
+  var box=document.getElementById("chReact"), armed=false, t0=0, fired=false;
+  chMsg("⏳ Kai taps ŽALIAS — SPAUSK");
+  var wait=1200+Math.random()*3200;
+  var go=chT(function(){ armed=true; t0=performance.now();
+    box.classList.add("go"); box.textContent="SPAUSK!" },wait);
+  box.onclick=function(){
+    if(fired)return;
+    if(!armed){                       /* falstartas */
+      fired=true; clearTimeout(go);
+      box.classList.add("bad"); box.textContent="FALSTARTAS!";
+      sfx("fa"); CH.reactTimes.push(900);
+      chT(chGameCAfter,1100); return;
+    }
+    fired=true;
+    var ms=Math.round(performance.now()-t0);
+    CH.reactTimes.push(ms);
+    box.classList.remove("go"); box.textContent=ms+" ms";
+    sfx("jee",.7);
+    chT(chGameCAfter,1000);
+  };
+}
+function chGameCAfter(){
+  CH.reactN++;
+  if(CH.reactN<3){ chGameCNext(); return }
+  var sum=0; CH.reactTimes.forEach(function(t){sum+=t});
+  var avg=Math.round(sum/CH.reactTimes.length);
+  var pts=Math.max(0,Math.round((900-avg)/100));
+  chScore(pts,"vidutinė reakcija "+avg+" ms");
+}
+
+/* ---------- TAŠKAI IR EIGA ---------- */
+function chScore(pts,why){
+  chClear();
+  pts=Math.max(0,pts);
+  var p=CH.players[CH.order[CH.idx]];
+  p.score+=pts;
+  chRenderBracket();
+  chMsg("<b>"+p.n+"</b>: +"+pts+" tšk. — "+why);
+  /* visa salė gauna aurą už KIEKVIENĄ žaidėją */
+  aura(150+pts*100, p.n+" · +"+pts+" tšk.");
+  document.getElementById("chNextBtn").style.display="inline-block";
+  document.getElementById("chNextBtn").textContent=
+    (CH.idx<CH.order.length-1)?"KITAS ŽAIDĖJAS →":"REZULTATAI →";
+}
+function chNext(){
+  document.getElementById("chNextBtn").style.display="none";
+  document.getElementById("chGame").innerHTML="";
+  CH.idx++;
+  if(CH.idx<CH.order.length){ chScratch(); return }
+  chRoundEnd();
+}
+function chRoundEnd(){
+  if(CH.round===1){
+    /* du silpniausi iškrenta — ŠVELNIAI */
+    var rank=CH.order.slice().sort(function(a,b){return CH.players[b].score-CH.players[a].score});
+    var out=rank.slice(2);
+    out.forEach(function(i){ CH.players[i].out=true });
+    chRenderBracket();
+    var names=out.map(function(i){return CH.players[i].n}).join(" ir ");
+    chMsg("👏 <b>"+names+"</b> — jūsų taškai jau virto aura VISAI salei. Aplodismentai!");
+    aura(500,"iškritusiems — plojimai 👏");
+    CH.round=2; CH.game="B"; CH.order=rank.slice(0,2); CH.idx=0;
+    document.getElementById("chNextBtn").style.display="inline-block";
+    document.getElementById("chNextBtn").textContent="FINALAS →";
+    document.getElementById("chNextBtn").onclick=function(){
+      this.onclick=chNext; this.style.display="none"; chScratch();
+    };
+    return;
+  }
+  /* finalas arba lygiosios */
+  var a=CH.players[CH.order[0]], b=CH.players[CH.order[1]];
+  if(a.score===b.score&&CH.round===2){
+    CH.round=3; CH.game="C"; CH.idx=0;
+    chMsg("⚖️ LYGIOSIOS! Papildomas žaidimas — REAKCIJA.");
+    document.getElementById("chNextBtn").style.display="inline-block";
+    document.getElementById("chNextBtn").textContent="REAKCIJA →";
+    document.getElementById("chNextBtn").onclick=function(){
+      this.onclick=chNext; this.style.display="none"; chScratch();
+    };
+    return;
+  }
+  chWin(a.score>=b.score?a:b);
+}
+function chWin(p){
+  p.winner=true; chRenderBracket();
+  document.getElementById("chPlay").style.display="none";
+  var d=document.getElementById("chDone"); d.style.display="block";
+  document.getElementById("chWinner").textContent="🏆 "+p.n+" — ČEMPIONAS!";
+  document.getElementById("chWinLine").innerHTML=
+    "Bet aurą uždirbo <b>visa salė</b>: "+AURA.pts.toLocaleString("lt-LT")+" ✨";
+  sfx("victory");
+  aura(1000,"🏆 čempionas: "+p.n);
+  screenShatter(p.n.toUpperCase());
+  if(typeof emojiBurst==="function") emojiBurst(20);
 }
 
 /* ===================================================================
