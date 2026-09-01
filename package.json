@@ -1,0 +1,14 @@
+{
+  "name": "bc-day-deck",
+  "private": true,
+  "description": "Brain Club Diena — vienos bylos pristatymas (index.html). Šitos priklausomybės naudojamos TIK QA testams.",
+  "scripts": {
+    "qa": "node tools/qa-boot.js",
+    "qa:chrome": "node tools/qa-chrome.js",
+    "serve": "python3 -m http.server 8899"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1",
+    "puppeteer-core": "^24.0.0"
+  }
+}
