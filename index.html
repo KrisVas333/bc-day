@@ -415,6 +415,27 @@ border:1px solid rgba(217,4,41,.55);clip-path:polygon(50% 0,100% 62%,62% 100%,0 
 animation:shfly .9s cubic-bezier(.2,.7,.4,1) forwards}
 @keyframes shfly{0%{transform:translate(-50%,-50%) scale(.2) rotate(0);opacity:1}
 100%{transform:translate(var(--tx),var(--ty)) scale(1.25) rotate(var(--rot));opacity:0}}
+/* ===== V6.3: VISOS DIENOS AURA HUD ===== */
+#auraHud{position:fixed;left:12px;top:12px;z-index:9;display:none;align-items:center;gap:10px;
+padding:8px 14px;background:rgba(10,10,10,.92);color:#fff;border-radius:var(--r);
+border:2px solid var(--accent);box-shadow:0 6px 24px rgba(0,0,0,.25)}
+#auraHud.on{display:flex}
+#auraHud .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#FF6B6B;text-transform:uppercase}
+#auraHud .val{font-family:var(--mono);font-weight:800;font-size:clamp(20px,3vw,30px);line-height:1;
+letter-spacing:.02em;font-variant-numeric:tabular-nums}
+#auraHud.bump{animation:auBump .42s cubic-bezier(.2,2,.4,1)}
+@keyframes auBump{0%{transform:scale(1)}45%{transform:scale(1.13)}100%{transform:scale(1)}}
+#auraHud.up{border-color:#2ED47A;box-shadow:0 0 26px rgba(46,212,122,.6)}
+#auraHud.down{border-color:#FF0000;box-shadow:0 0 26px rgba(255,0,0,.6)}
+#auraPops{position:fixed;left:12px;top:56px;z-index:9;pointer-events:none;width:280px}
+.apop{font-family:var(--mono);font-weight:800;font-size:clamp(17px,2.6vw,26px);
+padding:2px 0;animation:apopFly 1.5s ease-out forwards;text-shadow:0 2px 10px rgba(255,255,255,.9)}
+.apop.p{color:#12897A}.apop.m{color:var(--red)}
+.apop small{display:block;font-family:var(--body);font-weight:600;font-size:12px;color:var(--muted);letter-spacing:0}
+@keyframes apopFly{0%{opacity:0;transform:translateY(12px) scale(.85)}
+18%{opacity:1;transform:translateY(0) scale(1)}70%{opacity:1}100%{opacity:0;transform:translateY(-34px)}}
+@media (prefers-reduced-motion:reduce){.apop{animation:none}#auraHud.bump{animation:none}}
+
 /* ===== V6.2: garso valdiklių kampas ===== */
 #corner{position:fixed;top:10px;right:12px;z-index:9;display:flex;gap:6px}
 #corner button{font-family:var(--mono);font-size:15px;line-height:1;border:1px solid var(--line);
@@ -495,7 +516,13 @@ background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:
 
 <div class="stage" id="stage"></div>
 
+<div id="auraHud" onclick="auraReset()" title="Paspausk — nulinti aurą">
+  <span class="lbl">SALĖS<br>AURA</span><span class="val" id="auraVal">0</span>
+</div>
+<div id="auraPops"></div>
+
 <div id="corner">
+  <button id="auraBtn" onclick="auraToggle()" title="Įjungti/išjungti auros HUD (A)">✨</button>
   <button id="muteBtn" onclick="toggleMute()" title="Nutildyti viską (S)">🔊</button>
 </div>
 
@@ -1161,6 +1188,59 @@ function sfxSynth(name,vol){
   }catch(e){}
 }
 
+/* ===================================================================
+   V6.3 · VISOS DIENOS AURA
+   Vienas API visam deck'ui:   aura(+500,"kodėl")
+   Kviečia: testas · swipe · ratas · slot · čempionatas · CV gestai · pultas.
+   HUD lieka matomas per VISAS skaidres (ne tik aura režime).
+   Klavišai: +  (+100)  ·  −  (−100)  ·  A (rodyti/slėpti)
+   =================================================================== */
+var AURA={pts:0, on:false, log:[]};
+function auraToggle(force){
+  AURA.on=(force==null)?!AURA.on:!!force;
+  var h=document.getElementById("auraHud");
+  if(h)h.classList.toggle("on",AURA.on);
+  var b=document.getElementById("auraBtn");
+  if(b)b.classList.toggle("act",AURA.on);
+  auraRender();
+}
+function auraRender(){
+  var v=document.getElementById("auraVal");
+  if(v)v.textContent=AURA.pts.toLocaleString("lt-LT");
+}
+/* PAGRINDINIS API — kviesk iš bet kur */
+function aura(delta,reason){
+  delta=Math.round(delta||0);
+  if(!delta)return AURA.pts;
+  if(!AURA.on) auraToggle(true);          /* pirmas taškas pats atidaro HUD */
+  AURA.pts+=delta;
+  AURA.log.push({d:delta,r:reason||"",t:Date.now()});
+  auraRender();
+  auraPop(delta,reason);
+  var h=document.getElementById("auraHud");
+  if(h){
+    h.classList.remove("bump","up","down"); void h.offsetWidth;
+    h.classList.add("bump",delta>0?"up":"down");
+    setTimeout(function(){h.classList.remove("up","down")},700);
+  }
+  sfx(delta>0?"jee":"fa", delta>0?.85:.9);
+  if(typeof streamAuraEvent==="function") streamAuraEvent(delta);   /* V6.7 */
+  return AURA.pts;
+}
+function auraPop(delta,reason){
+  var wrap=document.getElementById("auraPops"); if(!wrap)return;
+  var d=document.createElement("div");
+  d.className="apop "+(delta>0?"p":"m");
+  d.innerHTML=(delta>0?"+":"−")+Math.abs(delta)+(reason?"<small>"+reason+"</small>":"");
+  wrap.appendChild(d);
+  setTimeout(function(){ d.remove() },1600);
+  while(wrap.children.length>6) wrap.removeChild(wrap.firstChild);
+}
+function auraReset(){
+  if(!confirm("Nulinti salės aurą ("+AURA.pts+")?"))return;
+  AURA.pts=0; AURA.log=[]; auraRender();
+}
+
 /* ===== VARIKLIS ===== */
 var cur=0, MODE="live";
 function build(){
@@ -1220,6 +1300,10 @@ document.addEventListener("keydown",function(e){
   if(e.key==="ArrowLeft")prev();
   if(e.key==="n"||e.key==="N")toggleNotes();
   if(e.key==="s"||e.key==="S")toggleMute();
+  if(e.key==="a"||e.key==="A")auraToggle();
+  /* V6.3 vedėjo klavišai: + prideda 100 auros, − atima 100 (su „fa") */
+  if(e.key==="+"||e.key==="="||e.key==="Add"){aura(100,"vedėjas");e.preventDefault();}
+  if(e.key==="-"||e.key==="_"||e.key==="Subtract"){aura(-100,"vedėjas");e.preventDefault();}
   if(e.key==="Escape"){ var b=document.getElementById("cvBox"); if(b)b.classList.remove("on"); }
 });
 
@@ -1267,6 +1351,7 @@ function spinWheel(){
   wAngle+=360*2+45;
   document.getElementById("wheel").style.transform="rotate("+(-wIdx*45-720*((wIdx%2)+1))+"deg)";
   var it=WHEEL[wIdx];
+  aura(100,"ratas: "+it.n);
   setTimeout(function(){
     document.getElementById("wheelCard").innerHTML=
       "<img src='assets/img/"+IMGMAP[it.img]+"' alt=''><h3>"+it.e+" "+it.n+"</h3><p class='yr'>"+it.yr+"</p><p>"+it.f+"</p>";
@@ -1289,7 +1374,7 @@ function evoPick(yes){
 }
 
 /* ===== KAMERA: salė / gestai / aura ===== */
-var camStream=null, auraOn=false, auraPts=0;
+var camStream=null, auraOn=false;
 function camStart(cb){
   if(camStream){cb&&cb();return}
   navigator.mediaDevices.getUserMedia({video:{width:640,height:480}}).then(function(s){
@@ -1320,7 +1405,7 @@ function auraMode(){
   camStart(function(){
     var w=document.getElementById("camWrap"); w.classList.add("big");
     document.getElementById("camLabel").textContent="🕺 AURA REŽIMAS — AI SEKA KŪNĄ IR PIRŠTUS";
-    auraPts=0; auraOn=true; updAura(); visionStart();
+    auraOn=true; auraToggle(true); updAura(); visionStart();
     w.onclick=function(){camStop();w.onclick=null};
   });
 }
@@ -1331,11 +1416,18 @@ function cvExplain(on){
   if(on===0){b.classList.remove("on");return}
   b.classList.toggle("on");
 }
-function auraPoint(p){auraPts+=p;updAura();
+/* V6.3: senas auraPoint dabar tik apvalkalas ant bendro aura() API */
+function auraPoint(p){
+  aura(p,"aura režimas");
   var fx=document.getElementById("maxfx"),tx=document.getElementById("maxTxt");
   tx.textContent=(p>0?"+":"")+p+" AURA";fx.classList.add("on");
-  setTimeout(function(){fx.classList.remove("on");tx.innerHTML="BRAIN&nbsp;MAX"},900);}
-function updAura(){document.getElementById("auraScore").textContent=auraOn?(auraPts+" AURA"):""}
+  setTimeout(function(){fx.classList.remove("on");tx.innerHTML="BRAIN&nbsp;MAX"},900);
+  updAura();
+}
+function updAura(){
+  var el=document.getElementById("auraScore");
+  if(el)el.textContent=auraOn?(AURA.pts+" AURA"):"";
+}
 /* V6.1: buvęs „gestų valdymas" pakeistas į AUROS kamerą.
    Rankos nebekeičia skaidrių — jos tik duoda/atima aurą (žr. auraGestures). */
 function toggleAuraCam(){
@@ -1481,7 +1573,7 @@ function swipe(right){
   var c=document.getElementById("scard"),v=document.getElementById("sverdict");
   v.style.display="block";
   v.innerHTML=(good?"<span class='tagG'>🧠 AUGINA</span>":"<span class='tagB'>🧟 KENKIA</span>")+" — "+it[3]+(correct?" · teisingai! ✅":"");
-  if(correct) sfx("jee"); else sfx("fa");
+  if(correct) aura(200,"swipe: teisingai"); else aura(-100,"swipe: pramauta");
   document.getElementById("swipeScore").textContent="Kortelė "+(swI+1)+" / "+SW.length;
   setTimeout(function(){c.classList.add(right?"right":"left");
     setTimeout(function(){swI++;renderSwipe()},280);},900);
@@ -1643,7 +1735,7 @@ function screenShatter(txt,ox,oy){
 function shatter(txt){ screenShatter(txt) }
 function antidote(){ screenShatter("KURK, NE VARTOK") }
 function brainMax(){ var m=document.getElementById("maxlist"); if(m)m.style.display="grid";
-  screenShatter("BRAIN MAX"); sfx("victory"); }
+  screenShatter("BRAIN MAX"); sfx("victory"); aura(1000,"BRAIN MAX 🧠"); }
 
 /* ===== V5: BRAIN MAX SLOT MAŠINA =====
    3 būgnai · laimi tik MIEGAS + JUDESYS + MOKYMASIS (iš pačios skaidrės turinio) */
@@ -1695,12 +1787,12 @@ function spinReel(r,idx,dur){
 function slotResult(win){
   var msg=document.getElementById("slotMsg"),r;
   if(win){
-    msg.className="win"; msg.textContent="🧠 BRAIN MAX!"; sfx("jee");
+    msg.className="win"; msg.textContent="🧠 BRAIN MAX!"; aura(500,"slot: 3 iš 3");
     for(r=0;r<3;r++){ document.getElementById("r"+r).classList.add("win");
       document.getElementById("g"+r).classList.add("hit"); }
     setTimeout(function(){ brainMax(); slotBusy=false; },850);
   }else{
-    msg.textContent="Beveik! 2 iš 3 — trauk dar kartą 💪"; sfx("fa");
+    msg.textContent="Beveik! 2 iš 3 — trauk dar kartą 💪"; sfx("fa",.7);
     for(r=0;r<2;r++) document.getElementById("g"+r).classList.add("hit");
     slotBusy=false;
   }
@@ -1744,7 +1836,7 @@ function pick(btn,j){
   clearInterval(tmr);
   var ok=(j===QZ[qi].ok);
   btn.classList.add(ok?"ok":"bad");
-  if(ok){correct++; sfx("jee");} else sfx("fa");
+  if(ok){correct++; aura(300,"testas: teisingai");} else aura(-100,"testas: pramauta");
   setTimeout(function(){qi++;renderQ()},600);
 }
 function finishQuiz(){
