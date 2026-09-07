@@ -61,9 +61,9 @@ dom.window.document.querySelectorAll('script').forEach(sc=>{
 
 console.log('\n== 1. Įkrova ==');
 ok('be JS klaidų įkraunant',errors.length===0,errors.slice(0,3).join(' | '));
-ok('sukurtos visos skaidrės',w.document.querySelectorAll('.slide').length===21,
+ok('sukurtos visos skaidrės',w.document.querySelectorAll('.slide').length===22,
    'rasta '+w.document.querySelectorAll('.slide').length);
-ok('SL masyvas = 21',w.SL&&w.SL.length===21,'SL='+(w.SL&&w.SL.length));
+ok('SL masyvas = 22',w.SL&&w.SL.length===22,'SL='+(w.SL&&w.SL.length));
 ok('kiekviena skaidrė turi notes',w.SL.every(s=>s.notes&&s.notes.say&&s.notes.do&&s.notes.br));
 ok('kiekviena skaidrė turi tag ir sec',w.SL.every(s=>s.tag&&s.sec>0));
 
@@ -73,7 +73,7 @@ ok('18 VO failų prisegti',vos.length===18,'rasta '+vos.length);
 ok('VO numeriai 1..18 be dublikatų',
    JSON.stringify(vos.slice().sort((a,b)=>a-b))===JSON.stringify([...Array(18)].map((_,i)=>i+1)));
 const newSlides=w.SL.filter(s=>!s.vo).map(s=>s.tag);
-ok('naujos skaidrės be VO (kris TTS)',newSlides.length===3,newSlides.join(','));
+ok('naujos skaidrės be VO (kris TTS)',newSlides.length===4,newSlides.join(','));
 
 console.log('\n== 3. SFX su trūkstamais failais ==');
 ok('SFX registras turi 4 vardus',
@@ -187,7 +187,7 @@ ok('67 testas: neteisingas atima',(()=>{
 w.timerStart();w.timerRender();
 ok('laikmatis piešiamas',/⏱/.test(w.document.getElementById('tmrBox')?w.document.getElementById('tmrBox').innerHTML:''));
 const budget=w.SL.reduce((n,s)=>n+s.sec,0);
-ok('tempo biudžetas 24–32 min',budget>=1440&&budget<=1920,Math.round(budget/60)+' min');
+ok('tempo biudžetas 24–33 min',budget>=1440&&budget<=1980,Math.round(budget/60)+' min');
 let gestThrew=null;
 try{w.MP.poseRes=null;w.MP.handRes=null;w.auraGestures();
     w.auraOn=true;w.MP.poseRes=[{x:.5,y:.5,visibility:.9}];w.auraGestures();
@@ -201,11 +201,131 @@ ok('countFingers() atviras delnas = 5',(()=>{
 // visos skaidrės perjungiamos be klaidų
 const before=errors.length;
 for(let i=0;i<w.SL.length;i++)w.show(i);
-ok('visos 21 skaidrės perjungiamos be klaidų',errors.length===before,errors.slice(before,before+3).join(' | '));
+ok('visos 22 skaidrės perjungiamos be klaidų',errors.length===before,errors.slice(before,before+3).join(' | '));
 
 console.log('\n== 9. Numirę keliai pašalinti ==');
 ok('nėra toggleGestures',typeof w.toggleGestures==='undefined');
 ok('nėra gestOn kintamojo',typeof w.gestOn==='undefined');
+
+// ============================ V6.14 ============================
+console.log('\n== 10. V6.14 garsu lenta ==');
+ok('SFXBOARD turi 10 garsu',Array.isArray(w.SFXBOARD)&&w.SFXBOARD.length===10,
+   'rasta '+(w.SFXBOARD&&w.SFXBOARD.length));
+ok('board id pos1-4/neg1-4/fun1-2',
+   ['pos1','pos2','pos3','pos4','neg1','neg2','neg3','neg4','fun1','fun2']
+     .every(id=>w.SFXBOARD.some(x=>x.id===id)));
+ok('visi board id yra SFX zemelapyje',
+   ['pos1','neg4','fun2'].every(id=>/assets\/sfx\//.test(w.SFX[id]||'')));
+ok('kiekvienas garsas turi label+emoji+kind',
+   w.SFXBOARD.every(x=>x.label&&x.emoji&&/^(pos|neg|fun)$/.test(x.kind)));
+ok('sfxStatus() isvardija ir naujus id',(()=>{
+   const out=w.sfxStatus();return out.some(l=>/pos1/.test(l))&&out.some(l=>/fun2/.test(l));})());
+let boardThrew=null;
+try{ ['pos1','neg1','fun1','fun2'].forEach(n=>w.sfx(n)); }catch(e){ boardThrew=e.message }
+ok('sfx() su lentos id neismeta klaidos',!boardThrew,boardThrew);
+ok('SFXALIAS neg->fa, fun->victory, pos->jee',
+   w.SFXALIAS.neg1==='fa'&&w.SFXALIAS.fun1==='victory'&&w.SFXALIAS.pos1==='jee');
+ok('klavisai 1-4/5-8/9-0 priristi prie lentos',
+   w.SFXKEYS['1']==='pos1'&&w.SFXKEYS['4']==='pos4'&&w.SFXKEYS['5']==='neg1'&&
+   w.SFXKEYS['8']==='neg4'&&w.SFXKEYS['9']==='fun1'&&w.SFXKEYS['0']==='fun2');
+ok('skaitmens klavisas nekeicia skaidres',(()=>{
+   const before=w.cur;
+   w.document.dispatchEvent(new w.KeyboardEvent('keydown',{key:'1'}));
+   return w.cur===before;})());
+
+console.log('\n== 11. V6.14 streamer kamera ==');
+ok('SCAM pradine busena off/right',w.SCAM.mode==='off'&&w.SCAM.side==='right');
+ok('scamCycle() be kameros nesugriauna deck o',(()=>{
+   try{ w.scamCycle(); return true }catch(e){ return false }})());
+ok('scamSwap() keicia puse ir CSS klase',(()=>{
+   w.scamSwap();
+   const l=w.document.body.classList.contains('scam-left');
+   w.scamSwap();
+   return l&&w.document.body.classList.contains('scam-right');})());
+ok('scamSet("half") uzdeda body.scam-half',(()=>{
+   w.camStream={getTracks:()=>[{stop(){}}]};      // apsimetam, kad srautas jau yra
+   w.scamSet('half');
+   const on=w.document.body.classList.contains('scam-half');
+   w.scamSet('off'); w.camStream=null;
+   return on;})());
+ok('scamSet("off") nuima klases',
+   !w.document.body.classList.contains('scam-half')&&!w.document.body.classList.contains('scam-pip'));
+ok('camBusy() melagingas kai viskas isjungta',w.camBusy()===false);
+ok('camGet/camAttach egzistuoja (vienas srautas)',
+   typeof w.camGet==='function'&&typeof w.camAttach==='function');
+ok('#scam ir #scamVid yra DOM e',!!w.document.getElementById('scam')&&!!w.document.getElementById('scamVid'));
+
+console.log('\n== 12. V6.14 tvarkarastis ==');
+ok('tvarkarascio skaidre yra',w.SL.some(s=>s.tag==='tvarkarastis'));
+ok('TVK numatytieji: ketvirtadieniais + QR_URL',w.TVK.diena===4&&w.TVK.nuoroda===w.QR_URL);
+ok('tvkDate() -> lietuviskas menuo',w.tvkDate('2026-09-18')==='nuo rugsėjo 18 d.');
+ok('tvkDate() tuscia = tuscia',w.tvkDate('')==='');
+ok('tvkRender() pripildo eilute',(()=>{
+   w.TVK.diena=4; w.TVK.laikas='14:00-15:30'; w.TVK.kab='23'; w.TVK.nuo='2026-09-18';
+   w.tvkRender();
+   const L=w.document.getElementById('tvkLine').textContent;
+   const M=w.document.getElementById('tvkMeta').textContent;
+   return /Ketvirtadieniais/.test(L)&&/14:00–15:30/.test(L)&&/23 kab\./.test(M)&&/rugsėjo 18/.test(M);})());
+ok('tvkSave() irasytas i localStorage',(()=>{
+   w.document.getElementById('tvkM').value='Testų licėjus';
+   w.document.getElementById('tvkD').value='2';
+   w.document.getElementById('tvkT').value='15:00-16:30';
+   w.document.getElementById('tvkK').value='7';
+   w.tvkSave();
+   const j=JSON.parse(w.localStorage.getItem('bcday-tvk')||'{}');
+   return j.mokykla==='Testų licėjus'&&j.diena===2&&j.kab==='7';})());
+ok('tvkEdit() atidaro ir uzdaro forma',(()=>{
+   w.tvkEdit(); const on=w.document.getElementById('tvkForm').classList.contains('on');
+   w.tvkEdit(0); return on&&!w.document.getElementById('tvkForm').classList.contains('on');})());
+ok('tvkGo() nusoka i tvarkarascio skaidre',(()=>{
+   w.tvkGo(); const i=w.SL.findIndex(s=>s.tag==='tvarkarastis');
+   w.tvkEdit(0); return w.cur===i;})());
+
+console.log('\n== 13. V6.14 hack sluoksnis ==');
+ok('HACK turi slot/loot/scratch',!!(w.HACK.slot&&w.HACK.loot&&w.HACK.scratch));
+ok('kiekvienas turi 4 taktus',
+   ['slot','loot','scratch'].every(k=>w.HACK[k].feel&&w.HACK[k].freeze&&w.HACK[k].name&&w.HACK[k].turn));
+ok('ivardinti tikri triukai',(()=>{
+   const all=JSON.stringify(w.HACK);
+   return /kintamas atlygis/.test(all)&&/beveik-laimėjimas/.test(all)&&
+          /praradimo baimė/.test(all)&&/FOMO/.test(all)&&/dar vieną kartą/.test(all);})());
+ok('hackShow() atidaro perdanga su taisykle',(()=>{
+   w.hackShow('slot');
+   const b=w.document.getElementById('hackBox');
+   return b.classList.contains('on')&&/tavo dėmesio pirkimas/.test(b.textContent);})());
+ok('hackHide() uzdaro',(()=>{ w.hackHide();
+   return !w.document.getElementById('hackBox').classList.contains('on');})());
+ok('hackToggle() (H) paslepia mygtukus',(()=>{
+   w.hackToggle(); const off=w.document.body.classList.contains('nohack');
+   w.hackToggle(); return off&&!w.document.body.classList.contains('nohack');})());
+ok('hack mygtukai ant slot + bilieto skaidriu',
+   w.document.querySelectorAll('.hackbtn').length>=2,
+   'rasta '+w.document.querySelectorAll('.hackbtn').length);
+
+console.log('\n== 14. V6.14 pultas v2 ==');
+ok('pultSend/pultSlide/pultStats yra',
+   ['pultSend','pultSlide','pultStats'].every(f=>typeof w[f]==='function'));
+ok('pultSend tyli be rysio (PULT.ok=false)',(()=>{
+   try{ w.pultSend('slide',{}); return true }catch(e){ return false }})());
+ok('slideTitle() istraukia h1 be zymu',(()=>{
+   const t=w.slideTitle(0); return t.length>3&&!/[<>]/.test(t);})());
+ok('comboStart() ijungia metra',(()=>{
+   w.comboStart(600);
+   return w.comboOn()&&w.document.getElementById('combo').classList.contains('on');})());
+ok('combo padvigubina teigiama aura',(()=>{
+   const a=w.AURA.pts; w.aura(100,'testas'); const d=w.AURA.pts-a;
+   return d===200;})());
+ok('combo NEDAUGINA minuso',(()=>{
+   const a=w.AURA.pts; w.aura(-100,'testas'); return w.AURA.pts-a===-100;})());
+ok('raidBanner() parodo juosta',(()=>{
+   w.raidBanner();
+   return w.document.getElementById('raidBan').classList.contains('on');})());
+ok('emoFloat() veikia ir be Twitch rezimo',(()=>{
+   const n=w.document.getElementById('emoRain').children.length;
+   w.emoFloat('❤️');
+   return w.document.getElementById('emoRain').children.length===n+1;})());
+
+console.log('');
 ok('yra toggleAuraCam',typeof w.toggleAuraCam==='function');
 
 console.log('\n────────────────────────────');

@@ -1,0 +1,12 @@
+{"version":1,"sounds":[
+ {"id":"pos1","file":"assets/sfx/pos1.mp3","label":"Vine boom","emoji":"💥","kind":"pos","dur":1.6,"source":"youtube:Oc7Cin_87H4","license":"meme/unknown"},
+ {"id":"pos2","file":"assets/sfx/pos2.mp3","label":"Ding ✓","emoji":"✅","kind":"pos","dur":1.4,"source":"youtube:jBsOdep6YqI","license":"meme/unknown"},
+ {"id":"pos3","file":"assets/sfx/pos3.mp3","label":"Rahhh","emoji":"🦁","kind":"pos","dur":1.7,"source":"youtube:dKylaR1pEsM","license":"no-copyright (per uploader)"},
+ {"id":"pos4","file":"assets/sfx/pos4.mp3","label":"Sheesh","emoji":"🔥","kind":"pos","dur":2.4,"source":"youtube:x857aRVU-jY","license":"meme/unknown"},
+ {"id":"neg1","file":"assets/sfx/neg1.mp3","label":"Fahhh","emoji":"💀","kind":"neg","dur":2.1,"source":"Kris Downloads fahhh_KcgAXfs.mp3 (video 04:18)","license":"meme/unknown"},
+ {"id":"neg2","file":"assets/sfx/neg2.mp3","label":"Bruh","emoji":"🙄","kind":"neg","dur":0.9,"source":"youtube:Lo9NDIavsq4","license":"meme/unknown"},
+ {"id":"neg3","file":"assets/sfx/neg3.mp3","label":"Metal pipe","emoji":"🔩","kind":"neg","dur":3.0,"source":"youtube:iDLmYZ5HqgM","license":"meme/unknown"},
+ {"id":"neg4","file":"assets/sfx/neg4.mp3","label":"Windows error","emoji":"🪟","kind":"neg","dur":0.9,"source":"youtube:kBNOZdXwzdg","license":"Microsoft system sound"},
+ {"id":"fun1","file":"assets/sfx/fun1.mp3","label":"Delfino juokas","emoji":"🐬","kind":"fun","dur":3.0,"source":"youtube:BSlQmX9LZIM","license":"meme/unknown"},
+ {"id":"fun2","file":"assets/sfx/fun2.mp3","label":"6-7","emoji":"6️⃣7️⃣","kind":"fun","dur":2.2,"source":"youtube:33ftJSr1fDI","license":"meme/unknown"}
+]}

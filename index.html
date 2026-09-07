@@ -712,9 +712,122 @@ background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:
   #wheel{width:min(270px,62vh);height:min(270px,62vh)}
   #wheelCard{min-height:180px}
   #wheelCard img{height:120px}
+  .hackbtn{padding:8px 13px;font-size:12px;margin:6px auto}
+  #hackBox{padding:2vh 4vw 6vh}
+  #hackBox h2{font-size:clamp(17px,2.9vw,30px)}
+  #hackBox .beat{padding:7px 12px;margin:7px 0}
+  #hackBox p{font-size:clamp(14px,1.85vw,19px);line-height:1.32}
+  #hackBox .rule{padding:11px 13px;margin-top:11px;font-size:clamp(14px,1.9vw,20px)}
+  #hackBox .hwrap{max-width:1180px}
+  #hackBox .beat{margin:0}
 }
-@media print{.hud,#bar,#barTrack,#boot,#memeBox,#streamTop,#chatPanel,#emoRain,#milestone,#confetti,#auraHud,#auraPops,#gestHint,#notes,#net,#camWrap,#cvBox,#fxCanvas,#corner{display:none!important}.slide{display:none!important}
+@media (max-height:820px) and (min-width:900px){
+  #hackBox .beats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+}
+
+/* ===================================================================
+   V6.14 · STREAMER KAMERA (pusė ekrano) · deck'as susitraukia į kitą pusę
+   =================================================================== */
+#scam{position:fixed;z-index:12;display:none;background:#000;overflow:hidden}
+body.scam-half #scam,body.scam-pip #scam{display:block}
+body.scam-half #scam{top:0;bottom:0;width:50vw;border:0 solid var(--accent)}
+body.scam-half.scam-right #scam{right:0;left:auto;border-left-width:3px}
+body.scam-half.scam-left  #scam{left:0;right:auto;border-right-width:3px}
+body.scam-pip #scam{width:min(300px,34vw);height:min(225px,26vw);bottom:58px;
+border:2px solid var(--accent);border-radius:10px;box-shadow:0 6px 26px rgba(0,0,0,.28)}
+body.scam-pip.scam-right #scam{right:12px;left:auto}
+body.scam-pip.scam-left  #scam{left:12px;right:auto}
+#scamVid{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;background:#000}
+#scamLive{position:absolute;top:10px;left:10px;z-index:2;font-family:var(--mono);font-weight:800;
+font-size:12.5px;letter-spacing:.1em;background:rgba(217,4,41,.93);color:#fff;padding:4px 9px;border-radius:3px}
+#scamSwap{position:absolute;top:8px;right:8px;z-index:2;font-family:var(--mono);font-size:14px;
+border:1px solid rgba(255,255,255,.55);background:rgba(0,0,0,.55);color:#fff;border-radius:3px;
+padding:5px 9px;cursor:pointer;line-height:1}
+/* letterbox: visas 100vw x 100svh vaizdas sumažinamas per pusę ir centruojamas */
+body.scam-half .stage{position:fixed;top:0;left:0;width:100vw;height:100svh;
+transform:translateY(25svh) scale(.5);transform-origin:0 0}
+body.scam-half.scam-left .stage{transform:translate(50vw,25svh) scale(.5)}
+body.scam-half.scam-right #corner,body.scam-half.scam-right #notes{right:calc(50vw + 12px)}
+body.scam-half.scam-left  #auraHud{left:calc(50vw + 12px)}
+body.scam-half.scam-left  #auraPops{left:calc(50vw + 12px)}
+body.scam-half .hud{background:rgba(255,255,255,.97)}
+body.scam-half.scam-right .hud{right:50vw}
+body.scam-half.scam-left  .hud{left:50vw}
+@media(max-width:820px){
+ body.scam-half #scam{width:100vw;height:42svh;top:0;bottom:auto;border-width:0 0 3px}
+ body.scam-half .stage,body.scam-half.scam-left .stage{transform:translateY(46svh) scale(.5)}
+ body.scam-half .hud{left:0;right:0}
+ body.scam-half.scam-left #auraHud,body.scam-half.scam-left #auraPops{left:12px}
+ body.scam-half.scam-right #corner,body.scam-half.scam-right #notes{right:12px}}
+
+/* ===================================================================
+   V6.14 · „KAIP TAI HACK'INA SMEGENIS?" — atskleidimo sluoksnis
+   =================================================================== */
+.hackbtn{font-family:var(--mono);font-weight:800;font-size:13.5px;letter-spacing:.03em;
+border:2px solid var(--ink);background:#FFF3D6;color:var(--ink);border-radius:var(--r);
+padding:11px 17px;cursor:pointer;margin:10px auto;display:inline-block}
+.hackbtn:hover{border-color:var(--accent);color:var(--accent)}
+body.nohack .hackbtn{display:none}
+#hackBox{position:fixed;inset:0;z-index:28;display:none;background:rgba(255,255,255,.985);
+padding:3vh 5vw 9vh;overflow-y:auto}
+#hackBox.on{display:block}
+#hackBox .hwrap{max-width:900px;margin:0 auto}
+#hackBox h2{font-family:var(--mono);text-transform:uppercase;color:var(--accent);
+font-size:clamp(19px,3.4vw,36px);margin:.1em 0;line-height:1.15}
+#hackBox .beat{border-left:5px solid var(--accent);background:var(--surface);
+padding:10px 14px;margin:11px 0;border-radius:var(--r)}
+#hackBox .beat>b{font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;
+color:var(--accent);font-size:12.5px;display:block;margin-bottom:3px}
+#hackBox .beat p b{display:inline;font-family:inherit;font-size:inherit;
+text-transform:none;letter-spacing:0;color:var(--accent);font-weight:800}
+#hackBox p{font-size:clamp(15px,2.05vw,21px);line-height:1.4;margin:.25em 0}
+#hackBox .trick{display:inline-block;font-family:var(--mono);font-size:12.5px;font-weight:800;
+border:1px solid var(--ink);border-radius:3px;padding:4px 8px;margin:5px 6px 0 0;background:#fff}
+#hackBox .rule{border:3px solid var(--ink);background:#0A0A0A;color:#fff;padding:14px 16px;
+border-radius:var(--r);margin-top:16px;font-size:clamp(15px,2.1vw,22px);font-weight:700;line-height:1.35}
+#hackBox .cl{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;margin-top:14px}
+
+/* ===================================================================
+   V6.14 · HYPE combo · RAID juosta (mokytojos pultas)
+   =================================================================== */
+#combo{position:fixed;left:50%;transform:translateX(-50%);top:12px;z-index:25;display:none;
+background:var(--ink);color:#fff;border:3px solid #E8A317;border-radius:var(--r);padding:8px 15px;
+font-family:var(--mono);font-weight:800;letter-spacing:.05em;text-align:center;min-width:250px;font-size:14px}
+#combo.on{display:block}
+#combo .mt{height:8px;background:#3a3a3a;border-radius:99px;margin-top:7px;overflow:hidden}
+#combo .mf{height:100%;background:#E8A317}
+#raidBan{position:fixed;left:0;right:0;bottom:0;z-index:25;display:none;background:var(--accent);
+color:#fff;font-family:var(--mono);font-weight:800;text-align:center;padding:16px;
+font-size:clamp(16px,3vw,30px);letter-spacing:.07em}
+#raidBan.on{display:block;animation:raidIn .45s ease}
+@keyframes raidIn{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+/* ===================================================================
+   V6.14 · TVARKARAŠČIO SKAIDRĖ
+   =================================================================== */
+#tvkSchool{margin-bottom:2px}
+#tvkLine{font-family:var(--mono);font-weight:800;font-size:clamp(21px,4.4vw,48px);
+line-height:1.2;margin:.15em auto;max-width:18em;text-wrap:balance}
+#tvkLine .hi{color:var(--accent)}
+#tvkMeta{font-size:clamp(16px,2.5vw,26px);color:var(--muted);margin:.15em 0 .5em;font-weight:600}
+#tvkForm{display:none;margin:12px auto;max-width:620px;text-align:left;
+background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+#tvkForm.on{display:block}
+#tvkForm label{display:block;font-family:var(--mono);font-size:11px;text-transform:uppercase;
+letter-spacing:.07em;color:var(--muted);margin:9px 0 3px}
+#tvkForm input,#tvkForm select{width:100%;font-family:var(--body);font-size:16px;padding:9px 10px;
+border:1px solid var(--line);border-radius:var(--r);background:#fff;color:var(--ink)}
+#tvkQr{display:flex;justify-content:center;margin:8px 0 4px;min-height:20px}
+#tvkQr img,#tvkQr canvas{border:6px solid #fff;box-shadow:0 2px 12px rgba(0,0,0,.12)}
+@media print{.hud,#bar,#barTrack,#boot,#memeBox,#streamTop,#chatPanel,#emoRain,#milestone,#confetti,#auraHud,#auraPops,#gestHint,#notes,#net,#camWrap,#cvBox,#fxCanvas,#corner,#scam,#hackBox,#combo,#raidBan{display:none!important}.slide{display:none!important}
 #certCard{display:block!important;border-width:4px}body{background:#fff}}
+.finalfit{zoom:.84;padding-bottom:6vh}
+.finalfit img{max-height:26vh;width:auto!important;margin:0 auto!important}
+.finalfit h1{margin:6px 0}
+.finalfit .picto{margin:8px 0}.finalfit .picto div{padding:8px 10px;width:150px}.finalfit .picto span{font-size:30px}
+.finalfit #cliff{margin:4px 0}
+.finalfit .closeq{font-size:24px;margin:6px 0;line-height:1.2}
+.finalfit #qr{margin:6px auto;padding:6px}.finalfit #qr canvas,.finalfit #qr img{width:104px!important;height:104px!important}
 </style>
 </head>
 <body>
@@ -790,7 +903,8 @@ background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:
     <button class="btn btn-ghost" onclick="startShow('voice')">🔊 Su balsu</button>
     <button class="btn btn-ghost" onclick="startShow('auto')">🤖 Auto</button>
   </div>
-  <p class="small">⚗️ Eksperimentinis prototipas, kurtas su AI. 🔊 ElevenLabs LT balsas · 📷 kamera — TIK aurai (skaidrių ji nekeičia).<br>Klavišai: → kitas · ← atgal · N — užrašai · T — streamas · M — memas · +/− aura</p>
+  <p class="small">⚗️ Eksperimentinis prototipas, kurtas su AI. 🔊 ElevenLabs LT balsas · 📷 kamera — TIK aurai (skaidrių ji nekeičia).<br>Klavišai: → kitas · ← atgal · N — užrašai · T — streamas · C — streamer kamera · R — tvarkaraštis · H — slėpti „hack" mygtukus · M — memas · +/− aura · 1–4/5–8/9–0 — garsai</p>
+  <p class="small" id="verLbl" style="opacity:.55">V6.14</p>
   <img id="startlogo" src="assets/img/bc-logo.png" alt="Brain Club" style="width:min(220px,50vw);margin-top:10px;opacity:.92">
 </div>
 
@@ -814,6 +928,11 @@ background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:
 
 <div id="memeBox" onclick="memeHide()"></div>
 
+<div id="scam"><span id="scamLive">LIVE 🔴</span><button id="scamSwap" onclick="scamSwap()" title="Perkelti kamerą į kitą pusę">⇄</button><video id="scamVid" autoplay playsinline muted></video></div>
+<div id="hackBox" onclick="hackHide()"></div>
+<div id="combo"></div>
+<div id="raidBan"></div>
+
 <div id="gestHint">
   <div class="up"><div class="ic" id="ghUp">🙋‍♂️</div><p>Dešinė<br>aukštyn = +</p></div>
   <div class="dn"><div class="ic" id="ghDn">🙋‍♀️</div><p>Kairė<br>aukštyn = −</p></div>
@@ -826,6 +945,7 @@ background:rgba(255,255,255,.94);border-radius:var(--r);padding:8px 10px;cursor:
 <div id="auraPops"></div>
 
 <div id="corner">
+  <button id="scamBtn" onclick="scamCycle()" title="Streamer kamera: pusė ekrano → kampas → išjungta (C)">📷</button>
   <button id="streamBtn" onclick="streamToggle()" title="Twitch režimas (T)">📺</button>
   <button id="auraBtn" onclick="auraToggle()" title="Įjungti/išjungti auros HUD (A)">✨</button>
   <button id="muteBtn" onclick="toggleMute()" title="Nutildyti viską (S)">🔊</button>
@@ -1304,7 +1424,8 @@ SL = SL.concat([
  "<div id='lever' title='Patrauk žemyn'><div class='rod'></div><div class='knob'></div></div></div>"+
  "<p id='slotMsg'></p>"+
  "<div class='slotgoal'><span id='g0'>😴 MIEGAS</span><span id='g1'>💪 JUDESYS</span><span id='g2'>📚 MOKYMASIS</span></div>"+
- "<p style='margin-top:12px'><button class='btn btn-red' style='font-size:18px;padding:16px 30px' onclick='brainMax()'>💥 AKTYVUOTI BRAIN MAX</button></p>"+
+ "<p style='margin-top:10px'><button class='btn btn-red' style='font-size:18px;padding:16px 30px' onclick='brainMax()'>💥 AKTYVUOTI BRAIN MAX</button> "+
+ "<button class='hackbtn' onclick='hackShow(\"slot\")'>🧠 Kaip tai hack'ina smegenis?</button></p>"+
  "<div class='cards' id='maxlist' style='display:none'>"+
  "<div class='card'><div class='emo'>😴</div><h3>Miegok giliai</h3></div>"+
  "<div class='card'><div class='emo'>📚</div><h3>Mokykis nuolat</h3></div>"+
@@ -1379,7 +1500,8 @@ SL = SL.concat([
  "<div id='scratchWrap' style='display:none'>"+
  "<div id='scratchUnder'></div><canvas id='scratchCv'></canvas></div>"+
  "<p id='scratchHint' style='display:none'>👆 NUBRAUK BILIETĄ — koks žaidimas?</p>"+
- "<div id='chGame'></div>"+
+ "<p><button class='hackbtn' onclick='hackShow(\"scratch\")'>🧠 Kaip tai hack'ina smegenis?</button></p>"+
+  "<div id='chGame'></div>"+
  "<p><button class='btn btn-ghost' id='chNextBtn' style='display:none' onclick='chNext()'>TOLIAU →</button></p>"+
  "</div>"+
  "<div id='chDone' style='display:none'><p id='chWinner'></p>"+
@@ -1423,7 +1545,7 @@ SL = SL.concat([
  notes:{say:"Savanoriui — pagarba kaip ringe: vardas garsiai, aplodismentai.",do:"3-iam klausimui surink 3–4 idėjas iš salės — jos auksinės.",br:"„Įveikta. Paskutinė žinutė…“"}},
 
 /* 18 FINALAS */
-{ey:"KVIETIMAS", tag:"finalas", sec:75, cls:"center",
+{ey:"KVIETIMAS", tag:"finalas", sec:75, cls:"center finalfit",
  html:"<img src='assets/img/space-dino.gif' alt='Dino astronautas' style='width:min(560px,90vw);border-radius:var(--r);display:block;margin:4px auto' onerror=\"spaceFallback(this)\">"+
  "<h1>Nebūk <span class='rword'>dinozauras</span>. Evoliucionuok.</h1>"+
  "<div class='picto'>"+
@@ -1436,7 +1558,34 @@ SL = SL.concat([
  "<p class='closeq'>O kaip smegenis <span>treniruosi TU</span>?</p>"+
  "<div id='qr'></div><p class='small'>Paimk kvietimą → nuskenuok QR su tėvais → iki susitikimo Brain Club'e!</p>",
  vo:18, voice:"Nebūk dinozauras. Evoliucionuok. Mokykis mokytis. Valdyk savo smegenis. Valdyk virtualią realybę ir dirbtinį intelektą — ir neleisk technologijoms valdyti tavęs. Paimk kvietimą, nuskenuok kodą su tėvais. Siek žvaigždžių — ir iki susitikimo Brain Club'e!",
- notes:{say:"CLIFFHANGERIS: „šiandien pamatei VIENĄ pamoką — Brain Club’e jų visi metai.“ Tada UŽDUOK klausimą garsiai ir PALAUK 3 sek tyloje: „O kaip smegenis treniruosi TU?“ Tyla čia — stipriausias ginklas.",do:"Kelis atsakymus paimk iš salės (2–3, ne daugiau). Tada dinozauro kostiumas įbėga — IRONIŠKAI, su komedijos laiku. Galutinė salės AURA lieka ekrane — perskaityk ją garsiai: „šiandien surinkot X auros“. Kvietimai prie durų, QR — SU TĖVAIS.",br:"Finalas: „Iki susitikimo!“ + plojimai dinozaurui."}}
+ notes:{say:"CLIFFHANGERIS: „šiandien pamatei VIENĄ pamoką — Brain Club’e jų visi metai.“ Tada UŽDUOK klausimą garsiai ir PALAUK 3 sek tyloje: „O kaip smegenis treniruosi TU?“ Tyla čia — stipriausias ginklas.",do:"Kelis atsakymus paimk iš salės (2–3, ne daugiau). Tada dinozauro kostiumas įbėga — IRONIŠKAI, su komedijos laiku. Galutinė salės AURA lieka ekrane — perskaityk ją garsiai: „šiandien surinkot X auros“. Kvietimai prie durų, QR — SU TĖVAIS.",br:"Finalas: „Iki susitikimo!“ + plojimai dinozaurui."}},
+
+/* 19 TVARKARAŠTIS — „paprastas kompiliatorius": vieną kartą užpildai, rodai visoms mokykloms */
+{ey:"KADA · KUR", tag:"tvarkarastis", sec:45, cls:"center",
+ html:"<h1>📅 Kada? Kur? <span class='rword'>Registruokis</span></h1>"+
+ "<p class='eyebrow' id='tvkSchool'></p>"+
+ "<p id='tvkLine'></p>"+
+ "<p id='tvkMeta'></p>"+
+ "<div id='tvkQr'></div>"+
+ "<p class='small' id='tvkLink'></p>"+
+ "<p><button class='btn btn-ghost' onclick='tvkEdit()'>✏️ Redaguoti</button></p>"+
+ "<div id='tvkForm'>"+
+ "<label for='tvkM'>Mokykla</label><input id='tvkM' placeholder='VGTU inžinerijos licėjus'>"+
+ "<label for='tvkD'>Savaitės diena</label><select id='tvkD'>"+
+ "<option value='1'>Pirmadieniais</option><option value='2'>Antradieniais</option>"+
+ "<option value='3'>Trečiadieniais</option><option value='4'>Ketvirtadieniais</option>"+
+ "<option value='5'>Penktadieniais</option></select>"+
+ "<label for='tvkT'>Laikas (nuo–iki)</label><input id='tvkT' placeholder='14:00-15:30'>"+
+ "<label for='tvkK'>Kabinetas / klasė</label><input id='tvkK' placeholder='23'>"+
+ "<label for='tvkN'>Pradžios data</label><input id='tvkN' type='date'>"+
+ "<label for='tvkU'>Registracijos nuoroda</label><input id='tvkU' placeholder='https://…'>"+
+ "<p style='margin-top:12px'><button class='btn btn-red' onclick='tvkSave()'>💾 IŠSAUGOTI</button> "+
+ "<button class='btn btn-ghost' onclick='tvkEdit(0)'>Atšaukti</button></p>"+
+ "</div>",
+ voice:"Kada ir kur? Brain Club renkasi tavo mokykloje. Nuskenuok kodą kartu su tėvais ir užsiregistruok.",
+ notes:{say:"LĖTAI ir GARSIAI perskaityk vieną eilutę: diena, laikas, kabinetas. Pakartok DU kartus — vaikai čia užsirašinėja telefonais.",
+ do:"Prieš skaidrę paspausk ✏️ Redaguoti (arba klavišą R) ir suvesk ŠITOS mokyklos duomenis — arba atidaryk deck'ą su ?mokykla=…&diena=4&laikas=14:00-15:30&kab=23&nuo=2026-09-18. Palaikyk QR ekrane bent 30 sek. Kvietimai — prie durų.",
+ br:"„Susitinkam čia pat, tavo mokykloje. Iki!“"}}
 ]);
 
 /* ===================================================================
@@ -1450,6 +1599,45 @@ SL = SL.concat([
    =================================================================== */
 var SFX={fa:"assets/sfx/fa.mp3",jee:"assets/sfx/jee.mp3",
          tada:"assets/sfx/tada.mp3",victory:"assets/sfx/victory.mp3"};
+
+/* ===================================================================
+   V6.14 · GARSŲ LENTA — 10 mygtukų mokytojos pulte (assets/sfx/board.json)
+   Registras praplečia SFX žemėlapį; sintezuotas pakaitalas parenkamas
+   pagal `kind`, todėl garsas skamba net jei mp3 nepasiekiamas.
+   =================================================================== */
+var SFXBOARD=[
+ {id:"pos1",file:"assets/sfx/pos1.mp3",label:"Vine boom",emoji:"💥",kind:"pos"},
+ {id:"pos2",file:"assets/sfx/pos2.mp3",label:"Ding ✓",emoji:"✅",kind:"pos"},
+ {id:"pos3",file:"assets/sfx/pos3.mp3",label:"Rahhh",emoji:"🦁",kind:"pos"},
+ {id:"pos4",file:"assets/sfx/pos4.mp3",label:"Sheesh",emoji:"🔥",kind:"pos"},
+ {id:"neg1",file:"assets/sfx/neg1.mp3",label:"Fahhh",emoji:"💀",kind:"neg"},
+ {id:"neg2",file:"assets/sfx/neg2.mp3",label:"Bruh",emoji:"🙄",kind:"neg"},
+ {id:"neg3",file:"assets/sfx/neg3.mp3",label:"Metal pipe",emoji:"🔩",kind:"neg"},
+ {id:"neg4",file:"assets/sfx/neg4.mp3",label:"Windows error",emoji:"🪟",kind:"neg"},
+ {id:"fun1",file:"assets/sfx/fun1.mp3",label:"Delfino juokas",emoji:"🐬",kind:"fun"},
+ {id:"fun2",file:"assets/sfx/fun2.mp3",label:"6-7",emoji:"6️⃣",kind:"fun"}
+];
+var SFXALIAS={};                       /* naujas id -> kuris sintezuotas garsas */
+function sfxBoardApply(list){
+  if(!list||!list.length)return false;
+  SFXBOARD=list;
+  list.forEach(function(x){
+    if(!x||!x.id)return;
+    SFX[x.id]=x.file||("assets/sfx/"+x.id+".mp3");
+    SFXALIAS[x.id]=(x.kind==="neg")?"fa":((x.kind==="fun")?"victory":"jee");
+  });
+  return true;
+}
+sfxBoardApply(SFXBOARD);               /* atsarginis sąrašas veikia iš karto */
+function sfxBoardLoad(){
+  try{
+    if(!window.fetch)return;
+    fetch("assets/sfx/board.json",{cache:"no-store"})
+      .then(function(r){ return r.ok?r.json():null })
+      .then(function(j){ if(j&&j.sounds&&j.sounds.length) sfxBoardApply(j.sounds) })
+      .catch(function(){});
+  }catch(e){}
+}
 var SFXST={};              /* vardas -> {mode:"probing|file|synth", el:Audio} */
 var MUTED=false, _ac=null;
 
@@ -1481,8 +1669,10 @@ function sfxProbe(name){
     a.addEventListener("error",function(){ st.mode="synth"; },{once:true});
     a.src=SFX[name];
     a.load();
-    /* jei serveris tyli — po 3 s laikom, kad failo nėra */
-    setTimeout(function(){ if(st.mode==="probing") st.mode="synth" },3000);
+    /* V6.14: po 3 s į sintezę pereinam TIK jei tikrai nėra šaltinio (404/klaida);
+       paslėptame tab'e Chrome atideda medijos krovimą — tada liekam "probing",
+       o canplaythrough vėliau pats perjungs į "file" (garsas neužrakinamas sintezėje) */
+    setTimeout(function(){ if(st.mode==="probing"&&(a.error||a.networkState===3)) st.mode="synth" },3000);
   }catch(e){ st.mode="synth" }
   return st;
 }
@@ -1525,6 +1715,7 @@ function _noise(A,t0,dur,peak,type,f0,f1,dest){
   s.connect(f); f.connect(g); g.connect(dest||A.destination); s.start(t0);
 }
 function sfxSynth(name,vol){
+  name=SFXALIAS[name]||name;      /* V6.14: lentos garsai -> bazinis pakaitalas */
   var A=AC(); if(!A)return;
   var v=(vol==null?1:vol), n=A.currentTime+0.01;
   try{
@@ -1644,6 +1835,7 @@ function auraRender(){
 /* PAGRINDINIS API — kviesk iš bet kur */
 function aura(delta,reason){
   delta=Math.round(delta||0);
+  if(delta>0&&typeof comboOn==="function"&&comboOn()){ delta*=2; reason=(reason||"")+" ×2 🔥" }
   if(!delta)return AURA.pts;
   if(!AURA.on) auraToggle(true);          /* pirmas taškas pats atidaro HUD */
   AURA.pts+=delta;
@@ -1658,6 +1850,7 @@ function aura(delta,reason){
   }
   sfx(delta>0?"jee":"fa", delta>0?.85:.9);
   if(typeof streamAuraEvent==="function") streamAuraEvent(delta);   /* V6.7 */
+  if(typeof pultStats==="function") pultStats();                     /* V6.14 */
   return AURA.pts;
 }
 function auraPop(delta,reason){
@@ -1687,6 +1880,9 @@ function build(){
   buildWheel(); buildSwipe(); buildStars(); buildSlot();
   try{ new QRCode(document.getElementById("qr"),{text:QR_URL,width:140,height:140,correctLevel:QRCode.CorrectLevel.M}); }
   catch(e){ document.getElementById("qr").textContent=QR_URL; }
+  tvkLoad(); tvkRender();               /* V6.14 tvarkaraščio skaidrė */
+  scamLoad(); scamPaint();              /* V6.14 streamer kameros pusė */
+  sfxBoardLoad();                       /* V6.14 garsų lenta iš board.json */
 }
 var _booted=false;
 function show(i){
@@ -1706,10 +1902,13 @@ function show(i){
   document.getElementById("bar").style.width=((cur+1)/SL.length*100)+"%";
   document.getElementById("cnt").textContent=(cur+1)+" / "+SL.length;
   renderNotes();
+  if(cur===SL.length-1&&typeof tvkRender==="function") tvkRender();
+  if(typeof pultSlide==="function") pultSlide();
   if(MODE==="voice"||MODE==="auto") speakCur();
 }
 function next(){show(cur+1)} function prev(){show(cur-1)}
 function startShow(m){MODE=m;document.getElementById("start").style.display="none";
+  try{ scamRestore() }catch(e){}
   if(m==="live")document.getElementById("notes").style.display="block";
   show(0);startAges();timerStart();auraToggle(true);}
 function toggleNotes(){var n=document.getElementById("notes");
@@ -1741,8 +1940,17 @@ function speakTTS(){
   u.onend=function(){ if(MODE==="auto"&&cur<SL.length-1) setTimeout(next,1300); };
   window.speechSynthesis.speak(u);
 }
+var SFXKEYS={"1":"pos1","2":"pos2","3":"pos3","4":"pos4","5":"neg1","6":"neg2",
+              "7":"neg3","8":"neg4","9":"fun1","0":"fun2"};
 document.addEventListener("keydown",function(e){
-  if(e.target.tagName==="INPUT")return;
+  var tn=e.target&&e.target.tagName;
+  if(tn==="INPUT"||tn==="SELECT"||tn==="TEXTAREA"||(e.target&&e.target.isContentEditable))return;
+  if(e.metaKey||e.ctrlKey||e.altKey)return;
+  /* V6.14 garsų lenta: 1–4 pliusai · 5–8 minusai · 9/0 linksmi */
+  if(SFXKEYS[e.key]){ sfx(SFXKEYS[e.key]); e.preventDefault(); return; }
+  if(e.key==="c"||e.key==="C"){ scamCycle(); return; }
+  if(e.key==="r"||e.key==="R"){ tvkGo(); return; }
+  if(e.key==="h"||e.key==="H"){ hackToggle(); return; }
   if(e.key==="ArrowRight")next();
   if(e.key==="ArrowLeft")prev();
   if(e.key==="n"||e.key==="N")toggleNotes();
@@ -1754,7 +1962,7 @@ document.addEventListener("keydown",function(e){
   /* V6.3 vedėjo klavišai: + prideda 100 auros, − atima 100 (su „fa") */
   if(e.key==="+"||e.key==="="||e.key==="Add"){aura(100,"vedėjas");e.preventDefault();}
   if(e.key==="-"||e.key==="_"||e.key==="Subtract"){aura(-100,"vedėjas");e.preventDefault();}
-  if(e.key==="Escape"){ var b=document.getElementById("cvBox"); if(b)b.classList.remove("on"); memeHide(); }
+  if(e.key==="Escape"){ var b=document.getElementById("cvBox"); if(b)b.classList.remove("on"); memeHide(); hackHide(); if(typeof tvkEdit==="function")tvkEdit(0); }
 });
 
 /* ===== AMŽIŲ JUOSTA (1 skaidrė) ===== */
@@ -1825,16 +2033,27 @@ function evoPick(yes){
 
 /* ===== KAMERA: salė / gestai / aura ===== */
 var camStream=null, auraOn=false;
-function camStart(cb){
-  if(camStream){cb&&cb();return}
-  navigator.mediaDevices.getUserMedia({video:{width:640,height:480}}).then(function(s){
-    camStream=s; document.getElementById("cam").srcObject=s;
-    document.getElementById("camWrap").style.display="block"; cb&&cb();
-  }).catch(function(){ alert("Kamera nepasiekiama — leisk prieigą naršyklėje."); });
+/* V6.14: VIENAS srautas visiems vartotojams (CV gestai + Streamer kamera).
+   camGet() tik paima/perpanaudoja srautą; camStart() dar parodo CV langelį. */
+function camAttach(){
+  var a=document.getElementById("cam"); if(a)a.srcObject=camStream;
+  var b=document.getElementById("scamVid"); if(b)b.srcObject=camStream;
 }
+function camGet(cb,eb){
+  if(camStream){ camAttach(); cb&&cb(); return }
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ eb?eb():raidBanner("📷 Kamera nepasiekiama"); return }
+  navigator.mediaDevices.getUserMedia({video:{width:640,height:480}}).then(function(s){
+    camStream=s; camAttach(); cb&&cb();
+  }).catch(function(){ eb?eb():raidBanner("📷 Kamera nepasiekiama — leisk prieigą naršyklėje"); });
+}
+function camStart(cb,eb){
+  camGet(function(){ document.getElementById("camWrap").style.display="block"; cb&&cb(); },eb);
+}
+function camBusy(){ return visionOn||auraOn||SCAM.mode!=="off" }
 function camStop(){
-  visionOn=false;
-  if(camStream){camStream.getTracks().forEach(function(t){t.stop()});camStream=null}
+  visionOn=false; auraOn=false;
+  /* V6.14: srauto neužgesinam, jei Streamer kamera dar rodo vaizdą */
+  if(camStream&&SCAM.mode==="off"){camStream.getTracks().forEach(function(t){t.stop()});camStream=null}
   document.getElementById("camWrap").style.display="none";
   document.getElementById("camWrap").classList.remove("big");
   var cv=document.getElementById("poseCanvas");
@@ -1883,7 +2102,9 @@ function updAura(){
 /* V6.1: buvęs „gestų valdymas" pakeistas į AUROS kamerą.
    Rankos nebekeičia skaidrių — jos tik duoda/atima aurą (žr. auraGestures). */
 function toggleAuraCam(){
-  if(camStream){camStop();return}
+  /* V6.14: sprendžiam pagal GESTUS, ne pagal srautą — Streamer kamera irgi
+     laiko camStream, o mygtukas turi ĮJUNGTI gestus, ne išjungti vaizdą. */
+  if(auraOn||visionOn){camStop();return}
   auraMode();
 }
 /* ===== V5: MediaPipe — KŪNO skeletas + PIRŠTŲ taškai vienu metu =====
@@ -2120,8 +2341,28 @@ function pultInit(){
       if(d) aura(d,"mokytojos pultas 📱");
     });
     PULT.ch.on("broadcast",{event:"confetti"},function(){ confettiBurst(); });
+    /* --- V6.14 mokytojos pulto praplėtimai --- */
+    PULT.ch.on("broadcast",{event:"sfx"},function(m){
+      var n=m&&m.payload&&m.payload.name;
+      if(n&&SFX[n]) sfx(n,.95);
+    });
+    PULT.ch.on("broadcast",{event:"nav"},function(m){
+      var d=(m&&m.payload&&m.payload.dir)|0;
+      if(d>0)next(); else if(d<0)prev();
+    });
+    PULT.ch.on("broadcast",{event:"mute"},function(){ if(!MUTED) toggleMute(); });
+    PULT.ch.on("broadcast",{event:"emo"},function(m){
+      emoBurstFree(5,(m&&m.payload&&m.payload.e)||"❤️");
+    });
+    PULT.ch.on("broadcast",{event:"raid"},function(){ raidBanner(); aura(50,"RAID 🚀 visai salei"); });
+    PULT.ch.on("broadcast",{event:"combo"},function(){ comboStart(20000); });
+    /* telefonas prisijungė vėliau už deck'ą -> tuoj pat atsiunčiam būseną */
+    PULT.ch.on("broadcast",{event:"hello"},function(){
+      setTimeout(function(){ pultSlide(); pultStats(true) },150);
+    });
     PULT.ch.subscribe(function(st){
-      if(st==="SUBSCRIBED"){ PULT.ok=true; pultState("✅ pultas prijungtas",true); }
+      if(st==="SUBSCRIBED"){ PULT.ok=true; pultState("✅ pultas prijungtas",true);
+        setTimeout(function(){ pultSlide(); pultStats(true) },400); }
       else if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ pultState("pultas nepasiekiamas",false) }
     });
   }catch(e){ pultState("pultas nepasiekiamas",false) }
@@ -2647,7 +2888,8 @@ function checkMilestone(){
   m.innerHTML="<div class='mbox'><p class='eyebrow'>1000 SEKĖJŲ</p>"+
     "<h2>🎁 Prizas atrakintas!</h2>"+
     "<p>Salė pasiekė <b>1 000 sekėjų</b> — vadinasi, prizas atkeliauja į šitą salę.</p>"+
-    "<p class='small'>(Streamas suvaidintas. Prizas — tikras.)</p></div>";
+    "<p class='small'>(Streamas suvaidintas. Prizas — tikras.)</p>"+
+    "<button class='hackbtn' onclick='event.stopPropagation();hackShow(\"loot\")'>🧠 Kaip tai hack'ina smegenis?</button></div>";
   m.classList.add("on");
   sfx("victory"); emojiBurst(26); chatSys("1000 SEKĖJŲ!!! PRIZAS ATRAKINTAS 🎁");
   var i; for(i=0;i<6;i++) setTimeout(chatSay,i*180);
@@ -2908,6 +3150,229 @@ function shatter(txt){ screenShatter(txt) }
 function antidote(){ screenShatter("KURK, NE VARTOK") }
 function brainMax(){ var m=document.getElementById("maxlist"); if(m)m.style.display="grid";
   screenShatter("BRAIN MAX"); sfx("victory"); aura(1000,"BRAIN MAX 🧠"); }
+
+
+/* ===================================================================
+   V6.14 · STREAMER KAMERA — pusė ekrano / kampas / išjungta
+   Klavišas C · mygtukas 📷 kampe. Naudoja TĄ PATĮ srautą kaip CV gestai,
+   todėl kamera niekada neužimama du kartus.
+   =================================================================== */
+var SCAM={mode:"off", side:"right"};   /* off | half | pip */
+function scamLoad(){
+  try{ var o=JSON.parse(localStorage.getItem("bcday-scam")||"null");
+       if(o&&(o.side==="left"||o.side==="right")) SCAM.side=o.side;
+       if(o&&o.mode) SCAM.want=o.mode; }catch(e){}
+}
+function scamSave(){
+  try{ localStorage.setItem("bcday-scam",JSON.stringify({mode:SCAM.mode,side:SCAM.side})) }catch(e){}
+}
+function scamPaint(){
+  var b=document.body;
+  b.classList.toggle("scam-half",SCAM.mode==="half");
+  b.classList.toggle("scam-pip", SCAM.mode==="pip");
+  b.classList.toggle("scam-left", SCAM.side==="left");
+  b.classList.toggle("scam-right",SCAM.side!=="left");
+  var btn=document.getElementById("scamBtn");
+  if(btn) btn.classList.toggle("act",SCAM.mode!=="off");
+}
+function scamSet(mode,silent){
+  if(mode==="off"){
+    SCAM.mode="off"; scamPaint(); scamSave();
+    if(camStream&&!visionOn&&!auraOn){
+      camStream.getTracks().forEach(function(t){t.stop()}); camStream=null;
+      document.getElementById("camWrap").style.display="none";
+    }
+    return;
+  }
+  camGet(function(){ SCAM.mode=mode; camAttach(); scamPaint(); scamSave(); },
+         function(){ SCAM.mode="off"; scamPaint(); if(!silent) raidBanner("📷 Kamera nepasiekiama — leisk prieigą naršyklėje"); });
+}
+function scamCycle(){ scamSet(SCAM.mode==="off"?"half":(SCAM.mode==="half"?"pip":"off")) }
+function scamSwap(){ SCAM.side=(SCAM.side==="left")?"right":"left"; scamPaint(); scamSave(); }
+function scamRestore(){   /* po perkrovimo grąžinam pasirinkimą, TYLIAI */
+  if(SCAM.want&&SCAM.want!=="off") scamSet(SCAM.want,true);
+}
+
+/* ===================================================================
+   V6.14 · TVARKARAŠČIO SKAIDRĖ — mokykla · diena · laikas · kabinetas
+   URL: ?mokykla=…&diena=4&laikas=14:00-15:30&kab=23&nuo=2026-09-18&nuoroda=…
+   Įrašoma į localStorage, todėl kitą rytą jau būna vietoje.
+   =================================================================== */
+var LT_DAY=["","Pirmadieniais","Antradieniais","Trečiadieniais","Ketvirtadieniais","Penktadieniais"];
+var LT_MON=["sausio","vasario","kovo","balandžio","gegužės","birželio",
+            "liepos","rugpjūčio","rugsėjo","spalio","lapkričio","gruodžio"];
+var TVK={mokykla:"",diena:4,laikas:"",kab:"",nuo:"",nuoroda:""};
+function tvkLoad(){
+  try{ var o=JSON.parse(localStorage.getItem("bcday-tvk")||"null");
+       if(o) for(var k in TVK) if(o[k]!=null&&o[k]!=="") TVK[k]=o[k]; }catch(e){}
+  try{
+    var q=new URLSearchParams(location.search),k2,v;
+    for(k2 in TVK){ v=q.get(k2); if(v!=null&&v!=="") TVK[k2]=v; }
+  }catch(e){}
+  TVK.diena=Math.max(1,Math.min(5,parseInt(TVK.diena,10)||4));
+  if(!TVK.nuoroda) TVK.nuoroda=QR_URL;
+}
+function tvkDate(iso){
+  var m=/^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(String(iso||""));
+  if(!m) return iso||"";
+  var mi=(+m[2])-1; if(mi<0||mi>11) return iso;
+  return "nuo "+LT_MON[mi]+" "+(+m[3])+" d.";
+}
+function tvkRender(){
+  var L=document.getElementById("tvkLine"); if(!L)return;
+  var t=String(TVK.laikas||"").replace(/\s*[-–—]\s*/,"–");
+  /* V6.14 fix: be laiko nerodom vien „Ketvirtadieniais" — sakom sąžiningai, kad vedėjas pasakys dabar */
+  if(!t){ L.innerHTML="<span class='hi'>Kada ir kur — vedėjas pasakys dabar 👇</span>"; }
+  else L.innerHTML="<span class='hi'>"+LT_DAY[TVK.diena]+" "+t+"</span>";
+  var bits=[]; if(TVK.kab) bits.push(TVK.kab+" kab.");
+  var d=tvkDate(TVK.nuo); if(d) bits.push(d);
+  if(!t&&!bits.length) bits.push("Registracija — QR arba nuoroda žemiau");
+  var mt=document.getElementById("tvkMeta"); if(mt) mt.textContent=bits.join(" · ");
+  var sc=document.getElementById("tvkSchool"); if(sc) sc.textContent=TVK.mokykla||"";
+  var lk=document.getElementById("tvkLink");
+  if(lk) lk.innerHTML="<b>Registruokis:</b> "+TVK.nuoroda;
+  var q=document.getElementById("tvkQr");
+  if(q){
+    q.innerHTML=""; delete q.dataset.done;
+    try{ new QRCode(q,{text:TVK.nuoroda,width:150,height:150,correctLevel:QRCode.CorrectLevel.M}) }
+    catch(e){ q.textContent=TVK.nuoroda }
+  }
+}
+function tvkEdit(on){
+  var f=document.getElementById("tvkForm"); if(!f)return;
+  var open=(on===0)?false:!f.classList.contains("on");
+  f.classList.toggle("on",open);
+  if(!open)return;
+  var g=function(id){ return document.getElementById(id) };
+  if(g("tvkM"))g("tvkM").value=TVK.mokykla;
+  if(g("tvkD"))g("tvkD").value=String(TVK.diena);
+  if(g("tvkT"))g("tvkT").value=TVK.laikas;
+  if(g("tvkK"))g("tvkK").value=TVK.kab;
+  if(g("tvkN"))g("tvkN").value=TVK.nuo;
+  if(g("tvkU"))g("tvkU").value=TVK.nuoroda;
+  if(g("tvkM"))g("tvkM").focus();
+}
+function tvkSave(){
+  var g=function(id){ var e=document.getElementById(id); return e?String(e.value||"").trim():"" };
+  TVK.mokykla=g("tvkM");
+  TVK.diena=Math.max(1,Math.min(5,parseInt(g("tvkD"),10)||4));
+  TVK.laikas=g("tvkT"); TVK.kab=g("tvkK"); TVK.nuo=g("tvkN");
+  TVK.nuoroda=g("tvkU")||QR_URL;
+  try{ localStorage.setItem("bcday-tvk",JSON.stringify(TVK)) }catch(e){}
+  tvkEdit(0); tvkRender();
+}
+function tvkGo(){                       /* klavišas R — nušok į skaidrę ir atidaryk formą */
+  var i=SL.map(function(x){return x.tag}).indexOf("tvarkarastis");
+  if(i>=0&&cur!==i) show(i);
+  tvkEdit();
+}
+
+/* ===================================================================
+   V6.14 · „KAIP TAI HACK'INA SMEGENIS?" — inokuliacija, ne pardavimas
+   Ritmas: PAJUSK -> SUSTOK -> ĮVARDINK TRIUKĄ -> PAVERSK.
+   Slot mašina · loot dėžutė (prizas) · loterijos bilietas naudoja NEBEVEIK-
+   LAIMĖJIMĄ sąmoningai — čia jis atidengiamas vaikų kalba (3–6 kl.).
+   =================================================================== */
+var HACK={
+ slot:{h:"🎰 Slot mašina — koks čia triukas?",
+  feel:"Kai būgnai sukasi, širdis ima plakti greičiau. Ranka pati nori traukti dar kartą. Pajutai? Tai NE atsitiktinumas.",
+  freeze:"Sustok 3 sekundėms. Paklausk savęs: „Ar aš NORIU traukti dar kartą — ar mane VERČIA?“",
+  tricks:["kintamas atlygis","beveik-laimėjimas","„dar vieną kartą“"],
+  name:"Pirmas traukimas sustojo 2 iš 3 — <b>TYČIA</b>. Tai <b>beveik-laimėjimas</b>: smegenys jį perskaito beveik kaip pergalę ir paleidžia dopaminą. O tikras laimėjimas ateina atsitiktinai — tai <b>kintamas atlygis</b>. Kai nežinai, KADA pavyks, bandai daug dažniau nei kai žinai.",
+  turn:"Paversk: pasakyk garsiai „čia ne sėkmė, čia dizainas“ — ir eik ten, kur atlygis TIKRAS. Išmok gaidą, įmesk kamuolį, pabaik lygį, kurį PATS sukūrei. Ten po kiekvieno bandymo lieka įgūdis, ne tik jausmas."},
+ loot:{h:"🎁 Loot dėžutė ir prizas — koks čia triukas?",
+  feel:"„Dar 30 sekėjų iki prizo!“ — ir staiga labai NORISI dar truputį pabūti. Kūne kyla skubėjimas.",
+  freeze:"Sustok. Kas čia matuojama: tavo laimė ar tavo LAIKAS ekrane?",
+  tricks:["kintamas atlygis","FOMO","praradimo baimė","progreso juosta"],
+  name:"Juosta beveik pilna — todėl išeiti sunku: veikia <b>praradimo baimė</b> („jau tiek investavau“) ir <b>FOMO</b> („visi gaus, o aš ne“). Loot dėžutėje niekada nežinai, kas iškris — tas pats <b>kintamas atlygis</b> kaip kazino.",
+  turn:"Paversk: nusistatyk prizą PATS ir iš anksto — „padarysiu 10 metimų, tada baigiu“. Kai prizą skiri tu, ne app'sas, laimi tu."},
+ scratch:{h:"🎫 Loterijos bilietas — koks čia triukas?",
+  feel:"Braukai — ir kiekvienas brūkšnys kutena. Nori braukti greičiau. Nori dar vieno bilieto.",
+  freeze:"Sustok. Kas nusprendė, kas po danga? Ne tu.",
+  tricks:["kintamas atlygis","beveik-laimėjimas","„dar vieną kartą“"],
+  name:"Braukimas — tai <b>lėtai atidengiamas</b> atsakymas. Smegenys nekenčia nebaigtų dalykų, todėl tempia toliau. Bilietai TYČIA gaminami taip, kad dažnai būtų „beveik“ — <b>beveik-laimėjimas</b> laiko tave žaidime ilgiau nei aiškus pralaimėjimas.",
+  turn:"Paversk: šiandien bilietas nurodė ŽAIDIMĄ, o ne pinigus — atlygis buvo tikras (žaidei ir treniravaisi). Ieškok tokių: kur po atidengimo lieka kažkas, ką padarei PATS."}
+};
+function hackShow(k){
+  var d=HACK[k]||HACK.slot, b=document.getElementById("hackBox"); if(!b)return;
+  b.innerHTML="<div class='hwrap'><p class='eyebrow'>ATIDENGIAM TRIUKĄ</p><h2>"+d.h+"</h2>"+
+   "<div class='beats'>"+
+   "<div class='beat'><b>1 · PAJUSK</b><p>"+d.feel+"</p></div>"+
+   "<div class='beat'><b>2 · SUSTOK</b><p>"+d.freeze+"</p></div>"+
+   "<div class='beat'><b>3 · ĮVARDINK TRIUKĄ</b><p>"+d.name+"</p><p>"+
+     d.tricks.map(function(t){return "<span class='trick'>"+t+"</span>"}).join("")+"</p></div>"+
+   "<div class='beat'><b>4 · PAVERSK</b><p>"+d.turn+"</p></div></div>"+
+   "<div class='rule'>Jei matai tokį dalyką žaidime ar app'e — tai ne tau dovana, "+
+     "tai tavo dėmesio pirkimas. <b>Sustok.</b></div>"+
+   "<p class='cl'>paspausk bet kur — uždaryti</p></div>";
+  b.classList.add("on"); sfx("tada",.4);
+}
+function hackHide(){ var b=document.getElementById("hackBox"); if(b)b.classList.remove("on") }
+function hackToggle(){ document.body.classList.toggle("nohack") }
+
+/* ===================================================================
+   V6.14 · HYPE COMBO ×2 · RAID · emoji reakcijos (iš mokytojos telefono)
+   =================================================================== */
+var COMBO={until:0,tick:null};
+function comboOn(){ return Date.now()<COMBO.until }
+function comboTick(){
+  var b=document.getElementById("combo"); if(!b)return;
+  var left=COMBO.until-Date.now();
+  if(left<=0){ if(COMBO.tick){clearInterval(COMBO.tick);COMBO.tick=null} b.classList.remove("on"); return }
+  b.innerHTML="🔥 HYPE COMBO ×2 · "+Math.ceil(left/1000)+" s"+
+    "<div class='mt'><div class='mf' style='width:"+Math.max(0,Math.min(100,left/200))+"%'></div></div>";
+}
+function comboStart(ms){
+  COMBO.until=Date.now()+(ms||20000);
+  var b=document.getElementById("combo"); if(b)b.classList.add("on");
+  sfx("pos4",.8);
+  if(COMBO.tick)clearInterval(COMBO.tick);
+  COMBO.tick=setInterval(comboTick,120); comboTick();
+}
+function raidBanner(txt){
+  var b=document.getElementById("raidBan"); if(!b)return;
+  b.textContent=txt||"🚀 RAID! VISA SALĖ GAUNA AUROS";
+  b.classList.add("on"); sfx("fun2",.9); emoBurstFree(14);
+  if(raidBanner._t)clearTimeout(raidBanner._t);
+  raidBanner._t=setTimeout(function(){ b.classList.remove("on") },3400);
+}
+function emoFloat(ch){                  /* veikia ir be Twitch režimo */
+  var w=document.getElementById("emoRain"); if(!w)return;
+  w.style.display="block";
+  var e=document.createElement("span");
+  e.className="emoji"; e.textContent=ch||"❤️";
+  e.style.left=(5+Math.random()*86)+"%";
+  e.style.bottom=(5+Math.random()*22)+"%";
+  e.style.fontSize=(26+Math.random()*28)+"px";
+  w.appendChild(e);
+  setTimeout(function(){ e.remove(); if(!STREAM.on&&!w.children.length) w.style.display="" },2500);
+}
+function emoBurstFree(n,ch){ for(var i=0;i<(n||8);i++) (function(k){ setTimeout(function(){ emoFloat(ch) },k*70) })(i) }
+
+/* ===================================================================
+   V6.14 · DECK -> TELEFONAS: skaidrės antraštė, „ką sakyti", skaitliukai
+   =================================================================== */
+function pultSend(ev,pl){
+  if(!PULT.ok||!PULT.ch)return;
+  try{ PULT.ch.send({type:"broadcast",event:ev,payload:pl||{}}) }catch(e){}
+}
+function slideTitle(i){
+  var s=SL[i]; if(!s)return "";
+  var m=/<h1[^>]*>([\s\S]*?)<\/h1>/.exec(s.html||"");
+  var t=m?m[1]:(s.ey||"");
+  return t.replace(/<[^>]*>/g,"").replace(/\s+/g," ").trim().slice(0,70);
+}
+function pultSlide(){
+  var s=SL[cur]; if(!s)return;
+  pultSend("slide",{i:cur,n:SL.length,title:slideTitle(cur),
+    say:((s.notes&&s.notes.say)||"").replace(/<[^>]*>/g,"").slice(0,220),
+    follows:STREAM.follows,aura:AURA.pts});
+}
+var _statsT=0;
+function pultStats(force){
+  var n=Date.now(); if(!force&&n-_statsT<900)return; _statsT=n;
+  pultSend("stats",{follows:STREAM.follows,aura:AURA.pts,combo:comboOn(),i:cur,n:SL.length});
+}
 
 /* ===== V5: BRAIN MAX SLOT MAŠINA =====
    3 būgnai · laimi tik MIEGAS + JUDESYS + MOKYMASIS (iš pačios skaidrės turinio) */

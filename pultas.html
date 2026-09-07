@@ -8,43 +8,98 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Inter:wght@400;600;800&display=swap">
 <style>
 :root{--ground:#FFFFFF;--surface:#F7F7F5;--ink:#0A0A0A;--muted:#595959;--line:#E5E2DE;
---accent:#D90429;--red:#FF0000;--good:#12897A;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+--accent:#D90429;--red:#FF0000;--good:#12897A;--gold:#E8A317;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
 --body:Inter,-apple-system,'Segoe UI',Roboto,sans-serif;--r:4px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;background:var(--ground);color:var(--ink);
-font-family:var(--body);min-height:100svh;overscroll-behavior:none}
-body{display:flex;flex-direction:column;padding:14px 14px calc(14px + env(safe-area-inset-bottom))}
+font-family:var(--body);min-height:100svh}
+body{display:flex;flex-direction:column;padding:12px 12px calc(12px + env(safe-area-inset-bottom))}
 header{text-align:center;flex:0 0 auto}
 .eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;
 font-size:11px;color:var(--accent);font-weight:700;margin:0}
-h1{font-family:var(--mono);text-transform:uppercase;font-size:20px;margin:4px 0 2px;letter-spacing:.02em}
-.room{font-family:var(--mono);font-size:13px;color:var(--muted)}
-.room b{color:var(--ink);font-size:17px;letter-spacing:.14em}
-#state{font-family:var(--mono);font-size:11.5px;padding:5px 10px;border-radius:var(--r);
-display:inline-block;margin-top:7px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+h1{font-family:var(--mono);text-transform:uppercase;font-size:18px;margin:3px 0 2px;letter-spacing:.02em}
+.room{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin:2px 0}
+.room b{color:var(--ink);font-size:16px;letter-spacing:.14em}
+#state{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:var(--r);
+display:inline-block;margin-top:5px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
 #state.ok{border-color:var(--good);color:var(--good);background:#eefaf7;font-weight:700}
 #state.err{border-color:var(--accent);color:var(--accent);background:#fdeef0;font-weight:700}
-.grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
-gap:12px;margin-top:14px;min-height:0}
+
+/* ---- skaidrės kortelė (deck'as -> telefonas) ---- */
+#slideCard{margin-top:10px;border:2px solid var(--ink);border-radius:var(--r);
+background:var(--surface);padding:9px 11px;text-align:left;display:none}
+#slideCard.on{display:block}
+#slideCard .num{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.08em}
+#slideCard .ttl{font-family:var(--mono);font-weight:800;font-size:14.5px;line-height:1.2;margin:2px 0 4px}
+#slideCard .say{font-size:12.5px;line-height:1.35;color:var(--ink)}
+#slideCard .say b{color:var(--accent);font-family:var(--mono);font-size:10px;
+letter-spacing:.08em;display:block;text-transform:uppercase}
+
+/* ---- eiga iki 1000 sekėjų ---- */
+#goal{margin-top:8px;display:none}
+#goal.on{display:block}
+#goal .lbl{font-family:var(--mono);font-size:10.5px;color:var(--muted);
+display:flex;justify-content:space-between;letter-spacing:.06em}
+#goal .tr{height:9px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:3px}
+#goal .fl{height:100%;width:0;background:var(--accent);transition:width .4s ease}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
 button.big{border:4px solid var(--ink);border-radius:var(--r);background:var(--surface);
 font-family:var(--mono);font-weight:800;cursor:pointer;display:flex;flex-direction:column;
-align-items:center;justify-content:center;gap:6px;padding:10px;transition:transform .08s;
+align-items:center;justify-content:center;gap:4px;padding:11px 8px;transition:transform .08s;
 touch-action:manipulation;color:var(--ink)}
 button.big:active{transform:scale(.95)}
-button.big:disabled{opacity:.4}
-button.big .ic{font-size:clamp(30px,10vw,54px);line-height:1}
-button.big .t{font-size:clamp(15px,4.6vw,24px);line-height:1.1;text-align:center}
-button.big .s{font-family:var(--body);font-weight:600;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+button:disabled{opacity:.4}
+button.big .ic{font-size:clamp(26px,8vw,44px);line-height:1}
+button.big .t{font-size:clamp(14px,4.2vw,21px);line-height:1.1;text-align:center}
+button.big .s{font-family:var(--body);font-weight:600;font-size:10.5px;color:var(--muted);
+text-transform:uppercase;letter-spacing:.06em}
 #bPlus{border-color:var(--good);color:var(--good)}
 #bPlus .s{color:var(--good)}
 #bMinus{border-color:var(--accent);color:var(--accent)}
 #bMinus .s{color:var(--accent)}
 #bSuper{grid-column:1 / -1;border-color:var(--ink);background:var(--ink);color:#fff}
 #bSuper .s{color:#ffb3bf}
-#bConf{grid-column:1 / -1;border-color:#E8A317;background:#FFF6E4;color:#0A0A0A}
+#bConf{border-color:var(--gold);background:#FFF6E4;color:#0A0A0A}
+#bRaid{border-color:var(--accent);background:#fdeef0;color:var(--accent)}
+#bRaid .s{color:var(--accent)}
+
+/* ---- navigacija + tyla ---- */
+.navrow{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:9px;margin-top:9px}
+.navrow button{border:3px solid var(--ink);border-radius:var(--r);background:#fff;
+font-family:var(--mono);font-weight:800;font-size:20px;padding:12px 6px;cursor:pointer;
+touch-action:manipulation;color:var(--ink)}
+.navrow button:active{transform:scale(.95)}
+#bMute{border-color:var(--accent);color:var(--accent);font-size:15px}
+#bMute.act{background:var(--accent);color:#fff}
+
+/* ---- garsų lenta ---- */
+.sect{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;
+color:var(--muted);margin:13px 0 5px;display:flex;align-items:center;gap:7px}
+.sect:after{content:"";flex:1;height:1px;background:var(--line)}
+.sfxgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.sfxgrid.two{grid-template-columns:repeat(2,1fr)}
+button.sfx{border:2px solid var(--line);border-radius:var(--r);background:#fff;cursor:pointer;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+padding:9px 4px;touch-action:manipulation;color:var(--ink);transition:transform .08s,opacity .15s}
+button.sfx:active{transform:scale(.93)}
+button.sfx.cool{opacity:.35}
+button.sfx .e{font-size:24px;line-height:1}
+button.sfx .l{font-family:var(--mono);font-size:9px;font-weight:700;text-align:center;
+line-height:1.15;word-break:break-word;letter-spacing:-.02em;max-width:100%;overflow-wrap:anywhere}
+.sfxgrid.pos button.sfx{border-color:var(--good)}
+.sfxgrid.neg button.sfx{border-color:var(--accent)}
+.sfxgrid.fun button.sfx{border-color:var(--gold)}
+
+/* ---- emoji reakcijos ---- */
+.emorow{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.emorow button{border:1px solid var(--line);border-radius:var(--r);background:#fff;
+font-size:24px;padding:8px 0;cursor:pointer;touch-action:manipulation;line-height:1}
+.emorow button:active{transform:scale(.9)}
+
 footer{flex:0 0 auto;text-align:center;margin-top:12px}
-.small{font-size:11.5px;color:var(--muted);margin:4px 0}
-#sent{font-family:var(--mono);font-weight:800;font-size:14px;min-height:1.4em;color:var(--good)}
+.small{font-size:11px;color:var(--muted);margin:3px 0}
+#sent{font-family:var(--mono);font-weight:800;font-size:13.5px;min-height:1.4em;color:var(--good)}
 </style>
 </head>
 <body>
@@ -55,15 +110,44 @@ footer{flex:0 0 auto;text-align:center;margin-top:12px}
   <span id="state">jungiamasi…</span>
 </header>
 
+<div id="slideCard">
+  <p class="num" id="scNum"></p>
+  <p class="ttl" id="scTitle"></p>
+  <p class="say" id="scSay"></p>
+</div>
+
+<div id="goal">
+  <div class="lbl"><span>❤️ iki prizo (1 000 sekėjų)</span><span id="goalNum">0</span></div>
+  <div class="tr"><div class="fl" id="goalFill"></div></div>
+</div>
+
 <div class="grid">
   <button class="big" id="bPlus"  onclick="send(100)"><span class="ic">✨</span><span class="t">+100</span><span class="s">aura</span></button>
   <button class="big" id="bMinus" onclick="send(-100)"><span class="ic">💀</span><span class="t">−100</span><span class="s">aura</span></button>
   <button class="big" id="bSuper" onclick="send(500)"><span class="ic">🚀</span><span class="t">+500 SUPER</span><span class="s">didysis bonusas</span></button>
   <button class="big" id="bConf"  onclick="confetti()"><span class="ic">🎉</span><span class="t">KONFETI</span><span class="s">šventė ekrane</span></button>
+  <button class="big" id="bRaid"  onclick="raid()"><span class="ic">🚀</span><span class="t">RAID</span><span class="s">+50 visai salei</span></button>
 </div>
+
+<div class="navrow">
+  <button id="bPrev" onclick="nav(-1)" title="Ankstesnė skaidrė">◀</button>
+  <button id="bNext" onclick="nav(1)" title="Kita skaidrė">▶</button>
+  <button id="bMute" onclick="panic()">🔇 TYLA</button>
+</div>
+
+<p class="sect">👍 Pagyrimai</p>
+<div class="sfxgrid pos" id="gPos"></div>
+<p class="sect">👎 Ojojoj</p>
+<div class="sfxgrid neg" id="gNeg"></div>
+<p class="sect">🎉 Linksmi</p>
+<div class="sfxgrid fun two" id="gFun"></div>
+
+<p class="sect">💛 Reakcijos</p>
+<div class="emorow" id="gEmo"></div>
 
 <footer>
   <p id="sent"></p>
+  <p class="small">3× ✨ per 5 sek. = 🔥 HYPE COMBO ×2 ekrane (20 sek.)</p>
   <p class="small">Mokytoja — didžiausia aura salėje ✨</p>
   <p class="small">Veikia tik kol atidarytas šis puslapis. Nieko neįrašoma.</p>
 </footer>
@@ -71,9 +155,11 @@ footer{flex:0 0 auto;text-align:center;margin-top:12px}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
 <script>
 /* ===================================================================
-   AURA PULTAS — mokytojos telefonas
+   AURA PULTAS — mokytojos telefonas   (V6.14)
    Siunčia Supabase Realtime broadcast žinutes į deck'ą.
-   Kanalas: bc-day-aura-<ROOM>   ·   įvykiai: {type:'aura',delta} · {type:'confetti'}
+   Kanalas: bc-day-aura-<ROOM>
+   Siunčia: aura{delta} · confetti · sfx{name} · nav{dir} · mute · emo{e} · raid · combo
+   Priima:  slide{i,n,title,say,follows,aura} · stats{follows,aura,combo}
    Raktas viešas (publishable) — jokių asmens duomenų, nieko nesaugoma.
    =================================================================== */
 var SB_URL="https://iiekmeylpppczicrsxho.supabase.co";
@@ -88,12 +174,63 @@ var ch=null, ready=false;
 
 function setState(t,cls){ state.textContent=t; state.className=cls||"" }
 function setEnabled(on){
-  ["bPlus","bMinus","bSuper","bConf"].forEach(function(id){
-    document.getElementById(id).disabled=!on;
-  });
+  var i,b=document.querySelectorAll("button");
+  for(i=0;i<b.length;i++) b[i].disabled=!on;
 }
 setEnabled(false);
 
+/* ---------- garsų lenta: board.json, o be jo — įmontuotas sąrašas ---------- */
+var FALLBACK=[
+ {id:"pos1",file:"assets/sfx/pos1.mp3",label:"Vine boom",emoji:"💥",kind:"pos"},
+ {id:"pos2",file:"assets/sfx/pos2.mp3",label:"Ding ✓",emoji:"✅",kind:"pos"},
+ {id:"pos3",file:"assets/sfx/pos3.mp3",label:"Rahhh",emoji:"🦁",kind:"pos"},
+ {id:"pos4",file:"assets/sfx/pos4.mp3",label:"Sheesh",emoji:"🔥",kind:"pos"},
+ {id:"neg1",file:"assets/sfx/neg1.mp3",label:"Fahhh",emoji:"💀",kind:"neg"},
+ {id:"neg2",file:"assets/sfx/neg2.mp3",label:"Bruh",emoji:"🙄",kind:"neg"},
+ {id:"neg3",file:"assets/sfx/neg3.mp3",label:"Metal pipe",emoji:"🔩",kind:"neg"},
+ {id:"neg4",file:"assets/sfx/neg4.mp3",label:"Windows error",emoji:"🪟",kind:"neg"},
+ {id:"fun1",file:"assets/sfx/fun1.mp3",label:"Delfino juokas",emoji:"🐬",kind:"fun"},
+ {id:"fun2",file:"assets/sfx/fun2.mp3",label:"6-7",emoji:"6️⃣7️⃣",kind:"fun"}
+];
+var BOARD=FALLBACK.slice(), COOL={};
+
+function renderBoard(){
+  var box={pos:document.getElementById("gPos"),neg:document.getElementById("gNeg"),
+           fun:document.getElementById("gFun")};
+  box.pos.innerHTML=""; box.neg.innerHTML=""; box.fun.innerHTML="";
+  BOARD.forEach(function(x){
+    if(!x||!x.id)return;
+    var g=box[x.kind]||box.fun;
+    var b=document.createElement("button");
+    b.className="sfx"; b.id="sfx-"+x.id; b.type="button"; b.disabled=!ready;
+    b.innerHTML="<span class='e'></span><span class='l'></span>";
+    b.querySelector(".e").textContent=x.emoji||"🔊";
+    b.querySelector(".l").textContent=x.label||x.id;
+    b.onclick=function(){ playSfx(x.id) };
+    g.appendChild(b);
+  });
+}
+function loadBoard(){
+  if(!window.fetch)return;
+  fetch("assets/sfx/board.json",{cache:"no-store"})
+    .then(function(r){ return r.ok?r.json():null })
+    .then(function(j){ if(j&&j.sounds&&j.sounds.length){ BOARD=j.sounds; renderBoard() } })
+    .catch(function(){});
+}
+renderBoard(); loadBoard();
+
+/* ---------- emoji reakcijos ---------- */
+var EMO=["❤️","🔥","🧠","👏","😂","🦖"];
+(function(){
+  var g=document.getElementById("gEmo");
+  EMO.forEach(function(e){
+    var b=document.createElement("button"); b.type="button"; b.textContent=e; b.disabled=true;
+    b.onclick=function(){ if(!ready)return; buzz(15); tx("emo",{e:e}); flash(e+" išsiųsta ✅") };
+    g.appendChild(b);
+  });
+})();
+
+/* ---------- ryšys ---------- */
 function connect(){
   if(typeof supabase==="undefined"||!supabase.createClient){
     setState("nėra ryšio su Supabase","err"); return;
@@ -101,8 +238,12 @@ function connect(){
   try{
     var client=supabase.createClient(SB_URL,SB_KEY);
     ch=client.channel("bc-day-aura-"+ROOM,{config:{broadcast:{self:false}}});
+    ch.on("broadcast",{event:"slide"},function(m){ onSlide(m&&m.payload) });
+    ch.on("broadcast",{event:"stats"},function(m){ onStats(m&&m.payload) });
     ch.subscribe(function(status){
-      if(status==="SUBSCRIBED"){ ready=true; setEnabled(true); setState("✅ prisijungta prie salės "+ROOM,"ok"); }
+      if(status==="SUBSCRIBED"){ ready=true; setEnabled(true); setState("✅ prisijungta prie salės "+ROOM,"ok");
+        tx("hello",{});                       /* paprašom deck'o dabartinės skaidrės */
+        setTimeout(function(){ tx("hello",{}) },1200); }
       else if(status==="CHANNEL_ERROR"||status==="TIMED_OUT"){
         ready=false; setEnabled(false); setState("ryšio klaida — perkrauk puslapį","err");
       }
@@ -111,21 +252,85 @@ function connect(){
 }
 connect();
 
+function onSlide(p){
+  if(!p)return;
+  var c=document.getElementById("slideCard"); c.classList.add("on");
+  document.getElementById("scNum").textContent="SKAIDRĖ "+((p.i|0)+1)+" / "+(p.n|0);
+  document.getElementById("scTitle").textContent=p.title||"—";
+  document.getElementById("scSay").innerHTML="<b>ką sakyti</b>";
+  document.getElementById("scSay").appendChild(document.createTextNode(p.say||"—"));
+  onStats(p);
+}
+function onStats(p){
+  if(!p||p.follows==null)return;
+  var g=document.getElementById("goal"); g.classList.add("on");
+  var f=Math.max(0,Math.min(1000,p.follows|0));
+  document.getElementById("goalNum").textContent=f+" / 1 000";
+  document.getElementById("goalFill").style.width=(f/10)+"%";
+}
+
+/* ---------- siuntimas ---------- */
 function buzz(ms){ try{ navigator.vibrate&&navigator.vibrate(ms||30) }catch(e){} }
-function flash(t){ sent.textContent=t; setTimeout(function(){ sent.textContent="" },1400) }
+function flash(t){ sent.textContent=t; clearTimeout(flash._t);
+  flash._t=setTimeout(function(){ sent.textContent="" },1400) }
+function tx(ev,pl){
+  if(!ready||!ch)return false;
+  try{ ch.send({type:"broadcast",event:ev,payload:pl||{}}); return true }catch(e){ return false }
+}
+
+/* HYPE COMBO: trys „+" paspaudimai per 5 sek. */
+var hype=[];
+function hypeTap(){
+  var n=Date.now();
+  hype.push(n);
+  hype=hype.filter(function(t){ return n-t<5000 });
+  if(hype.length>=3){ hype=[]; tx("combo",{}); buzz([40,50,40,50,80]); flash("🔥 HYPE COMBO ×2!"); }
+}
 
 function send(delta){
   if(!ready)return;
   buzz(delta>0?30:60);
-  ch.send({type:"broadcast",event:"aura",payload:{type:"aura",delta:delta}});
+  tx("aura",{type:"aura",delta:delta});
   flash((delta>0?"+":"−")+Math.abs(delta)+" išsiųsta ✅");
+  if(delta>0) hypeTap();
 }
 function confetti(){
   if(!ready)return;
   buzz([30,40,30]);
-  ch.send({type:"broadcast",event:"confetti",payload:{type:"confetti"}});
+  tx("confetti",{type:"confetti"});
   flash("🎉 konfeti išsiųsta ✅");
 }
+function raid(){
+  if(!ready)return;
+  buzz([50,40,90]);
+  tx("raid",{});
+  flash("🚀 RAID išsiųstas ✅");
+}
+function nav(dir){
+  if(!ready)return;
+  buzz(20);
+  tx("nav",{dir:dir});
+  flash(dir>0?"▶ kita skaidrė ✅":"◀ atgal ✅");
+}
+function panic(){
+  if(!ready)return;
+  buzz([60,40,60]);
+  tx("mute",{});
+  document.getElementById("bMute").classList.add("act");
+  flash("🔇 tyla išsiųsta ✅");
+  setTimeout(function(){ document.getElementById("bMute").classList.remove("act") },1600);
+}
+function playSfx(id){
+  if(!ready)return;
+  var b=document.getElementById("sfx-"+id);
+  if(COOL[id]&&Date.now()<COOL[id])return;          /* 1,5 s per mygtuką — be chaoso */
+  COOL[id]=Date.now()+1500;
+  if(b){ b.classList.add("cool"); setTimeout(function(){ b.classList.remove("cool") },1500) }
+  buzz(25);
+  tx("sfx",{name:id});
+  flash("🔊 išsiųsta ✅");
+}
+
 /* neleisk telefonui užmigti, kol pultas atidarytas */
 (function(){ try{ navigator.wakeLock&&navigator.wakeLock.request("screen").catch(function(){}) }catch(e){} })();
 </script>
