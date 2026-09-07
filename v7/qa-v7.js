@@ -33,8 +33,8 @@ for(const [W,H] of [[1280,720],[1920,1080]]){
   await page.click('#start .btn-red');
   await new Promise(r=>setTimeout(r,700));
   const n=await page.$$eval('.slide',x=>x.length);
-  ok('37 skaidrės (22 V6 + 15 istorijos)',n===37,'rasta '+n);
-  ok('1 skaidrė = P1 istorijos kortelė',await page.$eval('#s0',e=>/PRABUDIMAS/.test(e.textContent)));
+  ok('39 skaidrės (22 V6 + 17 istorijos)',n===39,'rasta '+n);
+  ok('1 skaidrė = P1 istorijos kortelė',await page.$eval('#s0',e=>/SIGNALAS/.test(e.textContent)));
   ok('aura HUD matomas',await page.$eval('#auraHud',e=>e.classList.contains('on')));
   ok('misijos HUD matomas',await page.$eval('#v7hud',e=>getComputedStyle(e).display!=='none'&&/LYGIS 1\/7/.test(e.textContent)));
 
@@ -89,7 +89,22 @@ for(const [W,H] of [[1280,720],[1920,1080]]){
 
   // cliffhangeris
   const cl=await page.evaluate(()=>SL.findIndex(s=>s.tag==='cliff'));
-  ok('cliffhangeris prieš kvietimo skaidrę',await page.evaluate(i=>SL[i+1].tag==='finalas',cl));
+  ok('cliffhangeris prieš „Mūsų žodį“',await page.evaluate(i=>SL[i+1].tag==='manifestas',cl));
+  ok('„Mūsų žodis“ prieš kvietimo skaidrę',await page.evaluate(i=>SL[i+2].tag==='finalas',cl));
+  const mf=await page.evaluate(()=>SL.findIndex(s=>s.tag==='manifestas'));
+  ok('4 pagrindinės žinutės eilutės',await page.evaluate(i=>{
+     const t=document.getElementById('s'+i).textContent;
+     return /MOKYKIS MOKYTIS/.test(t)&&/MOKYKIS KARTU SU DRAUGAIS/.test(t)&&
+            /GERBK SAVO MOKYTOJUS/.test(t)&&/NEPAMIRŠK LINKSMINTIS/.test(t);},mf));
+  const dr=await page.evaluate(()=>SL.findIndex(s=>s.tag==='draugai'));
+  ok('draugystės taisyklė PRIEŠ slot mašiną',await page.evaluate(i=>SL[i+1].tag==='brainmax',dr));
+  ok('„dovana ar masalas“ įvardinta',await page.evaluate(i=>
+     /MASALAS/.test(document.getElementById('s'+i).textContent),dr));
+  ok('☄️ meteorito skaitiklis HUD‘e mažėja',await page.evaluate(()=>{
+     const p1=SL.findIndex(s=>s.tag==='p1'), p7=SL.findIndex(s=>s.tag==='p7');
+     show(p1); const a=document.querySelector('#v7hud .v7met').textContent;
+     show(p7); const b=document.querySelector('#v7hud .v7met').textContent;
+     return /70/.test(a)&&/\b3\b/.test(b);}));
   ok('tvarkaraščio/registracijos skaidrė lieka paskutinė',
      await page.evaluate(()=>SL[SL.length-1].tag==='tvarkarastis'));
   ok('cliffhangeryje yra „Tęsinys · BRAIN CLUB“',

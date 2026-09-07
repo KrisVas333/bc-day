@@ -38,7 +38,7 @@ assert 'PULT.ch.on("broadcast",{event:"sfx"}' in h, "V6.14 remote sfx listener m
 
 # 4) title
 h = h.replace("<title>Brain Club Diena</title>",
-              "<title>Brain Club Diena · V7 — Kibirkštis ir Brain City</title>")
+              "<title>Brain Club Diena · V7 — Meteoritas ir BRAIN MAX</title>")
 
 # 5) CSS
 css = (SCR / "story.css").read_text(encoding="utf-8")

@@ -1,125 +1,192 @@
-# Brain Club Diena · V7 — istorija
+# Brain Club Diena · V7 — istorija (Kris'o siužetas)
 
-**Statusas:** ✅ pastatyta ir ištestuota (81/81 Chrome testai) · **Nepaleista, nedeploy'inta, necommit'inta**
-**Failas:** `/Users/kris/bc-day/v7/index.html` (37 skaidrės) · **Auditorija:** 3–6 kl., visa salė
-**Sukurta:** 2026-09-07 · šaltinis: root `index.html` V6.14 (207 418 B)
+**Statusas:** ✅ pastatyta ir ištestuota (91/91 Chrome testai) · **Nepaleista, nedeploy'inta, necommit'inta**
+**Failas:** `/Users/kris/bc-day/v7/index.html` (39 skaidrės) · **Auditorija:** 3–6 kl., visa salė
+**Atnaujinta:** 2026-09-08 · šaltinis: root `index.html` V6.14+
 
-> V6 turėjo mechanikas be siužeto. V7 nieko iš jų nepašalina — uždeda **siužetinį rėmą**:
-> herojų, pasaulį, problemą ir 7 lygius, kuriuose salė patikrina, ar jau turi įgūdžių ją išspręsti.
+> **V7.1 (2026-09-08):** siužetas perrašytas į Kris'o versiją. Kibirkšties-amnezijos premisa
+> **pakeista** meteorito / BRAIN MAX linija. Mechanikų žemėlapis ir 7 lygių struktūra nepakito.
 
 ---
 
 ## 1 · Pasaulis
 
-**Brain City** — miestas, pastatytas iš minčių. Jo šviesa = **salės AURA** (tas pats V6 HUD, dabar su prasme:
-kiekvienas +100 yra šviesa, grąžinta miestui; kiekvienas −100 — pavogta).
+**Į Žemę skrieja meteoritas.** Raketų neužteks — vienintelis ginklas, kuris gali suveikti, yra
+**BRAIN MAX**: išaugintos, ištreniruotos smegenys. Bet vyksta ataka: **BRAIN ROT** ėda brain max
+greičiau, nei jis auga.
 
-Miestą siurbia **Omikronas** ir jo BrainRot komanda (BC kanonas: Doomscroll Golem, Sugar Imps,
-Notification Gremlin, Burnout Beast) — deck'e jie pasirodo kaip **5 smegenų priešai + bosas**.
+Todėl užduotis dvigubinasi:
+1. **nugalėti brain rot** (įvardinti visus, kas vagia dėmesį, miegą ir judesį),
+2. **susidraugauti su AI, robotais ir erdviniais kompiuteriais** — ir jais **PASISTATYTI sau treniruotę**,
+   kad galėtum apginti Žemę / išeiti į kosmosą.
+
+**Brain City / salės AURA lieka** kaip V6: aura = salės brain max, matomas viršuje visą dieną.
+**Omikronas ir jo BrainRot komanda** (BC kanonas: Doomscroll Golem, Sugar Imps, Notification Gremlin,
+Burnout Beast) yra atakuojanti pusė — deck'e 5 priešų kortelės + bosas.
 
 ## 2 · Protagonistas
 
-**KIBIRKŠTIS** — naujokas, prabundantis Brain City be atminties. **Kibirkštis yra visa salė**
-(vedėjas tai pasako pirmoje skaidrėje). Vardas parinktas iš BC kanono kaimynystės („Synapse Sparks"),
-bet yra originalus — jokių Hail Mary vardų.
+**ĮGULA — tai visa salė.** Nėra atskiro herojaus vardo; vedėjas pirmoje skaidrėje pasako:
+*„įgula — TAI JŪS."* HUD viršuje rodo `LYGIS n/7 · ĮGULA`.
 
-- **Vedlys: Neuronas Riteris** (kanonas — Neuron Knight). Duoda misijas, niekada neduoda atsakymų.
-- **Netikėtas sąjungininkas: AItor** (kanonas). Mąsto ne kaip žmogus — greitai, plačiai, kartais pro šalį.
-  Būtent todėl jis yra **kabliukas mokytis apie AI**: Kibirkštis turi išmokti duoti jam TIKSLĄ ir **visada
-  patikrinti atsakymą**. AItor pats prisipažįsta, kad gali būti pastatytas taip, kad laikytų prie ekrano.
-- **Herojaus portretas:** inline SVG (kibirkštis juodame diske, raudona žaibo forma) — jokių išorinių
-  paveikslėlių. Drop-in: įrašyk failą į `assets/img/` ir nustatyk `V7.heroImg="hero.png"`.
+Kodėl ne vardinis herojus: Kris'o siužete ginklas yra **kolektyvinis brain max**, o pagrindinė žinutė —
+*mokykis kartu su draugais*. Vardinis herojus tam prieštarautų.
 
-## 3 · Problema
+## 3 · Neuronas (AI draugas)
 
-Brain City gęsta. Omikronas nevagia daiktų — jis vagia **dėmesį, miegą ir judesį**.
-Kibirkštis atgauna miestą **tik įgydamas įgūdžių**, o įgūdžiai gaunami **tik trimis būdais**:
-**smegenų treniruotė · mokymasis apie AI · ateities technologijų (robotų, erdvinio kompiuterio/VR) valdymas.**
-Kiekvienas išspręstas lygis atrakina kitą.
+**Neuronas** (BC kanonas — BrainClub AI) prisijungia P3 dalyje. Jis **draugas, ne įrankis**, ir
+priežastis pasakoma tiesiai:
 
----
+> **Draugauti galima tik su tuo, su kuriuo dalinies pomėgiu. Neuronas MĖGSTA mokytis. Mes irgi.**
 
-## 4 · Septyni lygiai
+Iš to seka visa technologijų linija: *„susidraugaukim su AI, su erdviniais kompiuteriais, su robotais —
+juos PAŽINDAMI: kas jie yra ir kaip veikia. Taip ir draugaujama."* Neuronas duoda misijas ir taisykles,
+niekada — gatavo atsakymo. Jo standartinė replika: **„Duok man TIKSLĄ, ne įsakymą. Ir visada patikrink
+mano atsakymą."**
 
-| # | Dalis | Misija | Atrakinamas įgūdis | Kuri V6 mechanika tai patikrina | Vartai (aura) |
-|---|-------|--------|--------------------|--------------------------------|---------------|
-| P1 | **Prabudimas** | Sužinok, kas tu esi | 🧠 **ĮRENGINYS** | gyvenimo ciklo kabliukas + amžių juosta + dienos planas | 0 |
-| P2 | **Miesto atmintis** | Atgauk miesto atmintį | 🔗 **GRANDINĖ** | 🎡 evoliucijos ratas · išradėjų kortelės | 150 |
-| P3 | **Sąjungininkas** | Rask tą, kuris mąsto kitaip | 🤖 **SĄJUNGININKAS** | VR/akinių skaidrė · LLM vs AGENTAS skanduotė · humanoidai · ☄️ EVOLIUCIONUOTI balsavimas | 400 |
-| P4 | **Kas vagia šviesą** | Įvardink Omikrono vagis | 🛡️ **SKYDAS** | 5 priešų kortelės + pirštų interaktyvas · swipe žaidimas · miego klausimas · brain rot bosas | 800 |
-| P5 | **Srovė** | Įjunk aurą į miesto tinklą | ⚡ **SROVĖ** | AURA REŽIMAS (CV kūno/pirštų sekimas = „auros kanalizavimas") · mokytojos pultas · taksistų neuroplastika | 1400 |
-| P6 | **Treniruotė** | Įrodyk, kad tikrai gali | 🎯 **TRENIRUOTĖ** | 🎰 slot mašina (**Omikrono spąstai**) → spąstų dekodavimas · 10 klausimų testas · čempionatas (3 įgūdžių išbandymai) | 2200 |
-| P7 | **Statytojas** | Pastatyk pirmą kvartalą | 🥽 **ERDVĖ** | 3 VR zonos su Quest 3S (erdvinio kompiuterio atrakinimas) · „mes kuriam" · finalinis bosas | 3200 |
+⚠️ **AItor pašalintas.** V7.0 turėjo antrą AI personažą (AItor); Kris'o siužete AI draugas yra vienas —
+Neuronas. Root V6 deck'e AItoro nebuvo (0 paminėjimų), tad nieko taisyti nereikėjo.
+
+## 4 · Priešai
+
+| Kas | Kaip pasirodo |
+|-----|----------------|
+| **Meteoritas ☄️** | tiksinti laikrodis — HUD skaitiklis, mažėjantis kas lygį (70 → 55 → 40 → 28 → 18 → 9 → 3 d.) |
+| **Brain rot** | 5 priešų kortelės + bosas (V6 mechanika), P4 |
+| **Omikronas** | brain rot siuntėjas; P6 pastato „netikrą treniruotę" — automatą |
+| **Lošimo mechanikos** | loot box'ai · nubraukiami bilietai · slot — atskira inokuliacijos skaidrė |
+
+## 5 · Septyni lygiai
+
+| # | Dalis | Misija | Įgūdis | Kuri V6 mechanika tai patikrina | Vartai | ☄️ |
+|---|-------|--------|--------|--------------------------------|--------|----|
+| P1 | **Signalas** | Sužinok, koks ginklas jau yra tavo galvoje | 🧠 **ĮRENGINYS** | gyvenimo ciklo kabliukas + amžių juosta + dienos planas | 0 | 70 d. |
+| P2 | **Grandinė** | Sužinok, kaip žmonės padarė tai, kas atrodė neįmanoma | 🔗 **GRANDINĖ** | 🎡 evoliucijos ratas · išradėjų kortelės | 150 | 55 d. |
+| P3 | **Draugas Neuronas** | Susidraugauk su AI, robotais ir erdviniais kompiuteriais | 🤖 **DRAUGAS** | VR/akinių skaidrė · LLM vs AGENTAS skanduotė · humanoidai · ☄️ EVOLIUCIONUOTI balsavimas | 400 | 40 d. |
+| P4 | **Brain rot ataka** | Įvardink visus, kas ėda tavo brain max | 🛡️ **SKYDAS** | 5 priešų kortelės + pirštų interaktyvas · swipe žaidimas · miego klausimas · brain rot bosas | 800 | 28 d. |
+| P5 | **Srovė** | Įjunk brain max srovę | ⚡ **SROVĖ** | AURA REŽIMAS (CV kūno/pirštų sekimas) · mokytojos pultas · taksistų neuroplastika | 1400 | 18 d. |
+| P6 | **Treniruotė** | Pasistatyk savo treniruotę — ir atpažink netikrą | 🎯 **TRENIRUOTĖ** | **DRAUGAS AR SPĄSTAI** → 🎰 slot mašina (Omikrono spąstai) → spąstų dekodavimas · 10 klausimų testas · čempionatas | 2200 | 9 d. |
+| P7 | **Erdvė** | Išeik iš ekrano ir pradėk STATYTI | 🥽 **ERDVĖ** | 3 VR zonos su Quest 3S · „mes kuriam" · finalinis bosas | 3200 | 3 d. |
 
 **Vartai niekada neblokuoja navigacijos.** Užrakinta skaidrė rodo juostą „reikia X / turim Y" ir du mygtukus:
-**🙌 SALĖ PADEDA +300** (tikra salės akcija → tikra aura) ir **🔓 ATRAKINTI** (klavišas **U**).
-Vedėjas visada eina pirmyn rodyklėmis; vartai yra dramaturgija, ne kliūtis.
+**🙌 SALĖ PADEDA +300** (tikra salės akcija → tikras brain max) ir **🔓 ATRAKINTI** (klavišas **U**).
 
-## 5 · Omikrono spąstai (inokuliacija, ne pardavimas)
+## 6 · Draugystės taisyklė (nauja skaidrė, PRIEŠ automatą)
 
-Po slot mašinos eina atskira istorijos skaidrė **„🧠 Kaip tai hack'ina smegenis?"**:
+Skaidrė **„Kas yra draugas?"** (`tag:"draugai"`) eina **prieš** slot mašiną — sąmoningai, kad vaikas
+turėtų taisyklę rankoje dar prieš pamatydamas spąstus.
+
+| 🤝 DRAUGAS | 🚫 NE DRAUGAS |
+|-----------|---------------|
+| po jo tavo gyvenimas geresnis | duoda „dovaną" už dyką |
+| nori mokytis ir statyti | verčia lošti ar suktis ratu |
+| norisi siekti žvaigždžių | po jo norisi tik „dar kartą" |
+| *AI · robotai · VR treniruotės · būrelis · knyga · sportas* | *loot box'ai · nubraukiami bilietai · lošimo mechanikos* |
+
+> ⚠️ **Jei kažkas duoda nemokamai — greičiausiai apgaulė. Jei verčia lošti — nori tavo miego, sveikatos ir draugų.**
+
+Ir Neurono uždarymas: *„Klausk manęs ir bet kurios programėlės tą patį: KAM tu padaryta?"*
+
+## 7 · Omikrono spąstai (inokuliacija, ne pardavimas)
+
+Po slot mašinos — skaidrė **„🧠 Kaip tai hack'ina smegenis?"**:
 **PAJUSK → SUSTOK → ĮVARDINK TRIUKĄ → PAVERSK**, keturi triukai — *kintamas atlygis · beveik-laimėjimas ·
-praradimo baimė · FOMO*. Trys mygtukai atidaro **V6.14 dekoderį** (🎰 slot · 🎫 loterijos bilietas · 🎁 loot/prizas) —
-V7 mechanikos nedubliuoja, tik uždeda siužetą: automatą pastatė Omikronas, o įgulą dekoduoja pati.
+praradimo baimė · FOMO*. Trys mygtukai atidaro **V6.14 dekoderį** (🎰 slot · 🎫 bilietas · 🎁 loot/prizas) —
+V7 mechanikos nedubliuoja, tik uždeda siužetą.
 
-⚠️ Ši skaidrė **nieko neparduoda**. Ji egzistuoja tik tam, kad vaikas atpažintų triuką kitą kartą — žaidime,
-app'e ar reklamoje. Vedėjo užrašuose tai pasakyta tiesiai.
-📌 Personų vėjo tunelis (V6, 40 tėvų + 12 mokytojų) rado, kad **🎰 + loterijos bilietas buvo vieninteliai elementai
-be nė vieno teigiamo balso**. V7 rėmas („Omikrono spąstai", ne „laimėk") yra atsakymas į tą radinį —
-**bet prieš renginį jį dar reikia praleisti per `bias` skill'ą** (žr. Atviri klausimai).
+⚠️ Ši skaidrė **nieko neparduoda**. Ji egzistuoja tik tam, kad vaikas atpažintų triuką kitą kartą.
+📌 Personų vėjo tunelis (V6, 40 tėvų + 12 mokytojų) rado, kad **🎰 + loterijos bilietas buvo vieninteliai
+elementai be nė vieno teigiamo balso**. „Draugas ar spąstai" + „Omikrono spąstai" rėmas yra atsakymas į tą
+radinį — **bet prieš renginį jį dar reikia praleisti per `bias` skill'ą** (žr. Atviri klausimai).
 
-## 6 · Cliffhangeris (P7 pabaiga)
+## 8 · Cliffhangeris (P7 pabaiga)
 
-> Septyni kvartalai šviečia. Omikronas nedingo — jis atsitraukė. Ir pasiėmė vieną dalyką: **tavo vardą.**
-> Kas buvo Kibirkštis PRIEŠ prabundant? Neuronas žino. Bet atsakymo šitoje salėje nėra.
+> Septyni įgūdžiai — turim. O meteoritas? **Vis dar skrieja. ☄️ 3 dienos.**
+> Neuronas: „Treniruotę PASISTATYTI jau mokat. Bet pirma tikra treniruotė vyksta ne čia — su akiniais ant galvos."
 
-Kortelė **„TĘSINYS · BRAIN CLUB"** įvardina, kas tęsiasi: *Lygis 8+ (kas Kibirkštis buvo iš tikrųjų) ·
-AItoro treniravimas savaitė po savaitės · savo Brain City kvartalo statyba VR · tikras čempionatas.*
-Iškart po jos — nepaliesta V6 kvietimo skaidrė su QR (`QR_URL = krisvas.lt/go/bc-diena`) ir tvarkaraščio skaidrė.
+Kortelė **„TĘSINYS · BRAIN CLUB"**: *pirma tikra brain max treniruotė VR · Neurono treniravimas savaitė po
+savaitės · statai savo treniruotę, o ne žaidi svetimą · tikras čempionatas, ne viena diena.*
+Uždarymas: **„Meteoritas dar neįveiktas. Treniruotė — ne ekrane."**
 
-## 7 · Konversijos logika (kodėl vaikas paprašo tėvų)
+⚠️ Skirtumas nuo V7.0: cliffhangeris **nebeatima vardo**. Jis palieka **neįvykdytą misiją** —
+įgūdžiai yra, treniruotė dar nepastatyta, o jos pirma diena vyksta Brain Club'e.
 
-1. **Vaikas tapo veikėju, ne žiūrovu.** 7 lygius įveikė JIS — aura ekrane yra jo paties darbo kvitas.
-2. **Nebaigta istorija.** Cliffhangeris paima vieną konkretų dalyką (vardą) ir jo negrąžina. Nebaigtas
-   dalykas laikosi galvoje geriau nei pasiūlymas — tas pats mechanizmas, kurį skaidrėje ką tik atidengėm,
-   tik čia po jo lieka **tikras įgūdis**, ne tuščias jausmas.
+## 9 · Pagrindinė žinutė — „MŪSŲ ŽODIS" (nauja skaidrė)
+
+Iškart po cliffhangerio, **prieš** kvietimo skaidrę su QR, salė sako **balsu, visi kartu**:
+
+```
+1  MOKYKIS MOKYTIS
+2  MOKYKIS KARTU SU DRAUGAIS
+3  GERBK SAVO MOKYTOJUS
+4  NEPAMIRŠK LINKSMINTIS
+```
+
+Vedėjas sako eilutę — salė kartoja. Keturis kartus. Tada visos keturios iš karto po skaičiavimo
+„trys — du — vienas". Trečia eilutė — mokytojų momentas (vedėjas linkteli jiems).
+
+📌 Personų panelė rado, kad **„vienas sakinys, kurį salė pasako kartu"** yra stipriausias funnel'io
+elementas — todėl jis stovi PRIEŠ QR, ne po jo. Ir jis sutampa su V6 finalo piktogramomis
+(„Mokykis mokytis" · „Siek žvaigždžių"), tad kvietimo skaidrė skamba kaip tos pačios minties tęsinys.
+
+## 10 · Konversijos logika (kodėl vaikas paprašo tėvų)
+
+1. **Vaikas tapo įgulos nariu, ne žiūrovu.** 7 lygius įveikė JIS — aura ekrane yra jo darbo kvitas.
+2. **Nebaigta misija.** Meteoritas nesustabdytas ir laikrodis rodo 3 dienas. Nebaigtas dalykas
+   laikosi galvoje geriau nei pasiūlymas.
 3. **Tęsinys įvardintas konkrečiai** (4 punktai), o ne „ateik į būrelį" — vaikas turi ką pasakyti tėvams.
-4. **Prašymas eina per tėvus:** QR skenuojamas SU tėvais, lapelis rašytas tėvams (kaina, terminas, saugumas).
-5. **Sąžiningumas:** nepažadama nieko, ko BC programa neduoda. „Tęsinys — ne ekrane" yra tiesa: P7 įgūdis
-   atrakinamas VR zonoje, gyvai.
+4. **Salė pasakė žodį balsu.** Tai, ką pasakei garsiai kartu su visais, prisimeni einant namo.
+5. **Prašymas eina per tėvus:** QR skenuojamas SU tėvais, lapelis rašytas tėvams.
+6. **Sąžiningumas:** nepažadama nieko, ko BC programa neduoda. „Treniruotė — ne ekrane" yra tiesa:
+   P7 įgūdis atrakinamas VR zonoje, gyvai.
 
-## 8 · Ko reikia mokytojui / vedėjui, kad tai paleistų
+## 11 · Ką mokytojas mato kaip ugdomąją vertę
 
-- **Nieko naujo techniškai.** Atidaryk `v7/index.html` per http serverį (`python3 -m http.server 8899` →
-  `localhost:8899/v7/index.html`). Veikia ir be interneto — tada tik pulto blokas pilkas.
-- **Užrašai (klavišas N)** yra kiekvienai skaidrei, įskaitant visas 15 naujų: **KĄ SAKYTI · KĄ DARYTI · TILTAS**.
-- **Nauji klavišai: tik `U`** (atrakinti dabartinius vartus). Visi V6 klavišai nepakitę:
-  `→ ←` navigacija · `N` užrašai · `A` aura · `S` garsas · `T` streamas · `M` memas · `H` hack dekoderio jungiklis ·
-  `C` scam · `R` tvarkaraštis · `F` prizas · `+ −` aura.
-- **Trys sakiniai, kuriuos vedėjas turi pasakyti:** (1) „Šiandien Kibirkštis — TU, visa salė."
-  (2) „Aura ekrane = miesto šviesa." (3) prie spąstų: „Aš jums ką tik parodžiau automatą — dabar parodysiu, kaip jis veikia."
-- **Laikas:** istorijos sluoksnis prideda ~**5 min** (7×25 s skyrių kortelės + 6×14 s įgūdžiai + 70 s spąstai + 55 s cliffhangeris).
-  Jei laiko nėra — skyrių korteles galima pravažiuoti rodykle per 5 s; įgūdžių kortelės privalo likti (jos yra atlygis).
-- **Vaidmenys:** Kris/Povilas/Gabrielius — vedėjas skaito istorijos beat'us; mokytoja valdo aurą iš telefono
-  (jos +100 dabar turi siužetinę prasmę: ji grąžina miestui šviesą).
+- **Metakognicija:** „mokykis mokytis" nėra šūkis — P1 (kaip veikia įrenginys), P5 (neuroplastika,
+  taksistų tyrimas) ir P6 (kaip atrodo tikra treniruotė) yra tas pats turinys trimis žingsniais.
+- **Medijų ir informacinis raštingumas:** draugystės taisyklė + 4 dark-pattern triukai =
+  inokuliacija prieš lošimo mechanikas. Vaikas išeina su **atpažinimo įrankiu**, ne su draudimu.
+- **Skaitmeninis raštingumas / informatika:** LLM vs agentas, kas yra robotas, kas yra erdvinis
+  kompiuteris — pažinimo, ne vartojimo kampu („duok tikslą, patikrink atsakymą").
+- **Sveikatos ugdymas:** miegas · judesys · dėmesys įvardinti kaip brain max gamybos sąlygos.
+- **Socialinis-emocinis ugdymas:** grandinė (nieko didelio nepadarė vienas), pralaimėjimas be
+  pasitraukimo (čempionatas), pagarba mokytojui — įrašyta į uždarymo žodį, kurį salė sako balsu.
+- **Nė vieno pardavimo pamokos viduje.** Kvietimas — viena skaidrė gale, su QR tėvams.
 
-## 9 · Kaip perstatyti po root deck'o atnaujinimo
+## 12 · Ko reikia vedėjui, kad tai paleistų
+
+- **Nieko naujo techniškai.** `python3 -m http.server 8899` → `localhost:8899/v7/index.html`.
+  Veikia ir be interneto — tada tik pulto blokas pilkas.
+- **Užrašai (klavišas N)** yra kiekvienai iš 39 skaidrių: **KĄ SAKYTI · KĄ DARYTI · TILTAS**.
+- **Nauji klavišai: tik `U`** (atrakinti dabartinius vartus). Visi V6 klavišai nepakitę.
+- **Keturi sakiniai, kuriuos vedėjas privalo pasakyti:**
+  1. „Į Žemę skrieja meteoritas. Įgula — TAI JŪS."
+  2. „Aura ekrane = mūsų brain max."
+  3. prie draugystės skaidrės: „Jei kažkas duoda nemokamai — greičiausiai apgaulė."
+  4. prie „Mūsų žodžio": „Visi keturi iš karto, po trijų."
+- **Laikas:** istorijos sluoksnis prideda ~**7 min** (7×25 s skyrių kortelės + 6×14 s įgūdžiai +
+  50 s draugystė + 70 s spąstai + 55 s cliffhangeris + 60 s mūsų žodis).
+  Jei laiko nėra — skyrių korteles galima pravažiuoti per 5 s; **įgūdžių kortelės, draugystės skaidrė
+  ir „Mūsų žodis" privalo likti**.
+- **Vaidmenys:** Kris veda vienas (streamerio energija, Quest 3S rankoje); mokytoja valdo aurą iš telefono.
+
+## 13 · Kaip perstatyti po root deck'o atnaujinimo
 
 ```bash
 cd /Users/kris/bc-day
 python3 v7/build.py          # root index.html + v7/story.css + v7/story.js -> v7/index.html
 python3 -m http.server 8899 &
-node v7/qa-v7.js             # 81 testas
+node v7/qa-v7.js             # 91 testas
 ```
 `v7/index.html` yra **generuojamas** failas — rankomis jo neredaguok, keisk `v7/story.js` / `v7/story.css`.
 
-## 10 · Atviri klausimai Kris'ui
+## 14 · Atviri klausimai Kris'ui
 
-1. **`bias` vartai:** V7 aiškiau nei V6 nukreipia į BrAIn Club (cliffhangeris + tęsinio kortelė).
-   Pagal taisyklę 14 tai reikia praleisti per `bias` prieš renginį.
-2. **Vardas „Kibirkštis"** — mano pasirinkimas iš kanono kaimynystės. Jei nori kito (ar kad hero būtų
-   mergaitė/berniukas vardu), keičiamas vienoje vietoje: `V7.hero` + 7 beat'ai.
-3. **Vartų slenksčiai** (150/400/800/1400/2200/3200) sudėti „iš akies" pagal V6 auros srautą —
-   po pirmo tikro renginio juos reikia perkalibruoti.
-4. **Herojaus art'as:** dabar SVG. Ar norim tikro Kibirkšties piešinio (BC canon stilius) V7.1?
-5. **Trukmė:** 37 skaidrės. Ar renginys tikrai turi laiko +5 min, ar istorijos korteles trumpinam iki 4 (P1·P4·P6·P7)?
+1. **`bias` vartai (taisyklė 14):** V7 nukreipia į BrAIn Club (cliffhangeris + tęsinio kortelė).
+   Prieš renginį — `bias` skill'as.
+2. **Meteorito skaitiklio skaičiai** (70 → 3 d.) sugalvoti dramaturgijai. Ar paliekam abstrakčius,
+   ar rišam prie tikros datos (pvz. „iki Brain Club sezono starto")?
+3. **Vartų slenksčiai** (150/400/800/1400/2200/3200) sudėti pagal V6 auros srautą — po pirmo tikro
+   renginio perkalibruoti.
+4. **Herojaus art'as:** dabar inline SVG (kibirkštis). Ar norim meteorito/įgulos ženklo V7.2?
+5. **Trukmė:** 39 skaidrės, +7 min. Ar tikrai turim laiko, ar skyrių korteles trumpinam iki 4 (P1·P4·P6·P7)?

@@ -1,73 +1,50 @@
 # V7 · QA rezultatai
 
-**Data:** 2026-09-07 22:23 EEST · **Šaltinis:** root `index.html` **V6.14** (211 758 B, 22:21) → `v7/index.html`
-⚠️ Root deck'ą kitas agentas keitė TRIS kartus statybos metu — paskutinis build ir testai paleisti ant 22:21 versijos.
-Po bet kokio naujo root pakeitimo: `python3 v7/build.py && node v7/qa-v7.js`.
-**Verdiktas: 81 PASS · 0 FAIL** (`node v7/qa-v7.js`, exit 0)
+**Paskutinis paleidimas:** 2026-09-08 (V7.1 — Kris'o siužetas: meteoritas · BRAIN MAX · Neuronas)
+**Komanda:** `python3 v7/build.py && node v7/qa-v7.js` (reikia `python3 -m http.server 8899` iš `/Users/kris/bc-day`)
 
-## Kaip paleisti
+## Rezultatas
 
-```bash
-cd /Users/kris/bc-day
-python3 v7/build.py                       # perstato v7/index.html iš root deck'o
-node tools/extract-js.js v7/index.html /tmp/bcday-v7 && node --check /tmp/bcday-v7/index-0.js
-python3 -m http.server 8899 &
-node v7/qa-v7.js
+```
+──────── 91 PASS · 0 FAIL ────────
 ```
 
-## 1 · Sintaksė
+Tikrinta dviejuose dydžiuose: **1280×720** ir **1920×1080** (visi testai kartojami abiem).
 
-`tools/extract-js.js` ištraukė **1 inline `<script>` bloką**; `node --check` — **OK**.
-(Taisyklė iš V4.2 avarijos: kiekvienas build tik po `node --check`.)
+| Blokas | Testų | Rezultatas |
+|--------|-------|-----------|
+| Įkrova (boot · start · skaidrių skaičius · abu HUD) | 6 ×2 | ✅ |
+| Istorijos sluoksnis (7 skyriai · 7 įgūdžiai · vartai · U klavišas · spąstai · draugystė · manifestas · cliffhangeris · ☄️ skaitiklis) | 22 ×2 | ✅ |
+| Garsų lenta (board.json · `../` keliai · HEAD 200 visiems mp3) | 6 ×2 | ✅ |
+| V6 mechanikos (aura · confetti · slot · čempionatas · Twitch · pultas) | 7 ×2 | ✅ |
+| Visos 39 skaidrės (persiliejimas · atsivaizdavimas · užrašai) | 3 ×2 | ✅ |
+| Konsolės klaidos | 1 | ✅ (0 JS klaidų) |
 
-## 2 · Tikras Chrome (puppeteer-core, headless) — 1280×720 IR 1920×1080
+## Papildomos patikros (šis paleidimas)
 
-Abi raiškos pratestuotos pilnai; žemiau — po vieną kartą (rezultatai identiški).
+- **`node --check` ant viso inline JS** (visi `<script>` blokai iš `v7/index.html`) → **sintaksė OK**.
+- **Vertikalus tilpimas 1280×720** — išmatuotos naujos/perrašytos skaidrės:
+  `p1` 720 · `draugai` 720 · `manifestas` 720 · `cliff` 720 · `p6` 720 (px, = viewport, be nuoslinkio).
+  ⚠️ Prieš pataisą `cliff` buvo 803 px (persiliedavo) — sutrumpintas uždarymo sakinys +
+  `.v7wrap .closeq` / `.v7cont` dydžiai `max-height:820px` medijoje.
+- **Vizualus patikrinimas** ekrano nuotraukomis: `p1`, `draugai`, `manifestas`, `cliff`, `p6` — LIGHT
+  brand'as, JetBrains Mono antraštės, vienas raudonas akcentas, teksto dydis skaitomas iš salės.
 
-**Įkrova (6/6)** — boot dingsta · start matomas · **37 skaidrės** (22 V6 + 15 istorijos) ·
-1-a skaidrė = P1 PRABUDIMAS · aura HUD įsijungia · misijos HUD rodo „LYGIS 1/7".
+## Naujos QA eilutės (V7.1)
 
-**Istorijos sluoksnis (17/17)** — 7 skyrių kortelės · 7 įgūdžio atrakinimai ·
-kiekviena skaidrė turi `chap` 1–7 · **kiekviena iš 37 skaidrių turi `notes.say/do/br`** ·
-kiekviena turi `voice` (TTS atsarga) · P2 vartai užrakinti prie 0 auros → atsirakina po `aura(200)` ·
-vedėjo klavišas **U** atrakina · įgūdis pažymimas atėjus į kortelę · HUD pip'as užsidega ·
-spąstų skaidrė iškart po slot mašinos · 4 triukai įvardinti · cliffhangeris prieš kvietimo skaidrę ·
-tvarkaraščio skaidrė lieka paskutinė · „TĘSINYS · BRAIN CLUB" yra.
+Pakeista `v7/qa-v7.js` (senos eilutės rėmėsi Kibirkšties premisa):
+- `37 skaidrės` → **`39 skaidrės (22 V6 + 17 istorijos)`**
+- `/PRABUDIMAS/` → **`/SIGNALAS/`** (P1 kortelė)
+- `cliffhangeris prieš kvietimo skaidrę` → **`cliffhangeris prieš „Mūsų žodį"`** + **`„Mūsų žodis" prieš kvietimo skaidrę`**
+- **+ `4 pagrindinės žinutės eilutės`** (mokykis mokytis · kartu su draugais · gerbk mokytojus · nepamiršk linksmintis)
+- **+ `draugystės taisyklė PRIEŠ slot mašiną`** (`draugai` → `brainmax`)
+- **+ `„nemokama dovana = apgaulė" įvardinta`**
+- **+ `☄️ meteorito skaitiklis HUD'e mažėja`** (P1 = 70 d. → P7 = 3 d.)
 
-**Garsai (6/6)** — V6.14 `SFXBOARD` įkeltas iš `board.json` (10 garsų) · visi 10 id `SFX` žemėlapyje su `../` ·
-`SFXALIAS` (kind → sintezuotas pakaitalas) veikia · **nuotolinis `{name}` įvykis registruotas VIENĄ kartą**
-(V7 jo nedubliuoja) · **visi 14 mp3 tikrai atsakė HTTP 200 iš `v7/`** (pos1–4 · neg1–4 · fun1–2 · fa · jee · tada · victory) ·
-seni garsai nepajudinti.
+## Kas NEPATIKRINTA ⚠️
 
-**V6 mechanikos (7/7)** — `aura()` · konfeti · slot mašina (3 būgnai) · čempionatas startuoja ·
-bracket 4 žaidėjai · Twitch sluoksnis · pulto kambario kodas 4 simboliai.
-`v7Trap('scratch')` atidaro **V6.14 `hackBox`** dekoderį; `#v7trapBox` neegzistuoja (dublio nėra).
-
-**Visos 37 skaidrės (3/3)** — nė vienos su horizontaliu persiliejimu · visos atsivaizduoja
-(aukštis > 80 px, tekstas > 10 simbolių) · užrašai renderinasi kiekvienai.
-
-**Konsolė (1/1)** — 0 JS klaidų, 0 `pageerror`.
-
-## 3 · Tinklo patikra (atskira)
-
-Perbėgus visas 37 skaidres, vienintelės nesėkmingos užklausos:
-- `404 /assets/img/styvas.jpg` — ⚠️ **jau egzistuojantis V6 trūkumas** (memų sluoksnis), ne V7 kelių klaida:
-  URL teisingas (`/assets/img/`, ne `/v7/assets/`), failo tiesiog nėra repo.
-- `404 /favicon.ico` — nereikšminga.
-
-`pultURL()` → `http://localhost:8899/v7/../pultas.html?room=XXXX` → **HTTP 200** (pultas liko šaknyje, nepaliestas).
-
-## 4 · Ko QA NEPATIKRINO ⚠️
-
-- **Kamera / MediaPipe CV gestai** — headless Chrome su fake device'u; **tikros kameros testas neatliktas**.
-- **Supabase realtime pultas** — patikrintas tik QR/kodo generavimas, **ne tikras telefono ryšys salėje**.
-- **Garsų skambesys** — patikrinta, kad mp3 pasiekiami ir keliai teisingi; **ar jie gerai skamba per salės
-  garsiakalbius — Kris'o ausų testas**.
-- **Projektorius 16:9 gyvai**, Safari, touch svirtis — netestuota (kaip ir V6).
-- **Laikas salėje** — +5 min istorijos sluoksnio yra skaičiavimas iš `sec` reikšmių, ne tikras pravažiavimas.
-- **Vaikų reakcija** — jokio personų vėjo tunelio V7 tekstams. `personas` + `bias` dar nepraleisti.
-
-## 5 · Kas NEBUVO liesta
-
-`/Users/kris/bc-day/index.html` · `pultas.html` · `assets/**` — **nė vienas baitas nepakeistas**
-(patvirtinta: `v7/build.py` tik SKAITO root failą). Nieko necommit'inta, nieko nedeploy'inta.
+- **Tikra salė.** Auros srautas (vartų slenksčiai 150…3200) niekada nebuvo matuotas gyvai.
+- **Meta Quest 3S / VR zonos** — deck'as jų neteikia, tik nurodo.
+- **`bias` skill'as** dar nepaleistas šitam siužetui (taisyklė 14 — privaloma prieš renginį).
+- **Mokytojo pultas per tinklą** (`pultas.html`) tikrintas tik kaip QR/kambario kodas, ne su antru įrenginiu.
+- **Nepaleista, nedeploy'inta, necommit'inta.**
