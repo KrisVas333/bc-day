@@ -20,10 +20,31 @@ font-size:11px;color:var(--accent);font-weight:700;margin:0}
 h1{font-family:var(--mono);text-transform:uppercase;font-size:18px;margin:3px 0 2px;letter-spacing:.02em}
 .room{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin:2px 0}
 .room b{color:var(--ink);font-size:16px;letter-spacing:.14em}
-#state{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:var(--r);
-display:inline-block;margin-top:5px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
-#state.ok{border-color:var(--good);color:var(--good);background:#eefaf7;font-weight:700}
-#state.err{border-color:var(--accent);color:var(--accent);background:#fdeef0;font-weight:700}
+
+/* ---- V6.15: DIDELIS būsenos ženklas (mokytoja mato iš karto) ---- */
+#state{display:block;width:100%;font-family:var(--mono);font-weight:800;font-size:14px;
+line-height:1.25;padding:11px 10px;border-radius:var(--r);margin-top:7px;
+border:3px solid var(--gold);background:#FFF6E4;color:#7a5600}
+#state.ok{border-color:var(--good);color:#0b5e53;background:#eefaf7}
+#state.err{border-color:var(--accent);color:var(--accent);background:#fdeef0}
+#errLine{font-family:var(--mono);font-size:10.5px;line-height:1.35;color:var(--muted);
+margin:5px 0 0;word-break:break-word;min-height:1em}
+#errLine.bad{color:var(--accent);font-weight:700}
+
+/* ---- V6.15: gelbėjimo mygtukai ---- */
+.fixrow{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}
+.fixrow button{border:2px solid var(--ink);border-radius:var(--r);background:#fff;color:var(--ink);
+font-family:var(--mono);font-weight:800;font-size:12px;padding:10px 4px;cursor:pointer;
+touch-action:manipulation;line-height:1.2}
+.fixrow button:active{transform:scale(.95)}
+#bReconn{border-color:var(--accent);color:var(--accent)}
+.roomrow{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:7px}
+.roomrow input{font-family:var(--mono);font-weight:800;font-size:17px;letter-spacing:.18em;
+text-transform:uppercase;text-align:center;padding:9px 6px;border:2px solid var(--line);
+border-radius:var(--r);background:#fff;color:var(--ink);width:100%}
+.roomrow button{border:2px solid var(--ink);border-radius:var(--r);background:var(--surface);
+font-family:var(--mono);font-weight:800;font-size:11.5px;padding:9px 11px;cursor:pointer;
+touch-action:manipulation;color:var(--ink)}
 
 /* ---- skaidrės kortelė (deck'as -> telefonas) ---- */
 #slideCard{margin-top:10px;border:2px solid var(--ink);border-radius:var(--r);
@@ -107,7 +128,17 @@ footer{flex:0 0 auto;text-align:center;margin-top:12px}
   <p class="eyebrow">BRAIN CLUB DIENA</p>
   <h1>📱 Aura pultas</h1>
   <p class="room">Salė: <b id="roomCode">—</b></p>
-  <span id="state">jungiamasi…</span>
+  <span id="state">🟡 jungiuosi…</span>
+  <p id="errLine"></p>
+  <div class="fixrow">
+    <button id="bReconn" type="button" onclick="reconnect()">🔁 PRISIJUNGTI IŠ NAUJO</button>
+    <button id="bTest" type="button" onclick="pingTest()">🔔 TESTAS</button>
+  </div>
+  <div class="roomrow">
+    <input id="roomInp" type="text" inputmode="text" autocapitalize="characters"
+           autocomplete="off" autocorrect="off" spellcheck="false" maxlength="4" placeholder="KODAS">
+    <button id="bRoom" type="button" onclick="changeRoom()">Keisti salę</button>
+  </div>
 </header>
 
 <div id="slideCard">
@@ -148,36 +179,59 @@ footer{flex:0 0 auto;text-align:center;margin-top:12px}
 <footer>
   <p id="sent"></p>
   <p class="small">3× ✨ per 5 sek. = 🔥 HYPE COMBO ×2 ekrane (20 sek.)</p>
-  <p class="small">Mokytoja — didžiausia aura salėje ✨</p>
+  <p class="small">Salės kodas turi SUTAPTI su tuo, kuris matomas deck'e. Nesutampa — „Keisti salę".</p>
   <p class="small">Veikia tik kol atidarytas šis puslapis. Nieko neįrašoma.</p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
 <script>
 /* ===================================================================
-   AURA PULTAS — mokytojos telefonas   (V6.14)
+   AURA PULTAS — mokytojos telefonas   (V6.15)
    Siunčia Supabase Realtime broadcast žinutes į deck'ą.
    Kanalas: bc-day-aura-<ROOM>
-   Siunčia: aura{delta} · confetti · sfx{name} · nav{dir} · mute · emo{e} · raid · combo
-   Priima:  slide{i,n,title,say,follows,aura} · stats{follows,aura,combo}
+   Siunčia: aura{delta} · confetti · sfx{name} · nav{dir} · mute · emo{e}
+            · raid · combo · hello{cid} · ping{cid}
+   Priima:  slide{i,n,title,say,follows,aura} · stats{...} · pong{room,i,n}
+   V6.15: DVIPUSIS patikrinimas — žalia tik tada, kai deck'as ATSAKĖ.
+   Sintaksė sąmoningai ES2017 — be optional chaining, nullish operatoriaus
+   ir klasių laukų (sena iOS Safari, senas Android WebView).
    Raktas viešas (publishable) — jokių asmens duomenų, nieko nesaugoma.
    =================================================================== */
 var SB_URL="https://iiekmeylpppczicrsxho.supabase.co";
 var SB_KEY="sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF";
+var DEAD_MS=6000;        /* per tiek deck'as privalo atsakyti */
+var HB_MS=9000;          /* širdies dūžis: ping kas 9 s */
 
-function qs(k){ return new URLSearchParams(location.search).get(k) }
-var ROOM=(qs("room")||"DEMO").toUpperCase().slice(0,4);
-document.getElementById("roomCode").textContent=ROOM;
+function qs(k){ try{ return new URLSearchParams(location.search).get(k) }catch(e){ return null } }
+function lsGet(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v) }catch(e){} }
+
+var ROOM=String(qs("room")||lsGet("bcday-pult-room")||"DEMO").toUpperCase().slice(0,4);
+var CID="p"+Math.floor(Math.random()*1e9).toString(36);
 
 var state=document.getElementById("state"), sent=document.getElementById("sent");
-var ch=null, ready=false;
+var errLine=document.getElementById("errLine");
+var ch=null, client=null, ready=false, deckSeen=0, watchT=null, hbT=null, subs=0;
+
+function paintRoom(){
+  document.getElementById("roomCode").textContent=ROOM;
+  var i=document.getElementById("roomInp"); if(i&&i.value!==ROOM) i.value=ROOM;
+}
+paintRoom();
 
 function setState(t,cls){ state.textContent=t; state.className=cls||"" }
+function setErr(t,bad){ errLine.textContent=t||""; errLine.className=bad?"bad":"" }
 function setEnabled(on){
   var i,b=document.querySelectorAll("button");
-  for(i=0;i<b.length;i++) b[i].disabled=!on;
+  for(i=0;i<b.length;i++){
+    if(b[i].id==="bReconn"||b[i].id==="bTest"||b[i].id==="bRoom")continue;   /* gelbėjimas visada gyvas */
+    b[i].disabled=!on;
+  }
 }
 setEnabled(false);
+
+/* visos JS klaidos matomos TELEFONE — Kris'as neturi kaip atidaryti konsolės */
+window.onerror=function(m,src,ln){ setErr("JS klaida: "+m+" ("+(ln||"?")+")",true); };
 
 /* ---------- garsų lenta: board.json, o be jo — įmontuotas sąrašas ---------- */
 var FALLBACK=[
@@ -231,24 +285,82 @@ var EMO=["❤️","🔥","🧠","👏","😂","🦖"];
 })();
 
 /* ---------- ryšys ---------- */
+function deckAlive(src){
+  deckSeen=Date.now();
+  setState("🟢 DECK'AS GIRDI · salė "+ROOM,"ok");
+  setErr("paskutinis atsakymas: "+src+" · "+new Date().toLocaleTimeString(),false);
+}
+function watchdog(){
+  if(watchT)clearTimeout(watchT);
+  watchT=setTimeout(function(){
+    if(Date.now()-deckSeen>DEAD_MS-200){
+      setState("🔴 DECK'AS NEATSAKO · salė "+ROOM,"err");
+      setErr("Kanalas atidarytas, bet deck'as netyli-neatsako. Patikrink, ar salės kodas ekrane = "+
+             ROOM+", tada spausk 🔁.",true);
+    }
+    watchdog();
+  },DEAD_MS);
+}
+function heartbeat(){
+  if(hbT)clearInterval(hbT);
+  hbT=setInterval(function(){ if(ready) tx("ping",{cid:CID}) },HB_MS);
+}
 function connect(){
   if(typeof supabase==="undefined"||!supabase.createClient){
-    setState("nėra ryšio su Supabase","err"); return;
+    ready=false; setEnabled(false);
+    setState("🔴 NĖRA RYŠIO SU SUPABASE","err");
+    setErr("Nepasikrovė supabase-js iš cdn.jsdelivr.net — mokyklos Wi-Fi jį blokuoja arba nėra interneto. Pabandyk mobilųjį internetą, tada 🔁.",true);
+    return;
   }
   try{
-    var client=supabase.createClient(SB_URL,SB_KEY);
+    if(ch&&client){ try{ client.removeChannel(ch) }catch(e){} }
+    ready=false; setEnabled(false); deckSeen=0; subs++;
+    setState("🟡 jungiuosi prie salės "+ROOM+"…","");
+    client=supabase.createClient(SB_URL,SB_KEY);
     ch=client.channel("bc-day-aura-"+ROOM,{config:{broadcast:{self:false}}});
-    ch.on("broadcast",{event:"slide"},function(m){ onSlide(m&&m.payload) });
-    ch.on("broadcast",{event:"stats"},function(m){ onStats(m&&m.payload) });
-    ch.subscribe(function(status){
-      if(status==="SUBSCRIBED"){ ready=true; setEnabled(true); setState("✅ prisijungta prie salės "+ROOM,"ok");
-        tx("hello",{});                       /* paprašom deck'o dabartinės skaidrės */
-        setTimeout(function(){ tx("hello",{}) },1200); }
-      else if(status==="CHANNEL_ERROR"||status==="TIMED_OUT"){
-        ready=false; setEnabled(false); setState("ryšio klaida — perkrauk puslapį","err");
+    ch.on("broadcast",{event:"slide"},function(m){ deckAlive("skaidrė"); onSlide(m&&m.payload) });
+    ch.on("broadcast",{event:"stats"},function(m){ deckAlive("stats"); onStats(m&&m.payload) });
+    ch.on("broadcast",{event:"pong"},function(m){
+      var p=(m&&m.payload)||{};
+      deckAlive("pong");
+      if(p.n) onStats(p);
+    });
+    ch.subscribe(function(status,err){
+      if(status==="SUBSCRIBED"){
+        ready=true; setEnabled(true);
+        setState("🟡 kanalas atidarytas · laukiam deck'o…","");
+        setErr("SUBSCRIBE ok · salė "+ROOM+" · id "+CID,false);
+        tx("hello",{cid:CID}); tx("ping",{cid:CID});
+        setTimeout(function(){ tx("hello",{cid:CID}); tx("ping",{cid:CID}) },1200);
+        watchdog(); heartbeat();
+      } else if(status==="CHANNEL_ERROR"||status==="TIMED_OUT"||status==="CLOSED"){
+        ready=false; setEnabled(false);
+        setState("🔴 RYŠIO KLAIDA","err");
+        setErr("SUBSCRIBE būsena: "+status+(err&&err.message?" — "+err.message:"")+". Spausk 🔁.",true);
       }
     });
-  }catch(e){ setState("klaida: "+e.message,"err") }
+  }catch(e){
+    ready=false; setEnabled(false);
+    setState("🔴 KLAIDA JUNGIANTIS","err"); setErr("klaida: "+e.message,true);
+  }
+}
+function reconnect(){ buzz(20); flash("🔁 jungiuosi iš naujo…"); connect(); }
+function pingTest(){
+  buzz(30);
+  if(!ready){ setErr("Kanalas dar neatidarytas — pirma 🔁.",true); return }
+  deckSeen=0;
+  setState("🟡 testas išsiųstas · laukiam deck'o…","");
+  tx("ping",{cid:CID}); tx("sfx",{name:"tada"});
+  flash("🔔 testas išsiųstas — salėje turi suskambėti");
+}
+function changeRoom(){
+  var i=document.getElementById("roomInp");
+  var v=String((i&&i.value)||"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,4);
+  if(v.length<2){ setErr("Įrašyk salės kodą, kurį matai deck'o ekrane (2–4 simboliai).",true); return }
+  ROOM=v; paintRoom(); lsSet("bcday-pult-room",ROOM);
+  try{ history.replaceState(null,"","?room="+ROOM) }catch(e){}
+  flash("salė pakeista → "+ROOM);
+  connect();
 }
 connect();
 
@@ -270,12 +382,13 @@ function onStats(p){
 }
 
 /* ---------- siuntimas ---------- */
-function buzz(ms){ try{ navigator.vibrate&&navigator.vibrate(ms||30) }catch(e){} }
+function buzz(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms||30) }catch(e){} }
 function flash(t){ sent.textContent=t; clearTimeout(flash._t);
   flash._t=setTimeout(function(){ sent.textContent="" },1400) }
 function tx(ev,pl){
   if(!ready||!ch)return false;
-  try{ ch.send({type:"broadcast",event:ev,payload:pl||{}}); return true }catch(e){ return false }
+  try{ ch.send({type:"broadcast",event:ev,payload:pl||{}}); return true }
+  catch(e){ setErr("siuntimo klaida: "+e.message,true); return false }
 }
 
 /* HYPE COMBO: trys „+" paspaudimai per 5 sek. */
@@ -287,6 +400,7 @@ function hypeTap(){
   if(hype.length>=3){ hype=[]; tx("combo",{}); buzz([40,50,40,50,80]); flash("🔥 HYPE COMBO ×2!"); }
 }
 
+/* aura / konfeti — BE atvėsinimo, kaip V6.12 (garsai turi 1,5 s) */
 function send(delta){
   if(!ready)return;
   buzz(delta>0?30:60);
@@ -332,7 +446,7 @@ function playSfx(id){
 }
 
 /* neleisk telefonui užmigti, kol pultas atidarytas */
-(function(){ try{ navigator.wakeLock&&navigator.wakeLock.request("screen").catch(function(){}) }catch(e){} })();
+(function(){ try{ if(navigator.wakeLock) navigator.wakeLock.request("screen").catch(function(){}) }catch(e){} })();
 </script>
 </body>
 </html>

@@ -62,6 +62,11 @@ border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;margin:6px
 padding:9px 12px;background:rgba(255,255,255,.93);border-top:1px solid var(--line);flex-wrap:wrap}
 .hud button{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line);background:#fff;border-radius:var(--r);padding:7px 11px;cursor:pointer}
 .hud .cnt{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:auto}
+.hud #pultBadge{margin-left:auto;padding:3px 8px;border-radius:3px;border:1px solid var(--line)}
+.hud #pultBadge.ok{color:#0b5e53;border-color:var(--good);background:#eefaf7;font-weight:700}
+.hud #cnt{margin-left:10px}
+.hud #labTag{margin-left:14px;opacity:.75;letter-spacing:.03em}
+@media(max-width:900px){.hud #labTag{display:none}}
 /* V6.5: plona eiga viršutiniame krašte — kiek deck'o įveikta */
 #barTrack{position:fixed;top:0;left:0;right:0;height:4px;background:var(--line);z-index:6}
 #bar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:7;
@@ -75,7 +80,6 @@ align-items:center;justify-content:center;text-align:center;padding:4vh 6vw;gap:
 #start .modes{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
 #start h1{font-size:clamp(24px,4.6vw,46px)}
 .small{font-size:12.5px;color:var(--muted)}
-#qr{margin:10px auto;background:#fff;padding:10px;width:fit-content;border:1px solid var(--line);border-radius:var(--r)}
 input.inp{font-size:17px;padding:11px 13px;border:1px solid var(--line);border-radius:var(--r);width:min(240px,70vw);font-family:var(--body)}
 #dinowrap{position:relative;width:min(640px,90vw);margin:4px auto}
 #dinowrap img{width:100%;max-height:38vh;object-fit:cover;border-radius:var(--r);display:block}
@@ -457,6 +461,8 @@ padding:16px 20px;margin:14px auto;max-width:760px}
 #pultState{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:3px;
 border:1px solid var(--line);color:var(--muted);display:inline-block;margin-top:5px}
 #pultState.ok{border-color:var(--good);color:var(--good);background:#eefaf7;font-weight:700}
+#pultConn{font-family:var(--mono);font-weight:800;font-size:13px;margin:6px 0 0!important}
+#pultConn.ok{color:var(--good)}
 #confetti{position:fixed;inset:0;z-index:23;pointer-events:none;display:none;overflow:hidden}
 #confetti.on{display:block}
 .conf{position:absolute;width:11px;height:16px;top:-24px;animation:confFall linear forwards}
@@ -733,16 +739,31 @@ body.scam-half #scam,body.scam-pip #scam{display:block}
 body.scam-half #scam{top:0;bottom:0;width:50vw;border:0 solid var(--accent)}
 body.scam-half.scam-right #scam{right:0;left:auto;border-left-width:3px}
 body.scam-half.scam-left  #scam{left:0;right:auto;border-right-width:3px}
-body.scam-pip #scam{width:min(300px,34vw);height:min(225px,26vw);bottom:58px;
-border:2px solid var(--accent);border-radius:10px;box-shadow:0 6px 26px rgba(0,0,0,.28)}
-body.scam-pip.scam-right #scam{right:12px;left:auto}
-body.scam-pip.scam-left  #scam{left:12px;right:auto}
+/* V6.15: mažas langelis — dydis S/M/L, kampas TL/TR/BL/BR/TC arba tempiama vieta */
+body.scam-pip #scam{border:2px solid var(--accent);border-radius:10px;box-shadow:0 6px 26px rgba(0,0,0,.28)}
+body.scam-pip.scam-br #scam{right:12px;bottom:58px;left:auto;top:auto}
+body.scam-pip.scam-bl #scam{left:12px;bottom:58px;right:auto;top:auto}
+body.scam-pip.scam-tr #scam{right:12px;top:12px;left:auto;bottom:auto}
+body.scam-pip.scam-tl #scam{left:12px;top:12px;right:auto;bottom:auto}
+body.scam-pip.scam-tc #scam{left:50%;top:12px;right:auto;bottom:auto;transform:translateX(-50%)}
+body.scam-pip.scam-moved #scam{right:auto;bottom:auto;transform:none}
 #scamVid{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block;background:#000}
-#scamLive{position:absolute;top:10px;left:10px;z-index:2;font-family:var(--mono);font-weight:800;
+body.scam-cv #scamVid{object-fit:contain}      /* CV taškai turi sutapti su vaizdu */
+#scamCv{position:absolute;inset:0;z-index:1;pointer-events:none;transform:scaleX(-1);display:none}
+body.scam-cv #scamCv{display:block}
+#scamLive{position:absolute;bottom:8px;left:8px;z-index:2;font-family:var(--mono);font-weight:800;
 font-size:12.5px;letter-spacing:.1em;background:rgba(217,4,41,.93);color:#fff;padding:4px 9px;border-radius:3px}
-#scamSwap{position:absolute;top:8px;right:8px;z-index:2;font-family:var(--mono);font-size:14px;
-border:1px solid rgba(255,255,255,.55);background:rgba(0,0,0,.55);color:#fff;border-radius:3px;
-padding:5px 9px;cursor:pointer;line-height:1}
+/* modulio juosta: tempimo rankena + valdikliai (matosi užvedus arba bakstelėjus) */
+#scamBar{position:absolute;top:0;left:0;right:0;z-index:4;display:flex;gap:4px;align-items:center;
+padding:5px 6px;background:linear-gradient(rgba(0,0,0,.78),rgba(0,0,0,0));
+opacity:0;transition:opacity .14s;cursor:move;touch-action:none;flex-wrap:wrap}
+#scam:hover #scamBar,#scam:focus-within #scamBar,#scam.bar #scamBar{opacity:1}
+#scamBar .hdl{color:#fff;font-size:15px;line-height:1;opacity:.8;padding:0 3px;cursor:move}
+#scamBar button{font-family:var(--mono);font-size:11.5px;font-weight:700;
+border:1px solid rgba(255,255,255,.55);background:rgba(0,0,0,.62);color:#fff;border-radius:3px;
+padding:4px 7px;cursor:pointer;line-height:1;touch-action:manipulation}
+#scamBar button.act{background:var(--accent);border-color:#fff}
+#scamBar button#scamClose{margin-left:auto}
 /* letterbox: visas 100vw x 100svh vaizdas sumažinamas per pusę ir centruojamas */
 body.scam-half .stage{position:fixed;top:0;left:0;width:100vw;height:100svh;
 transform:translateY(25svh) scale(.5);transform-origin:0 0}
@@ -767,7 +788,10 @@ body.scam-half.scam-left  .hud{left:50vw}
 border:2px solid var(--ink);background:#FFF3D6;color:var(--ink);border-radius:var(--r);
 padding:11px 17px;cursor:pointer;margin:10px auto;display:inline-block}
 .hackbtn:hover{border-color:var(--accent);color:var(--accent)}
-body.nohack .hackbtn{display:none}
+/* V6.15 (bias): H nebeSLEPIA atskleidimo — tik sutraukia į ikoną.
+   Slot mašina be „koks čia triukas?" salėje NEBEGALIMA. */
+body.nohack .hackbtn{font-size:0;letter-spacing:0;padding:7px 11px;line-height:1}
+body.nohack .hackbtn:before{content:"🧠";font-size:19px;line-height:1}
 #hackBox{position:fixed;inset:0;z-index:28;display:none;background:rgba(255,255,255,.985);
 padding:3vh 5vw 9vh;overflow-y:auto}
 #hackBox.on{display:block}
@@ -805,11 +829,42 @@ font-size:clamp(16px,3vw,30px);letter-spacing:.07em}
 /* ===================================================================
    V6.14 · TVARKARAŠČIO SKAIDRĖ
    =================================================================== */
-#tvkSchool{margin-bottom:2px}
+#tvkSchool{font-family:var(--mono);font-weight:800;color:var(--ink);
+font-size:clamp(22px,4vw,44px);line-height:1.1;margin:.1em auto .05em;max-width:20em;text-wrap:balance}
+#tvkSchool:empty{display:none}
+#tvkLeaf{font-family:var(--mono);font-weight:800;font-size:clamp(13px,1.9vw,20px);
+color:var(--ink);border:2px solid var(--ink);border-radius:var(--r);
+display:inline-block;padding:6px 12px;margin:6px auto 0}
+/* V6.15 · finalinė vizualizacija: dino su VR · meteoritas · AI · robotas-šuo · pumpuojamos smegenys */
+#tvkArt{position:relative;height:126px;width:min(860px,92vw);max-width:100%;align-self:center;
+margin:8px auto 0;overflow:hidden}
+#tvkArt .fig{position:absolute;bottom:20px;line-height:1;
+filter:drop-shadow(0 3px 7px rgba(0,0,0,.16));will-change:transform}
+#tvkArt .dino{left:5%;font-size:72px;animation:tvkBob 2.2s ease-in-out infinite}
+#tvkArt .vr{left:5%;bottom:70px;margin-left:20px;font-size:32px;animation:tvkBob 2.2s ease-in-out infinite}
+#tvkArt .bot{left:38%;font-size:54px;animation:tvkBob 1.7s ease-in-out .3s infinite}
+#tvkArt .dog{left:53%;font-size:46px;animation:tvkTrot 1.1s ease-in-out infinite}
+/* dešinysis kraštas paliktas laisvas vedėjo užrašams (#notes) */
+#tvkArt .brain{right:30%;font-size:62px;animation:tvkPump 1s ease-in-out infinite}
+#tvkArt .arm{right:20%;bottom:26px;font-size:38px;animation:tvkPump 1s ease-in-out .12s infinite}
+#tvkArt .met{position:absolute;top:2px;left:-60px;font-size:34px;line-height:1;
+animation:tvkMet 3.6s linear infinite;will-change:transform}
+#tvkArt .cap{position:absolute;left:0;right:0;bottom:0;text-align:center;font-family:var(--mono);
+font-weight:800;font-size:clamp(12px,1.6vw,17px);letter-spacing:.16em;color:var(--accent)}
+@keyframes tvkBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes tvkTrot{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-6px) rotate(4deg)}}
+@keyframes tvkPump{0%,100%{transform:scale(1)}45%{transform:scale(1.22)}}
+@keyframes tvkMet{0%{transform:translate(0,0) rotate(14deg);opacity:0}
+12%{opacity:1}88%{opacity:1}100%{transform:translate(960px,58px) rotate(14deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){#tvkArt .fig,#tvkArt .met{animation:none!important}}
+@media (max-height:760px){#tvkArt{height:104px}#tvkArt .dino{font-size:60px}#tvkArt .brain{font-size:52px}}
+.tvkfit{padding-bottom:5vh}
 #tvkLine{font-family:var(--mono);font-weight:800;font-size:clamp(21px,4.4vw,48px);
 line-height:1.2;margin:.15em auto;max-width:18em;text-wrap:balance}
 #tvkLine .hi{color:var(--accent)}
-#tvkMeta{font-size:clamp(16px,2.5vw,26px);color:var(--muted);margin:.15em 0 .5em;font-weight:600}
+#tvkMeta{font-family:var(--mono);font-size:clamp(19px,3.1vw,34px);color:var(--ink);
+margin:.1em 0 .2em;font-weight:800}
+#tvkMeta:empty{display:none}
 #tvkForm{display:none;margin:12px auto;max-width:620px;text-align:left;
 background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
 #tvkForm.on{display:block}
@@ -817,7 +872,8 @@ background:var(--surface);border:1px solid var(--line);border-radius:var(--r);pa
 letter-spacing:.07em;color:var(--muted);margin:9px 0 3px}
 #tvkForm input,#tvkForm select{width:100%;font-family:var(--body);font-size:16px;padding:9px 10px;
 border:1px solid var(--line);border-radius:var(--r);background:#fff;color:var(--ink)}
-#tvkQr{display:flex;justify-content:center;margin:8px 0 4px;min-height:20px}
+#tvkQr{display:none;justify-content:center;margin:8px 0 4px;min-height:20px}
+#tvkQr.on{display:flex}
 #tvkQr img,#tvkQr canvas{border:6px solid #fff;box-shadow:0 2px 12px rgba(0,0,0,.12)}
 @media print{.hud,#bar,#barTrack,#boot,#memeBox,#streamTop,#chatPanel,#emoRain,#milestone,#confetti,#auraHud,#auraPops,#gestHint,#notes,#net,#camWrap,#cvBox,#fxCanvas,#corner,#scam,#hackBox,#combo,#raidBan{display:none!important}.slide{display:none!important}
 #certCard{display:block!important;border-width:4px}body{background:#fff}}
@@ -827,7 +883,12 @@ border:1px solid var(--line);border-radius:var(--r);background:#fff;color:var(--
 .finalfit .picto{margin:8px 0}.finalfit .picto div{padding:8px 10px;width:150px}.finalfit .picto span{font-size:30px}
 .finalfit #cliff{margin:4px 0}
 .finalfit .closeq{font-size:24px;margin:6px 0;line-height:1.2}
-.finalfit #qr{margin:6px auto;padding:6px}.finalfit #qr canvas,.finalfit #qr img{width:104px!important;height:104px!important}
+.honest{font-size:clamp(12px,1.55vw,17px);line-height:1.35;color:var(--muted);
+max-width:56em;margin:6px auto 2px}
+.honest b{color:var(--ink)}
+.finalfit .honest{font-size:15px;margin:4px auto 0}
+.leaflet{font-family:var(--mono);font-weight:800;font-size:clamp(15px,2.3vw,24px);
+border:3px solid var(--ink);border-radius:var(--r);display:inline-block;padding:9px 15px;margin:8px auto 0}
 </style>
 </head>
 <body>
@@ -904,7 +965,7 @@ border:1px solid var(--line);border-radius:var(--r);background:#fff;color:var(--
     <button class="btn btn-ghost" onclick="startShow('auto')">🤖 Auto</button>
   </div>
   <p class="small">⚗️ Eksperimentinis prototipas, kurtas su AI. 🔊 ElevenLabs LT balsas · 📷 kamera — TIK aurai (skaidrių ji nekeičia).<br>Klavišai: → kitas · ← atgal · N — užrašai · T — streamas · C — streamer kamera · R — tvarkaraštis · H — slėpti „hack" mygtukus · M — memas · +/− aura · 1–4/5–8/9–0 — garsai</p>
-  <p class="small" id="verLbl" style="opacity:.55">V6.14</p>
+  <p class="small" id="verLbl" style="opacity:.55">V6.15</p>
   <img id="startlogo" src="assets/img/bc-logo.png" alt="Brain Club" style="width:min(220px,50vw);margin-top:10px;opacity:.92">
 </div>
 
@@ -928,7 +989,20 @@ border:1px solid var(--line);border-radius:var(--r);background:#fff;color:var(--
 
 <div id="memeBox" onclick="memeHide()"></div>
 
-<div id="scam"><span id="scamLive">LIVE 🔴</span><button id="scamSwap" onclick="scamSwap()" title="Perkelti kamerą į kitą pusę">⇄</button><video id="scamVid" autoplay playsinline muted></video></div>
+<div id="scam" tabindex="-1">
+  <div id="scamBar">
+    <span class="hdl" title="Tempk už šitos juostos">⠿</span>
+    <button id="scamSwap" type="button" onclick="scamSwap()" title="Kita pusė (pusės režime)">⇄</button>
+    <button id="scamCorn" type="button" onclick="scamCorner()" title="Kampas: BR → BL → TL → TR → viršus (Shift+C)">◰</button>
+    <button id="scamSize" type="button" onclick="scamSizeCycle()" title="Dydis S/M/L (klavišai [ ir ])">M</button>
+    <button id="scamCvBtn" type="button" onclick="scamCV()" title="Computer vision: skeletas + pirštai">👁 CV</button>
+    <button id="scamAuraBtn" type="button" onclick="scamAuraMode()" title="Aura režimas: gestai duoda aurą">✨ AURA</button>
+    <button id="scamClose" type="button" onclick="scamSet('off')" title="Išjungti kamerą (C)">✕</button>
+  </div>
+  <span id="scamLive">LIVE 🔴</span>
+  <video id="scamVid" autoplay playsinline muted></video>
+  <canvas id="scamCv"></canvas>
+</div>
 <div id="hackBox" onclick="hackHide()"></div>
 <div id="combo"></div>
 <div id="raidBan"></div>
@@ -959,6 +1033,8 @@ border:1px solid var(--line);border-radius:var(--r);background:#fff;color:var(--
   <button onclick="toggleNotes()">📝</button>
   <button onclick="speakCur()">🔊</button>
   <button onclick="toggleAuraCam()" id="gestBtn">📷 Aura kamera</button>
+  <span class="cnt" id="labTag">⚗️ AI · eksperimentinis · gali klysti</span>
+  <span class="cnt" id="pultBadge">📱 pultas: laukiam telefono</span>
   <span class="cnt" id="cnt"></span>
 </div>
 
@@ -1398,6 +1474,7 @@ SL = SL.concat([
  "<h3>📱 MOKYTOJA — didžiausia aura salėje</h3>"+
  "<p>Nuskenuok kodą telefonu ir valdyk salės aurą: +100 · −100 · +500 SUPER · 🎉 konfeti.</p>"+
  "<p>Salės kodas: <span id='pultRoom'>—</span></p>"+
+ "<p id='pultConn'>📱 pultas: laukiam telefono</p>"+
  "<span id='pultState'>jungiamasi…</span></div></div>",
  vo:11, voice:"Girdėjot apie aura farming? Prasidėjo nuo vienuolikmečio iš Indonezijos, kuris šoko valties priekyje — ir užkariavo internetą. Dabar vaikai varžosi judesiais gatvėse visame pasaulyje. Mūsų versija: dirbtinio intelekto kamera seka visą tavo kūną ir kiekvieną pirštą. Judėk, būk kūrybingas, reaguok greitai. Judesys — smegenų treniruotė. Du drąsuoliai — į priekį!",
  notes:{say:"JŲ teritorija — leisk papasakoti, kas žino aura farming. Tada AURA REŽIMAS: 2 vaikai priekyje, muzika, kamera juos seka.",do:"AI piešia SKELETĄ + pirštų taškus. GESTAI: savanorio DEŠINĖ ranka virš galvos = +300, KAIRĖ = −200, atviras delnas 5 pirštai = +500 (ranka sušvyti žaliai/raudonai). ⚠️ Veikia TIK 1–3 savanoriams prie kameros (~2–4 m) — visos salės ji NEMATO; taip ir pasakyk: „kamera mato tik jus“. Atsarginis variantas visada: +/− klavišai. 60–90 sek šou. „Kaip jis mane mato?“ -> 🧠 COMPUTER VISION (ESC uždaryti). 📱 PULTAS: mokytoja nuskenuoja QR (salės kodas ekrane) ir iš telefono duoda +100/−100/+500/konfeti — pasakyk salei: „mokytoja turi didžiausią aurą“. Jei nėra interneto — pulto blokas tiesiog pilkas, viskas kita veikia.",br:"„Judesys keičia smegenis. Įrodyta — taksistų smegenimis…“"}},
@@ -1555,20 +1632,30 @@ SL = SL.concat([
  "<div><span>🛡️</span><p>Nevaldomas technologijų</p></div>"+
  "<div><span>⭐</span><p>Siek žvaigždžių</p></div></div>"+
  "<p id='cliff'>Šiandien tu pamatei tik <b>vieną pamoką</b>. Brain Club'e jų — <b>visi metai</b>.</p>"+
+ "<p class='honest'>Smegenis treniruoja ir sportas, muzika, šachmatai, biblioteka — svarbu, kad pasirinktum <b>KĄ NORS</b>. Brain Club yra mano paties įkurtas būrelis — sakau atvirai.</p>"+
  "<p class='closeq'>O kaip smegenis <span>treniruosi TU</span>?</p>"+
- "<div id='qr'></div><p class='small'>Paimk kvietimą → nuskenuok QR su tėvais → iki susitikimo Brain Club'e!</p>",
+ "<p class='leaflet'>📄 Paimk lapelį prie durų — ten viskas.</p>",
  vo:18, voice:"Nebūk dinozauras. Evoliucionuok. Mokykis mokytis. Valdyk savo smegenis. Valdyk virtualią realybę ir dirbtinį intelektą — ir neleisk technologijoms valdyti tavęs. Paimk kvietimą, nuskenuok kodą su tėvais. Siek žvaigždžių — ir iki susitikimo Brain Club'e!",
- notes:{say:"CLIFFHANGERIS: „šiandien pamatei VIENĄ pamoką — Brain Club’e jų visi metai.“ Tada UŽDUOK klausimą garsiai ir PALAUK 3 sek tyloje: „O kaip smegenis treniruosi TU?“ Tyla čia — stipriausias ginklas.",do:"Kelis atsakymus paimk iš salės (2–3, ne daugiau). Tada dinozauro kostiumas įbėga — IRONIŠKAI, su komedijos laiku. Galutinė salės AURA lieka ekrane — perskaityk ją garsiai: „šiandien surinkot X auros“. Kvietimai prie durų, QR — SU TĖVAIS.",br:"Finalas: „Iki susitikimo!“ + plojimai dinozaurui."}},
+ notes:{say:"CLIFFHANGERIS: „šiandien pamatei VIENĄ pamoką — Brain Club’e jų visi metai.“ Tada UŽDUOK klausimą garsiai ir PALAUK 3 sek tyloje: „O kaip smegenis treniruosi TU?“ Tyla čia — stipriausias ginklas.",do:"Kelis atsakymus paimk iš salės (2–3, ne daugiau). Tada dinozauro kostiumas įbėga — IRONIŠKAI, su komedijos laiku. Galutinė salės AURA lieka ekrane — perskaityk ją garsiai: „šiandien surinkot X auros“. Lapeliai prie durų — pasakyk garsiai, kad ten yra VISKAS.",br:"Finalas: „Iki susitikimo!“ + plojimai dinozaurui."}},
 
 /* 19 TVARKARAŠTIS — „paprastas kompiliatorius": vieną kartą užpildai, rodai visoms mokykloms */
-{ey:"KADA · KUR", tag:"tvarkarastis", sec:45, cls:"center",
- html:"<h1>📅 Kada? Kur? <span class='rword'>Registruokis</span></h1>"+
- "<p class='eyebrow' id='tvkSchool'></p>"+
+{ey:"KADA · KUR", tag:"tvarkarastis", sec:45, cls:"center tvkfit",
+ html:"<h1>Tai vyksta <span class='rword'>TAVO mokykloje</span></h1>"+
+ "<p id='tvkSchool'></p>"+
  "<p id='tvkLine'></p>"+
  "<p id='tvkMeta'></p>"+
+ "<p id='tvkLeaf'>📄 Daugiau — lapelyje, kurį gausi prie durų.</p>"+
+ "<div id='tvkArt' aria-hidden='true'>"+
+   "<span class='met'>☄️</span>"+
+   "<span class='fig dino'>🦖</span><span class='fig vr'>🥽</span>"+
+   "<span class='fig bot'>🤖</span><span class='fig dog'>🐕‍🦺</span>"+
+   "<span class='fig brain'>🧠</span><span class='fig arm'>💪</span>"+
+   "<span class='cap'>TRENIRUOK SMEGENIS</span>"+
+ "</div>"+
  "<div id='tvkQr'></div>"+
  "<p class='small' id='tvkLink'></p>"+
- "<p><button class='btn btn-ghost' onclick='tvkEdit()'>✏️ Redaguoti</button></p>"+
+ "<p><button class='btn btn-ghost' onclick='tvkEdit()'>✏️ Redaguoti</button> "+
+ "<button class='btn btn-ghost' id='tvkQrBtn' onclick='tvkQrToggle()'>🔳 QR</button></p>"+
  "<div id='tvkForm'>"+
  "<label for='tvkM'>Mokykla</label><input id='tvkM' placeholder='VGTU inžinerijos licėjus'>"+
  "<label for='tvkD'>Savaitės diena</label><select id='tvkD'>"+
@@ -1578,13 +1665,14 @@ SL = SL.concat([
  "<label for='tvkT'>Laikas (nuo–iki)</label><input id='tvkT' placeholder='14:00-15:30'>"+
  "<label for='tvkK'>Kabinetas / klasė</label><input id='tvkK' placeholder='23'>"+
  "<label for='tvkN'>Pradžios data</label><input id='tvkN' type='date'>"+
- "<label for='tvkU'>Registracijos nuoroda</label><input id='tvkU' placeholder='https://…'>"+
+ "<label for='tvkU'>Registracijos nuoroda (tik jei rodysi QR)</label><input id='tvkU' placeholder='https://…'>"+
+ "<p style='margin-top:9px'><button class='btn btn-ghost' onclick='tvkQrToggle()'>🔳 Rodyti / slėpti QR</button></p>"+
  "<p style='margin-top:12px'><button class='btn btn-red' onclick='tvkSave()'>💾 IŠSAUGOTI</button> "+
  "<button class='btn btn-ghost' onclick='tvkEdit(0)'>Atšaukti</button></p>"+
  "</div>",
- voice:"Kada ir kur? Brain Club renkasi tavo mokykloje. Nuskenuok kodą kartu su tėvais ir užsiregistruok.",
- notes:{say:"LĖTAI ir GARSIAI perskaityk vieną eilutę: diena, laikas, kabinetas. Pakartok DU kartus — vaikai čia užsirašinėja telefonais.",
- do:"Prieš skaidrę paspausk ✏️ Redaguoti (arba klavišą R) ir suvesk ŠITOS mokyklos duomenis — arba atidaryk deck'ą su ?mokykla=…&diena=4&laikas=14:00-15:30&kab=23&nuo=2026-09-18. Palaikyk QR ekrane bent 30 sek. Kvietimai — prie durų.",
+ voice:"Kada ir kur? Tai vyksta tavo mokykloje. Įsidėmėk dieną ir laiką — o viską kita rasi lapelyje prie durų.",
+ notes:{say:"LĖTAI ir GARSIAI: mokyklos pavadinimas, diena, data, laikas, kabinetas. Pakartok DU kartus. Tada: „viską rasi lapelyje prie durų“.",
+ do:"Prieš skaidrę paspausk ✏️ Redaguoti (arba klavišą R) ir suvesk ŠITOS mokyklos duomenis — arba atidaryk deck'ą su ?mokykla=…&diena=4&laikas=14:00-15:30&kab=23&nuo=2026-09-18. QR NEREIKIA — jis išjungtas; jei labai reikia, mygtukas 🔳 QR. Lapeliai — prie durų.",
  br:"„Susitinkam čia pat, tavo mokykloje. Iki!“"}}
 ]);
 
@@ -1878,8 +1966,6 @@ function build(){
     st.appendChild(d);
   });
   buildWheel(); buildSwipe(); buildStars(); buildSlot();
-  try{ new QRCode(document.getElementById("qr"),{text:QR_URL,width:140,height:140,correctLevel:QRCode.CorrectLevel.M}); }
-  catch(e){ document.getElementById("qr").textContent=QR_URL; }
   tvkLoad(); tvkRender();               /* V6.14 tvarkaraščio skaidrė */
   scamLoad(); scamPaint();              /* V6.14 streamer kameros pusė */
   sfxBoardLoad();                       /* V6.14 garsų lenta iš board.json */
@@ -1948,6 +2034,9 @@ document.addEventListener("keydown",function(e){
   if(e.metaKey||e.ctrlKey||e.altKey)return;
   /* V6.14 garsų lenta: 1–4 pliusai · 5–8 minusai · 9/0 linksmi */
   if(SFXKEYS[e.key]){ sfx(SFXKEYS[e.key]); e.preventDefault(); return; }
+  if(e.key==="C"&&e.shiftKey){ scamCorner(); return; }          /* V6.15 kampas */
+  if(e.key==="["){ scamSizeStep(-1); return; }                   /* V6.15 mažiau */
+  if(e.key==="]"){ scamSizeStep(1); return; }                    /* V6.15 daugiau */
   if(e.key==="c"||e.key==="C"){ scamCycle(); return; }
   if(e.key==="r"||e.key==="R"){ tvkGo(); return; }
   if(e.key==="h"||e.key==="H"){ hackToggle(); return; }
@@ -2062,6 +2151,12 @@ function camStop(){
   auraOn=false; document.getElementById("gestBtn").textContent="📷 Aura kamera";
   var gh=document.getElementById("gestHint"); if(gh)gh.classList.remove("on");
   GEST.glow={}; GEST.cool={};
+  /* V6.15: modulio CV/AURA jungikliai atsijungia kartu */
+  if(typeof SCAM!=="undefined"){ SCAM.cv=false; SCAM.aura=false;
+    var sc=document.getElementById("scamCv");
+    if(sc){ try{ sc.getContext("2d").clearRect(0,0,sc.width,sc.height) }catch(e){} }
+    if(typeof scamPaint==="function") scamPaint();
+  }
 }
 function camHall(){
   camStart(function(){
@@ -2071,15 +2166,9 @@ function camHall(){
     w.onclick=function(){camStop();w.onclick=null};
   });
 }
-function auraMode(){
-  camStart(function(){
-    var w=document.getElementById("camWrap"); w.classList.add("big");
-    document.getElementById("camLabel").textContent="🕺 AURA GESTAI — DEŠINĖ ✋ = +300 · KAIRĖ = −200 · 🖐️ 5 PIRŠTAI = +500";
-    document.getElementById("gestHint").classList.add("on");
-    auraOn=true; auraToggle(true); updAura(); visionStart();
-    w.onclick=function(){camStop();w.onclick=null};
-  });
-}
+/* V6.15: AURA režimas gyvena KAMEROS MODULYJE — vienas srautas, vienas langas.
+   Senas didelis #camWrap langas lieka tik pirštų skaičiavimui (camHall). */
+function auraMode(){ scamAuraMode(true) }
 function spaceFallback(el){el.outerHTML="<div class='spacescene' id='spacescene'><span class='sdino'>🦖</span></div>";}
 /* Kas yra computer vision? — vaikams suprantamas paaiškinimas (pranešėjo mygtukas) */
 function cvExplain(on){
@@ -2102,10 +2191,9 @@ function updAura(){
 /* V6.1: buvęs „gestų valdymas" pakeistas į AUROS kamerą.
    Rankos nebekeičia skaidrių — jos tik duoda/atima aurą (žr. auraGestures). */
 function toggleAuraCam(){
-  /* V6.14: sprendžiam pagal GESTUS, ne pagal srautą — Streamer kamera irgi
-     laiko camStream, o mygtukas turi ĮJUNGTI gestus, ne išjungti vaizdą. */
-  if(auraOn||visionOn){camStop();return}
-  auraMode();
+  /* V6.15: mygtukas atidaro KAMEROS MODULĮ su CV + AURA (be antro srauto ir be antro lango) */
+  if(SCAM.aura||auraOn){ scamAuraMode(false); return }
+  scamAuraMode(true);
 }
 /* ===== V5: MediaPipe — KŪNO skeletas + PIRŠTŲ taškai vienu metu =====
    Du sprendimai (Pose + Hands), pinned CDN, sukasi pakaitomis ant to paties vaizdo.
@@ -2213,11 +2301,17 @@ function onHands(res){
   MP.handed=(res&&res.multiHandedness)||null;
   auraGestures();
 }
+/* V6.15: MediaPipe visada ima TĄ PATĮ srautą — jei modulis matomas, skaito jo <video> */
+function cvVideo(){
+  var sv=document.getElementById("scamVid");
+  if(typeof SCAM!=="undefined"&&SCAM.mode!=="off"&&sv&&sv.videoWidth) return sv;
+  return document.getElementById("cam");
+}
 function visionLoop(){
   if(!visionOn)return;
-  var vid=document.getElementById("cam");
+  var vid=cvVideo();
   var sols=[]; if(MP.pose)sols.push(MP.pose); if(MP.hands)sols.push(MP.hands);
-  if(!sols.length||!vid.videoWidth){ setTimeout(visionLoop,200); return }
+  if(!sols.length||!vid||!vid.videoWidth){ setTimeout(visionLoop,200); return }
   var s=sols[MP.turn++%sols.length];
   try{
     s.send({image:vid}).then(function(){ requestAnimationFrame(visionLoop) })
@@ -2226,13 +2320,28 @@ function visionLoop(){
 }
 function drawLoop(){
   if(!visionOn)return;
-  var cv=document.getElementById("poseCanvas"),vid=document.getElementById("cam");
-  if(vid.videoWidth){
-    if(cv.width!==vid.videoWidth){cv.width=vid.videoWidth;cv.height=vid.videoHeight}
-    var cx=cv.getContext("2d");
-    cx.clearRect(0,0,cv.width,cv.height);
-    drawSkeleton(cx,cv);
-    drawFingers(cx,cv);
+  var vid=cvVideo();
+  if(vid&&vid.videoWidth){
+    /* a) senas didelis langas (pirštų skaičiavimas salėje) */
+    if(document.getElementById("camWrap").style.display==="block"){
+      var cv=document.getElementById("poseCanvas");
+      if(cv.width!==vid.videoWidth){cv.width=vid.videoWidth;cv.height=vid.videoHeight}
+      var cx=cv.getContext("2d");
+      cx.clearRect(0,0,cv.width,cv.height);
+      drawSkeleton(cx,cv); drawFingers(cx,cv);
+    }
+    /* b) V6.15: tas pats skeletas ANT MODULIO vaizdo (tos pačios koordinatės, veidrodis) */
+    var sc=document.getElementById("scamCv");
+    if(sc&&typeof SCAM!=="undefined"&&SCAM.mode!=="off"&&(SCAM.cv||SCAM.aura)){
+      var box=document.getElementById("scam");
+      var w=box.clientWidth||320, h=box.clientHeight||240;
+      if(w>0&&h>0){
+        if(sc.width!==w||sc.height!==h){ sc.width=w; sc.height=h }
+        var sx=sc.getContext("2d");
+        sx.clearRect(0,0,w,h);
+        drawSkeleton(sx,sc); drawFingers(sx,sc);
+      }
+    }
   }
   requestAnimationFrame(drawLoop);
 }
@@ -2296,7 +2405,23 @@ function drawFingers(cx,cv){
    =================================================================== */
 var SB_URL="https://iiekmeylpppczicrsxho.supabase.co";
 var SB_KEY="sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF";
-var PULT={room:null, ch:null, ok:false};
+var PULT={room:null, ch:null, ok:false, phones:{}, n:0};
+
+/* V6.15: kiekvienas gautas įvykis matomas konsolėje — Kris'as gali įrodyti, kad veikia */
+function pultLog(ev,pl){ try{ console.log("[PULTAS →] "+ev, pl||{}) }catch(e){} }
+/* V6.15: kiek telefonų gyvi (hello/ping per paskutines 45 s) */
+function pultTouch(pl){ PULT.phones[(pl&&pl.cid)||"anon"]=Date.now(); pultCount(); }
+function pultCount(){
+  var now=Date.now(), n=0, k;
+  for(k in PULT.phones){ if(now-PULT.phones[k]<45000) n++; else delete PULT.phones[k] }
+  PULT.n=n;
+  var t=n?("📱 pultas: "+n+" prijungt"+(n===1?"as":"i")):"📱 pultas: laukiam telefono";
+  var a=document.getElementById("pultBadge");
+  if(a){ a.textContent=t; a.className="cnt"+(n?" ok":"") }
+  var b=document.getElementById("pultConn");
+  if(b){ b.textContent=t; b.className=n?"ok":"" }
+  return n;
+}
 
 function pultRoom(){
   if(PULT.room)return PULT.room;
@@ -2338,34 +2463,51 @@ function pultInit(){
     PULT.ch=client.channel("bc-day-aura-"+room,{config:{broadcast:{self:false}}});
     PULT.ch.on("broadcast",{event:"aura"},function(m){
       var d=(m&&m.payload&&m.payload.delta)|0;
+      pultLog("aura",m&&m.payload); pultTouch(m&&m.payload);
       if(d) aura(d,"mokytojos pultas 📱");
     });
-    PULT.ch.on("broadcast",{event:"confetti"},function(){ confettiBurst(); });
+    PULT.ch.on("broadcast",{event:"confetti"},function(m){ pultLog("confetti",m&&m.payload); pultTouch(m&&m.payload); confettiBurst(); });
     /* --- V6.14 mokytojos pulto praplėtimai --- */
     PULT.ch.on("broadcast",{event:"sfx"},function(m){
       var n=m&&m.payload&&m.payload.name;
+      pultLog("sfx",m&&m.payload); pultTouch(m&&m.payload);
       if(n&&SFX[n]) sfx(n,.95);
     });
     PULT.ch.on("broadcast",{event:"nav"},function(m){
       var d=(m&&m.payload&&m.payload.dir)|0;
+      pultLog("nav",m&&m.payload); pultTouch(m&&m.payload);
       if(d>0)next(); else if(d<0)prev();
     });
-    PULT.ch.on("broadcast",{event:"mute"},function(){ if(!MUTED) toggleMute(); });
+    PULT.ch.on("broadcast",{event:"mute"},function(m){ pultLog("mute",m&&m.payload); pultTouch(m&&m.payload); if(!MUTED) toggleMute(); });
     PULT.ch.on("broadcast",{event:"emo"},function(m){
+      pultLog("emo",m&&m.payload); pultTouch(m&&m.payload);
       emoBurstFree(5,(m&&m.payload&&m.payload.e)||"❤️");
     });
-    PULT.ch.on("broadcast",{event:"raid"},function(){ raidBanner(); aura(50,"RAID 🚀 visai salei"); });
-    PULT.ch.on("broadcast",{event:"combo"},function(){ comboStart(20000); });
+    PULT.ch.on("broadcast",{event:"raid"},function(m){ pultLog("raid",m&&m.payload); pultTouch(m&&m.payload); raidBanner(); aura(50,"RAID 🚀 visai salei"); });
+    PULT.ch.on("broadcast",{event:"combo"},function(m){ pultLog("combo",m&&m.payload); pultTouch(m&&m.payload); comboStart(20000); });
     /* telefonas prisijungė vėliau už deck'ą -> tuoj pat atsiunčiam būseną */
-    PULT.ch.on("broadcast",{event:"hello"},function(){
+    PULT.ch.on("broadcast",{event:"hello"},function(m){
+      pultLog("hello",m&&m.payload); pultTouch(m&&m.payload);
+      pultPong();
       setTimeout(function(){ pultSlide(); pultStats(true) },150);
     });
+    /* V6.15 DVIPUSIS PATIKRINIMAS: telefonas klausia „ar girdi?" -> deck'as atsako pong */
+    PULT.ch.on("broadcast",{event:"ping"},function(m){
+      pultLog("ping",m&&m.payload); pultTouch(m&&m.payload);
+      pultPong(); pultSlide();
+    });
     PULT.ch.subscribe(function(st){
-      if(st==="SUBSCRIBED"){ PULT.ok=true; pultState("✅ pultas prijungtas",true);
+      if(st==="SUBSCRIBED"){ PULT.ok=true; pultState("✅ kanalas atidarytas · salė "+room,true);
+        try{ console.log("[PULTAS] deck'as klauso kanalo bc-day-aura-"+room) }catch(e){}
         setTimeout(function(){ pultSlide(); pultStats(true) },400); }
-      else if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ pultState("pultas nepasiekiamas",false) }
+      else if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ pultState("pultas nepasiekiamas ("+st+")",false) }
     });
   }catch(e){ pultState("pultas nepasiekiamas",false) }
+}
+function pultPong(){
+  pultSend("pong",{room:pultRoom(),i:cur,n:SL.length,
+    follows:(typeof STREAM!=="undefined"?STREAM.follows:0),
+    aura:(typeof AURA!=="undefined"?AURA.pts:0)});
 }
 function pultState(t,ok){
   var e=document.getElementById("pultState"); if(!e)return;
@@ -3157,41 +3299,153 @@ function brainMax(){ var m=document.getElementById("maxlist"); if(m)m.style.disp
    Klavišas C · mygtukas 📷 kampe. Naudoja TĄ PATĮ srautą kaip CV gestai,
    todėl kamera niekada neužimama du kartus.
    =================================================================== */
-var SCAM={mode:"off", side:"right"};   /* off | half | pip */
+var SCAM={mode:"off", side:"right", corner:"br", size:"m", x:null, y:null, cv:false, aura:false};
+var SCAM_W={s:210,m:300,l:430};
+var SCAM_CORNERS=["br","bl","tl","tr","tc"];
+var SCAM_SIZES=["s","m","l"];
 function scamLoad(){
-  try{ var o=JSON.parse(localStorage.getItem("bcday-scam")||"null");
-       if(o&&(o.side==="left"||o.side==="right")) SCAM.side=o.side;
-       if(o&&o.mode) SCAM.want=o.mode; }catch(e){}
+  try{ var o=JSON.parse(localStorage.getItem("bcday-scam")||"null"); if(!o)return;
+       if(o.side==="left"||o.side==="right") SCAM.side=o.side;
+       if(SCAM_CORNERS.indexOf(o.corner)>=0) SCAM.corner=o.corner;
+       if(SCAM_SIZES.indexOf(o.size)>=0) SCAM.size=o.size;
+       if(typeof o.x==="number") SCAM.x=o.x;
+       if(typeof o.y==="number") SCAM.y=o.y;
+       if(o.mode) SCAM.want=o.mode; }catch(e){}
 }
 function scamSave(){
-  try{ localStorage.setItem("bcday-scam",JSON.stringify({mode:SCAM.mode,side:SCAM.side})) }catch(e){}
+  try{ localStorage.setItem("bcday-scam",JSON.stringify({mode:SCAM.mode,side:SCAM.side,
+       corner:SCAM.corner,size:SCAM.size,x:SCAM.x,y:SCAM.y})) }catch(e){}
 }
 function scamPaint(){
-  var b=document.body;
+  var b=document.body, el=document.getElementById("scam");
   b.classList.toggle("scam-half",SCAM.mode==="half");
   b.classList.toggle("scam-pip", SCAM.mode==="pip");
   b.classList.toggle("scam-left", SCAM.side==="left");
   b.classList.toggle("scam-right",SCAM.side!=="left");
+  SCAM_CORNERS.forEach(function(c){ b.classList.toggle("scam-"+c,SCAM.mode==="pip"&&SCAM.corner===c) });
+  b.classList.toggle("scam-cv",SCAM.mode!=="off"&&(SCAM.cv||SCAM.aura));
+  var moved=(SCAM.mode==="pip"&&SCAM.x!=null&&SCAM.y!=null);
+  b.classList.toggle("scam-moved",moved);
+  if(el){
+    if(SCAM.mode==="pip"){
+      var vw=window.innerWidth||1280, vh=window.innerHeight||720;
+      var w=Math.max(160,Math.min(SCAM_W[SCAM.size]||300, vw-24));
+      var h=Math.round(w*0.75);
+      el.style.width=w+"px"; el.style.height=h+"px";
+      if(moved){
+        SCAM.x=Math.max(0,Math.min(SCAM.x,vw-w));
+        SCAM.y=Math.max(0,Math.min(SCAM.y,vh-h));
+        el.style.left=SCAM.x+"px"; el.style.top=SCAM.y+"px";
+      } else { el.style.left=""; el.style.top=""; }
+    } else { el.style.width=""; el.style.height=""; el.style.left=""; el.style.top=""; }
+  }
   var btn=document.getElementById("scamBtn");
   if(btn) btn.classList.toggle("act",SCAM.mode!=="off");
+  var sz=document.getElementById("scamSize"); if(sz) sz.textContent=SCAM.size.toUpperCase();
+  var cb=document.getElementById("scamCvBtn"); if(cb) cb.classList.toggle("act",!!SCAM.cv);
+  var ab=document.getElementById("scamAuraBtn"); if(ab) ab.classList.toggle("act",!!SCAM.aura);
 }
-function scamSet(mode,silent){
+function camDenied(silent){
+  return function(){
+    SCAM.mode="off"; SCAM.cv=false; SCAM.aura=false; scamPaint();
+    if(!silent) raidBanner("📷 Kamera nepasiekiama — leisk prieigą naršyklėje");
+  };
+}
+function scamSet(mode,silent,cb){
   if(mode==="off"){
-    SCAM.mode="off"; scamPaint(); scamSave();
-    if(camStream&&!visionOn&&!auraOn){
+    SCAM.mode="off"; SCAM.cv=false; SCAM.aura=false;
+    auraOn=false; visionOn=false;
+    var gh=document.getElementById("gestHint"); if(gh)gh.classList.remove("on");
+    scamPaint(); scamSave();
+    if(camStream&&document.getElementById("camWrap").style.display!=="block"){
       camStream.getTracks().forEach(function(t){t.stop()}); camStream=null;
-      document.getElementById("camWrap").style.display="none";
     }
     return;
   }
-  camGet(function(){ SCAM.mode=mode; camAttach(); scamPaint(); scamSave(); },
-         function(){ SCAM.mode="off"; scamPaint(); if(!silent) raidBanner("📷 Kamera nepasiekiama — leisk prieigą naršyklėje"); });
+  camGet(function(){ SCAM.mode=mode; camAttach(); scamPaint(); scamSave(); if(cb)cb(); },
+         camDenied(silent));
 }
 function scamCycle(){ scamSet(SCAM.mode==="off"?"half":(SCAM.mode==="half"?"pip":"off")) }
 function scamSwap(){ SCAM.side=(SCAM.side==="left")?"right":"left"; scamPaint(); scamSave(); }
+function scamCorner(){
+  if(SCAM.mode==="half"){ scamSet("pip"); }
+  SCAM.x=null; SCAM.y=null;                        /* kampas nugali ankstesnį tempimą */
+  SCAM.corner=SCAM_CORNERS[(SCAM_CORNERS.indexOf(SCAM.corner)+1)%SCAM_CORNERS.length];
+  scamPaint(); scamSave();
+}
+function scamSizeStep(d){
+  var i=SCAM_SIZES.indexOf(SCAM.size); if(i<0)i=1;
+  SCAM.size=SCAM_SIZES[Math.max(0,Math.min(SCAM_SIZES.length-1,i+d))];
+  if(SCAM.mode==="half") scamSet("pip");
+  scamPaint(); scamSave();
+}
+function scamSizeCycle(){
+  var i=SCAM_SIZES.indexOf(SCAM.size); if(i<0)i=1;
+  SCAM.size=SCAM_SIZES[(i+1)%SCAM_SIZES.length];
+  if(SCAM.mode==="half") scamSet("pip");
+  scamPaint(); scamSave();
+}
+/* modulis privalo būti matomas, kol įjungiam CV / AURA */
+function scamEnsure(cb){
+  if(SCAM.mode==="off") scamSet("pip",false,cb);
+  else camGet(function(){ camAttach(); cb&&cb() },camDenied(false));
+}
+function scamCV(on){
+  var want=(on===undefined||on===null)?!SCAM.cv:!!on;
+  if(want) scamEnsure(function(){ SCAM.cv=true; visionStart(); scamPaint() });
+  else { SCAM.cv=false; visionMaybeStop(); scamPaint() }
+}
+function scamAuraMode(on){
+  var want=(on===undefined||on===null)?!SCAM.aura:!!on;
+  if(want) scamEnsure(function(){
+    SCAM.aura=true; SCAM.cv=true; auraOn=true; auraToggle(true); updAura();
+    var gh=document.getElementById("gestHint"); if(gh)gh.classList.add("on");
+    visionStart(); scamPaint();
+  });
+  else {
+    SCAM.aura=false; auraOn=false;
+    var gh=document.getElementById("gestHint"); if(gh)gh.classList.remove("on");
+    visionMaybeStop(); updAura(); scamPaint();
+  }
+}
+/* MediaPipe sukam tik kol kas nors jo prašo — ir NIEKADA neatidarom antro srauto */
+function visionMaybeStop(){
+  var wrapOn=document.getElementById("camWrap").style.display==="block";
+  if(SCAM.cv||SCAM.aura||wrapOn)return;
+  visionOn=false; MP.poseRes=null; MP.handRes=null;
+  var c=document.getElementById("scamCv");
+  if(c){ try{ c.getContext("2d").clearRect(0,0,c.width,c.height) }catch(e){} }
+}
 function scamRestore(){   /* po perkrovimo grąžinam pasirinkimą, TYLIAI */
   if(SCAM.want&&SCAM.want!=="off") scamSet(SCAM.want,true);
 }
+/* --- tempimas už juostos (pelė + pirštas), langas keičiasi -> laikom rėmuose --- */
+(function(){
+  var el=document.getElementById("scam"), bar=document.getElementById("scamBar");
+  if(!el||!bar||!bar.addEventListener)return;
+  var drag=null;
+  bar.addEventListener("pointerdown",function(e){
+    if(e.target&&e.target.tagName==="BUTTON")return;
+    if(SCAM.mode!=="pip")return;
+    var r=el.getBoundingClientRect();
+    drag={dx:e.clientX-r.left,dy:e.clientY-r.top};
+    try{ bar.setPointerCapture(e.pointerId) }catch(err){}
+    e.preventDefault();
+  });
+  bar.addEventListener("pointermove",function(e){
+    if(!drag)return;
+    SCAM.x=e.clientX-drag.dx; SCAM.y=e.clientY-drag.dy;
+    scamPaint(); e.preventDefault();
+  });
+  function up(){ if(!drag)return; drag=null; scamSave() }
+  bar.addEventListener("pointerup",up);
+  bar.addEventListener("pointercancel",up);
+  el.addEventListener("pointerdown",function(){
+    el.classList.add("bar"); clearTimeout(el._bt);
+    el._bt=setTimeout(function(){ el.classList.remove("bar") },3500);
+  });
+  window.addEventListener("resize",function(){ try{ scamPaint() }catch(e){} });
+})();
 
 /* ===================================================================
    V6.14 · TVARKARAŠČIO SKAIDRĖ — mokykla · diena · laikas · kabinetas
@@ -3218,24 +3472,36 @@ function tvkDate(iso){
   var mi=(+m[2])-1; if(mi<0||mi>11) return iso;
   return "nuo "+LT_MON[mi]+" "+(+m[3])+" d.";
 }
+/* V6.15: QR IŠJUNGTAS pagal nutylėjimą — įsijungia tik mygtuku 🔳 QR. */
+var TVKQR=false;
+function tvkQrToggle(on){
+  TVKQR=(on===undefined||on===null)?!TVKQR:!!on;
+  tvkRender();
+}
 function tvkRender(){
   var L=document.getElementById("tvkLine"); if(!L)return;
   var t=String(TVK.laikas||"").replace(/\s*[-–—]\s*/,"–");
-  /* V6.14 fix: be laiko nerodom vien „Ketvirtadieniais" — sakom sąžiningai, kad vedėjas pasakys dabar */
-  if(!t){ L.innerHTML="<span class='hi'>Kada ir kur — vedėjas pasakys dabar 👇</span>"; }
-  else L.innerHTML="<span class='hi'>"+LT_DAY[TVK.diena]+" "+t+"</span>";
-  var bits=[]; if(TVK.kab) bits.push(TVK.kab+" kab.");
-  var d=tvkDate(TVK.nuo); if(d) bits.push(d);
-  if(!t&&!bits.length) bits.push("Registracija — QR arba nuoroda žemiau");
-  var mt=document.getElementById("tvkMeta"); if(mt) mt.textContent=bits.join(" · ");
+  var d=tvkDate(TVK.nuo);
   var sc=document.getElementById("tvkSchool"); if(sc) sc.textContent=TVK.mokykla||"";
-  var lk=document.getElementById("tvkLink");
-  if(lk) lk.innerHTML="<b>Registruokis:</b> "+TVK.nuoroda;
-  var q=document.getElementById("tvkQr");
+  /* 1 eilutė — savaitės diena + data · 2 eilutė — laikas + kabinetas */
+  if(!t&&!d){ L.innerHTML="<span class='hi'>Kada ir kur — vedėjas pasakys dabar 👇</span>"; }
+  else {
+    var b=[LT_DAY[TVK.diena]]; if(d) b.push(d);
+    L.innerHTML="<span class='hi'>"+b.join(" · ")+"</span>";
+  }
+  var m=[]; if(t) m.push(t); if(TVK.kab) m.push(TVK.kab+" kab.");
+  var mt=document.getElementById("tvkMeta"); if(mt) mt.textContent=m.join(" · ");
+  var q=document.getElementById("tvkQr"), lk=document.getElementById("tvkLink"),
+      qb=document.getElementById("tvkQrBtn");
+  if(qb) qb.textContent=TVKQR?"🔳 Slėpti QR":"🔳 QR";
+  if(lk) lk.innerHTML=TVKQR?("<b>Registruokis:</b> "+TVK.nuoroda):"";
   if(q){
-    q.innerHTML=""; delete q.dataset.done;
-    try{ new QRCode(q,{text:TVK.nuoroda,width:150,height:150,correctLevel:QRCode.CorrectLevel.M}) }
-    catch(e){ q.textContent=TVK.nuoroda }
+    q.className=TVKQR?"on":"";
+    q.innerHTML="";
+    if(TVKQR){
+      try{ new QRCode(q,{text:TVK.nuoroda,width:150,height:150,correctLevel:QRCode.CorrectLevel.M}) }
+      catch(e){ q.textContent=TVK.nuoroda }
+    }
   }
 }
 function tvkEdit(on){
@@ -3427,11 +3693,15 @@ function slotResult(win){
     msg.className="win"; msg.textContent="🧠 BRAIN MAX!"; aura(500,"slot: 3 iš 3");
     for(r=0;r<3;r++){ document.getElementById("r"+r).classList.add("win");
       document.getElementById("g"+r).classList.add("hit"); }
-    setTimeout(function(){ brainMax(); slotBusy=false; },850);
+    setTimeout(function(){ brainMax(); slotBusy=false;
+      /* V6.15 (bias): atskleidimas STRUKTŪRINIS — po laimėjimo pats atsidaro */
+      setTimeout(function(){ if(typeof hackShow==="function") hackShow("slot") },1800);
+    },850);
   }else{
     msg.textContent="Beveik! 2 iš 3 — trauk dar kartą 💪"; sfx("fa",.7);
     for(r=0;r<2;r++) document.getElementById("g"+r).classList.add("hit");
     slotBusy=false;
+    if(slotPulls>=3&&typeof hackShow==="function") setTimeout(function(){ hackShow("slot") },900);
   }
 }
 
@@ -3522,6 +3792,7 @@ function buildStars(){
 })();
 
 build();show(0);_booted=true;bootRun();pultInit();
+setInterval(function(){ try{ pultCount() }catch(e){} },10000);
 </script>
 </body>
 </html>

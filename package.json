@@ -6,7 +6,8 @@
     "qa": "node tools/qa-boot.js",
     "qa:chrome": "node tools/qa-chrome.js",
     "serve": "python3 -m http.server 8899",
-    "qa:e2e": "node tools/qa-e2e.js"
+    "qa:e2e": "node tools/qa-e2e.js",
+    "qa:shots": "node tools/qa-shots.js"
   },
   "devDependencies": {
     "jsdom": "^29.1.1",

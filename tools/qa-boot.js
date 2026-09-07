@@ -265,7 +265,7 @@ ok('tvkRender() pripildo eilute',(()=>{
    w.tvkRender();
    const L=w.document.getElementById('tvkLine').textContent;
    const M=w.document.getElementById('tvkMeta').textContent;
-   return /Ketvirtadieniais/.test(L)&&/14:00–15:30/.test(L)&&/23 kab\./.test(M)&&/rugsėjo 18/.test(M);})());
+   return /Ketvirtadieniais/.test(L)&&/rugsėjo 18/.test(L)&&/14:00–15:30/.test(M)&&/23 kab\./.test(M);})());
 ok('tvkSave() irasytas i localStorage',(()=>{
    w.document.getElementById('tvkM').value='Testų licėjus';
    w.document.getElementById('tvkD').value='2';
@@ -327,6 +327,167 @@ ok('emoFloat() veikia ir be Twitch rezimo',(()=>{
 
 console.log('');
 ok('yra toggleAuraCam',typeof w.toggleAuraCam==='function');
+
+// ============================ V6.15 ============================
+console.log('\n== 15. V6.15 kameros modulis (busenu masina) ==');
+ok('SCAM turi kampa/dydi/CV/AURA laukus',
+   w.SCAM.corner==='br'&&w.SCAM.size==='m'&&w.SCAM.cv===false&&w.SCAM.aura===false,
+   JSON.stringify({c:w.SCAM.corner,s:w.SCAM.size}));
+ok('#scamBar ir #scamCv yra DOM e',
+   !!w.document.getElementById('scamBar')&&!!w.document.getElementById('scamCv'));
+ok('modulio irankiu juostoje 6 mygtukai',
+   w.document.querySelectorAll('#scamBar button').length===6,
+   'rasta '+w.document.querySelectorAll('#scamBar button').length);
+// srautas apsimestas -> camGet ji perpanaudoja, antro niekada neprasom
+w.camStream={getTracks:()=>[{stop(){}}]};
+let camCalls=0;
+w.navigator.mediaDevices={getUserMedia:()=>{camCalls++;return Promise.reject(new Error('no cam'))}};
+ok('scamSet("pip") uzdeda body.scam-pip',(()=>{
+   w.scamSet('pip');
+   return w.document.body.classList.contains('scam-pip');})());
+ok('kampai sukasi br→bl→tl→tr→tc→br',(()=>{
+   const seen=[];
+   for(let i=0;i<5;i++){ w.scamCorner(); seen.push(w.SCAM.corner) }
+   return seen.join(',')==='bl,tl,tr,tc,br';})());
+ok('kampo klase uzdedama ant body',(()=>{
+   w.SCAM.corner='tl'; w.scamPaint();
+   return w.document.body.classList.contains('scam-tl')&&
+          !w.document.body.classList.contains('scam-br');})());
+ok('dydziai S/M/L sukasi ir nesirita uz kraštu',(()=>{
+   w.SCAM.size='m';
+   w.scamSizeCycle(); const a=w.SCAM.size;
+   w.scamSizeCycle(); const b=w.SCAM.size;
+   w.scamSizeStep(-1); w.scamSizeStep(-1); w.scamSizeStep(-1);
+   return a==='l'&&b==='s'&&w.SCAM.size==='s';})());
+ok('dydis keicia #scam plotį',(()=>{
+   w.SCAM.size='l'; w.scamPaint();
+   const big=parseInt(w.document.getElementById('scam').style.width,10);
+   w.SCAM.size='s'; w.scamPaint();
+   const small=parseInt(w.document.getElementById('scam').style.width,10);
+   return big>small&&small>=160;})());
+ok('tempimo koordinates iraso body.scam-moved',(()=>{
+   w.SCAM.x=40; w.SCAM.y=30; w.scamPaint();
+   return w.document.body.classList.contains('scam-moved')&&
+          w.document.getElementById('scam').style.left==='40px';})());
+ok('koordinates apkerpamos i lango ribas',(()=>{
+   w.SCAM.x=99999; w.SCAM.y=99999; w.scamPaint();
+   return w.SCAM.x<(w.innerWidth||1280)&&w.SCAM.y<(w.innerHeight||720)&&w.SCAM.x>=0;})());
+ok('scamCorner() istrina tempima',(()=>{
+   w.scamCorner(); return w.SCAM.x===null&&!w.document.body.classList.contains('scam-moved');})());
+ok('scamSave/scamLoad issaugo kampa+dydi',(()=>{
+   w.SCAM.corner='tc'; w.SCAM.size='l'; w.scamSave();
+   const j=JSON.parse(w.localStorage.getItem('bcday-scam')||'{}');
+   return j.corner==='tc'&&j.size==='l';})());
+ok('👁 CV ijungia visionOn ir body.scam-cv',(()=>{
+   w.scamCV(true);
+   return w.SCAM.cv===true&&w.visionOn===true&&w.document.body.classList.contains('scam-cv');})());
+ok('✨ AURA ijungia gestus ir uzsiveda ant to paties srauto',(()=>{
+   w.scamAuraMode(true);
+   return w.SCAM.aura===true&&w.auraOn===true&&
+          w.document.getElementById('gestHint').classList.contains('on');})());
+ok('CV/AURA NEPRASO antro kameros srauto',camCalls===0,'getUserMedia kviestas '+camCalls+' k.');
+ok('cvVideo() grazina modulio video kai modulis ijungtas',(()=>{
+   const v=w.cvVideo(); return !!v&&(v.id==='scamVid'||v.id==='cam');})());
+ok('AURA isjungimas nuima gestus, CV lieka',(()=>{
+   w.scamAuraMode(false);
+   return w.SCAM.aura===false&&w.auraOn===false&&w.SCAM.cv===true&&w.visionOn===true;})());
+ok('CV isjungimas sustabdo MediaPipe',(()=>{
+   w.scamCV(false);
+   return w.SCAM.cv===false&&w.visionOn===false;})());
+ok('toggleAuraCam() atidaro moduli su CV+AURA',(()=>{
+   w.toggleAuraCam();
+   return w.SCAM.aura===true&&w.SCAM.cv===true&&w.SCAM.mode!=='off';})());
+ok('auraMode() = tas pats modulis (be antro lango)',(()=>{
+   w.scamAuraMode(false); w.auraMode();
+   return w.SCAM.aura===true&&
+          w.document.getElementById('camWrap').style.display!=='block';})());
+ok('scamSet("off") viska isjungia',(()=>{
+   w.scamSet('off');
+   return w.SCAM.mode==='off'&&w.SCAM.cv===false&&w.SCAM.aura===false&&
+          !w.document.body.classList.contains('scam-pip')&&
+          !w.document.body.classList.contains('scam-cv');})());
+ok('camBusy() vel melagingas',w.camBusy()===false);
+w.camStream=null;
+
+console.log('\n== 16. V6.15 tvarkarastis be QR ==');
+ok('tvarkarascio skaidreje nebera automatinio QR',(()=>{
+   w.TVKQR=false; w.tvkRender();
+   const q=w.document.getElementById('tvkQr');
+   return q.innerHTML===''&&!q.classList.contains('on');})());
+ok('tvkQrToggle() parodo ir paslepia QR',(()=>{
+   w.tvkQrToggle();
+   const on=w.document.getElementById('tvkQr').classList.contains('on');
+   w.tvkQrToggle();
+   const off=!w.document.getElementById('tvkQr').classList.contains('on');
+   return on&&off;})());
+ok('QR mygtukas keicia uzrasa',(()=>{
+   w.tvkQrToggle(true); const a=w.document.getElementById('tvkQrBtn').textContent;
+   w.tvkQrToggle(false); const b=w.document.getElementById('tvkQrBtn').textContent;
+   return /Slėpti/.test(a)&&!/Slėpti/.test(b);})());
+ok('mokyklos pavadinimas atskira didele eilute',(()=>{
+   w.TVK.mokykla='Šiaurės licėjus'; w.tvkRender();
+   return w.document.getElementById('tvkSchool').textContent==='Šiaurės licėjus';})());
+ok('tuscia busena saziniga (vedejas pasakys dabar)',(()=>{
+   const bak={l:w.TVK.laikas,n:w.TVK.nuo};
+   w.TVK.laikas=''; w.TVK.nuo=''; w.tvkRender();
+   const t=w.document.getElementById('tvkLine').textContent;
+   w.TVK.laikas=bak.l; w.TVK.nuo=bak.n; w.tvkRender();
+   return /vedėjas pasakys dabar/.test(t);})());
+ok('„lapelis prie duru" eilute yra',
+   /Daugiau — lapelyje/.test(w.document.getElementById('tvkLeaf').textContent));
+ok('finaline vizualizacija: dino+VR+meteoras+AI+robotas-suo+smegenys',(()=>{
+   const a=w.document.getElementById('tvkArt');
+   if(!a)return false;
+   const txt=a.textContent;
+   return !!a.querySelector('.dino')&&!!a.querySelector('.vr')&&!!a.querySelector('.met')&&
+          !!a.querySelector('.bot')&&!!a.querySelector('.dog')&&!!a.querySelector('.brain')&&
+          /TRENIRUOK SMEGENIS/.test(txt);})());
+ok('finalo skaidreje NEBERA #qr',!w.document.getElementById('qr'));
+ok('finalo skaidreje yra „paimk lapeli prie duru"',
+   /Paimk lapelį prie durų/.test(w.document.querySelector('.finalfit').textContent));
+ok('QR_URL vis dar yra (tvarkarascio QR jungikliui)',typeof w.QR_URL==='string'&&w.QR_URL.length>5);
+
+console.log('\n== 17. V6.15 pulto dvipusis patikrinimas (deck as) ==');
+ok('pultPong/pultCount/pultTouch yra',
+   ['pultPong','pultCount','pultTouch','pultLog'].every(f=>typeof w[f]==='function'));
+ok('pultCount() be telefonu = 0',w.pultCount()===0);
+ok('pultTouch() suskaiciuoja telefona',(()=>{
+   w.pultTouch({cid:'qa1'}); return w.pultCount()===1;})());
+ok('du telefonai = 2',(()=>{ w.pultTouch({cid:'qa2'}); return w.pultCount()===2 })());
+ok('HUD zenklas rodo prijungtu skaiciu',
+   /2 prijungt/.test(w.document.getElementById('pultBadge').textContent),
+   w.document.getElementById('pultBadge').textContent);
+ok('skaidres pulto blokas rodo ta pati',
+   /2 prijungt/.test(w.document.getElementById('pultConn').textContent));
+ok('seni telefonai iskrenta po 45 s',(()=>{
+   w.PULT.phones={old:Date.now()-60000};
+   return w.pultCount()===0;})());
+ok('pultPong() tyli be rysio',(()=>{
+   try{ w.pultPong(); return true }catch(e){ return false }})());
+
+console.log('\n== 18. V6.15 nesaliskumas / inokuliacija (bias) ==');
+ok('H NEBESLEPIA „koks cia triukas" mygtuku',
+   !/body\.nohack \.hackbtn\{display:none\}/.test(html));
+ok('H tik sutraukia mygtuka i ikona',
+   /body\.nohack \.hackbtn\{font-size:0/.test(html)&&
+   /body\.nohack \.hackbtn:before\{content:"🧠"/.test(html));
+ok('mygtukai LIEKA DOM e ir su nohack',(()=>{
+   w.hackToggle();
+   const n=w.document.querySelectorAll('.hackbtn').length;
+   const cls=w.document.body.classList.contains('nohack');
+   w.hackToggle();
+   return cls&&n>=2;})());
+ok('slot masina PATI atidaro atskleidima (struktūrinis)',
+   /hackShow\("slot"\)/.test(String(w.slotResult)),String(w.slotResult).slice(0,60));
+ok('atskleidimas kviečiamas ir po 3-io traukimo be laimejimo',
+   /slotPulls>=3/.test(String(w.slotResult)));
+ok('finale — sazininga eilute apie kitus burelius',(()=>{
+   const t=w.document.querySelector('.finalfit .honest');
+   return !!t&&/sportas, muzika, šachmatai, biblioteka/.test(t.textContent)&&
+          /mano paties įkurtas būrelis/.test(t.textContent);})());
+ok('⚗️ etikete nuolat matoma (ne tik pradzios ekrane)',(()=>{
+   const t=w.document.getElementById('labTag');
+   return !!t&&/eksperimentinis/.test(t.textContent)&&/gali klysti/.test(t.textContent);})());
 
 console.log('\n────────────────────────────');
 console.log(`REZULTATAS: ${pass} praėjo · ${fail} krito`);

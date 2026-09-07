@@ -181,8 +181,12 @@ for(const [W,H] of [[1280,720],[1920,1080]]){
      await page.evaluate(()=>window.camStream&&window.camStream.id)===camId1);
   ok('abu video elementai gauna vaizda',await page.evaluate(()=>
      !!document.getElementById('cam').srcObject&&!!document.getElementById('scamVid').srcObject));
-  ok('CV langelis matomas',await page.evaluate(()=>
-     getComputedStyle(document.getElementById('camWrap')).display!=='none'));
+  ok('V6.15: CV piesia ANT modulio, senas langas neatsidaro',await page.evaluate(()=>
+     document.body.classList.contains('scam-cv')&&
+     getComputedStyle(document.getElementById('scamCv')).display!=='none'&&
+     getComputedStyle(document.getElementById('camWrap')).display==='none'));
+  ok('V6.15: ijungtas AURA rezimas + gestu uzuominos',await page.evaluate(()=>
+     window.SCAM.aura===true&&document.getElementById('gestHint').classList.contains('on')));
   await page.evaluate(()=>window.camStop()); await new Promise(r=>setTimeout(r,600));
   ok('uzdarius CV streameris islieka gyvas',await page.evaluate(()=>
      document.body.classList.contains('scam-half')&&!!window.camStream&&
@@ -196,7 +200,8 @@ for(const [W,H] of [[1280,720],[1920,1080]]){
   ok('R nusoka i tvarkarascio skaidre',await page.evaluate(()=>
      window.SL[window.cur].tag==='tvarkarastis'));
   ok('R atidaro forma',await page.$eval('#tvkForm',e=>e.classList.contains('on')));
-  ok('QR ant tvarkarascio sugeneruotas',await page.$eval('#tvkQr',e=>e.children.length>0));
+  ok('V6.15: QR IŠJUNGTAS pagal nutylejima',await page.$eval('#tvkQr',
+     e=>e.children.length===0&&getComputedStyle(e).display==='none'));
   await page.evaluate(()=>{
     document.getElementById('tvkM').value='QA licėjus';
     document.getElementById('tvkD').value='4';
@@ -206,13 +211,148 @@ for(const [W,H] of [[1280,720],[1920,1080]]){
     window.tvkSave();
   });
   await new Promise(r=>setTimeout(r,300));
-  ok('eilute vaikams skaitoma',await page.$eval('#tvkLine',e=>
-     /Ketvirtadieniais 14:00–15:30/.test(e.textContent)));
-  ok('meta: kabinetas + data',await page.$eval('#tvkMeta',e=>
-     /23 kab\./.test(e.textContent)&&/rugsėjo 18 d\./.test(e.textContent)));
+  ok('mokykla — atskira didele eilute',await page.$eval('#tvkSchool',
+     e=>/QA licėjus/.test(e.textContent)));
+  ok('eilute 1: diena + data',await page.$eval('#tvkLine',e=>
+     /Ketvirtadieniais/.test(e.textContent)&&/rugsėjo 18 d\./.test(e.textContent)));
+  ok('eilute 2: laikas + kabinetas',await page.$eval('#tvkMeta',e=>
+     /14:00–15:30/.test(e.textContent)&&/23 kab\./.test(e.textContent)));
+  ok('„lapelis prie duru" matomas',await page.$eval('#tvkLeaf',
+     e=>/Daugiau — lapelyje/.test(e.textContent)&&getComputedStyle(e).display!=='none'));
+  ok('finaline animacija matoma ir neuzdengia antrastes',await page.evaluate(()=>{
+     const a=document.getElementById('tvkArt'),h=document.querySelector('#s'+window.cur+' h1');
+     if(!a||!h)return false;
+     const ra=a.getBoundingClientRect(),rh=h.getBoundingClientRect();
+     return ra.height>40&&ra.top>=rh.bottom-1&&a.querySelectorAll('.fig').length===6;}));
+  ok('QR jungiklis parodo ir paslepia QR',await page.evaluate(async()=>{
+     window.tvkQrToggle(true);
+     const on=document.getElementById('tvkQr').children.length>0;
+     window.tvkQrToggle(false);
+     const off=document.getElementById('tvkQr').children.length===0;
+     return on&&off;}));
   ok('forma uzsidare po issaugojimo',await page.$eval('#tvkForm',e=>!e.classList.contains('on')));
   ok('tvarkarastis netelpa i horizontalu slinkima',await page.evaluate(()=>
      document.documentElement.scrollWidth<=window.innerWidth+2));
+
+  console.log('\n== V6.15 kameros modulis ==');
+  await page.evaluate(()=>{ localStorage.removeItem('bcday-scam');
+    window.SCAM.x=null; window.SCAM.y=null; window.SCAM.corner='br'; window.SCAM.size='m';
+    window.scamSet('pip'); });
+  await new Promise(r=>setTimeout(r,1200));
+  ok('modulis atsidaro kampe (pip)',await page.evaluate(()=>
+     document.body.classList.contains('scam-pip')&&document.body.classList.contains('scam-br')));
+  ok('modulio juosta turi 6 valdiklius',await page.$$eval('#scamBar button',n=>n.length)===6);
+  const corners=[];
+  for(let k=0;k<5;k++){
+    await page.keyboard.down('Shift'); await page.keyboard.press('KeyC'); await page.keyboard.up('Shift');
+    await new Promise(r=>setTimeout(r,140));
+    corners.push(await page.evaluate(()=>window.SCAM.corner));
+  }
+  ok('Shift+C sukioja kampus',corners.join(',')==='bl,tl,tr,tc,br',corners.join(','));
+  ok('kampo klase tikrai perkelia langeli',await page.evaluate(()=>{
+     window.SCAM.corner='tl'; window.scamPaint();
+     const r=document.getElementById('scam').getBoundingClientRect();
+     return r.top<80&&r.left<80;}));
+  const wM=await page.evaluate(()=>document.getElementById('scam').getBoundingClientRect().width);
+  await page.keyboard.press('BracketRight'); await new Promise(r=>setTimeout(r,160));
+  const wL=await page.evaluate(()=>document.getElementById('scam').getBoundingClientRect().width);
+  await page.keyboard.press('BracketLeft'); await page.keyboard.press('BracketLeft');
+  await new Promise(r=>setTimeout(r,160));
+  const wS=await page.evaluate(()=>document.getElementById('scam').getBoundingClientRect().width);
+  ok('[ ] keicia dydi S<M<L',wS<wM&&wM<wL,[wS,wM,wL].join('<'));
+
+  // TIKRAS tempimas pele uz virsutines juostos
+  await page.evaluate(()=>{ window.SCAM.size='m'; window.scamPaint();
+     document.getElementById('scam').classList.add('bar'); });
+  await new Promise(r=>setTimeout(r,200));
+  const bar=await page.$('#scamBar'); const bb=await bar.boundingBox();
+  await page.mouse.move(bb.x+6,bb.y+bb.height/2);
+  await page.mouse.down();
+  await page.mouse.move(bb.x+240,bb.y+180,{steps:8});
+  await page.mouse.up();
+  await new Promise(r=>setTimeout(r,300));
+  const moved=await page.evaluate(()=>({m:document.body.classList.contains('scam-moved'),
+     x:window.SCAM.x,y:window.SCAM.y,
+     ls:JSON.parse(localStorage.getItem('bcday-scam')||'{}')}));
+  ok('modulis tempiamas pele',moved.m&&moved.x>0&&moved.y>0,JSON.stringify(moved));
+  ok('tempimo vieta isiraso i localStorage',moved.ls.x===moved.x&&moved.ls.y===moved.y);
+  await page.setViewport({width:640,height:480}); await new Promise(r=>setTimeout(r,350));
+  ok('sumazinus langa modulis lieka ekrane',await page.evaluate(()=>{
+     const r=document.getElementById('scam').getBoundingClientRect();
+     return r.right<=innerWidth+1&&r.bottom<=innerHeight+1&&r.left>=-1&&r.top>=-1;}));
+  await page.setViewport({width:W,height:H}); await new Promise(r=>setTimeout(r,350));
+
+  // CV jungiklis modulyje — TAS PATS srautas, be antro lango
+  const idA=await page.evaluate(()=>window.camStream&&window.camStream.id);
+  await page.click('#scamCvBtn'); await new Promise(r=>setTimeout(r,1500));
+  ok('👁 CV neatidaro antro srauto',
+     await page.evaluate(()=>window.camStream&&window.camStream.id)===idA&&
+     await page.evaluate(()=>window.SCAM.cv===true&&window.visionOn===true));
+  ok('👁 CV neatidaro antro lango',await page.evaluate(()=>
+     getComputedStyle(document.getElementById('camWrap')).display==='none'));
+  ok('CV drobe uzdengia video tiksliai',await page.evaluate(()=>{
+     const c=document.getElementById('scamCv').getBoundingClientRect();
+     const v=document.getElementById('scamVid').getBoundingClientRect();
+     return Math.abs(c.width-v.width)<2&&Math.abs(c.height-v.height)<2;}));
+  await page.click('#scamAuraBtn'); await new Promise(r=>setTimeout(r,800));
+  ok('✨ AURA jungiklis ijungia gestus',await page.evaluate(()=>
+     window.SCAM.aura===true&&window.auraOn===true));
+  await page.click('#scamClose'); await new Promise(r=>setTimeout(r,600));
+  ok('✕ isjungia moduli ir paleidzia kamera',await page.evaluate(()=>
+     window.SCAM.mode==='off'&&window.camStream===null&&
+     !document.body.classList.contains('scam-cv')));
+  await page.evaluate(()=>{ localStorage.removeItem('bcday-scam');
+    window.SCAM.x=null; window.SCAM.y=null; window.SCAM.corner='br'; window.SCAM.size='m'; });
+
+  console.log('\n== V6.15 finalas be QR ==');
+  await page.evaluate(()=>window.show(window.SL.findIndex(s=>s.tag==='finalas')));
+  await new Promise(r=>setTimeout(r,400));
+  ok('finalo skaidreje NEBERA #qr',await page.evaluate(()=>!document.getElementById('qr')));
+  ok('finale — „paimk lapeli prie duru"',await page.$eval('.finalfit .leaflet',
+     e=>/Paimk lapelį prie durų/.test(e.textContent)));
+  ok('cliffhangeris islikes',await page.$eval('#cliff',e=>/visi metai/.test(e.textContent)));
+  ok('piktogramu eile islikusi (5)',await page.$$eval('.finalfit .picto div',n=>n.length)===5);
+  // .finalfit naudoja zoom -> matuojam TIKRUS pikselius (getBoundingClientRect), ne scrollHeight
+  ok('finalas telpa i ekrana be slinkimo',await page.evaluate(()=>{
+     const s=document.querySelector('.slide.on');
+     let top=1e9,bot=0;
+     s.querySelectorAll('*').forEach(e=>{const r=e.getBoundingClientRect();
+       if(r.height<1)return; if(r.bottom>bot)bot=r.bottom; if(r.top<top)top=r.top;});
+     return top>=-1&&bot<=window.innerHeight+2&&
+            document.documentElement.scrollHeight<=window.innerHeight+2&&
+            document.documentElement.scrollWidth<=window.innerWidth+2;}),
+     await page.evaluate(()=>{const s=document.querySelector('.slide.on');let b=0;
+       s.querySelectorAll('*').forEach(e=>{const r=e.getBoundingClientRect();if(r.height>0&&r.bottom>b)b=r.bottom});
+       return Math.round(b)+' vs '+window.innerHeight;}));
+  ok('finale — sazininga eilute apie kitus burelius (bias)',await page.$eval('.finalfit .honest',
+     e=>/sportas, muzika, šachmatai, biblioteka/.test(e.textContent)&&
+        /mano paties įkurtas būrelis/.test(e.textContent)));
+  ok('⚗️ etikete matoma salei per visa seansa',await page.evaluate(()=>{
+     const t=document.getElementById('labTag');
+     return !!t&&getComputedStyle(t).display!=='none'&&/eksperimentinis/.test(t.textContent);}));
+
+  console.log('\n== V6.15 inokuliacija: slot PATS atidaro atskleidima ==');
+  const si=await page.evaluate(()=>window.SL.findIndex(s=>s.html&&/id='lever'|id=\"lever\"/.test(s.html)));
+  await page.evaluate(()=>{ const i=[...document.querySelectorAll('.slide')]
+      .findIndex(s=>s.querySelector('#lever')); window.show(i); });
+  await new Promise(r=>setTimeout(r,400));
+  ok('slot masinos skaidre atidaryta',await page.evaluate(()=>!!document.querySelector('.slide.on #lever')));
+  await page.evaluate(()=>{ window.slotPulls=0; window.hackHide(); window.slotPull(); });
+  await new Promise(r=>setTimeout(r,3400));
+  await page.evaluate(()=>window.slotPull());
+  await new Promise(r=>setTimeout(r,6200));
+  ok('po laimejimo atskleidimas ATSIDARO PATS',
+     await page.$eval('#hackBox',e=>e.classList.contains('on')));
+  ok('atskleidime — „tavo demesio pirkimas"',
+     await page.$eval('#hackBox',e=>/tavo dėmesio pirkimas/.test(e.textContent)));
+  await page.keyboard.press('Escape'); await new Promise(r=>setTimeout(r,250));
+  await page.keyboard.press('KeyH'); await new Promise(r=>setTimeout(r,250));
+  ok('H NEBESLEPIA mygtuko — tik sutraukia i ikona',await page.evaluate(()=>{
+     const b=document.querySelector('.slide.on .hackbtn');
+     if(!b)return false;
+     const r=b.getBoundingClientRect(),c=getComputedStyle(b);
+     return document.body.classList.contains('nohack')&&c.display!=='none'&&r.width>20&&r.height>16;}));
+  await page.keyboard.press('KeyH'); await new Promise(r=>setTimeout(r,200));
 
   console.log('\n== V6.14 hack sluoksnis ==');
   const bi=await page.evaluate(()=>window.SL.findIndex(s=>s.tag==='brainmax'));
@@ -236,9 +376,10 @@ for(const [W,H] of [[1280,720],[1920,1080]]){
   ok('Escape uzdaro perdanga',await page.$eval('#hackBox',e=>!e.classList.contains('on')));
   await page.keyboard.press('KeyH');
   await new Promise(r=>setTimeout(r,200));
-  ok('H paslepia hack mygtukus',await page.evaluate(()=>{
+  ok('V6.15: H sutraukia mygtuka i ikona, NEBESLEPIA',await page.evaluate(()=>{
      const b=document.querySelector('#s'+window.cur+' .hackbtn');
-     return getComputedStyle(b).display==='none';}));
+     const c=getComputedStyle(b),r=b.getBoundingClientRect();
+     return c.display!=='none'&&r.width>20&&r.height>16&&c.fontSize==='0px';}));
   await page.keyboard.press('KeyH');
 
   console.log('\n== V6.14 pulto broadcast keliai ==');
@@ -322,7 +463,7 @@ for(const [W,H] of [[1280,720],[1920,1080]]){
   ok('sales kodas 4 simboliu',/^[A-Z0-9]{4}$/.test(await page.$eval('#pultRoom',e=>e.textContent)));
   const ps=await page.$eval('#pultState',e=>e.textContent);
   ok('supabase prisijunge arba svelniai nusileido',
-     /prijungtas|nepasiekiamas|isjungtas|išjungtas|jungiamasi/.test(ps),ps);
+     /prijungtas|kanalas atidarytas|nepasiekiamas|isjungtas|išjungtas|jungiamasi/.test(ps),ps);
   console.log('     pulto busena: '+ps);
 
   console.log('\n== Konsole ==');

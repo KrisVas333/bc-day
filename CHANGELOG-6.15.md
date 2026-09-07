@@ -1,0 +1,16 @@
+# V6.15 — pultas, kuris ĮRODO, kad veikia · kameros modulis · finalas be QR
+
+1. **📱 Mokytojos pultas: dvipusis patikrinimas.** Telefone — didelis ženklas: 🟡 „jungiuosi…" → 🟢 **„DECK'AS GIRDI · salė XXXX"** (žalia TIK tada, kai deck'as ATSAKĖ, ne tik kai atsidarė kanalas) → 🔴 „DECK'AS NEATSAKO" po 6 sek. Po juo — **tikra klaidos priežastis** (Supabase nepasikrovė · SUBSCRIBE būsena · JS klaida), nes konsolės telefone neatidarysi.
+2. **Gelbėjimo mygtukai pulte:** **🔁 PRISIJUNGTI IŠ NAUJO** · **🔔 TESTAS** (siunčia garsą „tada" ir laukia deck'o `pong`) · **salės kodo laukelis + „Keisti salę"** — jei QR nuskenuotas nuo kito deck'o lango. Kodas įsimenamas telefone.
+3. **Deck'as rodo, kiek telefonų prisijungę** — „📱 pultas: N prijungtų" apatinėje juostoje ir AURA skaidrėje; kiekvienas gautas įvykis rašomas į konsolę (`[PULTAS →] aura {…}`). Auros ir konfeti mygtukai — be atvėsinimo (kaip V6.12), garsams lieka 1,5 s.
+4. **📷 Kameros modulis v2.** Vienas langas: **pusė ekrano ⇄ · mažas langelis** (kampai TL/TR/BL/BR/viršus, dydžiai **S/M/L**), **tempiamas pele ar pirštu** už viršutinės juostos, vieta įsimenama, po lango dydžio pakeitimo lieka ekrane. Juostoje: ⇄ · ◰ kampas · S/M/L · 👁 CV · ✨ AURA · ✕. Klavišai: `C` ciklas · `Shift+C` kampas · `[` `]` dydis.
+5. **CV sulietas su moduliu.** Skeletas ir pirštų taškai piešiami **ant paties modulio vaizdo** (tos pačios koordinatės, veidrodis) — nebėra antro lango ir **niekada neprašoma antro kameros srauto**. „📷 Aura kamera" ir „🕺 ĮJUNGTI AURA REŽIMĄ" dabar atidaro tą patį modulį su CV+AURA. 🧠 „Kas yra computer vision?" veikia kaip veikė.
+6. **📅 Paskutinė skaidrė — be QR.** DIDELIS trijų eilučių užrašas: „Tai vyksta **TAVO mokykloje**" → mokyklos pavadinimas → savaitės diena + data → laikas + kabinetas → „📄 Daugiau — lapelyje, kurį gausi prie durų." QR **išjungtas**, įsijungia tik mygtuku 🔳 QR. Forma — klavišu `R`; URL parametrai veikia kaip anksčiau.
+7. **Finalinė vizualizacija** toje pačioje skaidrėje: 🦖 su 🥽, ☄️ meteoritas skrieja per ekraną, 🤖 AI, 🐕‍🦺 robotas-šuo, 💪🧠 pumpuojamos smegenys + „TRENIRUOK SMEGENIS". Tik `transform`/`opacity` — pigu, telpa į 1280×720, antraštės neuždengia.
+8. **KVIETIMO skaidrė — be QR:** „📄 Paimk lapelį prie durų — ten viskas." Cliffhangeris ir piktogramų eilė liko.
+9. **⚖️ Nešališkumas (bias auditas):** finale — sąžininga eilutė „smegenis treniruoja ir sportas, muzika, šachmatai, biblioteka… Brain Club yra mano paties įkurtas būrelis — sakau atvirai"; ⚗️ „AI · eksperimentinis · gali klysti" dabar matoma **per visą pristatymą**, ne tik pradžios ekrane.
+10. **Inokuliacija tapo struktūrine:** `H` nebeSLEPIA „🧠 Koks čia triukas?" — tik sutraukia į ikoną; slot mašina po laimėjimo (ir po 3-io traukimo) **pati atidaro** atskleidimą.
+
+**Testai:** `npm run qa` **151 ✅ / 0** (buvo 104) · `npm run qa:chrome` **182 ✅ / 0** (buvo 124) · `npm run qa:e2e` **34 ✅ / 0** (buvo 23). Visi inline `<script>` praėjo `node --check`; `pultas.html` — tik ES2017 sintaksė (sena iOS Safari / Android WebView).
+
+**Prieš renginį:** `R` → suvesk mokyklą, dieną, datą, laiką, kabinetą. AURA skaidrėje nuskenuok QR telefonu ir **palauk žalios „DECK'AS GIRDI"** — jei geltona/raudona, spausk 🔔 TESTAS, tada 🔁, tada patikrink, ar salės kodas telefone sutampa su ekranu.
