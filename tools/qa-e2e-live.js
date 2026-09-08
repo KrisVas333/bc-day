@@ -28,6 +28,56 @@ await wait(4000);
 console.log('\n== Pultas: pakrovimas ==');
 ok('pultas prisijunge',await phone.$eval('#state',e=>e.classList.contains('ok')),
    await phone.$eval('#state',e=>e.textContent));
+
+console.log('\n== V6.15 DVIPUSIS patikrinimas ==');
+ok('zalia TIK po deck o atsakymo (DECK\'AS GIRDI)',
+   /DECK'AS GIRDI/.test(await phone.$eval('#state',e=>e.textContent)),
+   await phone.$eval('#state',e=>e.textContent));
+ok('klaidu eilute rodo tikra priezasti (ne tuscia)',
+   (await phone.$eval('#errLine',e=>e.textContent)).length>5,
+   await phone.$eval('#errLine',e=>e.textContent));
+ok('deck as rodo „pultas: 1 prijungtas"',
+   /1 prijungtas/.test(await deck.$eval('#pultBadge',e=>e.textContent)),
+   await deck.$eval('#pultBadge',e=>e.textContent));
+// 🔔 TESTAS: telefonas -> deck as (garsas) -> deck as -> telefonas (pong)
+await deck.evaluate(()=>{ window.__sfxHits=[];
+  if(!window.sfx.__wrapped){ const o=window.sfx;
+    window.sfx=function(n,v){ window.__sfxHits.push(n); return o(n,v) };
+    window.sfx.__wrapped=true; } });
+await phone.evaluate(()=>{ document.getElementById('state').className='';
+  document.getElementById('state').textContent='(nunulinta testui)'; });
+await phone.click('#bTest');
+await wait(2500);
+ok('🔔 TESTAS pasiekia deck a (garsas „tada")',
+   await deck.evaluate(()=>window.__sfxHits.includes('tada')),
+   await deck.evaluate(()=>JSON.stringify(window.__sfxHits)));
+ok('🔔 TESTAS grazina pong -> vel zalia',
+   await phone.$eval('#state',e=>e.classList.contains('ok')&&/DECK'AS GIRDI/.test(e.textContent)),
+   await phone.$eval('#state',e=>e.textContent));
+// 🔁 PRISIJUNGTI IS NAUJO
+await phone.click('#bReconn');
+await wait(5000);
+ok('🔁 perjungimas atkuria rysi',
+   await phone.$eval('#state',e=>e.classList.contains('ok')),
+   await phone.$eval('#state',e=>e.textContent));
+// Salės kodo keitimas: blogas kodas -> raudona, teisingas -> zalia
+await phone.evaluate(()=>{ document.getElementById('roomInp').value='ZZ99' });
+await phone.click('#bRoom');
+await wait(9000);
+ok('blogas sales kodas -> RAUDONA „deck as neatsako"',
+   await phone.$eval('#state',e=>e.classList.contains('err')&&/NEATSAKO/.test(e.textContent)),
+   await phone.$eval('#state',e=>e.textContent));
+ok('raudonoje busenoje 🔁 ir 🔔 lieka paspaudziami',
+   await phone.evaluate(()=>!document.getElementById('bReconn').disabled&&
+                            !document.getElementById('bTest').disabled));
+await phone.evaluate(r=>{ document.getElementById('roomInp').value=r },ROOM);
+await phone.click('#bRoom');
+await wait(6000);
+ok('teisingas sales kodas -> vel ZALIA',
+   await phone.$eval('#state',e=>e.classList.contains('ok')&&/DECK'AS GIRDI/.test(e.textContent)),
+   await phone.$eval('#state',e=>e.textContent));
+ok('kodas isirase i localStorage (kita karta jau teisingas)',
+   await phone.evaluate(()=>localStorage.getItem('bcday-pult-room'))===ROOM);
 const nb=await phone.$$eval('button.sfx',n=>n.length);
 ok('10 garsu mygtuku',nb===10,'rasta '+nb);
 ok('4 pos / 4 neg / 2 fun',
@@ -43,8 +93,10 @@ ok('mygtukai neisejo uz ekrano',await phone.evaluate(()=>
    document.documentElement.scrollWidth<=window.innerWidth+1));
 
 console.log('\n== 1. Garsu lenta: pultas -> deck as ==');
-await deck.evaluate(()=>{ window.__sfxHits=[]; const o=window.sfx;
-  window.sfx=function(n,v){ window.__sfxHits.push(n); return o(n,v) }; });
+await deck.evaluate(()=>{ window.__sfxHits=[];
+  if(!window.sfx.__wrapped){ const o=window.sfx;
+    window.sfx=function(n,v){ window.__sfxHits.push(n); return o(n,v) };
+    window.sfx.__wrapped=true; } });
 await phone.click('#sfx-pos1');
 await wait(1600);
 ok('pos1 pasieke deck a',await deck.evaluate(()=>window.__sfxHits.includes('pos1')),
@@ -89,6 +141,11 @@ const wasMuted=await deck.evaluate(()=>window.MUTED);
 await phone.click('#bMute'); await wait(1400);
 ok('🔇 TYLA nutildo deck a',await deck.evaluate(()=>window.MUTED)===true,'pries: '+wasMuted);
 ok('sekeju juosta matoma telefone',await phone.$eval('#goal',e=>e.classList.contains('on')));
+ok('pultas be ES2018+ sintakses (sena iOS Safari)',await (async()=>{
+   const fs=require('fs');
+   const src=fs.readFileSync(require('path').join(__dirname,'..','pultas.html'),'utf8');
+   const js=(/<script(?![^>]*src=)[^>]*>([\s\S]*?)<\/script>/.exec(src)||[])[1]||'';
+   return !/\?\./.test(js) && !/\?\?/.test(js) && !/\(\?<[=!]/.test(js);})());
 
 console.log('\n== Konsole ==');
 ok('deck as be JS klaidu',derr.length===0,derr.join(' | '));
