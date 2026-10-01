@@ -119,5 +119,6 @@ function setRoom(){var v=String($("roomInp").value||"").toUpperCase().replace(/[
 (function(){var B=$("board");BOARD.forEach(function(x,i){var b=document.createElement("button");b.innerHTML=x[1]+"<small>"+x[2]+"</small>";b.onclick=function(){tx("sfx",{name:x[0]})};B.appendChild(b)});
  $("roomInp").value=ROOM;show("secQuiz",false);show("secVideo",false);show("secGame",false);paint({i:0,n:24,label:"—"});connect();})();
 </script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="kids" defer></script>
 </body>
 </html>
