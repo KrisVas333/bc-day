@@ -854,7 +854,7 @@ const PULT=(()=>{
   else if(ev==='game'){const g=game(),a=pl.action;if(!g)return;
    if(a==='start'&&st.phase==='wait')start();else if(a==='cancel')cancel();else if(a==='pad'&&st.phase==='play')pad();else if(a==='ans'&&g==='sounds')soAns(+pl.i);
    else if(a==='next'&&st.phase==='result')nextPlayer();else if(a==='retry'&&st.phase==='result')retry();else if(a==='table'){clear();st.phase='table';render();}
-   else if(a==='pick')pick(+pl.i);else if(a==='reset'){clear();st.scores=empty();save();toast('Rezultatai nulinti');render();}}
+   else if(a==='pick')pick(+pl.i);else if(a==='reset'){clear();st.scores=empty();st.phase='wait';st.player=0;save();toast('Rezultatai nulinti');render();}}
   else if(ev==='hello'||ev==='ping'){send('pong',snap());}
   sync();}
  function init(){
