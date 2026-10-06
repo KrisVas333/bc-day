@@ -157,7 +157,7 @@ footer b{color:var(--ink)}
   <p class="lead">4 trumpi lygiai, apie 3 minutes. Pajusk, kiek darbo smegenys atlieka, kai skaitai.</p>
   <div class="note">
    <p><b>Tai žaidimas, ne testas. Jis nenustato disleksijos.</b></p>
-   <p>Tai ne tai, kaip mato disleksiški, o kaip jaučiasi įtampa.</p>
+   <p>Žmonės su disleksija taip nemato. Tai tik leidžia pajusti įtampą.</p>
   </div>
   <div class="card">
    <div class="lvl"><div class="e">🔎</div><div><b>1. Raidžių medžioklė</b><span>Rask visas b raides</span></div></div>
@@ -221,7 +221,7 @@ footer b{color:var(--ink)}
    <button class="opt" type="button" data-a="mitas">👎 Mitas</button>
    <button class="opt" type="button" data-a="faktas">👍 Faktas</button>
   </div>
-  <div class="swipehint" id="l4-hint">Arba braukk: kairėn mitas, dešinėn faktas</div>
+  <div class="swipehint" id="l4-hint">Arba brauk: kairėn mitas, dešinėn faktas</div>
   <button class="btn" type="button" id="l4-next" style="display:none">Toliau ▶</button>
  </section>
 
@@ -276,7 +276,7 @@ footer b{color:var(--ink)}
   </div>
   <div class="note">
    <p><b>Tai žaidimas, ne testas. Jis nenustato disleksijos.</b></p>
-   <p>Tai ne tai, kaip mato disleksiški, o kaip jaučiasi įtampa. Jei kyla klausimų, pasikalbėk su mokytoju ar specialiuoju pedagogu.</p>
+   <p>Žmonės su disleksija taip nemato. Tai tik leidžia pajusti įtampą. Jei kyla klausimų, pasikalbėk su mokytoju ar specialiuoju pedagogu.</p>
   </div>
   <button class="btn" type="button" id="again">Žaisti dar kartą ↻</button>
  </section>
@@ -384,7 +384,7 @@ function l1tap(b,ch){if(!L1.live||b.classList.contains('hit'))return;SFX.unlock(
  else{L1.miss++;b.classList.remove('miss');void b.offsetWidth;b.classList.add('miss');SFX.fa();if(navigator.vibrate)try{navigator.vibrate(40);}catch(e){}}
  $('l1-pts').textContent=Math.max(0,L1.hits*10-L1.miss*5);}
 function l1end(){L1.live=false;clearInterval(L1.raf);const pts=Math.max(0,L1.hits*10-L1.miss*5);G.score[0]=pts;G.ratio[0]=Math.min(1,pts/120);
- done(0,pts,`Radai ${L1.hits} b · suklydai ${L1.miss} k.`,'Panašios raidės (b, d, p, q) smegenims kainuoja daug darbo. Visi vaikai kartais jas painioja. Tai normalu, ne disleksijos ženklas.');}
+ done(0,pts,`Radai b raidžių: ${L1.hits}. Kitų raidžių paspaudimai: ${L1.miss}.`,'Panašios raidės (b, d, p, q) smegenims kainuoja daug darbo. Visi vaikai kartais jas painioja. Tai normalu, ne disleksijos ženklas.');}
 
 /* ========== L2: sound detective ========== */
 const L2Q=[
@@ -423,7 +423,7 @@ function l3(){L3.phase=0;L3.ok=0;L3.times=[0,0];show('s-l3');l3stage();}
 function words(){return TXT.split(' ');}
 function l3stage(){const hard=L3.phase===0;const box=$('l3-text');box.className='reader '+(hard?'hard':'easy');clearInterval(L3.swapIv);VOICE.stop();
  $('l3-mode').textContent=hard?'😵 Be pagalbos':'👓 Su pagalba';
- $('l3-note').innerHTML=hard?'<b>Pajusk įtampą.</b> Tai ne tai, kaip mato disleksiški, o kaip jaučiasi įtampa.':'<b>Pagalba įjungta:</b> ramus tekstas, didesni tarpai'+(VOICE.has()?' ir balsas 🔊':'')+'.';
+ $('l3-note').innerHTML=hard?'<b>Pajusk įtampą.</b> Žmonės su disleksija taip nemato. Tai tik leidžia pajusti įtampą.':'<b>Pagalba įjungta:</b> ramus tekstas, didesni tarpai'+(VOICE.has()?' ir balsas 🔊':'')+'.';
  box.innerHTML='';
  words().forEach((w,wi)=>{const s=document.createElement('span');s.className='w';s.dataset.w=w;
   if(hard){[...w].forEach(ch=>{const l=document.createElement('span');l.className='l';l.textContent=ch;l.style.animationDelay=(-Math.random()*1.1).toFixed(2)+'s';l.style.animationDuration=(0.7+Math.random()*0.9).toFixed(2)+'s';s.appendChild(l);});}
