@@ -426,7 +426,7 @@ HOW THE GAMES RUN NOW: this deck has the live timed games built in (English). It
 
 BY-HAND FALLBACK (no volunteers, or the laptop is out of reach): you press Start yourself and the whole hall plays along on the big screen. Each game slide&#x27;s notes say how.
 
-VOLUNTEERS: ask the teacher to pick them (fairer than the presenter picking the loudest hands). First names only. Press &quot;Reset scores&quot; on the next slide before every new class, so no names stay on the laptop.
+VOLUNTEERS: ask the teacher to pick them (fairer than the presenter picking the loudest hands). First names only. Press &quot;Reset scores + names&quot; on the next slide before every new class, so no names stay on the laptop.
 
 SOUND: no fail sounds at a child, ever. The games themselves only use a soft blip for a miss.</aside>
   </section>
@@ -435,12 +435,12 @@ SOUND: no fail sounds at a child, ever. The games themselves only use a soft bli
    <div class="kick"><span class="dot"></span>Meet the players!</div>
    <h1 class="a-slam">Type the volunteers' <span class="r">first names</span> ✍️</h1>
    <div class="names" id="names"></div>
-   <div style="display:flex;gap:30px;align-items:center;margin-top:44px"><button class="btn ghost sm" id="reset">🗑️ Reset scores</button><span id="savednote" class="hint" style="margin:0"></span></div>
+   <div style="display:flex;gap:30px;align-items:center;margin-top:44px"><button class="btn ghost sm" id="reset">🗑️ Reset scores + names</button><span id="savednote" class="hint" style="margin:0"></span></div>
    <aside class="notes">TIME: part of the 1-minute games intro.
 
 DO: the teacher picks 4 volunteers. Type first names only (or leave &quot;Player 1 to 4&quot;). Click a box and type; Enter closes the box.
 
-PRIVACY: names and scores are saved only in this browser on this laptop. Nothing is sent anywhere except to your own phone remote, if you use it. Press &quot;🗑️ Reset scores&quot; before every new class (the phone remote has the same button).</aside>
+PRIVACY: names and scores are saved only in this browser on this laptop. Nothing is sent anywhere except to your own phone remote, if you use it. Press &quot;🗑️ Reset scores + names&quot; before every new class (the phone remote has the same button).</aside>
   </section>
 
   <section class="slide" data-sid="reaction" data-label="Game 1 · Reaction rules" data-steps="1">
@@ -546,7 +546,7 @@ DO: press → to reveal the winner(s) with drums, victory sound and confetti. Po
 
 SAY: &quot;A big cheer for all four volunteers!&quot; Celebrate everyone, never call out last place.
 
-BEFORE THE NEXT CLASS: &quot;🗑️ Reset scores&quot; on the Volunteers slide (or on the phone remote).</aside></section>
+BEFORE THE NEXT CLASS: &quot;🗑️ Reset scores + names&quot; on the Volunteers slide (or on the phone remote).</aside></section>
 
   <section class="slide" data-sid="sleep" data-label="Fact 2 · Sleep" data-steps="4">
    <div class="badge">BRAIN FACT 2 😴</div>
@@ -845,7 +845,7 @@ This slide exists so a teacher can check every number we said. Every number in t
     <div>Never play 💀 fa or 🙄 bruh at a child.</div>
    </div>
    <div id="pultqr"><div class="q" id="pultqrbox"></div><div><div style="font-size:40px;font-weight:900;color:var(--yellow)">📱 Phone remote · room <span id="pultroom">—</span></div><div id="pultstate" style="font-size:24px;opacity:.8;margin-top:6px">Scan the QR with a phone (needs internet). It controls slides · sounds · games.</div><div id="pulturl" style="font-size:20px;opacity:.6;margin-top:8px;word-break:break-all"></div></div></div>
-   <p style="margin-top:34px;opacity:.7">Works without internet (except the phone remote, videos and edit suggestions). Names and scores stay on this computer. Before the next class: “Reset scores” (slide 7).</p>
+   <p style="margin-top:34px;opacity:.7">Works without internet (except the phone remote, videos and edit suggestions). Names and scores stay on this computer. Before the next class: “Reset scores + names” (slide 7).</p>
   </div>
  </div>
 </div>
@@ -981,7 +981,7 @@ function toast(t){const el=document.getElementById('toast');el.textContent=t;el.
 function renderNames(){const box=document.getElementById('names');if(!box.children.length){for(let i=0;i<4;i++){const l=document.createElement('label');l.className='a-up';l.style.animationDelay=`${.2+i*.12}s`;l.innerHTML=`<span class="num">${i+1}</span><input maxlength="18" placeholder="Player ${i+1}">`;const inp=l.querySelector('input');inp.addEventListener('input',()=>{st.names[i]=inp.value;save();});box.appendChild(l);}}
  [...box.querySelectorAll('input')].forEach((inp,i)=>{if(inp.value!==st.names[i])inp.value=st.names[i];});
  document.getElementById('savednote').textContent=GLIST.some(k=>st.scores[k].some(v=>v!=null))?'💾 Scores saved on this computer':'';}
-document.getElementById('reset').addEventListener('click',()=>{clear();st.scores=empty();st.quiz={};save();SFX.pop();toast('Scores reset');render();});
+document.getElementById('reset').addEventListener('click',()=>{clear();st.scores=empty();st.names=['','','',''];st.player=0;st.phase='wait';st.quiz={};save();SFX.pop();toast('Scores and names reset');render();});
 
 /* ---- games ---- */
 const TITLES={reaction:['⚡ Reaction','When the box turns RED, the volunteer presses and the whole hall claps! 3 tries, we take the average.'],schulte:['🔢 Speed','Schulte grid. The volunteer taps 1 to 25 in order. Everyone else: point in the air, whisper, stand up at 25!'],memory:['🧠 Memory','Watch which squares light up, then repeat the pattern. It gets one longer every round. Everyone: point along!']};
@@ -1107,7 +1107,7 @@ const PULT=(()=>{
   else if(ev==='game'){const g=game(),a=pl.action;if(!g)return;
    if(a==='start'&&st.phase==='wait')start();else if(a==='cancel')cancel();else if(a==='pad'&&g==='reaction'&&st.phase==='play')rxPad();
    else if(a==='next'&&st.phase==='result')nextPlayer();else if(a==='retry'&&st.phase==='result')retry();else if(a==='table'){clear();st.phase='table';render();}
-   else if(a==='pick')pick(+pl.i);else if(a==='reset'){clear();st.scores=empty();save();toast('Scores reset');render();}}
+   else if(a==='pick')pick(+pl.i);else if(a==='reset'){clear();st.scores=empty();st.names=['','','',''];st.player=0;st.phase='wait';st.quiz={};save();toast('Scores and names reset');render();}}
   else if(ev==='hello'||ev==='ping'){send('pong',snap());}
   sync();}
  function init(){
