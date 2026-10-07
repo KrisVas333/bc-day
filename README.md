@@ -102,3 +102,19 @@ Taisyklė: **push tik po `node --check`** ant inline skripto ir žalio `npm run 
 - ⚠️ Pultas ir kamera testuoti **automatiškai** (headless Chrome + tikras Supabase kanalas). **Tikru telefonu (iOS Safari) ir tikra kamera prieš renginį reikia bakstelėti pačiam** — automatika negali patikrinti nei mokyklos Wi-Fi, nei iOS.
 - 720p projektoriuje su kamera pusėje + užrašais ekranas ankštas — arba 1080p, arba `N` išjungtas.
 - Idėjų sąrašas kitam kartui: [`IDEAS.md`](IDEAS.md) · pokyčiai: [`CHANGELOG-6.15.md`](CHANGELOG-6.15.md) · ankstesni: [`CHANGELOG-6.14.md`](CHANGELOG-6.14.md).
+
+---
+
+## 🇮🇪 Dublin EN build (`sk/dublin/`) · Science Week 2026
+
+**Live:** https://krisvas333.github.io/bc-day/sk/dublin/ · **Phone remote:** https://krisvas333.github.io/bc-day/sk/dublin/pultas.html?room=CODE
+Same engine and look as `sk/v3/` (Smegenų klubas v3.1), English UI, content from the Dublin 45-min talk (Irish primary, 3rd to 6th class, ages 8 to 12). 27 slides: hook vote → 86 billion → builder → juggling → 3 live timed games (reaction · Schulte · sequence memory) + winners board → sleep → movement → 3× myth-or-fact → AI → what we build → optional VR clips → 3 habits → fair play → Q&A → 7-day challenge → sources.
+
+- **Presenter keys:** `→ ←` space · `N` notes (SAY · DO · sources per slide) · `A` `B` reveal · `1–0` sounds · `C` confetti · `M` mute · `V`+`1–3` video · `F` full screen · `?` help + remote QR · `Esc`.
+- **`?school=Scoil+Name`** puts the school name on the thank-you line.
+- **Phone remote:** own channel `sk-dublin-pultas-<ROOM>` (never collides with LT halls). 🟢 = deck answered · 🔔 TEST · 🔁 Reconnect · room code field · presenter notes on the phone · A/B/C reveal.
+- **Review mode (for Eglė + anyone with the link):** red pill bottom-left **✏️ Suggest an edit** (or `E`) → slide pre-filled (or "General comment"), free text, optional name → Send. **💬 N** = suggestions on this slide; click it (or `L`) for the full list, newest first, click a slide name to jump there. Stored in Supabase `public.deck_feedback` (deck `bc-dublin-45`; anon can insert + read, never edit/delete). Offline → kept on the device and sent when back online.
+- **Presenting mode:** `P` (or `?present=1`) hides the pill; it also hides itself in full screen (`F`). `?review=1` forces it back on.
+- **Sound rule:** no fail sounds at a child. Quiz reveals always cheer; game misses use a soft blip. `2` fa and `7` bruh stay on the board for the presenter only.
+- **Tracking:** `kv-track.js` kids mode (anonymous events, no Clarity, no cookies), same as `sk/v3/`.
+- Built from `sk/v3/` (engine) + the Dublin slide text. For text fixes edit `sk/dublin/index.html` directly (slides are plain `<section>` blocks; notes are the `<aside class="notes">` inside each).
