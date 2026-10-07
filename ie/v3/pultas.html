@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Brain Club · remote</title>
+<style>
+:root{--bg:#141212;--ink:#f6f4f1;--red:#ec3013;--yellow:#ffd60a;--green:#22c55e;--card:#232020;--mute:#8c8886}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-user-select:none;user-select:none}
+body{padding:12px 12px 40px;max-width:520px;margin:0 auto}
+h1{font-size:18px;letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+h1 small{font-size:12px;color:var(--mute);letter-spacing:.1em}
+#state{margin:8px 0;padding:10px 12px;border-radius:12px;background:#3a1a16;color:#ffb3a7;font-size:14px;font-weight:700;line-height:1.3}
+#state.ok{background:#15351f;color:#9fe5b4}
+#state.wait{background:#3a3414;color:#f1dd7a}
+.sl{background:var(--card);border-radius:16px;padding:12px 14px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sl b{font-size:18px;line-height:1.1}
+.sl span{font-size:14px;color:var(--mute);white-space:nowrap}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+button{font:inherit;font-weight:800;border:0;border-radius:16px;color:var(--ink);background:var(--card);padding:16px 10px;font-size:18px;cursor:pointer;touch-action:manipulation}
+button:active{transform:scale(.96);filter:brightness(1.3)}
+.nav button{font-size:34px;padding:22px 10px;background:#2e2a2a}
+.nav .nx{background:var(--red)}
+.sec{margin-top:14px}
+.sec h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 0 6px 4px}
+.grid{display:grid;gap:8px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g5{grid-template-columns:repeat(5,1fr)}
+.g5 button{padding:12px 4px;font-size:22px}
+.g5 button small{display:block;font-size:10px;font-weight:700;color:var(--mute);margin-top:2px;letter-spacing:.04em}
+.big{font-size:22px;padding:22px 10px}
+.y{background:var(--yellow);color:#141212}.r{background:var(--red)}.gr{background:var(--green);color:#041}
+.pad{height:190px;font-size:40px;border-radius:24px;background:#2b2727;border:4px solid #3d3838}
+.pad.go{background:var(--red);border-color:var(--yellow)}
+.hide{display:none!important}
+.pl button{text-align:left;display:flex;justify-content:space-between;font-size:16px;padding:12px 14px}
+.pl button.cur{background:var(--yellow);color:#141212}
+#jump{grid-template-columns:repeat(6,1fr)}
+#jump button{padding:10px 2px;font-size:14px}
+#jump button.cur{background:var(--yellow);color:#141212}
+.roomrow{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
+.roomrow input{font:inherit;font-weight:800;font-size:18px;letter-spacing:.2em;text-transform:uppercase;border:2px solid #3d3838;border-radius:12px;background:#1d1a1a;color:var(--ink);padding:12px;text-align:center}
+#err{font-size:13px;color:#ffb3a7;margin-top:6px;line-height:1.3}
+.foot{margin-top:18px;font-size:12px;color:var(--mute);line-height:1.4}
+</style>
+</head>
+<body>
+<h1>🧠 Remote <small>Brain Club v3</small></h1>
+<div id="state">🔴 connecting…</div>
+<div class="sl"><b id="slLabel">—</b><span id="slCount">— / —</span></div>
+<div class="nav"><button onclick="nav(-1)">←</button><button class="nx" onclick="nav(1)">→</button></div>
+
+<div class="sec" id="secQuiz"><h2>Quiz: reveal the answer</h2><div class="grid g2"><button class="big" onclick="tx('quiz',{choice:0})">A</button><button class="big" onclick="tx('quiz',{choice:1})">B</button></div></div>
+
+<div class="sec" id="secVideo"><h2>Video (slide 23)</h2><div class="grid g3"><button class="big" onclick="tx('video',{i:1})">▶ 1</button><button class="big" onclick="tx('video',{i:2})">▶ 2</button><button class="big" onclick="tx('video',{i:3})">▶ 3</button></div><button style="width:100%;margin-top:8px" onclick="tx('video',{i:0})">✕ Close video</button></div>
+
+<div class="sec" id="secGame"><h2 id="gameH">Game</h2>
+ <div id="gWait" class="grid g2"><button class="big gr" onclick="tx('game',{action:'start'})">▶ Start</button><button class="big" onclick="tx('game',{action:'table'})">📊 Table</button></div>
+ <div id="gPlay"><button id="padBtn" class="pad" style="width:100%" onclick="tx('game',{action:'pad'})">PRESS!</button><button style="width:100%;margin-top:8px" onclick="tx('game',{action:'cancel'})">✕ Cancel (Esc)</button></div>
+ <div id="gResult" class="grid g2"><button class="big r" onclick="tx('game',{action:'next'})">Next →</button><button class="big" onclick="tx('game',{action:'retry'})">↻ Try again</button></div>
+ <div id="gTable" class="grid g2"><button class="big r" onclick="nav(1)">→ Next</button><button class="big" onclick="tx('game',{action:'pick',i:0})">Play again</button></div>
+ <div class="pl grid" id="players" style="margin-top:8px"></div>
+</div>
+
+<div class="sec"><h2>Sounds</h2><div class="grid g5" id="board"></div>
+ <div class="grid g2" style="margin-top:8px"><button class="y" onclick="tx('confetti',{})">🎊 Confetti</button><button onclick="tx('mute',{})">🔇 / 🔊</button></div></div>
+
+<div class="sec"><h2>Jump to slide</h2><div class="grid" id="jump"></div></div>
+
+<div class="sec"><h2>Room</h2><div class="roomrow"><input id="roomInp" maxlength="4" placeholder="CODE"><button onclick="setRoom()">🔁</button></div><div id="err"></div>
+ <button style="width:100%;margin-top:8px" onclick="tx('game',{action:'reset'})">🗑️ Reset scores (before the next class)</button></div>
+
+<div class="foot">The code shows in the deck when you press <b>?</b>. Green = the deck answered. Nothing is stored, no personal data. Works only with internet on both devices.</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
+<script>
+/* Brain Club v3 · phone remote. Channel sk-pultas-<ROOM>. ES2017 (old iOS/Android).
+   Sends: nav{dir} goto{i} sfx{name} confetti mute quiz{choice} video{i} game{action,i} hello{cid} ping{cid}
+   Receives: slide{i,n,label,phase,game,player,names,quiz,video,room,muted} · pong{...} */
+var SB_URL="https://iiekmeylpppczicrsxho.supabase.co",SB_KEY="sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF";
+var DEAD_MS=7000,HB_MS=9000;
+function qs(k){try{return new URLSearchParams(location.search).get(k)}catch(e){return null}}
+var ROOM=String(qs("room")||(function(){try{return localStorage.getItem("sk-pult-room")}catch(e){return null}})()||"DEMO").toUpperCase().slice(0,4);
+var CID="p"+Math.floor(Math.random()*1e9).toString(36);
+var ch=null,client=null,ready=false,deckSeen=0,hbT=null,watchT=null,N=24,cur=0;
+var BOARD=[["ding","🎉","yay"],["fa","💀","fa"],["tada","🎺","ta-da"],["victory","🏆","victory"],["boom","💥","boom"],["sheesh","🔥","sheesh"],["bruh","🙄","bruh"],["rahhh","🦁","rahhh"],["six7","6️⃣7️⃣","6-7"],["drum","🥁","drums"]];
+var $=function(id){return document.getElementById(id)};
+function setState(t,cls){var s=$("state");s.textContent=t;s.className=cls||""}
+function show(id,on){$(id).classList.toggle("hide",!on)}
+function vib(ms){try{if(navigator.vibrate)navigator.vibrate(ms||12)}catch(e){}}
+function tx(ev,pl){vib();if(!ch||!ready){setState("🔴 no channel. Press 🔁","");return}
+ pl=pl||{};pl.cid=CID;try{ch.send({type:"broadcast",event:ev,payload:pl})}catch(e){setState("🔴 could not send: "+e.message,"")}}
+function nav(d){tx("nav",{dir:d})}
+function deckAlive(){deckSeen=Date.now();setState("🟢 DECK IS LISTENING · room "+ROOM,"ok")}
+function paint(s){if(!s)return;cur=s.i|0;N=s.n|0||N;$("slLabel").textContent=(s.label||"—");$("slCount").textContent=(cur+1)+" / "+N;
+ show("secQuiz",!!s.quiz);show("secVideo",!!s.video);show("secGame",!!s.game);
+ if(s.game){var ph=s.phase||"wait";$("gameH").textContent="Game: "+({reaction:"⚡ Reaction",schulte:"🔢 Schulte",memory:"🧠 Memory"}[s.game]||s.game)+" · "+({wait:"waiting",play:"PLAYING",result:"result",table:"table"}[ph]||ph);
+  show("gWait",ph==="wait");show("gPlay",ph==="play");show("gResult",ph==="result");show("gTable",ph==="table");
+  $("padBtn").classList.toggle("hide",s.game!=="reaction");
+  var P=$("players");P.innerHTML="";(s.names||[]).forEach(function(n,i){var b=document.createElement("button");b.textContent=(i+1)+". "+n;b.className=(i===s.player&&ph!=="table")?"cur":"";b.onclick=function(){tx("game",{action:"pick",i:i})};P.appendChild(b)});}
+ var J=$("jump");if(J.children.length!==N){J.innerHTML="";for(var i=0;i<N;i++){(function(i){var b=document.createElement("button");b.textContent=i+1;b.onclick=function(){tx("goto",{i:i})};J.appendChild(b)})(i)}}
+ for(var k=0;k<J.children.length;k++)J.children[k].className=k===cur?"cur":"";}
+function connect(){
+ ready=false;if(hbT)clearInterval(hbT);if(watchT)clearInterval(watchT);
+ if(typeof supabase==="undefined"||!supabase.createClient){setState("🔴 NO CONNECTION TO SUPABASE","");$("err").textContent="supabase-js did not load. Try mobile data, then 🔁.";return}
+ try{if(ch)ch.unsubscribe()}catch(e){}
+ client=client||supabase.createClient(SB_URL,SB_KEY);
+ ch=client.channel("sk-pultas-"+ROOM,{config:{broadcast:{self:false}}});
+ ch.on("broadcast",{event:"pong"},function(m){deckAlive();paint(m&&m.payload)});
+ ch.on("broadcast",{event:"slide"},function(m){deckAlive();paint(m&&m.payload)});
+ ch.subscribe(function(st){
+  if(st==="SUBSCRIBED"){ready=true;setState("🟡 channel open · waiting for the deck · "+ROOM,"wait");tx("hello",{});setTimeout(function(){tx("ping",{})},1200);
+   hbT=setInterval(function(){tx("ping",{})},HB_MS);
+   watchT=setInterval(function(){if(Date.now()-deckSeen>DEAD_MS)setState("🟡 deck not answering · is it open with room code "+ROOM+"?","wait")},2000);}
+  else if(st==="CHANNEL_ERROR"||st==="TIMED_OUT"){ready=false;setState("🔴 channel error ("+st+"). Press 🔁","")}});
+}
+function setRoom(){var v=String($("roomInp").value||"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,4);if(v.length<2)return;ROOM=v;try{localStorage.setItem("sk-pult-room",ROOM)}catch(e){}try{history.replaceState(null,"","?room="+ROOM)}catch(e){}connect()}
+(function(){var B=$("board");BOARD.forEach(function(x,i){var b=document.createElement("button");b.innerHTML=x[1]+"<small>"+x[2]+"</small>";b.onclick=function(){tx("sfx",{name:x[0]})};B.appendChild(b)});
+ $("roomInp").value=ROOM;show("secQuiz",false);show("secVideo",false);show("secGame",false);paint({i:0,n:24,label:"—"});connect();})();
+</script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="kids" defer></script>
+</body>
+</html>
