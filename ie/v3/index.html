@@ -531,6 +531,70 @@ h1 .r{color:var(--red)}
  </div>
 </div>
 
+<!-- ===== EDIT + DOWNLOAD COPY (edits stay local; online deck unchanged) ===== -->
+<style>
+#edbar{position:fixed;left:50%;bottom:6px;transform:translateX(-50%);z-index:2147483000;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 16px);
+ padding:5px 8px;border-radius:10px;background:rgba(20,18,30,.82);color:#fff;font:12px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;opacity:.4;transition:opacity .2s;user-select:none}
+#edbar:hover,body.ed-on #edbar{opacity:1}
+#edbar button{font:inherit;font-weight:700;padding:4px 9px;border-radius:7px;border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;cursor:pointer;white-space:nowrap}
+#edbar button.on{background:#ffd60a;color:#141212;border-color:#ffd60a}
+#edbar .edhint{opacity:.85;max-width:430px}
+:fullscreen #edbar{display:none}
+body.ed-on .slide.on{outline:4px dashed #ffd60a;outline-offset:-10px;cursor:text}
+body.ed-on .slide [contenteditable="false"]{cursor:default}
+@media (max-width:640px){#edbar .edhint{display:none}}
+</style>
+<div id="edbar" contenteditable="false">
+ <button type="button" id="edToggle" aria-pressed="false">✏️ Edit</button>
+ <button type="button" id="edSave">💾 Download copy</button>
+ <span class="edhint">Edits stay on this computer only — click 💾 Download copy to save your edited version. The online deck doesn't change.</span>
+</div>
+<script>
+(function(){
+ var CFG={"editable":".slide:not(.game-slide):not(#winners)","noEdit":"#names,.slide button,[data-count]","empty":["#names","#pultqrbox"],"remove":[],"closeOverlays":["#help","#vidov","#toast"],"clearSrc":["#vidfr"],"file":"brain-club-ie-v3-edited.html"};
+ var on=false,startEdit=location.hash==='#edit';
+ var btn=document.getElementById('edToggle'),saveBtn=document.getElementById('edSave');
+ var headScripts=[].slice.call(document.head.querySelectorAll('script'));
+ function editables(){return [].slice.call(document.querySelectorAll(CFG.editable));}
+ function setEdit(v){on=!!v;document.body.classList.toggle('ed-on',on);
+  editables().forEach(function(el){if(on)el.setAttribute('contenteditable','true');else el.removeAttribute('contenteditable');});
+  document.querySelectorAll(CFG.noEdit).forEach(function(el){if(on)el.setAttribute('contenteditable','false');else el.removeAttribute('contenteditable');});
+  btn.classList.toggle('on',on);btn.setAttribute('aria-pressed',on?'true':'false');btn.textContent=on?'✅ Editing — click to stop':'✏️ Edit';
+  if(!on&&document.activeElement&&document.activeElement.isContentEditable)document.activeElement.blur();}
+ function typing(){var a=document.activeElement;if(!a)return 0;if(a.isContentEditable)return 2;var t=a.tagName;return (t==='INPUT'||t==='TEXTAREA'||t==='SELECT')?1:0;}
+ function guardKey(e){var m=typing();if(!m)return;
+  if(m===1&&(e.key==='Enter'||e.key==='Escape'))return; /* let the deck's own form fields submit/blur */
+  if(m===2&&e.key==='Escape'&&e.type==='keydown'){document.activeElement.blur();}
+  e.stopPropagation();e.stopImmediatePropagation();}
+ ['keydown','keyup','keypress'].forEach(function(t){window.addEventListener(t,guardKey,true);});
+ function guardClick(e){if(!on)return;var t=e.target;if(!t||!t.closest||t.closest('#edbar'))return;
+  var ed=t.closest('[contenteditable]');if(ed&&ed.getAttribute('contenteditable')==='true'){e.stopPropagation();e.stopImmediatePropagation();}}
+ ['click','pointerup','mouseup','dblclick'].forEach(function(t){window.addEventListener(t,guardClick,true);});
+ btn.addEventListener('click',function(){setEdit(!on);btn.blur();});
+ function saveCopy(){
+  var injected=[].slice.call(document.head.querySelectorAll('script')).filter(function(s){return headScripts.indexOf(s)<0;});
+  injected.forEach(function(s){s.setAttribute('data-ed-drop','1');});
+  var root=document.documentElement.cloneNode(true);
+  injected.forEach(function(s){s.removeAttribute('data-ed-drop');});
+  [].forEach.call(root.querySelectorAll('[data-ed-drop]'),function(n){n.remove();});
+  [].forEach.call(root.querySelectorAll('[contenteditable]'),function(n){n.removeAttribute('contenteditable');});
+  var bar=root.querySelector('#edbar');if(bar)bar.setAttribute('contenteditable','false');
+  var b=root.querySelector('body');if(b){b.classList.remove('ed-on');if(!b.getAttribute('class'))b.removeAttribute('class');}
+  var t=root.querySelector('#edToggle');if(t){t.classList.remove('on');if(!t.getAttribute('class'))t.removeAttribute('class');t.setAttribute('aria-pressed','false');t.textContent='✏️ Edit';}
+  (CFG.empty||[]).forEach(function(sel){[].forEach.call(root.querySelectorAll(sel),function(n){n.innerHTML='';});});
+  (CFG.remove||[]).forEach(function(sel){[].forEach.call(root.querySelectorAll(sel),function(n){n.remove();});});
+  (CFG.closeOverlays||[]).forEach(function(sel){[].forEach.call(root.querySelectorAll(sel),function(n){n.classList.remove('on');});});
+  (CFG.clearSrc||[]).forEach(function(sel){[].forEach.call(root.querySelectorAll(sel),function(n){n.removeAttribute('src');});});
+  var html='<!DOCTYPE html>\n'+root.outerHTML;
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+  a.download=CFG.file||'deck-edited.html';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(function(){URL.revokeObjectURL(a.href);},4000);}
+ saveBtn.addEventListener('click',function(){saveCopy();saveBtn.blur();});
+ window.__edbar={setEdit:setEdit,saveCopy:saveCopy,get on(){return on;}};
+ if(startEdit)setEdit(true);
+})();
+</script>
+<!-- ===== /EDIT + DOWNLOAD COPY ===== -->
 <script>
 /* ========== SFX: Web Audio synth + bc-day sound board ========== */
 const SFX=(()=>{
