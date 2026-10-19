@@ -1,0 +1,165 @@
+{
+ "text": "DI nemąsto kaip žmogus. Jis perskaitė milžinišką kiekį teksto ir išmoko spėti, koks žodis eina toliau. Todėl kalba sklandžiai, bet gali užtikrintai sakyti netiesą. Todėl jūsų darbas lieka svarbiausias: patikrinti.",
+ "tagged_text": null,
+ "voice": "4IODp0ntCcYJIRzjBGVV",
+ "model": "eleven_v4_turbo",
+ "settings": {
+  "stability": 0.5,
+  "similarity_boost": 0.85,
+  "style": 0.0,
+  "use_speaker_boost": true
+ },
+ "alignment": "with-timestamps",
+ "words": [
+  {
+   "word": "DI",
+   "start": 0.0,
+   "end": 0.32
+  },
+  {
+   "word": "nemąsto",
+   "start": 0.4,
+   "end": 0.88
+  },
+  {
+   "word": "kaip",
+   "start": 0.96,
+   "end": 1.08
+  },
+  {
+   "word": "žmogus.",
+   "start": 1.12,
+   "end": 2.0
+  },
+  {
+   "word": "Jis",
+   "start": 2.04,
+   "end": 2.16
+  },
+  {
+   "word": "perskaitė",
+   "start": 2.24,
+   "end": 2.8
+  },
+  {
+   "word": "milžinišką",
+   "start": 2.92,
+   "end": 3.44
+  },
+  {
+   "word": "kiekį",
+   "start": 3.52,
+   "end": 3.76
+  },
+  {
+   "word": "teksto",
+   "start": 3.88,
+   "end": 4.24
+  },
+  {
+   "word": "ir",
+   "start": 4.32,
+   "end": 4.4
+  },
+  {
+   "word": "išmoko",
+   "start": 4.44,
+   "end": 4.88
+  },
+  {
+   "word": "spėti,",
+   "start": 4.96,
+   "end": 5.44
+  },
+  {
+   "word": "koks",
+   "start": 5.48,
+   "end": 5.68
+  },
+  {
+   "word": "žodis",
+   "start": 5.76,
+   "end": 6.16
+  },
+  {
+   "word": "eina",
+   "start": 6.2,
+   "end": 6.4
+  },
+  {
+   "word": "toliau.",
+   "start": 6.48,
+   "end": 7.2
+  },
+  {
+   "word": "Todėl",
+   "start": 7.24,
+   "end": 7.48
+  },
+  {
+   "word": "kalba",
+   "start": 7.52,
+   "end": 7.76
+  },
+  {
+   "word": "sklandžiai,",
+   "start": 7.84,
+   "end": 8.56
+  },
+  {
+   "word": "bet",
+   "start": 8.64,
+   "end": 8.72
+  },
+  {
+   "word": "gali",
+   "start": 8.76,
+   "end": 8.96
+  },
+  {
+   "word": "užtikrintai",
+   "start": 9.0,
+   "end": 9.6
+  },
+  {
+   "word": "sakyti",
+   "start": 9.64,
+   "end": 9.92
+  },
+  {
+   "word": "netiesą.",
+   "start": 10.0,
+   "end": 10.88
+  },
+  {
+   "word": "Todėl",
+   "start": 10.92,
+   "end": 11.2
+  },
+  {
+   "word": "jūsų",
+   "start": 11.28,
+   "end": 11.6
+  },
+  {
+   "word": "darbas",
+   "start": 11.72,
+   "end": 12.0
+  },
+  {
+   "word": "lieka",
+   "start": 12.08,
+   "end": 12.24
+  },
+  {
+   "word": "svarbiausias:",
+   "start": 12.32,
+   "end": 13.36
+  },
+  {
+   "word": "patikrinti.",
+   "start": 13.48,
+   "end": 14.32
+  }
+ ]
+}

@@ -1,0 +1,190 @@
+{
+ "text": "Stipriausi tyrimai rodo vieną dalyką. DI padeda, kai neduoda atsakymo iškart, o užduoda klausimą ir duoda užuominą. Ir kai šalia yra žmogus. Kai DI tiesiog atsako už vaiką, egzamine be DI tas vaikas surenka mažiau.",
+ "tagged_text": null,
+ "voice": "4IODp0ntCcYJIRzjBGVV",
+ "model": "eleven_v4_turbo",
+ "settings": {
+  "stability": 0.5,
+  "similarity_boost": 0.85,
+  "style": 0.0,
+  "use_speaker_boost": true
+ },
+ "alignment": "with-timestamps",
+ "words": [
+  {
+   "word": "Stipriausi",
+   "start": 0.0,
+   "end": 0.56
+  },
+  {
+   "word": "tyrimai",
+   "start": 0.64,
+   "end": 1.0
+  },
+  {
+   "word": "rodo",
+   "start": 1.04,
+   "end": 1.36
+  },
+  {
+   "word": "vieną",
+   "start": 1.44,
+   "end": 1.68
+  },
+  {
+   "word": "dalyką.",
+   "start": 1.76,
+   "end": 2.56
+  },
+  {
+   "word": "DI",
+   "start": 2.64,
+   "end": 3.04
+  },
+  {
+   "word": "padeda,",
+   "start": 3.12,
+   "end": 3.68
+  },
+  {
+   "word": "kai",
+   "start": 3.707,
+   "end": 3.76
+  },
+  {
+   "word": "neduoda",
+   "start": 3.84,
+   "end": 4.16
+  },
+  {
+   "word": "atsakymo",
+   "start": 4.24,
+   "end": 4.667
+  },
+  {
+   "word": "iškart,",
+   "start": 4.693,
+   "end": 5.44
+  },
+  {
+   "word": "o",
+   "start": 5.52,
+   "end": 5.6
+  },
+  {
+   "word": "užduoda",
+   "start": 5.64,
+   "end": 6.0
+  },
+  {
+   "word": "klausimą",
+   "start": 6.04,
+   "end": 6.64
+  },
+  {
+   "word": "ir",
+   "start": 6.8,
+   "end": 6.96
+  },
+  {
+   "word": "duoda",
+   "start": 7.0,
+   "end": 7.2
+  },
+  {
+   "word": "užuominą.",
+   "start": 7.28,
+   "end": 8.32
+  },
+  {
+   "word": "Ir",
+   "start": 8.4,
+   "end": 8.48
+  },
+  {
+   "word": "kai",
+   "start": 8.533,
+   "end": 8.64
+  },
+  {
+   "word": "šalia",
+   "start": 8.68,
+   "end": 8.96
+  },
+  {
+   "word": "yra",
+   "start": 9.0,
+   "end": 9.12
+  },
+  {
+   "word": "žmogus.",
+   "start": 9.2,
+   "end": 10.16
+  },
+  {
+   "word": "Kai",
+   "start": 10.213,
+   "end": 10.32
+  },
+  {
+   "word": "DI",
+   "start": 10.4,
+   "end": 10.64
+  },
+  {
+   "word": "tiesiog",
+   "start": 10.76,
+   "end": 11.12
+  },
+  {
+   "word": "atsako",
+   "start": 11.24,
+   "end": 11.6
+  },
+  {
+   "word": "už",
+   "start": 11.64,
+   "end": 11.76
+  },
+  {
+   "word": "vaiką,",
+   "start": 11.84,
+   "end": 12.4
+  },
+  {
+   "word": "egzamine",
+   "start": 12.48,
+   "end": 13.04
+  },
+  {
+   "word": "be",
+   "start": 13.2,
+   "end": 13.28
+  },
+  {
+   "word": "DI",
+   "start": 13.36,
+   "end": 13.76
+  },
+  {
+   "word": "tas",
+   "start": 14.0,
+   "end": 14.16
+  },
+  {
+   "word": "vaikas",
+   "start": 14.2,
+   "end": 14.48
+  },
+  {
+   "word": "surenka",
+   "start": 14.6,
+   "end": 14.88
+  },
+  {
+   "word": "mažiau.",
+   "start": 14.96,
+   "end": 15.6
+  }
+ ]
+}

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FFFFFF">
+<title>DI mokytojams · prisijunk</title>
+<!-- Mokytojų telefonas (Šiaurės licėjus 2026-10-20). Atsakymai keliauja į Kris'o ekraną per Supabase Realtime broadcast (niekur nesaugomi serveryje).
+     Jokių vardų, jokios registracijos. Clarity tik po „Leisti" (kv-track data-mode="full"). -->
+<style>
+:root{--ground:#FFFFFF;--surface:#F7F7F5;--ink:#0A0A0A;--muted:#595959;--line:#E5E2DE;--accent:#D90429;--ok:#1a7f37;
+ --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;--body:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--r:4px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.5;padding:0 16px calc(120px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto;overflow-x:hidden}
+header{display:flex;justify-content:space-between;align-items:center;padding:calc(12px + env(safe-area-inset-top,0px)) 0 10px;border-bottom:1px solid var(--line)}
+header b{font-family:var(--mono);font-size:16px;letter-spacing:.08em;text-transform:uppercase}
+header b em{font-style:normal;color:var(--accent)}
+#conn{font-family:var(--mono);font-size:14px;font-weight:700;padding:4px 8px;border:2px solid var(--line);border-radius:var(--r);white-space:nowrap}
+#conn.ok{border-color:var(--ok);color:var(--ok)}#conn.bad{border-color:var(--accent);color:var(--accent)}
+h1{font-family:var(--mono);font-size:24px;line-height:1.2;font-weight:800;margin:18px 0 6px}
+h2{font-family:var(--mono);font-size:19px;line-height:1.25;font-weight:800;margin:20px 0 8px}
+.q{font-size:20px;font-weight:700;line-height:1.35;margin:18px 0 10px}
+.hint{font-size:16px;color:var(--muted)}
+.opts{display:grid;gap:10px}
+.opt{display:block;width:100%;min-height:52px;text-align:left;font:inherit;font-size:18px;font-weight:600;padding:12px 14px;border:2px solid var(--ink);border-radius:var(--r);background:#fff;color:var(--ink);cursor:pointer}
+.opt.sel{background:var(--ink);color:#fff}
+.opt.good{border-color:var(--ok);box-shadow:inset 6px 0 0 var(--ok)}
+.opt.bad{opacity:.5}
+.scale{display:flex;gap:10px}
+.scale .opt{text-align:center;font-family:var(--mono);font-size:22px;font-weight:800}
+input[type=text],textarea{width:100%;font:inherit;font-size:18px;padding:12px;border:2px solid var(--ink);border-radius:var(--r);min-height:52px;background:#fff;color:var(--ink)}
+textarea{min-height:96px;resize:vertical}
+.send{display:block;width:100%;min-height:56px;margin-top:18px;font-family:var(--mono);font-size:19px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:0;border-radius:var(--r);background:var(--accent);color:#fff;cursor:pointer}
+.send:disabled{opacity:.5}
+.msg{margin-top:12px;padding:12px 14px;border-radius:var(--r);font-weight:700;font-size:17px}
+.msg.ok{background:#e8f5ec;color:var(--ok)}.msg.wait{background:#fff6d6;color:#6b5600}.msg.err{background:#fde8ec;color:var(--accent)}
+.card{background:var(--surface);border:2px solid var(--ink);border-radius:var(--r);padding:14px;margin-top:12px}
+.card.hot{border-color:var(--accent)}
+.lv{display:inline-block;font-family:var(--mono);font-size:15px;font-weight:800;padding:2px 8px;border-radius:var(--r);border:2px solid var(--ink);margin-right:6px;vertical-align:middle}
+.lv.l2{background:var(--ink);color:#fff}.lv.l3{background:var(--accent);border-color:var(--accent);color:#fff}
+pre{font-family:var(--mono);font-size:15px;line-height:1.45;white-space:pre-wrap;word-break:break-word;background:var(--ink);color:#fff;border-radius:var(--r);padding:12px;margin-top:8px}
+.copy{min-height:48px;margin-top:8px;font-family:var(--mono);font-size:16px;font-weight:800;padding:10px 14px;border:2px solid var(--ink);border-radius:var(--r);background:#fff;color:var(--ink);cursor:pointer}
+details{border-top:1px solid var(--line);padding:6px 0}
+summary{min-height:48px;display:flex;align-items:center;font-weight:700;font-size:18px;cursor:pointer;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"+";font-family:var(--mono);font-weight:800;color:var(--accent);width:24px;flex:none}
+details[open]>summary:before{content:"−"}
+#pulse{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:2px solid var(--ink);padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));z-index:20}
+#pulse .row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:560px;margin:0 auto}
+#pulse button{min-height:56px;font:inherit;font-size:14px;font-weight:700;line-height:1.15;border:2px solid var(--ink);border-radius:var(--r);background:#fff;color:var(--ink);cursor:pointer;padding:4px 2px}
+#pulse button span{display:block;font-size:20px}
+#pulse button.sel{background:var(--ink);color:#fff}
+#pulse .pl{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:4px}
+.room{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
+.room input{font-family:var(--mono);font-weight:800;letter-spacing:.2em;text-transform:uppercase;text-align:center}
+.room button{min-height:52px;padding:0 16px;font-family:var(--mono);font-weight:800;font-size:16px;border:2px solid var(--ink);border-radius:var(--r);background:#fff;color:var(--ink)}
+.disc{font-size:15px;color:var(--muted);line-height:1.45;margin-top:22px}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<header><b>DI <em>mokytojams</em></b><span id="conn">jungiamės…</span></header>
+
+<main>
+ <section id="actBox">
+  <h1 id="actTitle">Sveiki!</h1>
+  <p class="hint" id="actHint">Jungiamės prie ekrano salėje…</p>
+  <div id="actBody"></div>
+ </section>
+
+ <section id="nextBox" class="hide"></section>
+
+ <h2 style="margin-top:30px">📋 Užklausos (kopijuokite)</h2>
+ <p class="hint">Liks šiame telefone ir po mokymų. Įrašykite savo klasę, dalyką ir siekinį iš emokykla.lt.</p>
+ <div id="bank"></div>
+
+ <h2>🔑 Salės kodas</h2>
+ <div class="room"><input type="text" id="roomInp" maxlength="4" aria-label="Salės kodas" autocomplete="off"><button id="roomBtn">Jungtis</button></div>
+ <p class="hint" style="margin-top:6px">Kodas rodomas ekrane prie QR.</p>
+
+ <p class="disc">⚗️ Eksperimentinis prototipas, sukurtas su DI. Gali klysti: svarbius dalykus pasitikrinkite. Nemokamas, nieko neparduoda. Kris yra Robotikos Akademijos ir ExoClass bendraįkūrėjas; čia jokių pasiūlymų nėra. Atsakymai anoniminiai, rodomi tik salės ekrane ir niekur nesaugomi su jūsų vardu. Prašome nerašyti vaikų vardų. Radote klaidą? krisvas.lt</p>
+</main>
+
+<div id="pulse" aria-label="Pulsas">
+ <div class="pl">Pulsas · spauskite bet kada</div>
+ <div class="row">
+  <button data-p="0"><span>✅</span>Supratau</button>
+  <button data-p="1"><span>❓</span>Nesupratau</button>
+  <button data-p="2"><span>🧗</span>Per sunku</button>
+  <button data-p="3"><span>🚀</span>Per lengva</button>
+ </div>
+</div>
+
+<script>
+var SB_URL="https://iiekmeylpppczicrsxho.supabase.co",SB_KEY="sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF";
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function qp(k){try{return new URLSearchParams(location.search).get(k);}catch(e){return null;}}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+function tr(n,p){try{if(window.bt)window.bt(n,p||{});}catch(e){}}
+var ROOM=String(qp('r')||qp('room')||ls('di90-room')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4);
+var CID=ls('di90-cid');if(!CID){CID='t'+Math.random().toString(36).slice(2,10);ls('di90-cid',CID);}
+var ch=null,client=null,ok=false,cur=null,lastState=null,sent={},acked={},hb=null,lastSeen=0,queue=[];
+try{sent=JSON.parse(ls('di90-sent')||'{}')||{};}catch(e){sent={};}
+var LEVEL=ls('di90-level');
+
+/* ===== Užklausų bankas ===== */
+var BANK=[
+ ['l1','Testas iš vienos užklausos','Esu [N] kl. [DALYKO] mokytoja. Siekinys iš BUP: [ĮKLIJUOK IŠ emokykla.lt].\nSukurk 5 klausimų testą: 2 lengvi, 2 vidutiniai, 1 sunkus (paaiškinti savais žodžiais). Prie kiekvieno: teisingas atsakymas ir dažniausia vaikų klaida. Klasėje ~30 vaikų, testui 10 min. Kalba paprasta. Pažymėk, ką turiu patikrinti.'],
+ ['l1','Tas pats tekstas 3 lygiais','Esu [N] kl. mokytoja. Tekstas: [ĮKLIJUOTI].\nPerrašyk 3 lygiais: trumpesnis ir paprastesnis, toks pat, sudėtingesnis. Išlaikyk prasmę ir faktus. Pridėk 3 supratimo klausimus kiekvienam.'],
+ ['l1','Teksto supratimas (lietuvių k.)','Esu [N] kl. lietuvių k. mokytoja. BUP sritis ir lygių aprašas: [ĮKLIJUOTI IŠ emokykla.lt]\nTekstas: [ĮKLIJUOTI]\nSukurk 8 klausimus: 3 informacijos paieškos, 3 išvadų darymo, 2 vertinimo. Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atskirai. Pažymėk, kur klausimas dviprasmiškas.'],
+ ['l1','Matematika: 3 lygiai + klaidos','Esu [N] kl. mat. mokytoja. BUP siekinys ir lygių aprašas: [ĮKLIJUOTI].\nSukurk 9 uždavinius: 3 patenkinamo, 3 pagrindinio, 3 aukštesniojo lygio. Kiekvienam pridėk sprendimo žingsnius ir tipišką mokinio klaidą, kuri rodo, kokio supratimo trūksta. Uždavinius pateik spausdinimui, atsakymus atskirai.'],
+ ['l1','Istorija: šaltinio vertinimas','Esu [N] kl. istorijos mokytoja. BUP siekinys: [ĮKLIJUOTI].\nSukurk 6 klausimus apie [TEMĄ]: 2 žinių, 2 priežasčių ir pasekmių, 2 šaltinio vertinimo. Pridėk vertinimo kriterijus. Pažymėk faktus (datas, vardus), kuriuos turiu patikrinti.'],
+ ['l1','Muzika: klausymo veikla','Esu [N] kl. muzikos mokytoja. BUP siekinys: [ĮKLIJUOTI].\nSukurk 15 min. klausymo veiklą: 1 plačiai žinomas kūrinys, 3 klausimai „ką girdžiu" ir 1 kūrybinė užduotis grupėse. Kūrinį pasiūlyk, aš patikrinsiu.'],
+ ['l1','„Rask DI klaidą" (kritinis mąstymas)','Parašyk 6 sakinių tekstą [N] klasei apie [TEMA] su lygiai 3 sąmoningomis faktinėmis klaidomis. Atskirai, po linija, nurodyk klaidas ir teisingus faktus. Klaidos turi būti tikroviškos, ne absurdiškos.'],
+ ['l1','Mokymosi treneris (rodykite ekrane)','Esu [N] kl. mokinys. Tema: [TEMA]. Neduok atsakymo. Užduok 1 klausimą, palauk mano atsakymo, tada pasakyk, ką supratau teisingai, ir paklausk kito. Kalbėk paprastai.'],
+ ['l1','Mąstymo partneris mokytojui','Štai mano pamokos planas: [ĮKLIJUOTI]. Užduok man 5 klausimus, kurie parodytų jo silpnas vietas. Neperrašyk plano.'],
+ ['l1','Laiškas tėvams apie DI klasėje','Esu [N] kl. mokytoja. Parašyk trumpą (iki 120 žodžių), šiltą laišką tėvams: kaip mūsų klasė naudos DI šį pusmetį. Paminėk: DI naudoja mokytoja, vaikų duomenų į DI nededame, vaikai pirma galvoja patys, kontroliniai be DI. Be žargono.'],
+ ['l2','Projekto instrukcija klasei','Tu esi mano [N] kl. [DALYKO] asistentas. Visada: 1) paklausk, kokiam lygiui (slenkstinis, patenkinamas, pagrindinis, aukštesnysis), 2) laikykis įkeltų BUP ištraukų, 3) pažymėk faktus, kuriuos turiu patikrinti, 4) niekada neprašyk ir nesaugok vaikų vardų.'],
+ ['l2','Interaktyvus testas ekrane','Sukurk vieno HTML failo interaktyvų 5 klausimų testą tema [TEMA], [N] kl. Po neteisingo atsakymo rodyk užuominą, ne atsakymą. Pabaigoje parodyk, kurias temas reikia kartoti. Jokių vardų ar duomenų saugojimo, viskas naršyklėje. Kalba lietuvių, paprasta.'],
+ ['l2','Meistriškumo testas su rubrika','Esu [N] kl. [DALYKO] mokytoja. BUP siekinys ir 4 lygių požymiai: [ĮKLIJUOTI].\nSukurk meistriškumo užduotį (20 min.) ir rubriką: kiekvienam iš 4 lygių 1–2 sakinių „mokinys gali…" aprašas. Pridėk 2 užduotis, skirtas atskirti aukštesnįjį lygį nuo pagrindinio. Nerašyk pažymių, tik lygius.'],
+ ['l2','NotebookLM: klausimai iš jūsų šaltinių','Sukurk 10 klausimų pagal siekinį [ĮKLIJUOTI] tik iš įkeltų šaltinių. Prie kiekvieno parodyk citatą iš šaltinio. Jei šaltiniuose atsakymo nėra, taip ir parašyk.'],
+ ['l3','Antrosios smegenys: savaitės kartojimas','Čia mano 6 savaičių užrašai apie klasės klaidų tipus (be vardų): [ĮKLIJUOTI]. Kokias 2 temas kartoti kitą savaitę ir kokiu intervalu? Pasiūlyk po vieną 5 min. kartojimo veiklą kiekvienai.']
+];
+var NEXT={
+ l1:['L1 · Pradedu','Šią savaitę: viena užklausa → 5 klausimų testas savo klasei → patikrinkite bent 2 atsakymus patys → naudokite pamokoje → užsirašykite, kas suveikė.',0],
+ l2:['L2 · Kuriu','Šią savaitę: susikurkite vieną projektą (Claude Project, savas GPT ar NotebookLM sąsiuvinis) vienai klasei. Įkelkite BUP ištrauką ir savo planą, be vaikų duomenų. Padarykite vieną interaktyvų testą ir parodykite klasei ekrane.',10],
+ l3:['L3 · Automatizuoju','Šią savaitę: aplankas „Klasės modeliai". Kas savaitę 3 eilutės: ką klasė pasiekė, kur strigo, kokia hipotezė. Vardai lieka popieriuje. Po 3 savaičių paprašykite DI kartojimo plano. Agentus (Cowork, Claude Code) junkite tik prie šio aplanko.',14]
+};
+function copyText(t,btn){function done(){btn.textContent='✅ Nukopijuota';setTimeout(function(){btn.textContent='Kopijuoti';},1600);tr('di90_copy',{});}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){fallback();});}else fallback();
+ function fallback(){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){btn.textContent='Pažymėkite ir kopijuokite';}document.body.removeChild(ta);}}
+function promptCard(lv,title,text){var d=document.createElement('div');d.className='card';d.innerHTML='<b><span class="lv '+lv+'">'+lv.toUpperCase()+'</span>'+esc(title)+'</b><pre>'+esc(text)+'</pre>';var b=document.createElement('button');b.className='copy';b.textContent='Kopijuoti';b.onclick=function(){copyText(text,b);};d.appendChild(b);return d;}
+(function(){var B=$('bank');['l1','l2','l3'].forEach(function(lv){var det=document.createElement('details');if(lv==='l1')det.open=false;
+ det.innerHTML='<summary><span class="lv '+lv+'">'+lv.toUpperCase()+'</span>'+({l1:'Pradedu · nemokamai, 5 min.',l2:'Kuriu · paskyra, 20 min.',l3:'Automatizuoju · vėliau'})[lv]+'</summary>';
+ BANK.filter(function(x){return x[0]===lv;}).forEach(function(x){det.appendChild(promptCard(x[0],x[1],x[2]));});B.appendChild(det);});})();
+
+/* ===== Ryšys ===== */
+function conn(t,c){var e=$('conn');e.textContent=t;e.className=c||'';}
+function send(ev,pl){pl=pl||{};pl.cid=CID;if(!ch||!ok){if(ev==='ans'||ev==='pulse')queue.push([ev,pl]);return false;}try{ch.send({type:'broadcast',event:ev,payload:pl});return true;}catch(e){queue.push([ev,pl]);return false;}}
+function flush(){if(!ok)return;var q=queue.splice(0);q.forEach(function(x){send(x[0],x[1]);});}
+function connect(){if(!ROOM){conn('įveskite kodą','bad');$('actHint').textContent='Įveskite salės kodą apačioje (rodomas ekrane).';return;}
+ ls('di90-room',ROOM);$('roomInp').value=ROOM;
+ if(typeof supabase==='undefined'||!supabase.createClient){conn('nėra ryšio','bad');$('actHint').textContent='Nepavyko prisijungti. Užklausos žemiau veikia ir be ryšio. Klausimams pakelkite ranką.';return;}
+ try{if(ch)ch.unsubscribe();}catch(e){}
+ client=client||supabase.createClient(SB_URL,SB_KEY);
+ ch=client.channel('di90-'+ROOM,{config:{broadcast:{self:false}}});
+ ch.on('broadcast',{event:'state'},function(m){lastSeen=Date.now();conn('🟢 '+ROOM,'ok');onState((m&&m.payload)||{});});
+ ch.on('broadcast',{event:'ack'},function(m){var p=(m&&m.payload)||{};if(p.cid===CID){acked[p.act]=1;lastSeen=Date.now();showAck(p.act);}});
+ ch.subscribe(function(s){if(s==='SUBSCRIBED'){ok=true;conn('laukiam ekrano…','');send('hello');flush();
+   if(hb)clearInterval(hb);hb=setInterval(function(){send('ping');if(Date.now()-lastSeen>40000)conn('ekranas tyli · '+ROOM,'bad');},20000);}
+  else if(s==='CHANNEL_ERROR'||s==='TIMED_OUT'||s==='CLOSED'){ok=false;conn('ryšys nutrūko','bad');setTimeout(connect,4000);}});
+}
+$('roomBtn').onclick=function(){var v=String($('roomInp').value||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4);if(v.length<4)return;ROOM=v;try{history.replaceState(null,'','?r='+ROOM);}catch(e){}connect();};
+
+/* ===== Veiklos atvaizdavimas ===== */
+function onState(s){lastState=s;if(!s.act||!s.def){if(cur!==null){cur=null;}idle();return;}
+ if(cur!==s.act){cur=s.act;draw(s);tr('di90_act',{act:s.act});}else if(s.reveal)markReveal(s);}
+function idle(){$('nextBox').classList.add('hide');$('actBox').classList.remove('hide');$('actTitle').textContent='Klausomės';$('actHint').textContent='Kitas klausimas atsiras čia automatiškai. Pulsą galite spausti bet kada.';$('actBody').innerHTML='';}
+function draw(s){var d=s.def,box=$('actBody'),prev=sent[s.act]||{};$('actTitle').textContent=d.title;$('actHint').textContent='';box.innerHTML='';
+ if(d.next){drawNext();}else $('nextBox').classList.add('hide');
+ var val={};for(var k in prev)val[k]=prev[k];
+ var onlyChoice=d.parts.length===1&&d.parts[0].type==='choice';
+ d.parts.forEach(function(p){var w=document.createElement('div');w.innerHTML='<div class="q">'+esc(p.q)+'</div>';box.appendChild(w);
+  if(p.type==='copy'){w.appendChild(promptCard('l1','Užklausa',p.text));return;}
+  if(p.type==='choice'||p.type==='multi'){var o=document.createElement('div');o.className='opts';o.dataset.k=p.k;
+   p.opts.forEach(function(t,i){var b=document.createElement('button');b.className='opt';b.type='button';b.textContent=t;b.dataset.i=i;
+    var on=p.type==='multi'?(val[p.k]||[]).indexOf(i)>-1:val[p.k]===i;if(on)b.classList.add('sel');
+    b.onclick=function(){if(p.type==='choice'){val[p.k]=i;[].forEach.call(o.children,function(x){x.classList.toggle('sel',x===b);});if(onlyChoice)submit(s.act,val);}
+     else{var a=(val[p.k]||[]).slice(),j=a.indexOf(i);if(j>-1)a.splice(j,1);else{if(a.length>=(p.max||3)){msg('Daugiausia '+(p.max||3)+'.', 'wait');return;}a.push(i);}val[p.k]=a;b.classList.toggle('sel',j===-1);}};
+    o.appendChild(b);});w.appendChild(o);return;}
+  if(p.type==='scale'){var sc=document.createElement('div');sc.className='scale';for(var i=0;i<p.n;i++)(function(i){var b=document.createElement('button');b.className='opt';b.type='button';b.textContent=i+1;if(val[p.k]===i)b.classList.add('sel');
+    b.onclick=function(){val[p.k]=i;[].forEach.call(sc.children,function(x){x.classList.toggle('sel',x===b);});};sc.appendChild(b);})(i);w.appendChild(sc);return;}
+  var inp=document.createElement(p.type==='text'?'textarea':'input');if(p.type!=='text')inp.type='text';inp.maxLength=p.type==='words'?90:280;inp.placeholder=p.ph||'';inp.value=val[p.k]||'';
+  inp.oninput=function(){val[p.k]=inp.value;};w.appendChild(inp);});
+ var m=document.createElement('div');m.id='msg';box.appendChild(m);
+ if(!onlyChoice){var b=document.createElement('button');b.className='send';b.textContent='Siųsti į ekraną';b.onclick=function(){
+   var has=false;d.parts.forEach(function(p){var v=val[p.k];if(v!=null&&v!==''&&!(Array.isArray(v)&&!v.length))has=true;});if(!has){msg('Pasirinkite bent vieną atsakymą.','err');return;}submit(s.act,val);};box.appendChild(b);}
+ if(prev&&Object.keys(prev).length)msg(acked[s.act]?'✅ Ekrane. Galite pakeisti.':'Jūsų atsakymas išsiųstas. Galite pakeisti.','ok');
+ if(s.reveal)markReveal(s);}
+function msg(t,c){var m=$('msg');if(!m)return;m.className='msg '+c;m.textContent=t;}
+function submit(act,val){var v={};for(var k in val)v[k]=val[k];sent[act]=v;ls('di90-sent',JSON.stringify(sent));
+ if(act==='lygis'&&typeof v.l==='number'){LEVEL=['l1','l2','l3'][v.l];ls('di90-level',LEVEL);}
+ var okSend=send('ans',{act:act,v:v});msg(okSend?'Siunčiama…':'Nėra ryšio: išsiųsim, kai atsiras.','wait');tr('di90_answer',{act:act});
+ setTimeout(function(){if(!acked[act]&&cur===act)msg('Išsiųsta. Jei ekranas nerodo, spauskite dar kartą.','wait');},6000);}
+function showAck(act){if(cur===act)msg('✅ Ekrane! Galite pakeisti atsakymą.','ok');}
+function markReveal(s){var r=s.reveal;if(!r)return;var o=document.querySelector('.opts[data-k="'+r.k+'"]');if(!o)return;
+ [].forEach.call(o.children,function(b){var i=+b.dataset.i;b.classList.toggle('good',i===r.ans);b.classList.toggle('bad',i!==r.ans);});
+ var mine=(sent[s.act]||{})[r.k];msg(mine===r.ans?'✅ Teisingai! Jūs prisiminėte.':'Teisingas: '+(s.def.parts.filter(function(p){return p.k===r.k;})[0].opts[r.ans].split(' · ')[0])+'. Bandyti prisiminti jau yra mokymasis.',mine===r.ans?'ok':'wait');}
+function drawNext(){var lv=LEVEL||'l1',n=NEXT[lv],box=$('nextBox');box.classList.remove('hide');
+ box.innerHTML='<h1>Jūsų kitas žingsnis</h1><div class="card hot"><b><span class="lv '+lv+'">'+lv.toUpperCase()+'</span>'+esc(n[0])+'</b><p style="margin-top:8px">'+esc(n[1])+'</p></div>'+(LEVEL?'':'<p class="hint" style="margin-top:6px">Lygio nepasirinkote, todėl rodome L1. Kiti lygiai: užklausų skiltyje žemiau.</p>');
+ box.appendChild(promptCard(BANK[n[2]][0],BANK[n[2]][1],BANK[n[2]][2]));tr('di90_next',{lv:lv});}
+
+/* ===== Pulsas ===== */
+[].forEach.call(document.querySelectorAll('#pulse button'),function(b){b.onclick=function(){var v=+b.dataset.p;send('pulse',{v:v});tr('di90_pulse',{v:v});
+ [].forEach.call(document.querySelectorAll('#pulse button'),function(x){x.classList.toggle('sel',x===b);});try{navigator.vibrate&&navigator.vibrate(15);}catch(e){}
+ setTimeout(function(){b.classList.remove('sel');},2500);};});
+
+idle();
+(function load(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js';s.onload=connect;s.onerror=connect;document.head.appendChild(s);})();
+window.__join={CID:CID,ROOM:function(){return ROOM;},sent:function(){return sent;},acked:acked,cur:function(){return cur;},LEVEL:function(){return LEVEL;},ok:function(){return ok;}};
+</script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+</body>
+</html>

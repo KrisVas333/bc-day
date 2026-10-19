@@ -1,0 +1,165 @@
+{
+ "text": "DI man yra trys partneriai. Mąstymo partneris, kuris užduoda klausimus. Tyrimo partneris, kuris randa, o aš patikrinu. Ir kūrimo partneris, su kuriuo per kelias minutes padarau tai, ko anksčiau nespėdavau.",
+ "tagged_text": null,
+ "voice": "4IODp0ntCcYJIRzjBGVV",
+ "model": "eleven_v4_turbo",
+ "settings": {
+  "stability": 0.5,
+  "similarity_boost": 0.85,
+  "style": 0.0,
+  "use_speaker_boost": true
+ },
+ "alignment": "with-timestamps",
+ "words": [
+  {
+   "word": "DI",
+   "start": 0.0,
+   "end": 0.32
+  },
+  {
+   "word": "man",
+   "start": 0.56,
+   "end": 0.987
+  },
+  {
+   "word": "yra",
+   "start": 1.04,
+   "end": 1.24
+  },
+  {
+   "word": "trys",
+   "start": 1.28,
+   "end": 1.54
+  },
+  {
+   "word": "partneriai.",
+   "start": 1.6,
+   "end": 2.16
+  },
+  {
+   "word": "Mąstymo",
+   "start": 2.48,
+   "end": 2.96
+  },
+  {
+   "word": "partneris,",
+   "start": 3.12,
+   "end": 3.52
+  },
+  {
+   "word": "kuris",
+   "start": 3.6,
+   "end": 3.76
+  },
+  {
+   "word": "užduoda",
+   "start": 3.8,
+   "end": 4.08
+  },
+  {
+   "word": "klausimus.",
+   "start": 4.16,
+   "end": 5.04
+  },
+  {
+   "word": "Tyrimo",
+   "start": 5.12,
+   "end": 5.4
+  },
+  {
+   "word": "partneris,",
+   "start": 5.44,
+   "end": 5.96
+  },
+  {
+   "word": "kuris",
+   "start": 6.0,
+   "end": 6.24
+  },
+  {
+   "word": "randa,",
+   "start": 6.32,
+   "end": 6.88
+  },
+  {
+   "word": "o",
+   "start": 7.0,
+   "end": 7.12
+  },
+  {
+   "word": "aš",
+   "start": 7.36,
+   "end": 7.52
+  },
+  {
+   "word": "patikrinu.",
+   "start": 7.6,
+   "end": 8.4
+  },
+  {
+   "word": "Ir",
+   "start": 8.48,
+   "end": 8.56
+  },
+  {
+   "word": "kūrimo",
+   "start": 8.64,
+   "end": 8.96
+  },
+  {
+   "word": "partneris,",
+   "start": 9.04,
+   "end": 9.68
+  },
+  {
+   "word": "su",
+   "start": 9.72,
+   "end": 9.76
+  },
+  {
+   "word": "kuriuo",
+   "start": 9.84,
+   "end": 10.0
+  },
+  {
+   "word": "per",
+   "start": 10.08,
+   "end": 10.16
+  },
+  {
+   "word": "kelias",
+   "start": 10.24,
+   "end": 10.48
+  },
+  {
+   "word": "minutes",
+   "start": 10.56,
+   "end": 10.88
+  },
+  {
+   "word": "padarau",
+   "start": 10.96,
+   "end": 11.36
+  },
+  {
+   "word": "tai,",
+   "start": 11.413,
+   "end": 11.68
+  },
+  {
+   "word": "ko",
+   "start": 11.72,
+   "end": 11.76
+  },
+  {
+   "word": "anksčiau",
+   "start": 11.88,
+   "end": 12.16
+  },
+  {
+   "word": "nespėdavau.",
+   "start": 12.28,
+   "end": 13.12
+  }
+ ]
+}

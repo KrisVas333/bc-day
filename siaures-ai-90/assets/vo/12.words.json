@@ -1,0 +1,145 @@
+{
+ "text": "Mes nesukčiaujam. DI nedaro namų darbų už vaiką ir nedaro darbo už mokytoją. Jis padeda suprasti. Pirma galvoju aš, paskui klausiu DI, tada vėl galvoju aš.",
+ "tagged_text": null,
+ "voice": "4IODp0ntCcYJIRzjBGVV",
+ "model": "eleven_v4_turbo",
+ "settings": {
+  "stability": 0.5,
+  "similarity_boost": 0.85,
+  "style": 0.0,
+  "use_speaker_boost": true
+ },
+ "alignment": "with-timestamps",
+ "words": [
+  {
+   "word": "Mes",
+   "start": 0.0,
+   "end": 0.2
+  },
+  {
+   "word": "nesukčiaujam.",
+   "start": 0.24,
+   "end": 1.12
+  },
+  {
+   "word": "DI",
+   "start": 1.52,
+   "end": 1.92
+  },
+  {
+   "word": "nedaro",
+   "start": 2.08,
+   "end": 2.48
+  },
+  {
+   "word": "namų",
+   "start": 2.56,
+   "end": 2.72
+  },
+  {
+   "word": "darbų",
+   "start": 2.8,
+   "end": 3.04
+  },
+  {
+   "word": "už",
+   "start": 3.08,
+   "end": 3.2
+  },
+  {
+   "word": "vaiką",
+   "start": 3.28,
+   "end": 3.6
+  },
+  {
+   "word": "ir",
+   "start": 3.76,
+   "end": 3.92
+  },
+  {
+   "word": "nedaro",
+   "start": 4.04,
+   "end": 4.32
+  },
+  {
+   "word": "darbo",
+   "start": 4.4,
+   "end": 4.64
+  },
+  {
+   "word": "už",
+   "start": 4.72,
+   "end": 4.8
+  },
+  {
+   "word": "mokytoją.",
+   "start": 4.88,
+   "end": 5.76
+  },
+  {
+   "word": "Jis",
+   "start": 5.8,
+   "end": 6.0
+  },
+  {
+   "word": "padeda",
+   "start": 6.08,
+   "end": 6.32
+  },
+  {
+   "word": "suprasti.",
+   "start": 6.4,
+   "end": 7.36
+  },
+  {
+   "word": "Pirma",
+   "start": 7.4,
+   "end": 7.6
+  },
+  {
+   "word": "galvoju",
+   "start": 7.68,
+   "end": 8.08
+  },
+  {
+   "word": "aš,",
+   "start": 8.24,
+   "end": 8.8
+  },
+  {
+   "word": "paskui",
+   "start": 8.84,
+   "end": 9.12
+  },
+  {
+   "word": "klausiu",
+   "start": 9.16,
+   "end": 9.52
+  },
+  {
+   "word": "DI,",
+   "start": 9.6,
+   "end": 10.24
+  },
+  {
+   "word": "tada",
+   "start": 10.28,
+   "end": 10.48
+  },
+  {
+   "word": "vėl",
+   "start": 10.56,
+   "end": 10.72
+  },
+  {
+   "word": "galvoju",
+   "start": 10.8,
+   "end": 11.2
+  },
+  {
+   "word": "aš.",
+   "start": 11.28,
+   "end": 11.84
+  }
+ ]
+}
