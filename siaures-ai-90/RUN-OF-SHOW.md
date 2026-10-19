@@ -25,7 +25,7 @@ Kiekvienas įrankis, užklausa, pavyzdys ir klasių žemėlapio pakopa turi L1/L
 | 14 | 16:44 | 7 | Kas yra DI? | kito žodžio spėjimo demo + slankiklis + 3D + VO (V) + video (Y) | „Tai ne Google. Jis spėja žodį." |
 | 19 | 16:49 | 8 | Stiprybės / silpnybės | 5 + 5 | „Jei svarmenis kelia robotas, raumenys neauga." |
 | 22 | 16:52 | 9 | ★ Testas | aktyvus prisiminimas, 60 s laikmatis, atskleidimas ir telefone | „Svarbu ne pataikyti, o bandyti prisiminti." |
-| 25 | 16:55 | 10 | Kada DI padeda | Bastani grafikas (+48 / +127 / −17 / ≈0) + Tutor CoPilot + EEF · VO | „DI turi kausto atsakymą. Ir šalia turi būti žmogus. Tai jūs." |
+| 25 | 16:55 | 10 | Kada DI padeda | Bastani grafikas (+48 / +127 / −17 / ≈0) + Tutor CoPilot + EEF · VO | „DI turi vesti užuominomis, ne atiduoti atsakymą. Ir šalia turi būti žmogus. Tai jūs." |
 | 29 | 16:59 | 11 | Pasaulis | JAV Alpha · Europa (EEF, Estija, Lietuva) · Azija (Kinija, Korėja) | „Kopijuokite modelį, ne šūkį." |
 | 33 | 17:03 | 12 | Etika | šviesoforas 🟢🟡🔴 + vaikams / mums + Gen Alpha / Beta · VO | „Nesukčiaujam. DI padeda suprasti." |
 | 36 | 17:06 | 13 | ★ Pasirinkite lygį | L1 / L2 / L3 gyvai | „Nėra blogo atsakymo." |
