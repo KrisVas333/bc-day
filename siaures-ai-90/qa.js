@@ -86,11 +86,13 @@ console.log('\n== Deck ==');
   // klasių žemėlapis
   const gi=await page.evaluate(()=>__deck.slides.findIndex(s=>s.dataset.label==='Klasių žemėlapis'));
   await page.evaluate(i=>__deck.goTo(i,0),gi);await sleep(150);
-  ok('klasių žemėlapis: 12 pakopų (darželis–11)',await page.evaluate(()=>document.querySelectorAll('#gmT button').length===12&&document.getElementById('gmH').textContent==='Darželis'));
-  await page.keyboard.press('ArrowRight');await page.keyboard.press('ArrowRight');await page.keyboard.press('ArrowRight');await sleep(150);
-  ok('→ keičia klasę (3 kl.)',await page.evaluate(()=>document.getElementById('gmH').textContent==='3 kl.'&&/3 kl\./.test(document.getElementById('gmP').textContent)));
+  ok('klasių žemėlapis: 12 pakopų, pradžia 2 kl.',await page.evaluate(()=>document.querySelectorAll('#gmT button').length===12&&document.getElementById('gmH').textContent==='2 kl.'));
+  await page.keyboard.press('ArrowRight');await sleep(150);
+  ok('→ 4 kl.',await page.evaluate(()=>document.getElementById('gmH').textContent==='4 kl.'&&/4 kl\./.test(document.getElementById('gmP').textContent)));
+  await page.keyboard.press('ArrowRight');await sleep(150);
+  ok('→ 9 kl. (3 numatytos klasės)',await page.evaluate(()=>document.getElementById('gmH').textContent==='9 kl.'&&__deck.st.step===2));
   await page.evaluate(()=>document.querySelectorAll('#gmT button')[11].click());await sleep(150);
-  ok('paspaudus 11 kl. pavyzdys keičiasi',await page.evaluate(()=>document.getElementById('gmH').textContent==='11 kl.'&&__deck.st.step===11&&/Estija/.test(document.getElementById('gmEx').textContent)));
+  ok('paspaudus 11 kl. pavyzdys keičiasi (pasiekia visas 12)',await page.evaluate(()=>document.getElementById('gmH').textContent==='11 kl.'&&/Estija/.test(document.getElementById('gmEx').textContent)));
   await page.evaluate(()=>{const r=document.getElementById('gmR');r.value=0;r.dispatchEvent(new Event('input'));});await sleep(100);
   ok('slankiklis grąžina į darželį su „mūsų pasiūlymas"',await page.evaluate(()=>document.getElementById('gmH').textContent==='Darželis'&&/Mūsų pasiūlymas/.test(document.getElementById('gmEx').textContent)));
   // kito žodžio demo
@@ -121,6 +123,10 @@ console.log('\n== Deck ==');
   await page.keyboard.press('m');
   await page.keyboard.down('Shift');await page.keyboard.press('R');await page.keyboard.press('R');await page.keyboard.up('Shift');await sleep(300);
   ok('Shift+R ×2 išvalo klausimą',await page.evaluate(()=>/^0 atsakė/.test(document.querySelector('.slide.on [data-count="kas"]').textContent)));
+  ok('įrankiai: 4 kortelės su Copilot + COI toje pačioje skaidrėje',await page.evaluate(()=>{const s=__deck.slides.find(x=>x.dataset.label==='Įrankiai');return s.querySelectorAll('.tools .card').length===4&&/Copilot/.test(s.querySelector('.tools').textContent)&&/Nė vienas man nemoka/.test(s.textContent);}));
+  ok('nėra „ne X, o Y" ekrano formulių (5 pataisytos)',await page.evaluate(()=>{const t=__deck.slides.map(s=>{const c=s.cloneNode(true);c.querySelectorAll('aside').forEach(a=>a.remove());return c.textContent;}).join(' ');return !/ne magija|ne šūkį|modelius, ne vaikus|galvoti daugiau<\/b>, ne mažiau/.test(t);}));
+  ok('užrašuose nėra 86 mlrd. ir „kelias savaites"',await page.evaluate(()=>!/86 mlrd|kelias savaites/.test(__deck.NOTES.join(' '))));
+  ok('23 skaidrė pažymėta PASIRENKAMA',await page.evaluate(()=>/PASIRENKAMA/.test(__deck.NOTES[22])));
   // pagalba
   await page.keyboard.press('?');await sleep(100);
   ok('? rodo pultą ir salės kanalą',await page.evaluate(()=>/pultas\.html\?room=/.test(document.getElementById('pulturl').textContent)&&/Salės kanalas/.test(document.getElementById('livestate').textContent)));
@@ -192,7 +198,7 @@ ok('lygis: deck\'as L2 = 1',await until(()=>deck.evaluate(()=>document.querySele
 ok('telefonas prisimena L2',await A.p.evaluate(()=>__join.LEVEL()==='l2'));
 const ni=await deck.evaluate(()=>__deck.slides.findIndex(s=>s.dataset.act==='next'));
 await deck.evaluate(i=>__deck.goTo(i,0),ni);
-ok('pabaigoje A mato L2 kitą žingsnį + užklausą',await until(()=>A.p.evaluate(()=>!document.getElementById('nextBox').classList.contains('hide')&&/L2 · Kuriu/.test(document.getElementById('nextBox').textContent)&&!!document.querySelector('#nextBox pre'))));
+ok('pabaigoje A mato L2 kitą žingsnį + užklausą + video',await until(()=>A.p.evaluate(()=>!document.getElementById('nextBox').classList.contains('hide')&&/L2 · Kuriu/.test(document.getElementById('nextBox').textContent)&&/video/.test(document.getElementById('nextBox').textContent)&&!!document.querySelector('#nextBox pre'))));
 ok('B (be lygio) mato L1',await until(()=>B.p.evaluate(()=>/L1 · Pradedu/.test(document.getElementById('nextBox').textContent))));
 await A.p.evaluate(()=>{document.querySelectorAll('.scale .opt')[4].click();});await tapOpt(A,'t',0);await A.p.evaluate(()=>document.querySelector('.send').click());
 ok('atsiliepimas: naudingumas 5 ekrane',await until(()=>deck.evaluate(()=>document.querySelectorAll('.slide.on [data-res="next.u"] .row .num')[4].textContent==='1')));
@@ -227,7 +233,9 @@ console.log('\n== Telefonas 360 px ==');
   const small=await p.evaluate(()=>[].filter.call(document.querySelectorAll('button,summary,input,textarea'),b=>{const r=b.getBoundingClientRect();return r.width>0&&r.height<44;}).map(b=>(b.textContent||b.tagName).trim().slice(0,20)+':'+Math.round(b.getBoundingClientRect().height)));
   ok('visi mygtukai ir laukai ≥44 px aukščio',small.length===0,small.join(', '));
   ok('body šriftas ≥17px',await p.evaluate(()=>parseFloat(getComputedStyle(document.body).fontSize)>=17));
-  ok('užklausų bankas: 15 kopijuojamų užklausų (L1/L2/L3)',await p.evaluate(()=>document.querySelectorAll('#bank pre').length===15&&document.querySelectorAll('#bank details').length===3));
+  ok('užklausų bankas: 18 kopijuojamų užklausų (L1/L2/L3)',await p.evaluate(()=>document.querySelectorAll('#bank pre').length===18&&document.querySelectorAll('#bank details').length===3));
+  ok('bankas: pamokos planas + NotebookLM video + video scenarijus',await p.evaluate(()=>{const t=document.getElementById('bank').textContent;return /Pamokos planas/.test(t)&&/Video ar garso apžvalga/.test(t)&&/Mokomasis video telefonu/.test(t);}));
+  ok('kiekviena BUP vieta turi „savais žodžiais" atsarginį kelią',await p.evaluate(()=>[].every.call(document.querySelectorAll('#bank pre'),x=>!/emokykla|BUP siekin|lygių aprašas|požymiai:/.test(x.textContent)||/savais žodžiais/.test(x.textContent))));
   const txt=await p.evaluate(()=>document.body.innerText);
   ok('⚗️ disclaimer eilutė',/Eksperimentinis prototipas, sukurtas su DI\. Gali klysti/.test(txt));
   ok('interesų atskleidimas',/bendraįkūrėjas/.test(txt));
@@ -249,7 +257,7 @@ console.log('\n== Be ryšio ==');
   ok('be interneto ženklelis siūlo M',await p.evaluate(()=>/ryšio nėra \(M\)/.test(document.getElementById('joinbadge').textContent)));
   const ph=await browser.newPage();await ph.setRequestInterception(true);ph.on('request',r=>{if(/supabase|jsdelivr|krisvas333/.test(r.url()))r.abort();else r.continue();});
   await ph.setViewport({width:360,height:740,isMobile:true});await ph.goto(BASE+'join.html?r=OFFL',{waitUntil:'domcontentloaded'});await sleep(1200);
-  ok('be interneto telefonas sako „nėra ryšio" ir rodo užklausas',await ph.evaluate(()=>/nėra ryšio/.test(document.getElementById('conn').textContent)&&document.querySelectorAll('#bank pre').length===15));
+  ok('be interneto telefonas sako „nėra ryšio" ir rodo užklausas',await ph.evaluate(()=>/nėra ryšio/.test(document.getElementById('conn').textContent)&&document.querySelectorAll('#bank pre').length===18));
   ok('be interneto JS klaidų 0',errs.length===0,errs.join(' | '));
 }
 ok('deck JS klaidų 0 (visa sesija)',deckErrs.length===0,deckErrs.join(' | '));
