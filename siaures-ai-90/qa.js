@@ -161,7 +161,7 @@ console.log('\n== Deck ==');
   // papildoma skaidrė
   const ai=await page.evaluate(()=>__deck.slides.findIndex(s=>s.dataset.label==='Ačiū'));
   await page.evaluate(i=>__deck.goTo(i,0),ai);await sleep(100);await page.evaluate(()=>__deck.next());await sleep(100);
-  ok('→ iš „Ačiū" praleidžia papildomą skaidrę',await page.evaluate(()=>__deck.slides[__deck.st.slide].dataset.label==='Ką dar pridėjau (Kris)'));
+  ok('→ iš „Ačiū" praleidžia papildomą skaidrę',await page.evaluate(()=>__deck.slides[__deck.st.slide].dataset.label==='Šaltiniai (priedas)'));
   await page.evaluate(()=>__deck.prev());await sleep(100);
   ok('← grįžta į „Ačiū" (papildoma praleidžiama)',await page.evaluate(()=>__deck.slides[__deck.st.slide].dataset.label==='Ačiū'));
   await page.keyboard.press('2');await page.keyboard.press('8');await page.keyboard.press('Enter');await sleep(300);
