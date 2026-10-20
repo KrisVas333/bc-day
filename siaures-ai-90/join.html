@@ -221,9 +221,12 @@ function drawNext(){var lv=LEVEL||'l1',n=NEXT[lv],box=$('nextBox');box.classList
 
 /* ===== RESET iš ekrano: epocha. Pasikeitė = pamirštam atsakymus šiam kambariui ir leidžiam atsakyti iš naujo ===== */
 function epKey(){return 'di90-ep-'+ROOM;}
+var EP=null,EPR=null;/* epocha laikoma ŠIO puslapio atmintyje: kiti skirtukai tame pačiame telefone dalijasi localStorage */
+function curEp(){if(EPR!==ROOM){EPR=ROOM;EP=ls(epKey());}return EP;}
+function setEp(e){EPR=ROOM;EP=String(e);ls(epKey(),EP);}
 function wipe(){sent={};ls('di90-sent','{}');acked={};rvShown={};queue=[];LEVEL=null;try{localStorage.removeItem('di90-level');}catch(e){}cur=null;tr('di90_reset',{});}
-function checkEpoch(ep){var k=epKey(),old=ls(k);if(old===null||old===undefined||old===''){ls(k,String(ep));return false;}if(String(ep)===String(old))return false;ls(k,String(ep));wipe();return true;}
-function onReset(ep){if(ep==null)return;var k=epKey();if(String(ls(k))===String(ep))return;ls(k,String(ep));wipe();
+function checkEpoch(ep){var old=curEp();if(old===null||old===undefined||old===''){setEp(ep);return false;}if(String(ep)===String(old))return false;setEp(ep);wipe();return true;}
+function onReset(ep){if(ep==null)return;if(String(curEp())===String(ep))return;setEp(ep);wipe();
  if(lastState){var s=lastState;s.epoch=ep;cur=null;onState(s);}else idle();
  $('actHint').textContent='Ekranas išvalytas. Galite atsakyti iš naujo.';}
 
@@ -259,7 +262,7 @@ $('mBtn').onclick=MV.show;
 
 idle();
 (function load(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js';s.onload=connect;s.onerror=connect;document.head.appendChild(s);})();
-window.__join={MV:MV,epoch:function(){return ls(epKey());},ROOM:function(){return ROOM;},sent:function(){return sent;},acked:acked,cur:function(){return cur;},LEVEL:function(){return LEVEL;},ok:function(){return ok;}};
+window.__join={MV:MV,epoch:function(){return curEp();},forceEp:function(v){setEp(v);},ROOM:function(){return ROOM;},sent:function(){return sent;},acked:acked,cur:function(){return cur;},LEVEL:function(){return LEVEL;},ok:function(){return ok;}};
 </script>
 <script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
 </body>

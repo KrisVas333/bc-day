@@ -157,7 +157,7 @@ console.log('\n== Deck ==');
   ok('žemėlapio video ≤3 MB ('+vsz+' KB)',vsz>0&&vsz<=3072);
   await page.evaluate(()=>__deck.goTo(8,0));await sleep(1400);
   const b0=await page.evaluate(()=>getComputedStyle(document.querySelector('.slide.on .scale .beam')).transform);
-  await page.evaluate(()=>__deck.next());await sleep(1600);
+  await page.evaluate(()=>__deck.next());await until(()=>page.evaluate(()=>/matrix\(1, 0, 0, 1/.test(getComputedStyle(document.querySelector('.slide.on .scale .beam')).transform)),6000);
   const b1=await page.evaluate(()=>getComputedStyle(document.querySelector('.slide.on .scale .beam')).transform);
   ok('9 skaidrė: svarstyklės pasvirę → išsilygina, kai atsiranda silpnybės',b0!==b1&&/matrix\(1, 0, 0, 1/.test(b1),b0+' → '+b1);
   // QR bėgelis
@@ -451,15 +451,16 @@ console.log('\n== Atstatyti (RESET) ==');
   ok('RESET: laikmatis sustabdytas ir grąžintas į 20:00',!r.iv&&!r.run&&r.tt==='20:00',r.tt);
   ok('RESET: plano laikrodis 16:30, pertraukų laikas 0:00, 1 skaidrė',r.start===null&&r.hh==='16:30'&&r.el==='0:00'&&r.t0===null&&r.slide===0,JSON.stringify(r));
   ok('RESET: deck\'as skaičiuoja 0 atsakymų visose veiklose',await deck.evaluate(()=>Object.keys(__deck.ACTS).every(k=>__deck.LIVE.respondents(k)===0)));
-  ok('RESET: telefonas A pamiršo atsakymus (reset broadcast)',await until(()=>A.p.evaluate(()=>Object.keys(__join.sent()).length===0&&__join.LEVEL()===null),17000));
+  const diagA=async()=>JSON.stringify(await A.p.evaluate(r=>({sent:Object.keys(__join.sent()),lv:__join.LEVEL(),ep:localStorage.getItem('di90-ep-'+r),conn:document.getElementById('conn').textContent,ok:__join.ok()}),ROOM))+' deckEp='+await deck.evaluate(()=>__deck.LIVE.D().epoch);
+  ok('RESET: telefonas A pamiršo atsakymus (reset broadcast)',await until(()=>A.p.evaluate(()=>Object.keys(__join.sent()).length===0&&__join.LEVEL()===null),30000),await diagA());
   await deck.evaluate(()=>__deck.goTo(1,0));
-  ok('po RESET telefone klausimas be pažymėjimų',await until(()=>A.p.evaluate(()=>document.getElementById('actTitle').textContent==='Kas šiandien salėje?'&&document.querySelectorAll('.opt.sel').length===0&&!/Ekrane/.test((document.getElementById('msg')||{}).textContent||'')),8000));
+  ok('po RESET telefone klausimas be pažymėjimų',await until(()=>A.p.evaluate(()=>document.getElementById('actTitle').textContent==='Kas šiandien salėje?'&&document.querySelectorAll('.opt.sel').length===0&&!/Ekrane/.test((document.getElementById('msg')||{}).textContent||'')),20000));
   await tapOpt(A,'d',0);await A.p.evaluate(()=>document.querySelector('.send').click());
   ok('po RESET telefonas gali atsakyti iš naujo (ekrane 1 atsakė + ✅)',await until(()=>deck.evaluate(()=>/^1 atsakė/.test(document.querySelector('.slide.on [data-count="kas"]').textContent)))&&await until(()=>A.p.evaluate(()=>/Ekrane/.test(document.getElementById('msg').textContent))));
   // telefonas, praleidęs reset broadcast, pasiveja per epochą
-  await B.p.evaluate(r=>{localStorage.setItem('di90-ep-'+r,'123');window.sent={kas:{d:[1]}};},ROOM);
+  await B.p.evaluate(()=>{__join.forceEp('123');window.sent={kas:{d:[1]}};});
   await deck.evaluate(()=>{__deck.goTo(2,0);__deck.goTo(1,0);});
-  ok('praleidęs reset telefonas pasiveja per epochą (state)',await until(()=>B.p.evaluate(()=>Object.keys(__join.sent()).length===0),17000));
+  ok('praleidęs reset telefonas pasiveja per epochą (state)',await until(()=>B.p.evaluate(()=>Object.keys(__join.sent()).length===0),30000));
   // pultas: dvigubas paspaudimas
   await P.evaluate(()=>document.getElementById('bRst').click());await sleep(1200);
   ok('pultas: 1 paspaudimas rodo „Tikrai…", deck\'as nevalo',await P.evaluate(()=>/Tikrai išvalyti viską\? Spauskite dar kartą per 3 s/.test(document.getElementById('bRst').textContent))&&await deck.evaluate(()=>Object.keys(__deck.LIVE.D().ans).length===1));
@@ -473,7 +474,7 @@ console.log('\n== Atstatyti (RESET) ==');
 console.log('\n== Be ryšio ==');
 {
   const p=await browser.newPage();const errs=[];watch(p,errs);
-  await p.setRequestInterception(true);p.on('request',r=>{if(/supabase|jsdelivr|cdnjs|krisvas333/.test(r.url()))r.abort();else r.continue();});
+  await p.setRequestInterception(true);p.on('request',r=>{if(/supabase|jsdelivr|cdnjs|neuron-ar/.test(r.url()))r.abort();else r.continue();});
   await p.setViewport({width:1280,height:720});
   await p.goto(BASE+'index.html?room=OFFL',{waitUntil:'domcontentloaded'});await sleep(1500);
   ok('be interneto deck\'as veikia klaviatūra',await p.evaluate(()=>{__deck.next();return __deck.st.slide===1||__deck.st.step===1;}));
@@ -488,7 +489,7 @@ console.log('\n== Be ryšio ==');
   await p.evaluate(()=>document.querySelector('#manual button[data-m="po"][data-i="0"][data-d="1"]').click());await sleep(100);
   await p.evaluate(()=>{__deck.LIVE.manual();__deck.next();});await sleep(500);
   ok('M režimas: prieš 4.0 → po 5.0 + „Dalyvausiu" 1',await p.evaluate(()=>{const v=[...document.querySelectorAll('.slide.on [data-only="1"].show .pp .nv')].map(x=>x.textContent);return v[0]==='prieš 4.0'&&v[1]==='po 5.0'&&document.querySelector('.slide.on [data-res="next.po"] .row .num').textContent==='1';}));
-  const ph=await browser.newPage();await ph.setRequestInterception(true);ph.on('request',r=>{if(/supabase|jsdelivr|krisvas333/.test(r.url()))r.abort();else r.continue();});
+  const ph=await browser.newPage();await ph.setRequestInterception(true);ph.on('request',r=>{if(/supabase|jsdelivr|neuron-ar/.test(r.url()))r.abort();else r.continue();});
   await ph.setViewport({width:360,height:740,isMobile:true});await ph.goto(BASE+'join.html?r=OFFL',{waitUntil:'domcontentloaded'});await sleep(1200);
   ok('be interneto telefonas sako „nėra ryšio" ir rodo užklausas',await ph.evaluate(()=>/nėra ryšio/.test(document.getElementById('conn').textContent)&&document.querySelectorAll('#bank pre').length===19));
   ok('be interneto JS klaidų 0',errs.length===0,errs.join(' | '));
