@@ -19,12 +19,13 @@ Kiekvienas įrankis, užklausa, pavyzdys ir klasių žemėlapio pakopa turi L1/L
 | 0 | 16:30 | 1 | ★ Prisijunkite | QR + kodas, pirmas klausimas iškart telefone | „Išsitraukite telefonus. Rimtai. Pirmas klausimas jau laukia." |
 | 1 | 16:31 | 2 | ★ Kas jūs? | dalykai + klasės → gyvi stulpeliai | „Pavyzdžius taikysiu daugiausia jiems." |
 | 5 | 16:35 | 3 | ★ Ko tikitės? | žodžių debesis + kas dabar aktualu | perskaito 3 didžiausius žodžius |
-| 9 | 16:39 | 4 | Kas aš | RA · ExoClass · Brain Club + „nieko neparduodu" | „Turiu disleksiją… šiandien nieko neparduodu." |
+| 9 | 16:39 | 4 | Kas aš | disleksija · ADHD · disgrafija + skydelis: RA · ExoClass · Brain Club logotipai, skaitikliai, BC Jr veikėjai, žemėlapio įrašas + „nieko neparduodu" | „Turiu disleksiją… šiandien nieko neparduodu." |
 | 11 | 16:41 | 5 | Pulsas | 4 mygtukai telefone bet kada → matuoklis viršuje | „Tai mano vairas." |
 | 12 | 16:42 | 6 | 3 lygiai | laipteliai L1 / L2 / L3 | „L1 privalomas, L2 norintiems, L3 tik parodau." |
-| 14 | 16:44 | 7 | Kas yra DI? | kito žodžio spėjimo demo + slankiklis + 3D + VO (V) + video (Y) | „Jis spėja tikėtiniausią žodį." |
+| 14 | 16:44 | 7 | Kas yra DI? | kito žodžio spėjimo demo + slankiklis + judanti LLM schema (tekstas → sluoksniai → tikimybės) + VO (V) + video (Y) | „Jis spėja tikėtiniausią žodį." |
 | 19 | 16:49 | 8 | Stiprybės / silpnybės | 5 + 5 | „Jei svarmenis kelia robotas, raumenys neauga." |
 | 22 | 16:52 | 9 | ★ Testas | aktyvus prisiminimas, 60 s laikmatis, atskleidimas ir telefone | „Svarbu ne pataikyti, o bandyti prisiminti." |
+| ~25 | 16:55 | 🤸 | **Judėjimo pertrauka 2 min. (B)** | po testo (9), prieš 10 skaidrę: rankos · galva · šokinėjimas · tempimas. Kampe priminimas pasirodo pats | „Atsistojam. 2 minutės. Smegenims reikia kraujo." |
 | 25 | 16:55 | 10 | Kada DI padeda | Bastani grafikas (+48 / +127 / −17 / ≈0) + Tutor CoPilot + EEF · VO | „DI turi vesti užuominomis, ne atiduoti atsakymą. Ir šalia turi būti žmogus. Tai jūs." |
 | 29 | 16:59 | 11 | Pasaulis | JAV Alpha · Europa (EEF, Estija, Lietuva) · Azija (Kinija, Korėja) | „Pasiimame tai, kas veikia." |
 | 33 | 17:03 | 12 | Etika | šviesoforas 🟢🟡🔴 + vaikams / mums + Gen Alpha / Beta · VO | „Nesukčiaujam. DI padeda suprasti." |
@@ -33,6 +34,7 @@ Kiekvienas įrankis, užklausa, pavyzdys ir klasių žemėlapio pakopa turi L1/L
 | 42 | 17:12 | 15 | L1 demo | gyvai viena užklausa → testas; S = atsarginė | „Kas aš + siekinys + ko reikia." |
 | 45 | 17:15 | 16 | ★ Praktika L1 (12 min.) | mokytojai patys: užklausa → testas → rubrika telefone → geriausias klausimas į ekraną; mentoriai pas L1 | „Jūsų dalykas, jūsų klasė, jūsų testas." |
 | 57 | 17:27 | 17 | Ką sukūrėte | rubrikos vidurkiai + klausimų siena | „DI duoda juodraštį, jūs darote jį gerą." |
+| ~57 | 17:27 | 🤸 | **Judėjimo pertrauka 2 min. (B)** | po praktikos (16), prieš/po 17 skaidrės. Praktikos metu priminimą atidėk (Esc) | „Kol stovim: kas sukūrė testą, kurį naudotų rytoj?" |
 | 60 | 17:30 | 18 | ★ Prisiminkite | kartojimas tarpais (klausimas iš 25 min.) + DI kaip mokymosi treneris | „Ką tik padarėte tai, ką darys jūsų mokiniai." |
 | 64 | 17:34 | 19 | Dalykai | matematika · istorija · muzika · lietuvių k. (L1 → L2 užklausos) | „Visur tas pats triukas: įklijuojat siekinį." |
 | 68 | 17:38 | 20 | Klasių žemėlapis | → rodo 3 klases (2 · 4 · 9 kl.); slankiklis ir skaičiai pasiekia visas 12 tik jei klausia | „Iki 13 m. įrankį liečiate tik jūs." |
@@ -43,7 +45,8 @@ Kiekvienas įrankis, užklausa, pavyzdys ir klasių žemėlapio pakopa turi L1/L
 | 81 | 17:51 | 25 | 3 partneriai | mąstymo · tyrimo · kūrimo + užklausos · VO | „Visais trim atvejais darbą darau aš." |
 | 84 | 17:54 | 26 | ★ Kitas žingsnis | telefone: savo lygio žingsnis + užklausa + anoniminis atsiliepimas | „Puslapis lieka jūsų telefone." |
 | 88 | 17:58 | 27 | Ačiū | klausimai | „Pirma jūs. Paskui DI. Tada vėl jūs." |
-| — | — | 28–29 | Priedai | „Ką dar pridėjau" (tik Kris) · šaltiniai | nerodyti salei |
+| ⏭ | — | 28 | **PAPILDOMA · Antros smegenys** | tik jei liko laiko: 28 + Enter (→ iš 27 ją praleidžia). Kris BrAIn + Tito + Gabrielio smegenys per Google Drive, įrankiai ir kaina | „Šiuos mokymus padariau su jomis per vieną vakarą." |
+| — | — | 29–30 | Priedai | „Ką dar pridėjau" (tik Kris) · šaltiniai | nerodyti salei |
 
 ## Klavišai
 → / tarpas toliau · ← atgal · **N** užrašai · **T** laikmatis · **V** Kris'o balsas · **Y** video · **S** atsarginė nuotrauka · **P** pulsas (Shift+P nulina) · **M** rankinis įvedimas · **Shift+R ×2** išvalyti klausimą · **?** pultas + kanalas · skaičius + Enter šokti · **0 + Enter** „pradėjom dabar" (laikrodis perskaičiuoja planą).
@@ -68,3 +71,8 @@ Viršuje: `dabar · planas HH:MM (+N)` (raudona, kai vėluoji ≥3 min.) · puls
 
 ## Matavimas (rule 15)
 D0 vakare: prisijungusių telefonų skaičius (📱 N), atsiliepimų n, naudingumo vidurkis (26 skaidrė), pulso suvestinė (24), kas lūžo. D14 (11-03) per Gražiną: „ką išbandėte?" → `wiki/meta/real-world-tests.md` → KEEP / FIX / KILL. Atsakymai saugomi tik Kris'o naršyklėje (`localStorage`, raktas `siaures-ai90-res-<KODAS>`): nefotografavus ar neužsirašius, jie lieka tik tame kompiuteryje.
+
+
+## 2026-10-20 pataisos (Kris)
+- Pertraukos 2 × 2 min. = +4 min. Laikrodis rodys vėlavimą: kompensuok praleisdamas 23 skaidrę (pasirenkama).
+- QR: dešinėje juostoje tik užduočių skaidrėse, **Q** slepia/rodo. 1 skaidrėje didelis QR lieka.

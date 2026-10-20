@@ -123,9 +123,6 @@ h3{font-family:var(--mono);font-weight:800}
 .nwctl input[type=range]{width:360px;accent-color:#D90429;height:30px}
 .btn{font-family:var(--mono);font-weight:800;font-size:24px;border:2px solid var(--ink);border-radius:var(--r);background:#fff;padding:12px 20px;cursor:pointer;letter-spacing:.04em}
 .btn.red{background:var(--accent);border-color:var(--accent);color:#fff}
-.three{position:relative;border:2px solid var(--line);border-radius:var(--r);background:radial-gradient(circle at 50% 45%,#fff 0,#f4f2ef 70%);overflow:hidden}
-.three canvas{display:block;width:100%!important;height:100%!important}
-.three .cap{position:absolute;left:14px;bottom:10px;font-family:var(--mono);font-size:17px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 /* grafikas */
 .chart{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;align-items:end;height:400px;margin-top:20px;border-bottom:3px solid var(--ink);position:relative}
 .chart .col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;position:relative}
@@ -216,6 +213,146 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
 #pultqr .q img,#pultqr .q canvas{width:180px!important;height:180px!important}
 #toast{position:absolute;left:50%;top:100px;transform:translateX(-50%);background:var(--ink);color:#fff;font-family:var(--mono);font-weight:800;font-size:22px;padding:10px 18px;border-radius:var(--r);z-index:61;opacity:0;transition:opacity .3s;pointer-events:none}
 #toast.on{opacity:1}
+/* ===== 2026-10-20 Kris pataisos ===== */
+/* QR bėgelis dešinėje: kai rodomas, skaidrės turinys susitraukia (niekada neuždengia). Q = rodyti/slėpti */
+#stage.qr-on .slide.on{padding-right:330px}
+#joinmini{right:40px;top:120px;bottom:auto;width:250px;padding:12px;box-shadow:6px 6px 0 var(--accent)}
+#joinmini .q img,#joinmini .q canvas{width:224px!important;height:224px!important}
+#joinmini b{font-size:30px;margin-top:8px}
+#joinmini span{font-size:16px;margin-top:2px}
+#joinmini .qk{font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:6px;letter-spacing:.06em}
+/* laikas nuo pradžios + judėjimo pertrauka */
+#elapsed{font-variant-numeric:tabular-nums}
+#brk{position:absolute;left:110px;bottom:96px;z-index:55;display:none;align-items:center;gap:16px;background:#fff;border:3px solid var(--accent);border-radius:var(--r);padding:14px 20px;box-shadow:8px 8px 0 var(--ink);font-size:24px;font-weight:600;animation:up .5s both}
+#brk.on{display:flex}
+#brk .ic{font-size:40px;animation:wig 1.6s ease-in-out infinite}
+#brk kbd{font-family:var(--mono);border:2px solid var(--ink);border-radius:var(--r);padding:0 10px;font-weight:800}
+@keyframes wig{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+#move{position:absolute;inset:0;z-index:70;background:var(--ground);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px}
+#move.on{display:flex}
+#move .mk{font-family:var(--mono);font-size:26px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+#move .mt{font-family:var(--mono);font-size:120px;font-weight:800;line-height:1;margin-top:10px;letter-spacing:-.02em}
+#move .mfig{width:380px;height:380px;margin:20px 0 10px}
+#move .mc{font-family:var(--mono);font-size:150px;font-weight:800;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
+#move .mseq{display:flex;gap:14px;margin-top:22px}
+#move .mseq span{font-family:var(--mono);font-size:22px;font-weight:800;padding:8px 14px;border:2px solid var(--line);border-radius:var(--r);color:var(--muted)}
+#move .mseq span.cur{border-color:var(--accent);background:var(--accent);color:#fff}
+#move .mseq span.done{border-color:var(--ink);color:var(--ink)}
+#move .mh{font-size:22px;color:var(--muted);margin-top:20px}
+#move .mbar{width:900px;height:12px;background:var(--surface);border:2px solid var(--line);border-radius:var(--r);margin-top:22px;overflow:hidden}
+#move .mbar i{display:block;height:100%;width:0;background:var(--accent);transition:width 1s linear}
+.fig{stroke:var(--ink);stroke-width:14;stroke-linecap:round;fill:none}
+.fig .hd{fill:#fff}
+.fig .acc{stroke:var(--accent)}
+.m-arms .armL{transform-origin:190px 150px;animation:spinA 1.4s linear infinite}
+.m-arms .armR{transform-origin:190px 150px;animation:spinA 1.4s linear infinite reverse}
+.m-head .head{transform-origin:190px 140px;animation:spinH 4s ease-in-out infinite}
+.m-jump .body{animation:jump .7s cubic-bezier(.3,.7,.4,1) infinite}
+.m-str .armL{transform-origin:190px 150px;animation:reachL 4s ease-in-out infinite}
+.m-str .armR{transform-origin:190px 150px;animation:reachR 4s ease-in-out infinite}
+@keyframes spinA{to{transform:rotate(360deg)}}
+@keyframes spinH{0%,100%{transform:rotate(-14deg)}25%{transform:translateY(6px) rotate(0)}50%{transform:rotate(14deg)}75%{transform:translateY(-6px) rotate(0)}}
+@keyframes jump{0%,100%{transform:translateY(0)}50%{transform:translateY(-46px)}}
+@keyframes reachL{0%,100%{transform:rotate(0)}50%{transform:rotate(80deg)}}
+@keyframes reachR{0%,100%{transform:rotate(0)}50%{transform:rotate(-80deg)}}
+/* nuotraukos */
+.photo{position:relative;overflow:hidden;border:2px solid var(--ink);border-radius:var(--r);background:var(--surface)}
+.photo img{display:block;width:100%;height:100%;object-fit:cover;animation:kb 22s ease-in-out infinite alternate}
+.photo .cap{position:absolute;left:0;bottom:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:17px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.1) translate(-1.5%,-1%)}}
+/* 3 skaidrė: Kris klausia */
+.ask{display:flex;gap:26px;align-items:center;margin-bottom:6px}
+.ask .av{width:190px;height:190px;border-radius:50%;overflow:hidden;border:3px solid var(--ink);flex:none;box-shadow:6px 6px 0 var(--accent)}
+.ask .av img{width:100%;height:100%;object-fit:cover;object-position:50% 18%}
+.bub{position:relative;background:var(--ink);color:#fff;border-radius:var(--r);padding:20px 26px;font-family:var(--mono);font-size:34px;font-weight:800;min-width:360px}
+.bub:before{content:"";position:absolute;left:-22px;top:50%;margin-top:-14px;border:14px solid transparent;border-right:22px solid var(--ink);border-left:0}
+.bub .w{color:#ff8a9d;display:inline-block;animation:qin .45s cubic-bezier(.2,.8,.2,1) both}
+.bub .qm{display:inline-block;color:var(--accent);background:#fff;border-radius:50%;width:46px;height:46px;line-height:46px;text-align:center;margin-left:12px;animation:pulseQ 1.6s ease-in-out infinite}
+@keyframes qin{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pulseQ{50%{transform:scale(1.18)}}
+/* 4 skaidrė: dashboard */
+.dash{display:grid;grid-template-columns:1.12fr .88fr;gap:34px;margin-top:22px;flex:1;min-height:0}
+.vent{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.vent .card{padding:18px 20px;display:flex;flex-direction:column;gap:8px;min-height:205px}
+.vent .lg{height:58px;display:flex;align-items:center}
+.vent .lg img{max-height:58px;max-width:100%}
+.vent .big{font-family:var(--mono);font-size:50px;font-weight:800;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.vent .lb{font-size:20px;line-height:1.3;color:#222}
+.on .vent .card{animation:slin .6s cubic-bezier(.2,.8,.2,1) both}
+.on .vent .card:nth-child(2){animation-delay:.12s}.on .vent .card:nth-child(3){animation-delay:.24s}
+@keyframes slin{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+.cast{margin-top:18px;border:2px solid var(--ink);border-radius:var(--r);background:var(--surface);padding:12px 18px 10px;position:relative}
+.cast .row{display:flex;justify-content:space-around;align-items:flex-end;height:170px}
+.cast figure{display:flex;flex-direction:column;align-items:center;gap:4px}
+.cast img{height:140px;width:auto;animation:bob 2.4s ease-in-out infinite}
+.cast figure:nth-child(2) img{animation-delay:.3s}.cast figure:nth-child(3) img{animation-delay:.6s}.cast figure:nth-child(4) img{animation-delay:.9s}.cast figure:nth-child(5) img{animation-delay:1.2s}
+.cast figcaption{font-family:var(--mono);font-size:16px;font-weight:800;letter-spacing:.06em}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.coi{margin-top:16px;border:2px solid var(--accent);border-radius:var(--r);padding:12px 18px;font-size:21px;line-height:1.35}
+.coi b{color:var(--accent);font-family:var(--mono);letter-spacing:.06em}
+.screen{border:2px solid var(--ink);border-radius:var(--r);overflow:hidden;background:#fff;box-shadow:10px 10px 0 var(--ink)}
+.screen .chrome{height:30px;background:var(--ink);display:flex;align-items:center;gap:8px;padding:0 12px}
+.screen .chrome i{width:11px;height:11px;border-radius:50%;background:#555}.screen .chrome i:first-child{background:var(--accent)}
+.screen .chrome span{font-family:var(--mono);font-size:14px;color:#bbb;margin-left:10px}
+.screen video,.screen img{display:block;width:100%;aspect-ratio:16/9.6;object-fit:cover;background:#fff}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+.kpis div{border:2px solid var(--ink);border-radius:var(--r);padding:10px 14px}
+.kpis b{display:block;font-family:var(--mono);font-size:38px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.kpis span{font-size:18px;line-height:1.25}
+.nd{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.nd span{font-family:var(--mono);font-size:22px;font-weight:800;padding:6px 14px;border:2px solid var(--ink);border-radius:var(--r);background:#fff}
+.on .nd span{animation:pop .5s cubic-bezier(.2,.8,.2,1.4) both}
+.on .nd span:nth-child(2){animation-delay:.15s}.on .nd span:nth-child(3){animation-delay:.3s}
+.nd span.ai{background:var(--accent);border-color:var(--accent);color:#fff}
+.on .nd span.ai{animation-delay:.55s}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+/* 7 skaidrė: kas yra LLM (SVG) */
+.llm{position:relative;border:2px solid var(--line);border-radius:var(--r);background:var(--surface);height:360px;overflow:hidden}
+.llm svg{display:block;width:100%;height:100%}
+.llm .lab{font-family:var(--mono);font-size:15px;font-weight:800;fill:var(--muted);letter-spacing:.06em}
+.llm .tok rect{fill:#fff;stroke:var(--ink);stroke-width:2}
+.llm .tok text{font-family:var(--mono);font-size:17px;font-weight:800;fill:var(--ink)}
+.llm .edge{stroke:#cfcac4;stroke-width:1.4}
+.llm .pulse{stroke:var(--accent);stroke-width:3;stroke-dasharray:16 400;stroke-dashoffset:416;animation:flow 2.4s linear infinite}
+.llm .node{fill:#fff;stroke:var(--ink);stroke-width:2.5}
+.llm .node.hot{fill:var(--accent);stroke:var(--accent);animation:glowN 2.4s ease-in-out infinite}
+.llm .pb{fill:var(--ink);transform-box:fill-box;transform-origin:left center;animation:grow 2.4s cubic-bezier(.2,.8,.2,1) infinite}
+.llm .pb.top{fill:var(--accent)}
+.llm .pt{font-family:var(--mono);font-size:16px;font-weight:800;fill:var(--ink)}
+.llm .tokmove{animation:tokIn 2.4s cubic-bezier(.2,.8,.2,1) infinite}
+@keyframes flow{to{stroke-dashoffset:0}}
+@keyframes glowN{50%{opacity:.45}}
+@keyframes grow{0%,15%{transform:scaleX(0)}55%,100%{transform:scaleX(1)}}
+@keyframes tokIn{0%{opacity:0;transform:translateX(-24px)}25%,100%{opacity:1;transform:none}}
+/* 8 skaidrė: svarstyklės */
+.ss{display:grid;grid-template-columns:1fr 240px 1fr;gap:22px;margin-top:20px;align-items:start}
+.ss .card li{font-size:26px;padding:6px 0 6px 30px}
+.scale{width:240px;height:300px;margin-top:40px}
+.scale .beam{transform-origin:120px 90px;transition:transform 1.2s cubic-bezier(.3,1.4,.5,1);transform:rotate(-12deg)}
+.slide.on .ss.bal .beam{transform:rotate(0)}
+.scale .pan{transition:transform 1.2s cubic-bezier(.3,1.4,.5,1)}
+.scale .panL{transform:translateY(25px)}.scale .panR{transform:translateY(-25px)}
+.slide.on .ss.bal .panL,.slide.on .ss.bal .panR{transform:none}
+.scale text{font-family:var(--mono);font-weight:800;font-size:18px}
+/* antros smegenys (papildoma) */
+.brains{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;margin-top:16px;flex:1;min-height:0}
+.bdia{position:relative;border:2px solid var(--line);border-radius:var(--r);background:var(--surface);height:640px}
+.bdia svg{display:block;width:100%;height:100%}
+.bdia .bn rect{fill:#fff;stroke:var(--ink);stroke-width:3}
+.bdia .bn.me rect{stroke:var(--accent);stroke-width:4}
+.bdia .bt{font-family:var(--mono);font-weight:800;font-size:21px;fill:var(--ink)}
+.bdia .bs{font-family:Inter,sans-serif;font-size:16px;fill:#444}
+.bdia .lnk{stroke:var(--ink);stroke-width:2.5;stroke-dasharray:6 7;fill:none}
+.bdia .dot{fill:var(--accent)}
+.bdia .cdc text{font-family:var(--mono);font-weight:800;font-size:17px;fill:#fff}
+.bdia .cdc rect{fill:var(--ink)}
+.bdia .cdc .cur rect{fill:var(--accent)}
+.on .bdia .bn{animation:pop .6s cubic-bezier(.2,.8,.2,1.4) both}
+.on .bdia .bn:nth-of-type(2){animation-delay:.2s}.on .bdia .bn:nth-of-type(3){animation-delay:.4s}
+.brains .card{padding:16px 20px}
+.brains .card p,.brains .card li{font-size:21px;line-height:1.35}
+.brains .card h3{font-size:26px;margin:2px 0 6px}
+@media (prefers-reduced-motion:reduce){.photo img,.bub .w,.bub .qm,.cast img,.on .vent .card,.on .nd span,.llm *,#brk .ic,.on .bdia .bn,#move *{animation:none!important}}
 </style>
 <script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="kids" defer></script>
 <!-- kv-track data-mode="kids" = projektoriaus ekranas: jokio slapukų banerio ir Clarity, tik anoniminiai įvykiai. Clarity + sutikimas gyvena join.html (mokytojų telefonuose). -->
@@ -224,7 +361,7 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
 <div id="stage">
 <canvas id="net" width="1920" height="1080"></canvas>
 <div id="bar"><span>Šiaurės licėjus · <b>DI mokytojams</b></span>
- <span class="r"><span class="pill" id="clock" title="Dabar · planas">--:--</span><span id="pmini" title="Pulsas (P)"><i class="p0"></i><i class="p1"></i><i class="p2"></i><i class="p3"></i></span><span class="pill" id="joinbadge">📱 …</span><span class="pill" id="pultbadge">🎛 …</span></span></div>
+ <span class="r"><span class="pill" id="elapsed" title="Nuo pradžios · B judėjimo pertrauka">⏱ 0:00</span><span class="pill" id="clock" title="Dabar · planas">--:--</span><span id="pmini" title="Pulsas (P)"><i class="p0"></i><i class="p1"></i><i class="p2"></i><i class="p3"></i></span><span class="pill" id="joinbadge">📱 …</span><span class="pill" id="pultbadge">🎛 …</span></span></div>
 
 <!-- 1 · 0 min -->
 <!-- SKAIDRĖ 1: Prisijunkite -->
@@ -234,7 +371,7 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
   <div>
    <h1 class="big" style="font-size:118px">DI <em>mokytojams</em></h1>
    <p class="lead">Kaip DI padeda <b>jums ir vaikams galvoti daugiau</b>.</p>
-   <div class="three" id="hero3d" style="height:300px;margin-top:26px;width:900px"><span class="cap">Neuronas · Brain Club veikėjas · 3D</span></div>
+   <div class="photo" style="height:440px;margin-top:26px;width:940px"><img src="assets/img/kris-mokymai.jpg" alt="Kris veda mokymus prie lentos"><span class="cap">Kris · mokymuose</span></div>
   </div>
   <div>
    <div class="thint">Nuskenuokite telefonu</div>
@@ -244,7 +381,7 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
    <p class="small" style="margin-top:8px">Jokių vardų, jokios registracijos. Pirmas klausimas jau laukia.</p>
   </div>
  </div>
- <aside class="notes"><b>16:30 · 0–1 MIN.</b> Šis ekranas rodomas, kol žmonės sėdasi (nuo 16:20). <b>KĄ SAKYTI</b> Laba diena. Išsitraukite telefonus, prašau. Rimtai. Nuskenuokite QR: pirmas klausimas jau jūsų ekrane. Kol jungiatės, aš patylėsiu.<br><b>KĄ DARYTI</b> Patikrink viršuje „📱 N": skaičius turi augti. Jei po 1 min. 0, spausk M (rankinis režimas) ir rinkite rankomis.<br><b>TILTAS</b> Žiūrim, kas šiandien salėje.</aside>
+ <aside class="notes"><b>16:30 · 0–1 MIN.</b> Šis ekranas rodomas, kol žmonės sėdasi (nuo 16:20). <b>KĄ SAKYTI</b> Laba diena. Išsitraukite telefonus, prašau. Rimtai. Nuskenuokite QR: pirmas klausimas jau jūsų ekrane. Kol jungiatės, aš patylėsiu.<br><b>KĄ DARYTI</b> Patikrink viršuje „📱 N": skaičius turi augti. Jei po 1 min. 0, spausk M (rankinis režimas) ir rinkite rankomis.<br><b>NUOTRAUKA</b> Kris mokymuose prie lentos (medijai-classroom.jpg). Kairėje vietoj 3D veikėjo.<br><b>LAIKAS</b> Viršuje ⏱ pradeda skaičiuoti, kai pirmą kartą paspaudi →. Kas 25 min. kampe pasirodys „Judėjimo pertrauka? B".<br><b>TILTAS</b> Žiūrim, kas šiandien salėje.</aside>
 </section>
 
 <!-- 2 · 1 min -->
@@ -266,26 +403,47 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
  <div class="kick">Užduotis 2 · telefone</div>
  <h2>Ko tikitės iš šių 90 min.? Kas dabar <em>aktualu</em> klasėje?</h2>
  <div class="cards" style="grid-template-columns:1.1fr .9fr;gap:50px;margin-top:16px">
-  <div><div class="thint">Jūsų žodžiai</div><div class="cloud" data-res="lukesciai.w"></div></div>
+  <div><div class="ask"><div class="av"><img src="assets/img/kris-portretas.jpg" alt="Kris"></div><div class="bub" id="askBub"><span class="w">Laikas</span><span class="qm">?</span></div></div>
+   <div class="thint" style="margin-top:14px">Jūsų žodžiai</div><div class="cloud" data-res="lukesciai.w" style="min-height:240px"></div></div>
   <div><div class="thint">Ką dabar svarbiausia mokyti</div><div class="res narrow" data-res="lukesciai.pop"></div></div>
  </div>
  <div class="rcount" data-count="lukesciai">0 atsakė</div>
- <aside class="notes"><b>16:35 · 5–9 MIN.</b> <b>KĄ SAKYTI</b> Perskaitau 3 didžiausius žodžius garsiai. „Matau ‚laikas'. Gerai: pirmą valandą sutaupysim laiko, antrą kursim." Jei yra „baimė" ar „sukčiavimas": „Apie tai bus atskira dalis, 33-ią minutę."<br><b>KĄ DARYTI</b> Užsirašyk 1–2 lūkesčius, prie kurių grįši pabaigoje (17:54 skaidrėje „Kitas žingsnis").<br><b>TILTAS</b> Prieš einant toliau, keli žodžiai, kas aš.</aside>
+ <aside class="notes"><b>16:35 · 5–9 MIN.</b> <b>VIZUALAS</b> Kairėje tavo nuotrauka ir burbulas su galimais lūkesčiais (keičiasi pats). QR dabar dešinėje juostoje ir nieko neuždengia; <b>Q</b> paslepia. <b>KĄ SAKYTI</b> Perskaitau 3 didžiausius žodžius garsiai. „Matau ‚laikas'. Gerai: pirmą valandą sutaupysim laiko, antrą kursim." Jei yra „baimė" ar „sukčiavimas": „Apie tai bus atskira dalis, 33-ią minutę."<br><b>KĄ DARYTI</b> Užsirašyk 1–2 lūkesčius, prie kurių grįši pabaigoje (17:54 skaidrėje „Kitas žingsnis").<br><b>TILTAS</b> Prieš einant toliau, keli žodžiai, kas aš.</aside>
 </section>
 
 <!-- 4 · 9 min -->
 <!-- SKAIDRĖ 4: Kas aš -->
 <section class="slide" data-label="Kas aš" data-steps="2" data-at="9">
  <div class="kick">Atvirai</div>
- <h2>Turiu disleksiją. DI man yra <em>įrankis</em>, kurį išmokau naudoti protingai.</h2>
- <div class="cards c3" data-step="1">
-  <div class="card"><div class="n">Robotikos Akademija</div><p>Bendraįkūrėjas. 10+ metų technologijų būreliai vaikams.</p></div>
-  <div class="card"><div class="n">ExoClass · Brain Club</div><p>ExoClass bendraįkūrėjas: sistemoje 20 000+ vaikų, 700+ veiklos vietų. Brain Club: mano būrelis apie smegenis.</p></div>
-  <div class="card hot"><div class="n">Ko čia nėra</div><p>Šiandien nieko neparduodu. Jokio būrelio, kainos ar programos. Info-Gynėjai yra mūsų pilotas jūsų mokykloje, sakau atvirai.</p></div>
+ <h2 style="font-size:54px">Turiu disleksiją, ADHD ir disgrafiją. DI man yra <em>didžiulė pagalba</em>.</h2>
+ <div class="nd"><span>Disleksija</span><span>ADHD</span><span>Disgrafija</span><span class="ai">+ DI = sukuriu daugiau, nei kada galvojau</span></div>
+ <div class="dash" data-step="1">
+  <div>
+   <div class="vent">
+    <div class="card"><div class="lg"><img src="assets/logo/ra.svg" alt="Robotikos Akademija"></div><div class="big" data-count-to="10" data-suffix="+">0</div><div class="lb">metų technologijų būrelių vaikams · bendraįkūrėjas</div></div>
+    <div class="card"><div class="lg"><img src="assets/logo/exoclass.svg" alt="ExoClass"></div><div class="big" data-count-to="20000" data-suffix="+">0</div><div class="lb">vaikų sistemoje, 700+ veiklos vietų · bendraįkūrėjas</div></div>
+    <div class="card"><div class="lg"><img src="assets/logo/brainclub.png" alt="Brain Club"></div><div class="big" style="font-size:34px;line-height:1.1">Brain Club Jr</div><div class="lb">mano būrelis apie smegenis · Jr veikėjai žemiau</div></div>
+   </div>
+   <div class="cast"><div class="row">
+    <figure><img src="assets/bcjr/kaleidas.webp" alt="Klaidas"><figcaption>Klaidas</figcaption></figure>
+    <figure><img src="assets/bcjr/misty.webp" alt="Misty"><figcaption>Misty</figcaption></figure>
+    <figure><img src="assets/bcjr/baitas.webp" alt="Baitas"><figcaption>Baitas</figcaption></figure>
+    <figure><img src="assets/bcjr/neuron.webp" alt="Neuron"><figcaption>Neuron</figcaption></figure>
+    <figure><img src="assets/bcjr/lekta.webp" alt="Lekta"><figcaption>Lekta</figcaption></figure>
+   </div></div>
+   <div class="coi"><b>KO ČIA NĖRA ·</b> Šiandien nieko neparduodu. Jokio būrelio, kainos ar programos. Info-Gynėjai yra mūsų pilotas jūsų mokykloje, sakau atvirai.</div>
+  </div>
+  <div>
+   <div class="screen"><div class="chrome"><i></i><i></i><i></i><span>Vaiko mokymosi žemėlapis · sukurtas su DI</span></div><video id="mapvid" src="assets/video/zemelapis-loop.mp4" poster="assets/video/zemelapis-poster.jpg" muted loop playsinline preload="auto"></video></div>
+   <div class="kpis">
+    <div><b data-count-to="2129">0</b><span>temų, darželis–12 kl.</span></div>
+    <div><b data-count-to="2747">0</b><span>ryšiai tarp temų</span></div>
+    <div><b data-count-to="20">0</b><span>dalykų · gyvai 71-ą min.</span></div>
+   </div>
+  </div>
  </div>
- <p class="lead" data-step="1" style="font-size:28px;margin-top:22px">Ir atviras projektas: <b>Vaiko mokymosi žemėlapis</b>, 2 129 temos nuo darželio iki 12 klasės. Parodysiu 71-ą minutę.</p>
  <p class="src">⚗️ Medžiagą ruošiau su DI pagalba. Gali būti klaidų: radote, pasakykite, taisau.</p>
- <aside class="notes"><b>16:39 · 9–11 MIN.</b> <b>KĄ SAKYTI</b> Turiu disleksiją, skaityti išmokau vėliau nei klasės draugai [⚠️ KRIS: „iki 11 m." ar „3–4 kl." pasakyk savo žodžiais]. DI man skaito, paaiškina dar kartą ir nesijuokia. Bet tą patį įrankį mačiau ir darantį už mane tai, ką turėjau išmokti pats. Apie tai šiandien.<br><b>ATSKLEIDIMAS (garsiai)</b> Esu RA ir ExoClass bendraįkūrėjas. Šiandien nieko neparduodu.<br><b>SKAIČIAI</b> 20 000+ vaikų ir 700+ vietų = ExoClass kanonas (wiki/companies/exoclass.md). „10+ metų" RA = wiki. ⚠️ Brain Club be skaičių.<br><b>TILTAS</b> Viena taisyklė visai popietei.</aside>
+ <aside class="notes"><b>16:39 · 9–11 MIN.</b> <b>KĄ SAKYTI</b> Turiu disleksiją, ADHD ir disgrafiją. Skaityti išmokau vėliau nei klasės draugai [⚠️ KRIS: „iki 11 m." ar „3–4 kl." pasakyk savo žodžiais]. DI man yra didžiulė pagalba: kaip neurodivergentiškam vadovui, mokytojui ir treneriui jis leidžia sukurti daug daugiau, nei kada galvojau. Bet tą patį įrankį mačiau ir darantį už mane tai, ką turėjau išmokti pats. Apie tai šiandien.<br><b>KĄ DARYTI</b> → atidaro „skydelį": skaičiai bėga, Brain Club Jr veikėjai juda, dešinėje žemėlapio įrašas (gyvai rodysiu 71-ą min.).<br><b>ATSKLEIDIMAS (garsiai)</b> Esu RA ir ExoClass bendraįkūrėjas. Šiandien nieko neparduodu.<br><b>SKAIČIAI</b> 20 000+ vaikų ir 700+ vietų = ExoClass kanonas (wiki/companies/exoclass.md). „10+ metų" RA = wiki. 2 129 / 2 747 / 20 = žemėlapio puslapis. ⚠️ Brain Club be skaičių. ADHD: savo žodžiais, be potipio (EU diagnozė dar laukia).<br><b>TILTAS</b> Viena taisyklė visai popietei.</aside>
 </section>
 
 <!-- 5 · 11 min -->
@@ -328,25 +486,26 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
    <div class="nwctl"><span>Atsitiktinumas</span><input type="range" id="nwT" min="0.2" max="2" step="0.1" value="1"><span id="nwTv">1.0</span><button class="btn red" id="nwGo">Spėk žodį</button><button class="btn" id="nwReset">↺</button></div>
   </div>
   <div>
-   <div class="three" id="slide3d" style="height:330px"><span class="cap">Neuronas · smegenų ląstelė su šalmu</span></div>
+   <div class="llm" id="llmviz"><svg viewBox="0 0 720 360" role="img" aria-label="Kaip veikia didelis kalbos modelis: tekstas, sluoksniai, kito žodžio tikimybės"><text class="lab" x="16" y="34">1 · TEKSTAS → DALYS</text><text class="lab" x="262" y="34">2 · SLUOKSNIAI</text><text class="lab" x="550" y="34">3 · KITAS ŽODIS?</text><line class="edge" x1="150" y1="96" x2="270" y2="70"/><line class="edge" x1="150" y1="96" x2="270" y2="130"/><line class="edge" x1="150" y1="96" x2="270" y2="190"/><line class="edge" x1="150" y1="96" x2="270" y2="250"/><line class="edge" x1="150" y1="96" x2="270" y2="310"/><line class="edge" x1="150" y1="152" x2="270" y2="70"/><line class="edge" x1="150" y1="152" x2="270" y2="130"/><line class="edge" x1="150" y1="152" x2="270" y2="190"/><line class="edge" x1="150" y1="152" x2="270" y2="250"/><line class="edge" x1="150" y1="152" x2="270" y2="310"/><line class="edge" x1="150" y1="208" x2="270" y2="70"/><line class="edge" x1="150" y1="208" x2="270" y2="130"/><line class="edge" x1="150" y1="208" x2="270" y2="190"/><line class="edge" x1="150" y1="208" x2="270" y2="250"/><line class="edge" x1="150" y1="208" x2="270" y2="310"/><line class="edge" x1="150" y1="264" x2="270" y2="70"/><line class="edge" x1="150" y1="264" x2="270" y2="130"/><line class="edge" x1="150" y1="264" x2="270" y2="190"/><line class="edge" x1="150" y1="264" x2="270" y2="250"/><line class="edge" x1="150" y1="264" x2="270" y2="310"/><line class="edge" x1="270" y1="70" x2="380" y2="100"/><line class="edge" x1="270" y1="70" x2="380" y2="160"/><line class="edge" x1="270" y1="70" x2="380" y2="220"/><line class="edge" x1="270" y1="70" x2="380" y2="280"/><line class="edge" x1="270" y1="130" x2="380" y2="100"/><line class="edge" x1="270" y1="130" x2="380" y2="160"/><line class="edge" x1="270" y1="130" x2="380" y2="220"/><line class="edge" x1="270" y1="130" x2="380" y2="280"/><line class="edge" x1="270" y1="190" x2="380" y2="100"/><line class="edge" x1="270" y1="190" x2="380" y2="160"/><line class="edge" x1="270" y1="190" x2="380" y2="220"/><line class="edge" x1="270" y1="190" x2="380" y2="280"/><line class="edge" x1="270" y1="250" x2="380" y2="100"/><line class="edge" x1="270" y1="250" x2="380" y2="160"/><line class="edge" x1="270" y1="250" x2="380" y2="220"/><line class="edge" x1="270" y1="250" x2="380" y2="280"/><line class="edge" x1="270" y1="310" x2="380" y2="100"/><line class="edge" x1="270" y1="310" x2="380" y2="160"/><line class="edge" x1="270" y1="310" x2="380" y2="220"/><line class="edge" x1="270" y1="310" x2="380" y2="280"/><line class="edge" x1="380" y1="100" x2="490" y2="70"/><line class="edge" x1="380" y1="100" x2="490" y2="130"/><line class="edge" x1="380" y1="100" x2="490" y2="190"/><line class="edge" x1="380" y1="100" x2="490" y2="250"/><line class="edge" x1="380" y1="100" x2="490" y2="310"/><line class="edge" x1="380" y1="160" x2="490" y2="70"/><line class="edge" x1="380" y1="160" x2="490" y2="130"/><line class="edge" x1="380" y1="160" x2="490" y2="190"/><line class="edge" x1="380" y1="160" x2="490" y2="250"/><line class="edge" x1="380" y1="160" x2="490" y2="310"/><line class="edge" x1="380" y1="220" x2="490" y2="70"/><line class="edge" x1="380" y1="220" x2="490" y2="130"/><line class="edge" x1="380" y1="220" x2="490" y2="190"/><line class="edge" x1="380" y1="220" x2="490" y2="250"/><line class="edge" x1="380" y1="220" x2="490" y2="310"/><line class="edge" x1="380" y1="280" x2="490" y2="70"/><line class="edge" x1="380" y1="280" x2="490" y2="130"/><line class="edge" x1="380" y1="280" x2="490" y2="190"/><line class="edge" x1="380" y1="280" x2="490" y2="250"/><line class="edge" x1="380" y1="280" x2="490" y2="310"/><line class="edge" x1="490" y1="70" x2="548" y2="190"/><line class="edge" x1="490" y1="130" x2="548" y2="190"/><line class="edge" x1="490" y1="190" x2="548" y2="190"/><line class="edge" x1="490" y1="250" x2="548" y2="190"/><line class="edge" x1="490" y1="310" x2="548" y2="190"/><path class="pulse" d="M150 96 L270 130 L380 160 L490 190 L548 190" fill="none" style="animation-delay:0.0s" pathLength="400"/><path class="pulse" d="M150 208 L270 190 L380 220 L490 130 L548 190" fill="none" style="animation-delay:0.6s" pathLength="400"/><path class="pulse" d="M150 264 L270 250 L380 100 L490 250 L548 190" fill="none" style="animation-delay:1.2s" pathLength="400"/><path class="pulse" d="M150 152 L270 70 L380 280 L490 190 L548 190" fill="none" style="animation-delay:1.8s" pathLength="400"/><circle class="node" cx="270" cy="70" r="11"/><circle class="node hot" cx="270" cy="130" r="11"/><circle class="node" cx="270" cy="190" r="11"/><circle class="node" cx="270" cy="250" r="11"/><circle class="node" cx="270" cy="310" r="11"/><circle class="node" cx="380" cy="100" r="11"/><circle class="node hot" cx="380" cy="160" r="11"/><circle class="node hot" cx="380" cy="220" r="11"/><circle class="node" cx="380" cy="280" r="11"/><circle class="node" cx="490" cy="70" r="11"/><circle class="node" cx="490" cy="130" r="11"/><circle class="node hot" cx="490" cy="190" r="11"/><circle class="node" cx="490" cy="250" r="11"/><circle class="node" cx="490" cy="310" r="11"/><g class="tok tokmove" style="animation-delay:0.00s"><rect x="16" y="76" width="134" height="40" rx="4"/><text x="28" y="102">Mokytoja</text></g><g class="tok tokmove" style="animation-delay:0.12s"><rect x="16" y="132" width="134" height="40" rx="4"/><text x="28" y="158">atidarė</text></g><g class="tok tokmove" style="animation-delay:0.24s"><rect x="16" y="188" width="134" height="40" rx="4"/><text x="28" y="214">sąsiuvinį</text></g><g class="tok tokmove" style="animation-delay:0.36s"><rect x="16" y="244" width="134" height="40" rx="4"/><text x="28" y="270">ir</text></g><text class="pt" x="556" y="84">pradėjo</text><rect class="pb top" x="556" y="92" width="114" height="18" rx="2" style="animation-delay:0.2s"/><text class="pt" x="680" y="107" style="font-size:15px">44%</text><text class="pt" x="556" y="146">pamatė</text><rect class="pb" x="556" y="154" width="62" height="18" rx="2" style="animation-delay:0.3s"/><text class="pt" x="628" y="169" style="font-size:15px">24%</text><text class="pt" x="556" y="208">nusišypsojo</text><rect class="pb" x="556" y="216" width="33" height="18" rx="2" style="animation-delay:0.4s"/><text class="pt" x="599" y="231" style="font-size:15px">13%</text><text class="pt" x="556" y="270">užrašė</text><rect class="pb" x="556" y="278" width="26" height="18" rx="2" style="animation-delay:0.5s"/><text class="pt" x="592" y="293" style="font-size:15px">10%</text><text class="lab" x="16" y="340">Modelis nemato prasmės: skaičiuoja, koks žodis tikėtiniausias toliau.</text></svg></div>
    <div class="card" data-step="1" style="margin-top:20px"><p><b>Didelis kalbos modelis</b> išmoko iš milžiniško teksto kiekio, kokie žodžiai dažniausiai eina toliau. Todėl kalba sklandžiai, bet <b>gali užtikrintai sakyti netiesą</b>.</p></div>
   </div>
  </div>
  <p class="src">Video (pasirinktinai, Y): 3Blue1Brown „Large Language Models explained briefly" (YouTube, angl.). Tikimybės demonstracijoje sugalvotos iliustracijai, ne iš tikro modelio.</p>
- <aside class="notes"><b>16:44 · 14–19 MIN.</b> <b>KĄ DARYTI</b> Spausk „Spėk žodį" 3–4 kartus. Tada patrauk slankiklį į dešinę (daug atsitiktinumo) ir vėl: žodžiai keisti. Į kairę: visada tas pats. V = mano balsu (~14 s). Y = video, jei liko laiko (rodyk 60–90 s).<br><b>KĄ SAKYTI</b> Jis spėja tikėtiniausią žodį. Todėl rašo gražiai ir kartais užtikrintai meluoja. Dešinėje Neuronas, Brain Club veikėjas (smegenų ląstelė su šalmu). DI kūrėjus įkvėpė smegenys, bet DI veikia kitaip nei smegenys. ⚠️ Tai mūsų būrelio veikėjas: jei nori nulio venture ženklų, pakeisk į paprastą 3D objektą (Kris sprendžia).<br><b>VO tekstas (assets/vo/07.mp3)</b> „DI nemąsto kaip žmogus. Jis perskaitė milžinišką kiekį teksto ir išmoko spėti, koks žodis eina toliau. Todėl kalba sklandžiai, bet gali užtikrintai sakyti netiesą. Todėl jūsų darbas lieka svarbiausias: patikrinti." ⚠️ Kris ear-check, niekas jo nepatikrino klausa.<br><b>TILTAS</b> Ką tai reiškia praktiškai? Stiprybės ir silpnybės.</aside>
+ <aside class="notes"><b>16:44 · 14–19 MIN.</b> <b>KĄ DARYTI</b> Spausk „Spėk žodį" 3–4 kartus. Tada patrauk slankiklį į dešinę (daug atsitiktinumo) ir vėl: žodžiai keisti. Į kairę: visada tas pats. V = mano balsu (~14 s). Y = video, jei liko laiko (rodyk 60–90 s).<br><b>KĄ SAKYTI</b> Jis spėja tikėtiniausią žodį. Todėl rašo gražiai ir kartais užtikrintai meluoja. <b>SCHEMA DEŠINĖJE</b> (juda pati): 1) tekstas suskaldomas į dalis (tokenus), 2) dalys keliauja per sluoksnius (raudoni impulsai = kur modelis „žiūri"), 3) gale tik tikimybės kitam žodžiui. Prasmės ten nėra, yra skaičiai. DI kūrėjus įkvėpė smegenys, bet DI veikia kitaip nei smegenys. Schema supaprastinta: tikri modeliai turi milijardus parametrų.<br><b>VO tekstas (assets/vo/07.mp3)</b> „DI nemąsto kaip žmogus. Jis perskaitė milžinišką kiekį teksto ir išmoko spėti, koks žodis eina toliau. Todėl kalba sklandžiai, bet gali užtikrintai sakyti netiesą. Todėl jūsų darbas lieka svarbiausias: patikrinti." ⚠️ Kris ear-check, niekas jo nepatikrino klausa.<br><b>TILTAS</b> Ką tai reiškia praktiškai? Stiprybės ir silpnybės.</aside>
 </section>
 
 <!-- 8 · 19 min -->
 <!-- SKAIDRĖ 8: Stiprybės ir silpnybės -->
 <section class="slide" data-label="Stiprybės ir silpnybės" data-steps="2" data-at="19">
  <div class="kick">Ką DI daro gerai, o kur klysta</div>
- <div class="cards c2" style="margin-top:20px">
+ <div class="ss" data-bal="1">
   <div class="card"><div class="n">Stiprybės</div><ul>
    <li><b>Laikas:</b> pamokos planas, testas, rubrikos juodraštis per minutes</li>
    <li><b>Diferenciacija:</b> tas pats tekstas 3 lygiais 30 vaikų klasei</li>
    <li><b>Variantai:</b> 10 uždavinių, kurių nereikia rašyti rankomis</li>
    <li><b>Kantrybė:</b> paaiškina dešimtą kartą ir nepavargsta</li>
    <li><b>Prieinamumas:</b> lengvesnis tekstas tam, kam skaityti sunku</li></ul></div>
+  <svg class="scale" viewBox="0 0 240 300" aria-hidden="true"><g class="beam"><line x1="20" y1="90" x2="220" y2="90" stroke="#0A0A0A" stroke-width="8" stroke-linecap="round"/><g class="pan panL"><line x1="30" y1="90" x2="30" y2="150" stroke="#0A0A0A" stroke-width="3"/><path d="M0 150 h60 a30 22 0 0 1 -60 0z" fill="#0A0A0A"/><text x="30" y="205" text-anchor="middle" fill="#0A0A0A">+</text></g><g class="pan panR"><line x1="210" y1="90" x2="210" y2="150" stroke="#D90429" stroke-width="3"/><path d="M180 150 h60 a30 22 0 0 1 -60 0z" fill="#D90429"/><text x="210" y="205" text-anchor="middle" fill="#D90429">!</text></g></g><polygon points="120,90 92,280 148,280" fill="#F7F7F5" stroke="#0A0A0A" stroke-width="4"/><circle cx="120" cy="90" r="12" fill="#D90429"/><text x="120" y="250" text-anchor="middle" fill="#0A0A0A" font-size="16">JŪS</text></svg>
   <div class="card hot" data-step="1"><div class="n">Silpnybės</div><ul>
    <li><b>Išgalvoja:</b> faktus, datas, citatas, šaltinius</li>
    <li><b>Pritaria:</b> sutinka su jumis ir su vaiku, net kai klystate</li>
@@ -354,7 +513,7 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
    <li><b>Lietuvių kalba</b> silpnesnė nei anglų: linksniai, stilius</li>
    <li><b>Daro už mus:</b> jei leidžiame, mąstymas traukiasi</li></ul></div>
  </div>
- <aside class="notes"><b>16:49 · 19–22 MIN.</b> <b>KĄ SAKYTI</b> Kiekvienai stiprybei turiu vieną savo istoriją: [Kris, viena trumpa]. Silpnybės: svarbiausia paskutinė. Jei DI daro už mus, mes netreniruojam. Kaip sporto salėje: jei svarmenis kelia robotas, raumenys neauga.<br><b>⚠️</b> „Lietuvių kalba silpnesnė" = pastebėjimas, ne tyrimas. Sakyk „mano patirtis".<br><b>TILTAS</b> Patikrinkim, ar jau atsimenat. Telefonai.</aside>
+ <aside class="notes"><b>16:49 · 19–22 MIN.</b> <b>VIZUALAS</b> Svarstyklės: pirmiausia persveria stiprybės; paspaudus → atsiranda silpnybės ir svarstyklės išsilygina. Pusiausvyrą laiko „JŪS" (mokytojas tikrina). <b>KĄ SAKYTI</b> Kiekvienai stiprybei turiu vieną savo istoriją: [Kris, viena trumpa]. Silpnybės: svarbiausia paskutinė. Jei DI daro už mus, mes netreniruojam. Kaip sporto salėje: jei svarmenis kelia robotas, raumenys neauga.<br><b>⚠️</b> „Lietuvių kalba silpnesnė" = pastebėjimas, ne tyrimas. Sakyk „mano patirtis".<br><b>TILTAS</b> Patikrinkim, ar jau atsimenat. Telefonai.</aside>
 </section>
 
 <!-- 9 · 22 min -->
@@ -719,11 +878,47 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
  <h1 class="mid" style="margin-top:40px">Pirma jūs. Paskui DI. <em>Tada vėl jūs.</em></h1>
  <p class="lead">Ačiū Gražinai ir Povilui. Ačiū mentoriams. Ačiū jums už laiką po pamokų.</p>
  <p class="disc" style="margin-top:50px">⚗️ Eksperimentinis prototipas, sukurtas su DI. Gali klysti: svarbius dalykus pasitikrinkite. Nemokamas, nieko neparduoda. Radote klaidą? Parašykite: krisvas.lt · Kristijonas Vasiliauskas, RA ir ExoClass bendraįkūrėjas</p>
- <aside class="notes"><b>17:58 · 88–90 MIN.</b> <b>SĖKLINIAI KLAUSIMAI</b> „Ką daryti, jei vaikas atneša DI parašytą darbą?" (šviesoforas iš anksto + paprašyk paaiškinti žodžiu) · „Kurį įrankį naudoti?" (tą, kurį leidžia mokykla; Copilot licencijos jau yra) · „Ką sakyti tėvams?" (žr. „Ką dar pridėjau" #2).<br><b>D0</b> Tą patį vakarą: QR/telefonų skaičiai, atsiliepimai, kas lūžo.</aside>
+ <aside class="notes"><b>17:58 · 88–90 MIN.</b> <b>SĖKLINIAI KLAUSIMAI</b> „Ką daryti, jei vaikas atneša DI parašytą darbą?" (šviesoforas iš anksto + paprašyk paaiškinti žodžiu) · „Kurį įrankį naudoti?" (tą, kurį leidžia mokykla; Copilot licencijos jau yra) · „Ką sakyti tėvams?" (žr. „Ką dar pridėjau" #2).<br><b>D0</b> Tą patį vakarą: QR/telefonų skaičiai, atsiliepimai, kas lūžo.<br><b>⏭ PAPILDOMA</b> Jei liko laiko ar klausia apie antras smegenis: <b>28 + Enter</b> (→ ją praleidžia).</aside>
 </section>
 
-<!-- 28 priedas · tik Kris -->
-<!-- SKAIDRĖ 28: Ką dar pridėjau (Kris) -->
+<!-- 28 · PAPILDOMA (tik jei liks laiko; → iš 27 skaidrės ją praleidžia, atidaryk 28 + Enter arba pultu) -->
+<!-- SKAIDRĖ 28: Antros smegenys (papildomai) -->
+<section class="slide" data-label="Antros smegenys (papildomai)" data-steps="1" data-at="90" data-optional="1">
+ <div class="kick">Papildomai · jei liks laiko · <span class="lv l3">L3</span></div>
+ <h2 style="font-size:52px">Mano <em>antros smegenys</em>: kaip gimė šie mokymai</h2>
+ <div class="brains">
+  <div class="bdia"><svg viewBox="0 0 800 640" role="img" aria-label="Trys antros smegenys sujungtos per Google Drive tiltus">
+ <path id="lk1" class="lnk" d="M400 190 L400 420"/>
+ <path id="lk2" class="lnk" d="M400 470 C300 520 220 520 170 520"/>
+ <path id="lk3" class="lnk" d="M400 470 C500 520 580 520 630 520"/>
+ <circle class="dot" r="8"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#lk1"/></animateMotion></circle>
+ <circle class="dot" r="8"><animateMotion dur="2.6s" begin="0.9s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#lk2"/></animateMotion></circle>
+ <circle class="dot" r="8"><animateMotion dur="2.6s" begin="1.7s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#lk3"/></animateMotion></circle>
+ <g class="bn me"><rect x="200" y="30" width="400" height="160" rx="6"/><text class="bt" x="400" y="80" text-anchor="middle">KRIS BRAIN</text><text class="bs" x="400" y="112" text-anchor="middle">Obsidian (Markdown užrašai) + Claude Code</text><text class="bs" x="400" y="140" text-anchor="middle">agentai: tyrėjas · statytojas · kritikas · bibliotekininkas</text></g>
+ <g class="cdc" id="sbCode">
+  <g><rect x="40" y="240" width="170" height="44" rx="4"/><text x="125" y="268" text-anchor="middle">UŽFIKSUOJU</text></g>
+  <g><rect x="225" y="240" width="170" height="44" rx="4"/><text x="310" y="268" text-anchor="middle">SUTVARKAU</text></g>
+  <g><rect x="410" y="240" width="170" height="44" rx="4"/><text x="495" y="268" text-anchor="middle">IŠGRYNINU</text></g>
+  <g><rect x="595" y="240" width="170" height="44" rx="4"/><text x="680" y="268" text-anchor="middle">KURIU</text></g>
+ </g>
+ <text class="bs" x="40" y="320">Tiago Forte „CODE" metodas</text>
+ <g class="bn"><rect x="290" y="410" width="220" height="66" rx="6"/><text class="bt" x="400" y="440" text-anchor="middle" style="font-size:18px">GOOGLE DRIVE</text><text class="bs" x="400" y="462" text-anchor="middle">bendri tiltai</text></g>
+ <g class="bn"><rect x="20" y="490" width="300" height="120" rx="6"/><text class="bt" x="170" y="530" text-anchor="middle">TITO SMEGENYS</text><text class="bs" x="170" y="560" text-anchor="middle">turinys: postai, karuselės, balsas</text><text class="bs" x="170" y="586" text-anchor="middle">nelaukia mano atsakymo</text></g>
+ <g class="bn"><rect x="480" y="490" width="300" height="120" rx="6"/><text class="bt" x="630" y="530" text-anchor="middle">GABRIELIO SMEGENYS</text><text class="bs" x="630" y="560" text-anchor="middle">pamokų ir projektų turinys</text><text class="bs" x="630" y="586" text-anchor="middle">Windows · Claude Code</text></g>
+</svg></div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+   <div class="card"><div class="n">Kas tai</div><p>Vieta už galvos ribų, kur užrašai, idėjos ir šaltiniai sujungti, o DI juos randa. Idėja: Tiago Forte, „Building a Second Brain" (2022).</p></div>
+   <div class="card"><div class="n">Kam aš naudoju</div><p>Turiniui (postai, laiškai, video) · skaidrėms ir pristatymams · tyrimams su šaltiniais · savaitės planui.</p></div>
+   <div class="card"><div class="n">Įrankiai ir kaina</div><p><b>Obsidian</b> ir Markdown failai: nemokami. <b>Claude Pro</b>: nuo $20/mėn. Aš naudoju didžiausią <b>Claude Max</b> planą, apie €218/mėn. <b>Google Drive</b>: bendri tiltai su komanda.</p></div>
+   <div class="card hot"><div class="n">Ką jau padarė</div><p>Šiuos 90 min.: skaidres, telefono puslapį ir 18 užklausų, per vieną vakarą. Mokymosi žemėlapį (2 129 temos). Titas kuria postus nelaukdamas manęs.</p></div>
+  </div>
+ </div>
+ <p class="src">Vaikų duomenų, vardų ir slaptažodžių ten nėra. Kainos: claude.com/pricing (tikrinta 2026-10-19), keičiasi. ⚗️ Parengta su DI.</p>
+ <aside class="notes"><b>⏭ PAPILDOMA, PO „AČIŪ".</b> → iš 27 skaidrės ją praleidžia. Rodyk tik jei liko laiko arba klausia: <b>28 + Enter</b> arba pulte „28".<br><b>KĄ SAKYTI</b> Antros smegenys yra mano užrašai, sujungti taip, kad DI juos randa. Aš užfiksuoju, sutvarkau, išgryninu ir kuriu. Šiuos mokymus padariau su jomis per vieną vakarą: skaidres, telefono puslapį, užklausas. Titas, mūsų turinio kūrėjas, turi savo smegenų dalį: faktus, balsą ir taisykles postams, todėl nelaukia manęs. Gabrielius savo kompiuteryje turi savas smegenis pamokoms ir projektams. Visos trys kalbasi per Google Drive aplanką, kad niekas nedarytų to paties darbo du kartus.<br><b>Mokytojui pradžiai</b> L3 iš 23 skaidrės: vienas aplankas „Klasės modeliai", be vardų.<br><b>FAKTAI</b> CODE = Capture · Organize · Distill · Express (Forte 2022). Obsidian nemokamas asmeniniam naudojimui. Claude Pro $17 (metinis) / $20 (mėn.) = claude.com/pricing, tikrinta 2026-10-19 (USD; EUR ⚠️ nepatikrinta). Max 20x €217,80/mėn. = tavo sąskaita (wiki/finance/subscriptions.md); ⚠️ jei nenori sakyti savo išlaidų, sakyk tik „Pro nuo $20". ⚠️ Gabrielio smegenys: pagal BrainBridge kanoną ten daugiausia BC VR ir BC Jr pamokų darbas, ne socialinių tinklų turinys; patikslink savo žodžiais. Agentų iš viso 8 (scout, executor, builder, mechanic, librarian, browser, desk, critic).</aside>
+</section>
+
+<!-- 29 priedas · tik Kris -->
+<!-- SKAIDRĖ 29: Ką dar pridėjau (Kris) -->
 <section class="slide" data-label="Ką dar pridėjau (Kris)" data-steps="1" data-at="90">
  <div class="kick">Priedas · Kris'ui, ne salei</div>
  <h2>Ką dar pridėjau</h2>
@@ -736,8 +931,8 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
  <aside class="notes"><b>KADA RODYTI</b> Nerodyti salei. Tai Kris'o sąrašas.<br>Idėjos šaltiniai: šviesoforas pagal AI Assessment Scale (Perkins ir kt. 2024, B ⚠️ iš atminties); laiškas tėvams iš SMSM gairių skaidrumo principo (LRT 2026-01-27); 14 d. kilpa jau buvo projekto matavimo plane.</aside>
 </section>
 
-<!-- 29 priedas · šaltiniai -->
-<!-- SKAIDRĖ 29: Šaltiniai (priedas) -->
+<!-- 30 priedas · šaltiniai -->
+<!-- SKAIDRĖ 30: Šaltiniai (priedas) -->
 <section class="slide" data-label="Šaltiniai (priedas)" data-steps="1" data-at="90">
  <div class="kick">Priedas · šaltiniai · A pakartota/RCT · B vienas geras tyrimas ar oficialus dok. · C preprint, įmonės duomenys, žiniasklaida</div>
  <div class="refs">
@@ -763,7 +958,9 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
 <div class="vid" id="vid"></div>
 <div class="backup" id="backup"><span class="bt">ATSARGINĖ NUOTRAUKA · S uždaro</span><img alt="Atsarginė ekrano nuotrauka"></div>
 <button class="btn" id="voBtn">🔊 Kris balsu (V)</button>
-<div id="joinmini"><div class="q" id="joinmq"></div><b id="joinmcode">····</b><span>prisijungti</span></div>
+<div id="joinmini"><div class="q" id="joinmq"></div><b id="joinmcode">····</b><span>prisijungti telefonu</span><div class="qk">Q slėpti</div></div>
+<div id="brk"><span class="ic">🤸</span><span>Judėjimo pertrauka? <b>2 min.</b></span><kbd>B</kbd><span class="small" style="font-size:18px">Esc vėliau</span></div>
+<div id="move"></div>
 <div id="pbig"><h2 style="margin:0 0 10px;font-size:48px">Pulsas · <em>paskutinės 3 min.</em></h2><div class="res" data-res="__pulse"></div><p class="small" style="margin-top:14px">P uždaro · Shift+P nulina</p></div>
 <div id="manual"></div>
 <div id="notes"></div>
@@ -771,7 +968,7 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
 <div id="toast"></div>
 <div id="nav"><button id="bPrev" aria-label="Atgal">←</button><button id="bNext" aria-label="Toliau">→</button></div>
 <div id="help"><h2>Valdymas</h2>
- <p><kbd>→</kbd>/tarpas toliau · <kbd>←</kbd> atgal · <kbd>N</kbd> užrašai · <kbd>F</kbd> pilnas ekranas · <kbd>T</kbd> laikmatis · <kbd>V</kbd> Kris'o balsas · <kbd>Y</kbd> video · <kbd>S</kbd> atsarginė nuotrauka · <kbd>P</kbd> pulsas · <kbd>M</kbd> rankinis įvedimas (be interneto) · <kbd>Shift+R</kbd> išvalyti šio klausimo atsakymus · <kbd>1</kbd>–<kbd>9</kbd>+Enter šokti · <kbd>0</kbd>+Enter laikrodis „pradėjom dabar"</p>
+ <p><kbd>→</kbd>/tarpas toliau · <kbd>←</kbd> atgal · <kbd>N</kbd> užrašai · <kbd>F</kbd> pilnas ekranas · <kbd>T</kbd> laikmatis · <kbd>V</kbd> Kris'o balsas · <kbd>Y</kbd> video · <kbd>S</kbd> atsarginė nuotrauka · <kbd>P</kbd> pulsas · <kbd>M</kbd> rankinis įvedimas (be interneto) · <kbd>Shift+R</kbd> išvalyti šio klausimo atsakymus · <kbd>1</kbd>–<kbd>9</kbd>+Enter šokti · <kbd>0</kbd>+Enter laikrodis „pradėjom dabar" · <kbd>Q</kbd> QR: auto / slėpti / visur · <kbd>B</kbd> judėjimo pertrauka 2 min. · <kbd>28</kbd>+Enter papildoma „Antros smegenys"</p>
  <div id="pultqr"><div class="q" id="pultq"></div><div><b>Telefono pultas (Kris'ui)</b><div id="pultstate" style="font-size:22px;color:var(--muted)">jungiamės…</div><div id="pulturl" style="font-family:var(--mono);font-size:19px;word-break:break-all"></div><div id="livestate" style="font-size:22px;color:var(--muted);margin-top:10px"></div></div></div>
  <p style="margin-top:20px;font-size:21px;color:var(--muted)">? arba Esc uždaro</p></div>
 </div>
@@ -841,9 +1038,8 @@ function render(){
  if(s.dataset.label==='Klasių žemėlapis')GM.set(+(s.dataset.grades||'0').split(',')[st.step]||0,true);
  document.getElementById('count').textContent=(st.slide+1)+' / '+slides.length;
  document.getElementById('voBtn').classList.toggle('on',!!s.dataset.vo);
- document.getElementById('joinmini').classList.toggle('on',!!s.dataset.act&&st.slide>0);
  var mf=document.getElementById('mapframe');if(mf&&mf.closest('.slide')===s&&!mf.src)mf.src=mf.dataset.src;
- THREE3D.place(s);
+ QR.apply();ANIM.onRender(s);
  renderNotes();clock();
  try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}
  try{if(window.bt)window.bt('deck_slide',{i:st.slide+1});}catch(e){}
@@ -851,9 +1047,10 @@ function render(){
  PULT.sync();
 }
 function renderNotes(){var n=document.getElementById('notes');n.classList.toggle('on',notesOn);if(notesOn)n.innerHTML='<div style="opacity:.6;font-size:16px;margin-bottom:8px">'+(st.slide+1)+' · '+esc(slides[st.slide].dataset.label)+' · N slėpti</div>'+NOTES[st.slide];}
-function goTo(i,step){stopTimer();stopVo();closeOverlays();st.slide=Math.max(0,Math.min(LAST,i));st.step=step||0;render();}
-function next(){var s=slides[st.slide];if(st.step<stepsOf(st.slide)-1){st.step++;render();}else if(st.slide<LAST)goTo(st.slide+1,0);}
-function prev(){if(st.step>0){st.step--;render();}else if(st.slide>0)goTo(st.slide-1,stepsOf(st.slide-1)-1);}
+function goTo(i,step){stopTimer();stopVo();closeOverlays();st.slide=Math.max(0,Math.min(LAST,i));st.step=step||0;if(st.slide>0)BRK.start();render();}
+function skipOpt(from,dir){var j=from+dir;if(!slides[from].dataset.optional){while(j>0&&j<LAST&&slides[j].dataset.optional)j+=dir;}return j;}
+function next(){var s=slides[st.slide];if(st.step<stepsOf(st.slide)-1){st.step++;render();}else if(st.slide<LAST)goTo(skipOpt(st.slide,1),0);}
+function prev(){if(st.step>0){st.step--;render();}else if(st.slide>0){var j=skipOpt(st.slide,-1);goTo(j,stepsOf(j)-1);}}
 function reveal(){var s=slides[st.slide];if(!s.classList.contains('quiz-slide'))return;if(st.step<1){st.step=1;render();}}
 function closeOverlays(){['vid','backup','manual'].forEach(function(id){var e=document.getElementById(id);e.classList.remove('on');});document.getElementById('vid').innerHTML='';}
 
@@ -905,7 +1102,9 @@ addEventListener('keydown',function(e){var k=e.key;if(e.target&&/INPUT|TEXTAREA/
  else if(k==='m'||k==='M'){LIVE.manual();}
  else if(k==='R'){LIVE.resetAct();}
  else if(k==='?'){document.getElementById('help').classList.toggle('on');}
- else if(k==='Escape'){document.getElementById('help').classList.remove('on');closeOverlays();document.getElementById('pbig').classList.remove('on');}
+ else if(k==='q'||k==='Q'){QR.cycle();}
+ else if(k==='b'||k==='B'){BRK.toggle();}
+ else if(k==='Escape'){document.getElementById('help').classList.remove('on');closeOverlays();document.getElementById('pbig').classList.remove('on');BRK.esc();}
  else if(/^[0-9]$/.test(k)){jumpBuf+=k;}
  else if(k==='Enter'&&jumpBuf){if(jumpBuf==='0'){START=new Date(Date.now()-(+(slides[st.slide].dataset.at||0))*60000);try{localStorage.setItem('siaures-ai90-start',START.getTime());}catch(x){}clock();toast('Laikrodis: planas nuo dabar');}else goTo(+jumpBuf-1,0);jumpBuf='';}
  else if(k==='Home'){goTo(0,0);}
@@ -970,33 +1169,53 @@ var GM=(function(){
   d[1].forEach(function(t,k){var b=document.createElement('button');b.textContent=t;b.onclick=function(){if(k===d[2]){b.classList.add('ok');f.textContent='✅ Teisingai!';setTimeout(function(){i=(i+1)%Q.length;show();},1100);}else{b.classList.add('no');f.textContent=d[3];}};o.appendChild(b);});}
  show();})();
 
-/* ===== 3D neuronas (three.js r128 iš cdnjs + GLTFLoader) ===== */
-var THREE3D=(function(){
- var ok=false,ren,scene,cam,model,mixer,clockT,host=null,failed=false,started=false;
- function place(s){var h=s.querySelector('.three');if(!h){return;}host=h;if(!started){start();return;}if(ok&&ren.domElement.parentNode!==h){h.insertBefore(ren.domElement,h.firstChild);size();}}
- function size(){if(!ok||!host)return;var w=host.clientWidth||600,hh=host.clientHeight||300;ren.setSize(w,hh,false);cam.aspect=w/hh;cam.updateProjectionMatrix();}
- function fail(msg){failed=true;if(host&&!host.querySelector('.f3')){var d=document.createElement('div');d.className='f3';d.style.cssText='position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:22px;color:#999';d.textContent='3D: '+msg;host.appendChild(d);}}
- function start(){started=true;
-  loadLib('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',function(){
-   if(!window.THREE){fail('nėra interneto');return;}
-   loadLib('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js',function(){
-    try{var c=document.createElement('canvas');var gl=c.getContext('webgl')||c.getContext('experimental-webgl');if(!gl){fail('WebGL nepalaikomas');return;}
-     ren=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true});ren.setPixelRatio(Math.min(2,devicePixelRatio||1));
-     scene=new THREE.Scene();cam=new THREE.PerspectiveCamera(35,2,.01,1000);
-     scene.add(new THREE.HemisphereLight(0xffffff,0x888888,1.1));var dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(3,5,4);scene.add(dl);
-     ok=true;if(host)host.insertBefore(c,host.firstChild);size();addEventListener('resize',size);
-     clockT=new THREE.Clock();
-     if(!THREE.GLTFLoader){fail('nepavyko užkrauti');return;}
-     new THREE.GLTFLoader().load('assets/3d/neuron.glb',function(g){model=g.scene;model.updateMatrixWorld(true);var box=new THREE.Box3().setFromObject(model),bb=new THREE.Box3(),v=new THREE.Vector3(),nb=0;model.traverse(function(o){if(o.isBone){o.getWorldPosition(v);bb.expandByPoint(v);nb++;}});if(nb>1&&bb.getSize(new THREE.Vector3()).length()>box.getSize(new THREE.Vector3()).length())box=bb.expandByScalar(bb.getSize(new THREE.Vector3()).length()*.25);var sz=box.getSize(new THREE.Vector3()).length(),ctr=box.getCenter(new THREE.Vector3());
-       model.position.sub(ctr);scene.add(model);cam.near=sz/200;cam.far=sz*200;cam.position.set(0,sz*.05,sz*.85);cam.lookAt(0,0,0);cam.updateProjectionMatrix();
-       if(g.animations&&g.animations.length){mixer=new THREE.AnimationMixer(model);g.animations.forEach(function(a){mixer.clipAction(a).play();});}
-       window.__neuron3d=true;var nm=0;model.traverse(function(o){if(o.isMesh)nm++;});window.__n3={sz:sz,ctr:[ctr.x,ctr.y,ctr.z],meshes:nm,anim:(g.animations||[]).length};},undefined,function(){fail('modelis nepasikrovė');});
-     (function loop(){requestAnimationFrame(loop);if(!host||!host.closest('.slide.on'))return;var dt=clockT.getDelta();if(model)model.rotation.y+=dt*.35;if(mixer)mixer.update(dt);ren.render(scene,cam);})();
-    }catch(e){fail('klaida');}
-   });
-  });}
- return{place:place,ok:function(){return ok;}};
-})();
+/* ===== QR bėgelis: Q ciklas auto → slėpti → visur (sesijai) ===== */
+var QR=(function(){var K='siaures-ai90-qr',M='auto',L={auto:'QR: tik užduočių skaidrėse',off:'QR paslėptas',all:'QR: visose skaidrėse'};
+ try{M=sessionStorage.getItem(K)||'auto';}catch(e){}if(!L[M])M='auto';
+ function vis(){var s=slides[st.slide];if(st.slide===0||M==='off')return false;if(M==='all')return true;return !!s.dataset.act&&s.dataset.qr!=='off';}
+ function apply(){var v=vis();document.getElementById('joinmini').classList.toggle('on',v);stage.classList.toggle('qr-on',v);}
+ function cycle(){M=M==='auto'?'off':(M==='off'?'all':'auto');try{sessionStorage.setItem(K,M);}catch(e){}apply();toast(L[M]+' (Q)');if(window.PULT)PULT.sync();}
+ return{apply:apply,cycle:cycle,mode:function(){return M;},visible:vis};})();
+
+/* ===== Judėjimo pertrauka: laikas nuo pradžios, priminimas kas N min., B = 2 min. pertrauka ===== */
+var BRK=(function(){var K0='siaures-ai90-t0',KB='siaures-ai90-lastbrk',EVERY=+(qp('pertrauka')||25);if(!(EVERY>=5&&EVERY<=60))EVERY=25;
+ var t0=0,last=0,snooze=0,run=null;
+ try{t0=+sessionStorage.getItem(K0)||0;last=+sessionStorage.getItem(KB)||0;}catch(e){}
+ var MOVES=[['Sukame rankas','m-arms','Didelius ratus pirmyn, tada atgal.'],['Lėtai sukame galvą','m-head','Lėtai, be skubos. Pečiai atpalaiduoti.'],['Šokinėjame vietoje','m-jump','Lengvai, ant pirštų galų. Kas negali: žingsniuojame.'],['Pasitempiame','m-str','Rankos į viršų, giliai įkvepiam, iškvepiam.']];
+ var PER=30;
+ function fig(){return '<svg class="mfig" viewBox="0 0 380 380" aria-hidden="true"><g class="fig body"><line x1="190" y1="140" x2="190" y2="255"/><line x1="190" y1="255" x2="145" y2="340"/><line x1="190" y1="255" x2="235" y2="340"/><line class="armL acc" x1="190" y1="150" x2="112" y2="150"/><line class="armR acc" x1="190" y1="150" x2="268" y2="150"/><g class="head"><circle class="hd" cx="190" cy="98" r="38"/><circle cx="176" cy="94" r="3" fill="#0A0A0A" stroke="none"/><circle cx="204" cy="94" r="3" fill="#0A0A0A" stroke="none"/></g></g></svg>';}
+ function mmss(sec){sec=Math.max(0,Math.round(sec));return Math.floor(sec/60)+':'+('0'+sec%60).slice(-2);}
+ function start(){if(t0)return;t0=Date.now();last=t0;try{sessionStorage.setItem(K0,t0);sessionStorage.setItem(KB,last);}catch(e){}tick();}
+ function due(){return t0&&!run&&(Date.now()-last)>=EVERY*60000&&Date.now()>snooze;}
+ var wasDue=false;
+ function tick(){var e=document.getElementById('elapsed'),d=!!due();e.textContent='⏱ '+(t0?mmss((Date.now()-t0)/1000):'0:00');e.className='pill'+(d?' warn':'');
+  document.getElementById('brk').classList.toggle('on',d);if(d!==wasDue){wasDue=d;if(window.PULT)PULT.sync();}}
+ function esc(){if(run){stop();return;}if(due()){snooze=Date.now()+5*60000;tick();}}
+ function open(){var m=document.getElementById('move'),i=0,left=PER,total=PER*MOVES.length,el=0;
+  function paint(){var mv=MOVES[i];m.innerHTML='<div class="mk">Judėjimo pertrauka · 2 min. · B arba Esc grįžta</div><div class="mt">'+mv[0]+'</div>'+fig()+'<div class="mc">'+left+'</div><div class="mh">'+mv[2]+'</div><div class="mseq">'+MOVES.map(function(x,k){return '<span class="'+(k===i?'cur':(k<i?'done':''))+'">'+(k+1)+' · '+x[0]+'</span>';}).join('')+'</div><div class="mbar"><i style="width:'+Math.round(el/total*100)+'%"></i></div>';
+   m.querySelector('.fig').parentNode.setAttribute('class','mfig '+mv[1]);}
+  run=setInterval(function(){left--;el++;if(left<=0){i++;left=PER;if(i>=MOVES.length){stop();toast('Ačiū! Grįžtam ✅');return;}paint();}else{m.querySelector('.mc').textContent=left;m.querySelector('.mbar i').style.width=Math.round(el/total*100)+'%';}},1000);
+  paint();m.classList.add('on');document.getElementById('brk').classList.remove('on');if(window.PULT)PULT.sync();}
+ function stop(){if(run){clearInterval(run);run=null;}document.getElementById('move').classList.remove('on');last=Date.now();snooze=0;try{sessionStorage.setItem(KB,last);}catch(e){}tick();if(window.PULT)PULT.sync();}
+ function toggle(){if(run)stop();else open();}
+ setInterval(tick,5000);tick();
+ return{start:start,toggle:toggle,esc:esc,tick:tick,on:function(){return !!run;},due:function(){return !!due();},elapsed:function(){return t0?mmss((Date.now()-t0)/1000):'0:00';},EVERY:EVERY};})();
+
+/* ===== Gyvi vizualai: skaitikliai, žemėlapio video, klausimų burbulas, svarstyklės, CODE ciklas ===== */
+var ANIM=(function(){var still=matchMedia('(prefers-reduced-motion:reduce)').matches,done=new WeakSet(),askT=null,codeT=null;
+ function fmt(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,' ');}
+ function count(el){if(done.has(el))return;done.add(el);var to=+el.dataset.countTo,suf=el.dataset.suffix||'';if(still){el.textContent=fmt(to)+suf;return;}
+  var t0=performance.now(),D=1400;(function f(t){var k=Math.min(1,(t-t0)/D),e=1-Math.pow(1-k,3);el.textContent=fmt(Math.round(to*e))+suf;if(k<1)requestAnimationFrame(f);})(t0);}
+ var WORDS=['Laikas','Testai','Vaikų dėmesys','Sukčiavimas','Pamokų planai','Nuo ko pradėti'];
+ function onRender(s){
+  [].forEach.call(s.querySelectorAll('[data-count-to]'),function(el){var step=el.closest('[data-step]');if(!step||+step.dataset.step<=st.step)count(el);});
+  [].forEach.call(s.querySelectorAll('[data-bal]'),function(el){el.classList.toggle('bal',st.step>=+el.dataset.bal);});
+  var v=document.getElementById('mapvid');if(v){var want=v.closest('.slide')===s&&st.step>=1;try{if(want&&v.paused){var p=v.play();if(p&&p.catch)p.catch(function(){});}else if(!want&&!v.paused)v.pause();}catch(e){}}
+  clearInterval(askT);var b=document.getElementById('askBub');if(b&&b.closest('.slide')===s&&!still){var i=0;askT=setInterval(function(){i=(i+1)%WORDS.length;b.querySelector('.w').outerHTML='<span class="w">'+WORDS[i]+'</span>';},2200);}
+  clearInterval(codeT);var c=document.getElementById('sbCode');if(c&&c.closest('.slide')===s){var j=0,g=c.querySelectorAll('g');function hl(){[].forEach.call(g,function(x,k){x.setAttribute('class',k===j?'cur':'');});}hl();if(!still)codeT=setInterval(function(){j=(j+1)%g.length;hl();},1500);}
+  if(still){[].forEach.call(document.querySelectorAll('svg'),function(x){try{x.pauseAnimations&&x.pauseAnimations();}catch(e){}});}
+ }
+ return{onRender:onRender};})();
 
 /* ===== LIVE: telefonai ↔ deck'as (Supabase Realtime broadcast, kanalas di90-<ROOM>) =====
    Deck'as siunčia: state{act,def,reveal} · ack{cid,act} · Telefonai siunčia: hello/ping{cid} · ans{cid,act,v} · pulse{cid,v}
@@ -1101,7 +1320,7 @@ var PULT=(function(){
  function state(t,good){var e=document.getElementById('pultstate');if(e)e.textContent=t;var b=document.getElementById('pultbadge');if(b){b.textContent='🎛 '+(good?'pultas ✓':'pultas');b.className='pill'+(good?' ok':'');}}
  function send(ev,pl){if(!ch||!ok)return;try{ch.send({type:'broadcast',event:ev,payload:pl});}catch(e){}}
  function snap(){var s=slides[st.slide];return{i:st.slide,n:slides.length,label:s.dataset.label,notes:NOTES[st.slide],quiz:s.classList.contains('quiz-slide'),timer:!!s.dataset.timer,vo:!!s.dataset.vo,room:ROOM,
-  live:s.dataset.act?(LIVE.respondents(s.dataset.act)+' atsakė · '+LIVE.present()+' telefonų'):(LIVE.present()+' telefonų'),at:+(s.dataset.at||0)};}
+  live:s.dataset.act?(LIVE.respondents(s.dataset.act)+' atsakė · '+LIVE.present()+' telefonų'):(LIVE.present()+' telefonų'),at:+(s.dataset.at||0),qr:QR.mode(),qrOn:QR.visible(),brk:BRK.on(),brkDue:BRK.due(),el:BRK.elapsed(),opt:!!s.dataset.optional};}
  function sync(){if(!ok)return;var now=Date.now();if(now-lastSent<150){clearTimeout(pending);pending=setTimeout(sync,160);return;}lastSent=now;send('slide',snap());}
  function handle(ev,pl){phones[(pl&&pl.cid)||'anon']=Date.now();state('✅ pultas prijungtas · '+ROOM,true);
   if(ev==='nav'){(pl.dir<0)?prev():next();}
@@ -1109,13 +1328,15 @@ var PULT=(function(){
   else if(ev==='quiz'){reveal();}
   else if(ev==='timer'){toggleTimer();}
   else if(ev==='vo'){playVo();}
+  else if(ev==='qr'){QR.cycle();}
+  else if(ev==='brk'){BRK.toggle();}
   else if(ev==='hello'||ev==='ping'){send('pong',snap());}}
  function init(){var u=url();var e=document.getElementById('pulturl');if(e)e.textContent=u;
   var q=document.getElementById('pultq');if(q&&window.QRCode){try{new QRCode(q,{text:u,width:180,height:180,correctLevel:QRCode.CorrectLevel.M});}catch(x){}}
   state('jungiamės…',false);
   if(typeof supabase==='undefined'||!supabase.createClient){state('pultas nepasiekiamas · klaviatūra veikia',false);return;}
   try{var client=supabase.createClient(SB_URL,SB_KEY);ch=client.channel('di90-pultas-'+ROOM,{config:{broadcast:{self:false}}});
-   ['nav','goto','quiz','timer','vo','hello','ping'].forEach(function(ev){ch.on('broadcast',{event:ev},function(m){try{handle(ev,(m&&m.payload)||{});}catch(x){console.warn(x);}});});
+   ['nav','goto','quiz','timer','vo','qr','brk','hello','ping'].forEach(function(ev){ch.on('broadcast',{event:ev},function(m){try{handle(ev,(m&&m.payload)||{});}catch(x){console.warn(x);}});});
    ch.subscribe(function(s){if(s==='SUBSCRIBED'){ok=true;state('kanalas atidarytas · laukiam telefono',false);sync();}else if(s==='CHANNEL_ERROR'||s==='TIMED_OUT')state('pultas nepasiekiamas ('+s+')',false);});
   }catch(x){state('pultas nepasiekiamas',false);}}
  return{init:init,sync:sync,ROOM:ROOM};
@@ -1125,7 +1346,7 @@ loadLib('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js',fu
 
 resetTimerView();
 (function(){var s=null;try{s=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}if(s&&typeof s.slide==='number'&&s.slide<=LAST){st.slide=s.slide;st.step=0;}render();})();
-window.__deck={st:st,goTo:goTo,next:next,prev:prev,slides:slides,NOTES:NOTES,PULT:PULT,LIVE:LIVE,ACTS:ACTS,GM:GM,NW:NW,THREE3D:THREE3D,toggleTimer:toggleTimer,ROOM:ROOM,playVo:playVo,VO:VO};
+window.__deck={st:st,goTo:goTo,next:next,prev:prev,slides:slides,NOTES:NOTES,PULT:PULT,LIVE:LIVE,ACTS:ACTS,GM:GM,NW:NW,QR:QR,BRK:BRK,ANIM:ANIM,toggleTimer:toggleTimer,ROOM:ROOM,playVo:playVo,VO:VO};
 </script>
 </body>
 </html>

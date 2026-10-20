@@ -1,7 +1,7 @@
 /* QA: DI mokytojams 90 min. (Šiaurės 2026-10-20). Headless Chrome, išplėstas Deck A qa.js.
    cd ~/bc-day && python3 -m http.server 8899 &   (serveris iš bc-day šaknies)
    node siaures-ai-90/qa.js [deckBase] [--shots]
-   Tikrina: deck'as (29 skaidrės, žingsniai, telpa, užrašai, laikas 90 min., interaktyvi užduotis kas ≤20 min., laikmačiai, quiz,
+   Tikrina: deck'as (30 skaidrių: 27 + papildoma „Antros smegenys" + 2 priedai; QR bėgelis Q; judėjimo pertrauka B; be 3D, žingsniai, telpa, užrašai, laikas 90 min., interaktyvi užduotis kas ≤20 min., laikmačiai, quiz,
    klasių žemėlapis, kito žodžio demo, VO failai, rankinis režimas, atsarginės nuotraukos, em dash, JS klaidos) ·
    GYVAI per Supabase Realtime: 2 telefonai → deck'o stulpeliai, pulsas, quiz atskleidimas telefone, lygis → kitas žingsnis, pultas → deck'as ·
    telefonas 360 px: be horizontalaus scroll, mygtukai ≥44 px, šriftas ≥17 px, disclaimer, kv-track full. */
@@ -33,7 +33,7 @@ console.log('\n== Deck ==');
 {
   const page=deck;
   const n=await page.evaluate(()=>__deck.slides.length);
-  ok('29 skaidrės (27 + 2 priedai)',n===29,String(n));
+  ok('30 skaidrių (27 + 1 papildoma + 2 priedai)',n===30,String(n));
   ok('1 skaidrė rodoma',await page.evaluate(()=>__deck.st.slide===0&&__deck.slides[0].classList.contains('on')));
   ok('JBM šriftas įkeltas',await page.evaluate(async()=>{await document.fonts.ready;return document.fonts.check('800 40px JBM');}));
   ok('salės kodas = '+ROOM,await page.evaluate(r=>__deck.ROOM===r&&document.getElementById('joincode').textContent===r,ROOM));
@@ -53,15 +53,21 @@ console.log('\n== Deck ==');
     const s=await page.evaluate(()=>{const st=__deck.st,el=__deck.slides[st.slide];
       const shown=[].filter.call(el.querySelectorAll('[data-step]'),x=>+x.dataset.step<=st.step).every(x=>x.classList.contains('show'));
       const r=el.getBoundingClientRect();
-      const ov=[].filter.call(el.querySelectorAll('h1,h2,.card,.res,.tools,.ladder,.gm,.world,.sb,.lights,.prompt,.refs,.avg,.wall,.chart,.mq,.qr'),x=>{if(!x.offsetParent)return false;const b=x.getBoundingClientRect();return b.height>0&&(b.bottom>r.bottom-20||b.right>r.right+1);}).map(x=>x.className.split(' ')[0]||x.tagName);
+      const ov=[].filter.call(el.querySelectorAll('h1,h2,.card,.res,.tools,.ladder,.gm,.world,.sb,.lights,.prompt,.refs,.avg,.wall,.chart,.mq,.qr,.dash,.kpis,.coi,.cast,.screen,.llm,.ss,.photo,.ask,.brains,.bdia,.nd'),x=>{if(!x.offsetParent)return false;const b=x.getBoundingClientRect();return b.height>0&&(b.bottom>r.bottom-20||b.right>r.right+1);}).map(x=>x.className.split(' ')[0]||x.tagName);
       return{i:st.slide,step:st.step,shown,ov,label:el.dataset.label};});
     visited.add(s.i);
     if(!s.shown)hidden.push(s.i+1+'.'+s.step);
     if(s.ov.length)over.push((s.i+1)+'.'+s.step+' '+s.label+' ['+s.ov.join(',')+']');
     const atEnd=await page.evaluate(()=>{const b=__deck.st.slide,c=__deck.st.step;__deck.next();return b===__deck.st.slide&&c===__deck.st.step;});
     if(atEnd)break;await sleep(40);
+    // papildomos skaidrės → aplankom tiesiai (→ jas praleidžia), tada grįžtam į eilę
+    const opt=await page.evaluate(()=>__deck.slides.map((x,i)=>x.dataset.optional?i:-1).filter(i=>i>=0));
+    if(opt.length&&!visited.has(opt[0])&&await page.evaluate(()=>__deck.st.slide)>opt[0]){const back=await page.evaluate(()=>__deck.st.slide);for(const oi of opt){await page.evaluate(i=>__deck.goTo(i,0),oi);await sleep(60);
+      const so=await page.evaluate(()=>{const el=__deck.slides[__deck.st.slide],r=el.getBoundingClientRect();return [].filter.call(el.querySelectorAll('h1,h2,.card,.bdia,.brains'),x=>{if(!x.offsetParent)return false;const b=x.getBoundingClientRect();return b.height>0&&(b.bottom>r.bottom-20||b.right>r.right+1);}).map(x=>x.className.split(' ')[0]);});
+      if(so.length)over.push((oi+1)+'.0 papildoma ['+so.join(',')+']');visited.add(oi);}
+      await page.evaluate(i=>__deck.goTo(i,0),back);}
   }
-  ok('visos skaidrės aplankytos',visited.size===n,visited.size+'/'+n);
+  ok('visos skaidrės aplankytos (su papildoma)',visited.size===n,visited.size+'/'+n);
   ok('visi žingsniai matomi',hidden.length===0,hidden.join(' '));
   ok('turinys telpa kiekviename žingsnyje (1920×1080)',over.length===0,over.slice(0,8).join(' | '));
   ok('kiekviena skaidrė turi užrašus',await page.evaluate(()=>__deck.NOTES.every(t=>t.length>40)));
@@ -101,9 +107,67 @@ console.log('\n== Deck ==');
   ok('kito žodžio demo prideda žodį',await page.evaluate(()=>__deck.NW.words().length===1&&document.querySelectorAll('#nwBars .row').length===6));
   await page.evaluate(()=>{const r=document.getElementById('nwT');r.value=0.2;r.dispatchEvent(new Event('input'));});
   ok('atsitiktinumo slankiklis keičia tikimybes',await page.evaluate(()=>+document.querySelector('#nwBars .num').textContent.replace('%','')>=80));
-  // 3D
-  const has3d=await until(()=>page.evaluate(()=>window.__neuron3d===true),15000);
-  ok('3D neuronas (three.js + neuron.glb) pasikrovė',has3d,'gali būti headless WebGL riba');
+  // 3D neuronas pašalintas (Kris 10-20) → 2D LLM schema + nuotraukos
+  ok('nėra 3D neurono (jokio three.js, neuron.glb, .three)',await page.evaluate(()=>!document.querySelector('.three,canvas#hero3d,canvas#slide3d')&&!document.querySelector('script[src*="three"]')&&!/neuron\.glb|GLTFLoader/.test(document.documentElement.innerHTML)&&!window.THREE));
+  ok('7 skaidrė: LLM schema su LT etiketėmis (tekstas · sluoksniai · kitas žodis)',await page.evaluate(()=>{const v=document.getElementById('llmviz');return !!v&&v.closest('.slide')===__deck.slides[6]&&/TEKSTAS/.test(v.textContent)&&/SLUOKSNIAI/.test(v.textContent)&&/KITAS ŽODIS/.test(v.textContent)&&v.querySelectorAll('.pulse').length>=3&&v.querySelectorAll('.pb').length===4;}));
+  const imgs=await page.evaluate(async()=>{const L=[...document.querySelectorAll('.slide img')].map(i=>i.getAttribute('src')).filter(u=>/^assets\//.test(u));const r=await Promise.all(L.map(u=>fetch(u).then(async x=>({u,st:x.status,kb:Math.round((await x.blob()).size/1024)}))));return r;});
+  ok('naujos nuotraukos/logotipai/veikėjai: visi 200 ir ≤300 KB ('+imgs.length+')',imgs.length>=10&&imgs.every(x=>x.st===200&&x.kb<=300),JSON.stringify(imgs.filter(x=>x.st!==200||x.kb>300)));
+  ok('1 skaidrė: Kris mokymuose nuotrauka',await page.evaluate(()=>{const i=__deck.slides[0].querySelector('.photo img');return !!i&&/kris-mokymai/.test(i.src);}));
+  await page.evaluate(()=>__deck.goTo(2,0));await sleep(300);
+  ok('3 skaidrė: Kris nuotrauka + klausimo burbulas',await page.evaluate(()=>{const s=__deck.slides[2];return !!s.querySelector('.ask .av img')&&!!s.querySelector('#askBub .qm');}));
+  await page.evaluate(()=>__deck.goTo(3,1));await sleep(2200);
+  const s4=await page.evaluate(()=>{const s=__deck.slides[3],t=s.textContent;return{nd:/disleksij/i.test(t)&&/ADHD/.test(t)&&/disgrafij/i.test(t),logos:[...s.querySelectorAll('.vent .lg img')].filter(i=>i.complete&&i.naturalWidth>0).length,cast:[...s.querySelectorAll('.cast img')].filter(i=>i.complete&&i.naturalWidth>0).map(i=>i.alt).join(','),cnt:s.querySelector('[data-count-to="20000"]').textContent,coi:/nieko neparduodu/.test(t),vid:(()=>{const v=document.getElementById('mapvid');return{ok:!!v&&v.muted&&v.loop,rs:v.readyState,paused:v.paused};})()};});
+  ok('4 skaidrė: disleksija + ADHD + disgrafija',s4.nd);
+  ok('4 skaidrė: 3 logotipai (RA · ExoClass · Brain Club) įkelti',s4.logos===3,String(s4.logos));
+  ok('4 skaidrė: BC Jr veikėjai Klaidas · Misty · Baitas · Neuron · Lekta',s4.cast==='Klaidas,Misty,Baitas,Neuron,Lekta',s4.cast);
+  ok('4 skaidrė: skaitiklis pasiekia 20 000+',s4.cnt==='20 000+',s4.cnt);
+  ok('4 skaidrė: interesų atskleidimas toje pačioje skaidrėje',s4.coi);
+  ok('4 skaidrė: žemėlapio įrašas groja (muted loop)',s4.vid.ok&&s4.vid.rs>=2&&!s4.vid.paused,JSON.stringify(s4.vid));
+  const vsz=await page.evaluate(async()=>Math.round((await (await fetch('assets/video/zemelapis-loop.mp4')).blob()).size/1024));
+  ok('žemėlapio video ≤3 MB ('+vsz+' KB)',vsz>0&&vsz<=3072);
+  await page.evaluate(()=>__deck.goTo(7,0));await sleep(1400);
+  const b0=await page.evaluate(()=>getComputedStyle(document.querySelector('.slide.on .scale .beam')).transform);
+  await page.evaluate(()=>__deck.next());await sleep(1600);
+  const b1=await page.evaluate(()=>getComputedStyle(document.querySelector('.slide.on .scale .beam')).transform);
+  ok('8 skaidrė: svarstyklės pasvirę → išsilygina, kai atsiranda silpnybės',b0!==b1&&/matrix\(1, 0, 0, 1/.test(b1),b0+' → '+b1);
+  // QR bėgelis
+  await page.evaluate(()=>{sessionStorage.removeItem('siaures-ai90-qr');});
+  await page.evaluate(()=>__deck.goTo(2,0));await sleep(300);
+  const qrA=await page.evaluate(()=>{const j=document.getElementById('joinmini'),jr=j.getBoundingClientRect(),s=__deck.slides[2];const hit=[...s.querySelectorAll('h2,.cloud,.res,.ask,.thint,.rcount')].filter(x=>{const b=x.getBoundingClientRect();return b.width>0&&!(b.right<=jr.left||b.left>=jr.right||b.bottom<=jr.top||b.top>=jr.bottom);}).map(x=>x.className);return{on:j.classList.contains('on'),rail:document.getElementById('stage').classList.contains('qr-on'),hit,mode:__deck.QR.mode()};});
+  ok('QR bėgelis: užduoties skaidrėje rodomas ir NIEKO neuždengia',qrA.on&&qrA.rail&&qrA.hit.length===0&&qrA.mode==='auto',JSON.stringify(qrA));
+  await page.evaluate(()=>__deck.goTo(3,0));await sleep(150);
+  ok('QR auto: skaidrėje be užduoties paslėptas',await page.evaluate(()=>!document.getElementById('joinmini').classList.contains('on')));
+  await page.evaluate(()=>__deck.goTo(2,0));await sleep(150);
+  await page.keyboard.press('q');await sleep(150);
+  ok('Q paslepia QR (režimas off, išsaugotas sesijai)',await page.evaluate(()=>!document.getElementById('joinmini').classList.contains('on')&&!document.getElementById('stage').classList.contains('qr-on')&&sessionStorage.getItem('siaures-ai90-qr')==='off'));
+  await page.keyboard.press('q');await sleep(150);await page.evaluate(()=>__deck.goTo(3,0));await sleep(150);
+  ok('Q antrą kartą: QR visose skaidrėse',await page.evaluate(()=>__deck.QR.mode()==='all'&&document.getElementById('joinmini').classList.contains('on')));
+  await page.keyboard.press('q');await sleep(150);
+  ok('Q trečią kartą: atgal į auto',await page.evaluate(()=>__deck.QR.mode()==='auto'));
+  // judėjimo pertrauka
+  ok('laikas nuo pradžios skaičiuojamas viršuje',await page.evaluate(()=>/^⏱ \d+:\d\d$/.test(document.getElementById('elapsed').textContent)&&!!sessionStorage.getItem('siaures-ai90-t0')));
+  const before=await page.evaluate(()=>__deck.st.slide);
+  await page.keyboard.press('b');await sleep(2300);
+  const mv=await page.evaluate(()=>{const m=document.getElementById('move');return{on:m.classList.contains('on'),cues:[...m.querySelectorAll('.mseq span')].map(x=>x.textContent).join('|'),c:+m.querySelector('.mc').textContent,fig:!!m.querySelector('svg.mfig.m-arms')};});
+  ok('B: 2 min. judėjimo pertrauka (4 judesiai, skaičiuoja atgal)',mv.on&&/Sukame rankas/.test(mv.cues)&&/sukame galvą/.test(mv.cues)&&/Šokinėjame vietoje/.test(mv.cues)&&/Pasitempiame/.test(mv.cues)&&mv.c<30&&mv.c>=26&&mv.fig,JSON.stringify(mv));
+  await page.keyboard.press('Escape');await sleep(200);
+  ok('Esc grįžta į tą pačią skaidrę',await page.evaluate(b=>!document.getElementById('move').classList.contains('on')&&__deck.st.slide===b,before));
+  await page.evaluate(()=>{sessionStorage.setItem('siaures-ai90-lastbrk',String(Date.now()-26*60000));});
+  await page.goto(DURL,{waitUntil:'domcontentloaded'});await sleep(1800);
+  await page.evaluate(()=>__deck.BRK.tick());await sleep(200);
+  ok('po 25 min. kampe priminimas „Judėjimo pertrauka? B" (neblokuoja)',await page.evaluate(()=>document.getElementById('brk').classList.contains('on')&&!document.getElementById('move').classList.contains('on')));
+  await page.keyboard.press('Escape');await sleep(150);
+  ok('Esc atideda priminimą',await page.evaluate(()=>!document.getElementById('brk').classList.contains('on')));
+  // papildoma skaidrė
+  const ai=await page.evaluate(()=>__deck.slides.findIndex(s=>s.dataset.label==='Ačiū'));
+  await page.evaluate(i=>__deck.goTo(i,0),ai);await sleep(100);await page.evaluate(()=>__deck.next());await sleep(100);
+  ok('→ iš „Ačiū" praleidžia papildomą skaidrę',await page.evaluate(()=>__deck.slides[__deck.st.slide].dataset.label==='Ką dar pridėjau (Kris)'));
+  await page.evaluate(()=>__deck.prev());await sleep(100);
+  ok('← grįžta į „Ačiū" (papildoma praleidžiama)',await page.evaluate(()=>__deck.slides[__deck.st.slide].dataset.label==='Ačiū'));
+  await page.keyboard.press('2');await page.keyboard.press('8');await page.keyboard.press('Enter');await sleep(300);
+  const sb=await page.evaluate(()=>{const s=__deck.slides[__deck.st.slide],t=s.textContent;return{l:s.dataset.label,opt:s.dataset.optional,forte:/Tiago Forte/.test(t),tools:/Obsidian/.test(t)&&/Claude/.test(t)&&/Google Drive/.test(t),cost:/\$20/.test(t),three:/TITO SMEGENYS/.test(t)&&/GABRIELIO SMEGENYS/.test(t)&&/KRIS BRAIN/.test(t),notes:/PAPILDOMA/.test(__deck.NOTES[__deck.st.slide]),privacy:/Vaikų duomenų/.test(t)};});
+  ok('28 + Enter: „Antros smegenys" (Forte, įrankiai, kaina, 3 smegenys, užrašai)',sb.l==='Antros smegenys (papildomai)'&&sb.opt==='1'&&sb.forte&&sb.tools&&sb.cost&&sb.three&&sb.notes&&sb.privacy,JSON.stringify(sb));
+  await page.evaluate(()=>__deck.goTo(6,0));await sleep(200);
   // VO
   const vo=await page.evaluate(async()=>{const s=__deck.slides.filter(x=>x.dataset.vo).map(x=>x.dataset.vo);const r=await Promise.all(s.map(u=>fetch(u,{method:'HEAD'}).then(x=>x.status)));return{s,r};});
   ok('VO: 4 skaidrės su Kris balso failu, visi 200',vo.s.length===4&&vo.r.every(x=>x===200),JSON.stringify(vo));
@@ -130,6 +194,7 @@ console.log('\n== Deck ==');
   // pagalba
   await page.keyboard.press('?');await sleep(100);
   ok('? rodo pultą ir salės kanalą',await page.evaluate(()=>/pultas\.html\?room=/.test(document.getElementById('pulturl').textContent)&&/Salės kanalas/.test(document.getElementById('livestate').textContent)));
+  ok('pagalboje Q, B ir 28+Enter',await page.evaluate(()=>{const t=document.getElementById('help').textContent;return /QR/.test(t)&&/pertrauka/.test(t)&&/Antros smegenys/.test(t);}));
   await page.keyboard.press('Escape');
   const html=await page.content();
   ok('em dash 0 (deck)',!/—/.test(html));
@@ -139,7 +204,7 @@ console.log('\n== Deck ==');
     const li=await page.evaluate(()=>__deck.slides.findIndex(s=>s.dataset.label==='L1 demo'));
     await page.evaluate(i=>__deck.goTo(i,1),li);await sleep(700);
     await page.screenshot({path:__dirname+'/backup/l1-testas-pavyzdys.png'});
-    for(const [lab,step,file] of [['Prisijunkite',0,'s01'],['Kada DI padeda mokytis',1,'s10'],['Klasių žemėlapis',4,'s20'],['3 lygiai',2,'s06'],['Įrankiai',1,'s14'],['Kas yra DI?',1,'s07']]){
+    for(const [lab,step,file] of [['Prisijunkite',0,'s01'],['Ko tikitės?',0,'s03'],['Kas aš',1,'s04'],['Kas yra DI?',1,'s07'],['Stiprybės ir silpnybės',1,'s08'],['Antros smegenys (papildomai)',0,'s28'],['Kada DI padeda mokytis',1,'s10'],['Klasių žemėlapis',4,'s20'],['3 lygiai',2,'s06'],['Įrankiai',1,'s14']]){
       const i=await page.evaluate(l=>__deck.slides.findIndex(s=>s.dataset.label===l),lab);await page.evaluate((i,s)=>__deck.goTo(i,s),i,step);await sleep(1500);
       await page.screenshot({path:__dirname+'/qa-shot-'+file+'.png'});}
   }
@@ -221,6 +286,14 @@ const before=await deck.evaluate(()=>__deck.st.slide);
 await P.evaluate(()=>document.querySelector('.nav .nx').click());
 ok('pultas → deck\'as perjungė skaidrę',await until(()=>deck.evaluate(b=>__deck.st.slide===b+1,before)));
 ok('pultas rodo salės eilutę',await until(()=>P.evaluate(()=>/telefon/.test(document.getElementById('live').textContent))));
+const qm0=await deck.evaluate(()=>__deck.QR.mode());
+await P.evaluate(()=>document.getElementById('bQr').click());
+ok('pultas: QR mygtukas keičia deck\'o QR režimą',await until(()=>deck.evaluate(m=>__deck.QR.mode()!==m,qm0)));
+await P.evaluate(()=>document.getElementById('bBrk').click());
+ok('pultas: pertraukos mygtukas atidaro judėjimo pertrauką',await until(()=>deck.evaluate(()=>__deck.BRK.on())));
+await P.evaluate(()=>document.getElementById('bBrk').click());
+ok('pultas: antras paspaudimas uždaro pertrauką',await until(()=>deck.evaluate(()=>!__deck.BRK.on())));
+while(await deck.evaluate(()=>__deck.QR.mode())!=='auto'){await deck.keyboard.press('q');await sleep(100);}
 ok('pultas JS klaidų 0',pErrs.length===0,pErrs.join(' | '));
 /* ---------- Telefonas 360 px ---------- */
 console.log('\n== Telefonas 360 px ==');

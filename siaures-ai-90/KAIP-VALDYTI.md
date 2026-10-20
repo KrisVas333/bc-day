@@ -1,6 +1,6 @@
 # KAIP VALDYTI · DI mokytojams (90 min.)
 
-**Kur:** Šiaurės licėjus · **Kada:** An, 2026-10-20, 16:30 · **Paruošta:** 2026-10-19
+**Kur:** Šiaurės licėjus · **Kada:** An, 2026-10-20, 16:30 · **Paruošta:** 2026-10-19 · **atnaujinta:** 2026-10-20 (Kris pataisos: be 3D, nuotraukos, QR Q, pertrauka B, papildoma 28)
 
 ---
 
@@ -23,6 +23,8 @@ http://localhost:8899/siaures-ai-90/index.html
 5. **Spausk F** (pilnas ekranas). **Spausk ?** (pamatysi pultą ir kodą).
 
 Ženklelis viršuje: `📱 N · KODAS`. Žalias = telefonai mato ekraną.
+
+**⏱ viršuje** = laikas nuo pirmo → paspaudimo. Kas **25 min.** kairėje apačioje pasirodo „Judėjimo pertrauka? B" (nieko neuždengia). Kitas intervalas: atidaryk su `?pertrauka=20` arba `?pertrauka=30` adreso gale (pvz. `index.html?pertrauka=30`).
 
 ---
 
@@ -47,6 +49,10 @@ http://localhost:8899/siaures-ai-90/index.html
 | **Esc** | uždaro pagalbą, pulsą ir langus |
 | **skaičius + Enter** | šokti į skaidrę. Pvz. `15` + Enter |
 | **0 + Enter** | „pradėjom dabar“: laikrodis perskaičiuoja planą |
+| **Q** | QR juosta dešinėje: **auto** (tik užduočių skaidrėse) → **paslėpta** → **visose** → auto. Kai rodoma, turinys pasislenka ir niekas neuždengiama. Režimas lieka iki naršyklės skirtuko uždarymo |
+| **B** | **judėjimo pertrauka 2 min.** (rankos · galva · šokinėjimas · tempimas, po 30 s). **B** arba **Esc** grįžta į tą pačią skaidrę |
+| **Esc** (kai kampe „Judėjimo pertrauka?") | atideda priminimą 5 min. |
+| **28 + Enter** | papildoma skaidrė „Antros smegenys" (→ ją praleidžia, rodoma tik jei liko laiko) |
 
 ⚠️ **Caps Lock turi būti išjungtas.** Jis sukeičia **p** ir **P**, **r** ir **R**.
 
@@ -56,7 +62,7 @@ http://localhost:8899/siaures-ai-90/index.html
 
 1. Deck'e **spausk ?**
 2. Telefonu **nuskenuok** QR (jis rodo `pultas.html?room=KODAS`).
-3. Telefone matai: skaidrės pavadinimą, užrašus, **← →**, šuolį į skaidrę, atskleidimą (quiz), laikmatį, balsą.
+3. Telefone matai: skaidrės pavadinimą, užrašus, **← →**, šuolį į skaidrę, atskleidimą (quiz), laikmatį, balsą, **📱 QR** (tas pats kaip Q) ir **🤸 Pertrauka 2 min.** (tas pats kaip B; raudonas, kai laikas pertraukai).
 4. Būsena `✅ pultas prijungtas`. Jei raudona: perkrauk pultą arba **naudok klaviatūrą**.
 
 ⚠️ Pultas veikia tik su internetu (4G tinka). Be jo klaviatūra veikia visada.
@@ -156,7 +162,7 @@ Kitame Terminal lange:
 cd ~/bc-day && node siaures-ai-90/qa.js
 ```
 
-Turi baigtis: **PASS 86 · FAIL 0**. Jei FAIL: parodyk eilutę Neuron.
+Turi baigtis: **PASS 115 · FAIL 0**. Jei FAIL: parodyk eilutę Neuron.
 
 ---
 
