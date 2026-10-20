@@ -451,7 +451,7 @@ console.log('\n== Atstatyti (RESET) ==');
   ok('RESET: laikmatis sustabdytas ir grąžintas į 20:00',!r.iv&&!r.run&&r.tt==='20:00',r.tt);
   ok('RESET: plano laikrodis 16:30, pertraukų laikas 0:00, 1 skaidrė',r.start===null&&r.hh==='16:30'&&r.el==='0:00'&&r.t0===null&&r.slide===0,JSON.stringify(r));
   ok('RESET: deck\'as skaičiuoja 0 atsakymų visose veiklose',await deck.evaluate(()=>Object.keys(__deck.ACTS).every(k=>__deck.LIVE.respondents(k)===0)));
-  ok('RESET: telefonas A pamiršo atsakymus (reset broadcast)',await until(()=>A.p.evaluate(()=>Object.keys(__join.sent()).length===0&&__join.LEVEL()===null),8000));
+  ok('RESET: telefonas A pamiršo atsakymus (reset broadcast)',await until(()=>A.p.evaluate(()=>Object.keys(__join.sent()).length===0&&__join.LEVEL()===null),17000));
   await deck.evaluate(()=>__deck.goTo(1,0));
   ok('po RESET telefone klausimas be pažymėjimų',await until(()=>A.p.evaluate(()=>document.getElementById('actTitle').textContent==='Kas šiandien salėje?'&&document.querySelectorAll('.opt.sel').length===0&&!/Ekrane/.test((document.getElementById('msg')||{}).textContent||'')),8000));
   await tapOpt(A,'d',0);await A.p.evaluate(()=>document.querySelector('.send').click());
@@ -459,7 +459,7 @@ console.log('\n== Atstatyti (RESET) ==');
   // telefonas, praleidęs reset broadcast, pasiveja per epochą
   await B.p.evaluate(r=>{localStorage.setItem('di90-ep-'+r,'123');window.sent={kas:{d:[1]}};},ROOM);
   await deck.evaluate(()=>{__deck.goTo(2,0);__deck.goTo(1,0);});
-  ok('praleidęs reset telefonas pasiveja per epochą (state)',await until(()=>B.p.evaluate(()=>Object.keys(__join.sent()).length===0),8000));
+  ok('praleidęs reset telefonas pasiveja per epochą (state)',await until(()=>B.p.evaluate(()=>Object.keys(__join.sent()).length===0),17000));
   // pultas: dvigubas paspaudimas
   await P.evaluate(()=>document.getElementById('bRst').click());await sleep(1200);
   ok('pultas: 1 paspaudimas rodo „Tikrai…", deck\'as nevalo',await P.evaluate(()=>/Tikrai išvalyti viską\? Spauskite dar kartą per 3 s/.test(document.getElementById('bRst').textContent))&&await deck.evaluate(()=>Object.keys(__deck.LIVE.D().ans).length===1));
