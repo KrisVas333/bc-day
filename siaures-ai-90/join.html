@@ -203,7 +203,7 @@ function draw(s){var d=s.def,box=$('actBody'),prev=sent[s.act]||{};$('actTitle')
  if(prev&&Object.keys(prev).length)msg(acked[s.act]?'✅ Ekrane. Galite pakeisti.':'Jūsų atsakymas išsiųstas. Galite pakeisti.','ok');
  if(s.reveal)markReveal(s);}
 function msg(t,c){var m=$('msg');if(!m)return;m.className='msg '+c;m.textContent=t;}
-function submit(act,val){var v={};for(var k in val)v[k]=val[k];sent[act]=v;ls('di90-sent',JSON.stringify(sent));
+function submit(act,val){var v={};for(var k in val)v[k]=val[k];sent[act]=v;ls('di90-sent',JSON.stringify(sent));if(act==='kas')saveSurvey(v);
  if(act==='lygis'&&typeof v.l==='number'){LEVEL=['l1','l2','l3'][v.l];ls('di90-level',LEVEL);}
  var okSend=send('ans',{act:act,v:v});msg(okSend?'Siunčiama…':'Nėra ryšio: išsiųsim, kai atsiras.','wait');tr('di90_answer',{act:act});
  setTimeout(function(){if(!acked[act]&&cur===act)msg('Išsiųsta. Jei ekranas nerodo, spauskite dar kartą.','wait');},6000);}
@@ -254,6 +254,17 @@ var MV=(function(){var open=false,live=null,idx=-1,manual=false;
  function close(){open=false;$('mentorBox').classList.add('hide');}
  return{follow:follow,show:show,close:close,open:function(){return open;},label:function(){var K=keys();return(!manual&&live&&live.label)?live.label:K[idx];}};})();
 $('mBtn').onclick=MV.show;
+
+/* ===== DI raštingumo pulsas → Supabase di_rastingumas (anon INSERT, viena eilutė įrenginiui kambaryje) ===== */
+var MOKYMAI='siaures-ai-90',MOKYKLA='Šiaurės licėjus',svSaved={};
+var SV={st:['nenaudoju','<3men','3-12men','1-2m','>2m'],ir:['chatgpt','gemini','copilot','claude','deepseek','perplexity','grok','manus','meta_ai','kita','jokio'],dz:['niekada','kas_men','kas_sav','kasdien'],
+ pa:['planai','testai','vertinimas','tekstai','mokymasis','klase','nenaudoju'],ts:['taip','ne','nezinau'],d:['pradinis','lietuviu','matematika','istorija','menai','gamtos_steam','uzsienio','kita'],kl:['darzelis','1-2','3-4','5-6','7-8','9-10','11-12']};
+function svOne(k,v){return(typeof v==='number'&&SV[k][v])?SV[k][v]:null;}
+function svMany(k,v){return Array.isArray(v)?v.map(function(i){return SV[k][i];}).filter(Boolean):null;}
+function saveSurvey(v){if(typeof v.st!=='number'||!client||svSaved[ROOM])return;
+ var row={mokymai:MOKYMAI,sesija:ROOM,mokykla:MOKYKLA,anon_id:CID,stazas:svOne('st',v.st),irankiai:svMany('ir',v.ir),daznis:svOne('dz',v.dz),paskirtis:svMany('pa',v.pa),
+  savivertinimas:(typeof v.sv==='number'?v.sv+1:null),taisykles:svOne('ts',v.ts),dalykas:svMany('d',v.d),klases:svMany('kl',v.kl),src:(qp('src')||'').slice(0,40)||null};
+ try{client.from('di_rastingumas').insert(row).then(function(r){if(r&&r.error&&r.error.code!=='23505'){console.warn('di_rastingumas',r.error.message);window.__svErr=r.error.message;}else{svSaved[ROOM]=1;window.__svOk=1;tr('di90_survey',{});}});}catch(e){}}
 
 /* ===== Pulsas ===== */
 [].forEach.call(document.querySelectorAll('#pulse button'),function(b){b.onclick=function(){var v=+b.dataset.p;send('pulse',{v:v});tr('di90_pulse',{v:v});

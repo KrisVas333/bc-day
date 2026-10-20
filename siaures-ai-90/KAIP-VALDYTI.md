@@ -45,6 +45,7 @@ http://localhost:8899/siaures-ai-90/index.html
 | **Shift+P** (didžioji) | nunulina pulsą |
 | **M** | rankinis įvedimas (kai nėra interneto) |
 | **Shift+R, du kartus** | išvalo šios skaidrės atsakymus |
+| **2 skaidrė, →** | 🧭 **DI raštingumo pulsas**: telefone po dalykų ir klasių 6 DI klausimai (stažas, įrankiai, dažnis, paskirtis, savivertinimas 1–5, mokyklos taisyklės). **→** rodo įrankius, stažą, vidurkį. Kiekvienas telefonas įrašo 1 anoniminę eilutę į Supabase `di_rastingumas` (be vardų). Be interneto: **M**, stažo klausimas yra |
 | **Shift+X, du kartus per 3 s** | ↺ **ATSTATYTI VISKĄ**: visi atsakymai, pulsas, rankiniai skaičiai, laikrodžiai, 1 skaidrė. Pirmas paspaudimas tik paklausia „Tikrai išvalyti viską?“. Tas pats mygtukas **↺ Atstatyti** viršuje dešinėje ir pagalboje (?) |
 | **K** | 📘 **Mentoriui**: dešinėje skydelis su 3–5 papildomais faktais (su šaltiniu ir A/B/C) ir 1–3 pavyzdžiais klasėje šiai skaidrei. **K** arba **Esc** uždaro. Pagal nutylėjimą paslėpta: rodyk salei tik jei nori. Mygtukas **📘 Mentoriui** viršuje |
 | **?** | pagalba, pulto QR ir kodas |

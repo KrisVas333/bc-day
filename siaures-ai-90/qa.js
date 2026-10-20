@@ -470,6 +470,30 @@ console.log('\n== Atstatyti (RESET) ==');
   ok('telefonų JS klaidų 0 (mentor + reset)',A.errs.length===0&&B.errs.length===0,A.errs.concat(B.errs).join(' | '));
   ok('em dash 0 (pultas, deck)',!/—/.test(await P.content())&&!/—/.test(await deck.content()));
 }
+/* ---------- DI raštingumo pulsas + Ačiū ---------- */
+console.log('\n== DI raštingumo pulsas + Ačiū ==');
+{
+  await deck.evaluate(()=>__deck.goTo(1,0));
+  await until(()=>B.p.evaluate(()=>document.getElementById('actTitle').textContent==='Kas šiandien salėje?'&&!!document.querySelector('.opts[data-k="ir"]')),20000);
+  ok('telefone 6 DI klausimai + anonimiškumo eilutė',await B.p.evaluate(()=>['st','ir','dz','pa','ts'].every(k=>!!document.querySelector('.opts[data-k="'+k+'"]'))&&document.querySelectorAll('.opts[data-k="ir"] .opt').length===11&&/Anonimiška\. Renkame suvestinę apie Lietuvos mokytojų DI raštingumą\. Jokių vardų\./.test(document.body.innerText)&&/Meta AI/.test(document.body.innerText)));
+  await tapOpt(B,'d',2);await tapOpt(B,'kl',3);await tapOpt(B,'st',3);await tapOpt(B,'ir',0);await tapOpt(B,'ir',2);await tapOpt(B,'dz',3);await tapOpt(B,'pa',0);await tapOpt(B,'pa',1);await tapOpt(B,'ts',2);
+  await B.p.evaluate(()=>{document.querySelectorAll('.scale')[0].children[3].click();document.querySelector('.send').click();});
+  ok('Supabase di_rastingumas: eilutė įrašyta (anon INSERT, be klaidos)',await until(()=>B.p.evaluate(()=>window.__svOk===1),15000),await B.p.evaluate(()=>window.__svErr||''));
+  await deck.keyboard.press('ArrowRight');
+  ok('ekrane 2 žingsnis: ChatGPT 1 · Copilot 1 · stažas 1–2 m. 1 · savivertinimas 4.0',await until(()=>deck.evaluate(()=>{const ir=document.querySelectorAll('.slide.on [data-res="kas.ir"] .row .num'),stz=document.querySelectorAll('.slide.on [data-res="kas.st"] .row .num'),a=document.querySelector('.slide.on [data-res="kas.__sv"] b');
+    return document.getElementById('dipulse').classList.contains('show')&&ir.length===11&&ir[0].textContent==='1'&&ir[2].textContent==='1'&&stz[3].textContent==='1'&&a&&a.textContent==='4.0';}),15000));
+  ok('2 žingsnis telpa 1920×1080',await deck.evaluate(()=>{const r=document.getElementById('dipulse').getBoundingClientRect();return r.bottom<=1080-20;}));
+  if(SHOTS){await sleep(600);await deck.screenshot({path:__dirname+'/qa-shot-s02-dipulse.png'});}
+  ok('M rankinis: stažo klausimas yra',await deck.evaluate(()=>{__deck.LIVE.manual();const t=document.getElementById('manual').textContent;__deck.LIVE.manual();return /Kiek laiko naudojate DI/.test(t);}));
+  const ai=await deck.evaluate(()=>__deck.slides.findIndex(s=>s.dataset.label==='Ačiū'));
+  await deck.evaluate(i=>__deck.goTo(i,0),ai);await sleep(800);
+  ok('Ačiū: QR koduoja medziaga.html?src=siaures-90-aciu',await deck.evaluate(()=>document.getElementById('aciuqr').title==='https://krisvas333.github.io/bc-day/siaures-ai-90/medziaga.html?src=siaures-90-aciu'&&!!document.querySelector('#aciuqr img,#aciuqr canvas')));
+  ok('Ačiū: Kris nuotrauka įkelta, ≤300 KB, viskas telpa',await deck.evaluate(async()=>{const im=document.querySelector('.slide.on img[src*="kris-aciu"]');const b=await (await fetch(im.src)).blob();const r=document.querySelector('.slide.on .disc').getBoundingClientRect();return im.complete&&im.naturalWidth>0&&b.size<=300*1024&&r.bottom<=1080;}));
+  for(const m of ['off','all','auto']){while(await deck.evaluate(()=>__deck.QR.mode())!==m){await deck.keyboard.press('q');await sleep(80);}
+    if(!await deck.evaluate(()=>{const q=document.getElementById('aciuqr').getBoundingClientRect();return q.width>200&&q.right<=1920;})){ok('Ačiū QR matomas su Q='+m,false);}}
+  ok('Ačiū QR matomas su bet kuriuo Q režimu',true);
+  if(SHOTS){await sleep(300);await deck.screenshot({path:__dirname+'/qa-shot-s28-aciu.png'});}
+}
 /* ---------- be ryšio ---------- */
 console.log('\n== Be ryšio ==');
 {
@@ -477,7 +501,7 @@ console.log('\n== Be ryšio ==');
   await p.setRequestInterception(true);p.on('request',r=>{if(/supabase|jsdelivr|cdnjs|neuron-ar/.test(r.url()))r.abort();else r.continue();});
   await p.setViewport({width:1280,height:720});
   await p.goto(BASE+'index.html?room=OFFL',{waitUntil:'domcontentloaded'});await sleep(1500);
-  ok('be interneto deck\'as veikia klaviatūra',await p.evaluate(()=>{__deck.next();return __deck.st.slide===1||__deck.st.step===1;}));
+  ok('be interneto deck\'as veikia klaviatūra',await p.evaluate(()=>{__deck.goTo(0,0);__deck.next();return __deck.st.slide===1||__deck.st.step===1;}));
   ok('be interneto ženklelis siūlo M',await p.evaluate(()=>/ryšio nėra \(M\)/.test(document.getElementById('joinbadge').textContent)));
   await p.evaluate(()=>{localStorage.removeItem('siaures-ai90-res-OFFL');});await p.goto(BASE+'index.html?room=OFFL',{waitUntil:'domcontentloaded'});await sleep(1200);
   await p.evaluate(()=>{__deck.goTo(3,0);__deck.LIVE.manual();});await sleep(150);

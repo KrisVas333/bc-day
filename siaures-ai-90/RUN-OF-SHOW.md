@@ -94,3 +94,9 @@ D0 vakare: prisijungusių telefonų skaičius (📱 N), atsiliepimų n, naudingu
 4. **„Rask klaidą"** praktikos pradžioje (17): 1 paspaudimas telefone, → atskleidžia.
 5. **Po 2 savaičių 30 min.** susitikimas + „Dalyvausiu" telefone (27), anonimiškai, be el. paštų.
 QA: `node qa.js` → PASS 142 · FAIL 0.
+
+## v3 (2026-10-20 15:30)
+
+- **2 skaidrė:** telefone + 6 DI raštingumo klausimai (~2 min.). **→** ekrane: įrankiai, stažas, savivertinimas. Duomenys: Supabase `di_rastingumas` (anonimiškai, viena eilutė telefonui).
+- **28 Ačiū:** Kris nuotrauka + QR į `medziaga.html` (pristatymas + atmintinė PDF), matomas visada.
+- **K** 📘 Mentoriui · **Shift+X ×2** ↺ Atstatyti viską (prieš 16:30 po bandymo).

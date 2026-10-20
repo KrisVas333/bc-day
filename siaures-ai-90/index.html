@@ -430,15 +430,19 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
 
 <!-- 2 · 1 min -->
 <!-- SKAIDRĖ 2: Kas jūs? -->
-<section class="slide" data-label="Kas jūs?" data-steps="1" data-at="1" data-act="kas">
+<section class="slide" data-label="Kas jūs?" data-steps="2" data-at="1" data-act="kas">
  <div class="kick">Užduotis 1 · telefone</div>
  <h2>Kas šiandien <em>salėje</em>?</h2>
- <div class="cards c2" style="margin-top:22px;gap:50px">
+ <div data-upto="0"><div class="cards c2" style="margin-top:22px;gap:50px">
   <div><div class="thint">Ką dėstote</div><div class="res narrow" data-res="kas.d"></div></div>
   <div><div class="thint">Kokioms klasėms</div><div class="res narrow" data-res="kas.kl"></div></div>
- </div>
+ </div></div>
+ <div data-only="1" id="dipulse" style="margin-top:14px"><div class="thint" style="margin-bottom:8px">DI raštingumo pulsas · anonimiškai</div><div class="cards c2" style="gap:50px">
+  <div><div class="thint">Kuriuos DI naudojate</div><div class="res narrow" data-res="kas.ir"></div></div>
+  <div><div class="thint">Kiek laiko naudojate</div><div class="res narrow" data-res="kas.st"></div><div class="thint" style="margin-top:22px">Savo DI žinias vertinate</div><div class="avg" style="grid-template-columns:1fr 1fr" data-res="kas.__sv"></div></div>
+ </div></div>
  <div class="rcount" data-count="kas">0 atsakė</div>
- <aside class="notes"><b>16:31 · 1–4 MIN.</b> <b>KĄ SAKYTI</b> Pažiūrėkim. [Perskaityk didžiausią stulpelį.] Vadinasi, šiandien pavyzdžius taikysiu daugiausia jiems. Kas iš kitų dalykų: neišsigąskit, užklausos tinka visiems.<br><b>KĄ DARYTI</b> Laukti, kol atsakys ~20. Jei internetas nesuveikia: „Pakelkite ranką, kas pradinių klasių" ir M rankiniu režimu.<br><b>TILTAS</b> O dabar svarbiausia: ko jūs tikitės?</aside>
+ <aside class="notes"><b>16:31 · 1–4 MIN.</b> <b>→ 2 ŽINGSNIS</b> DI raštingumo pulsas: įrankiai, stažas, savivertinimas (eilutės į Supabase di_rastingumas, anonimiškai). <b>KĄ SAKYTI</b> Pažiūrėkim. [Perskaityk didžiausią stulpelį.] Vadinasi, šiandien pavyzdžius taikysiu daugiausia jiems. Kas iš kitų dalykų: neišsigąskit, užklausos tinka visiems.<br><b>KĄ DARYTI</b> Laukti, kol atsakys ~20. Jei internetas nesuveikia: „Pakelkite ranką, kas pradinių klasių" ir M rankiniu režimu.<br><b>TILTAS</b> O dabar svarbiausia: ko jūs tikitės?</aside>
 </section>
 
 <!-- 3 · 4 min -->
@@ -972,7 +976,12 @@ Būk mano tyrimo partneris: 1) 5 vaikų klausimai, nuo kurių pradėtume tyrimą
  <div class="kick">Klausimai</div>
  <h1 class="mid" style="margin-top:40px">Pirma jūs. Paskui DI. <em>Tada vėl jūs.</em></h1>
  <p class="lead">Ačiū Gražinai ir Povilui. Ačiū mentoriams. Ačiū jums už laiką po pamokų.</p>
- <p class="disc" style="margin-top:50px">⚗️ Eksperimentinis prototipas, sukurtas su DI. Gali klysti: svarbius dalykus pasitikrinkite. Nemokamas, nieko neparduoda. Radote klaidą? Parašykite: krisvas.lt · Kristijonas Vasiliauskas, RA ir ExoClass bendraįkūrėjas</p>
+ <div style="display:flex;gap:56px;align-items:center;margin-top:26px">
+  <img src="assets/img/kris-aciu.jpg" alt="Kristijonas Vasiliauskas šypsosi" style="height:400px;width:auto;border:2px solid var(--ink);border-radius:var(--r)">
+  <div style="display:flex;gap:28px;align-items:center"><div class="qr" id="aciuqr" style="width:300px;height:300px"></div>
+   <div style="max-width:620px"><div style="font-family:var(--mono);font-size:30px;font-weight:800;line-height:1.25">Pasiimkite: pristatymas + atmintinė PDF. <em>Kartokite ir dalinkitės.</em></div><div style="font-family:var(--mono);font-size:20px;color:var(--muted);margin-top:14px;word-break:break-all">krisvas333.github.io/bc-day/siaures-ai-90/medziaga.html</div></div></div>
+ </div>
+ <p class="disc" style="margin-top:22px">⚗️ Eksperimentinis prototipas, sukurtas su DI. Gali klysti: svarbius dalykus pasitikrinkite. Nemokamas, nieko neparduoda. Radote klaidą? Parašykite: krisvas.lt · Kristijonas Vasiliauskas, RA ir ExoClass bendraįkūrėjas</p>
  <aside class="notes"><b>17:58 · 88–90 MIN.</b> <b>SĖKLINIAI KLAUSIMAI</b> „Ką daryti, jei vaikas atneša DI parašytą darbą?" (šviesoforas iš anksto + paprašyk paaiškinti žodžiu) · „Kurį įrankį naudoti?" (tą, kurį leidžia mokykla; Copilot licencijos jau yra) · „Ką sakyti tėvams?" (žr. „Ką dar pridėjau" #2).<br><b>D0</b> Tą patį vakarą: QR/telefonų skaičiai, atsiliepimai, kas lūžo.<br><b>⏭ PAPILDOMA</b> Jei liko laiko ar klausia apie antras smegenis: <b>29 + Enter</b> (→ ją praleidžia).</aside>
 </section>
 
@@ -1097,7 +1106,14 @@ var ACTS={
  tikslai:{title:'Ko išmoksite',parts:outcParts()},
  kas:{title:'Kas šiandien salėje?',parts:[
   {k:'d',type:'multi',max:3,q:'Ką dėstote? (iki 3)',opts:['Pradinis ugdymas','Lietuvių k.','Matematika','Istorija, pilietiškumas','Muzika, menai','Gamtos m., STEAM','Užsienio k.','Kita']},
-  {k:'kl',type:'multi',max:3,q:'Kokioms klasėms? (iki 3)',opts:['Darželis, priešmokyklinė','1–2 kl.','3–4 kl.','5–6 kl.','7–8 kl.','9–10 kl. (I–II g.)','11–12 kl. (III–IV g.)']}]},
+  {k:'kl',type:'multi',max:3,q:'Kokioms klasėms? (iki 3)',opts:['Darželis, priešmokyklinė','1–2 kl.','3–4 kl.','5–6 kl.','7–8 kl.','9–10 kl. (I–II g.)','11–12 kl. (III–IV g.)']},
+  {k:'dinfo',type:'info',q:'DI raštingumo pulsas (1 min.)',text:'Anonimiška. Renkame suvestinę apie Lietuvos mokytojų DI raštingumą. Jokių vardų.'},
+  {k:'st',type:'choice',q:'① Kiek laiko naudojate DI?',opts:['Dar nenaudoju','< 3 mėn.','3–12 mėn.','1–2 m.','> 2 m.']},
+  {k:'ir',type:'multi',max:11,q:'② Kuriuos DI naudojate? (galima kelis)',opts:['ChatGPT','Google Gemini','Microsoft Copilot','Claude','DeepSeek','Perplexity','Grok','Manus','Meta AI','Kita','Jokio']},
+  {k:'dz',type:'choice',q:'③ Kaip dažnai?',opts:['Niekada','Kartą per mėn.','Kas savaitę','Kasdien']},
+  {k:'pa',type:'multi',max:7,q:'④ Kam naudojate? (galima kelis)',opts:['Pamokų planams','Testams, užduotims','Vertinimui, grįžtamajam ryšiui','Tekstams, laiškams','Asmeniniam mokymuisi','Mokinių darbui klasėje','Nenaudoju']},
+  {k:'sv',type:'scale',n:5,q:'⑤ Savo DI žinias vertinu (1 = mažai, 5 = labai gerai)'},
+  {k:'ts',type:'choice',q:'⑥ Ar mokykla turi DI naudojimo taisykles?',opts:['Taip','Ne','Nežinau']}]},
  lukesciai:{title:'Lūkesčiai',parts:[
   {k:'w',type:'words',q:'Ko tikitės iš šių 90 min.? 1–3 žodžiai, atskirkite kableliu.',ph:'pvz. laikas, testai'},
   {k:'pop',type:'multi',max:3,q:'Kas dabar svarbiausia mokyti jūsų klasėje? (iki 3)',opts:['Skaitymo supratimas','Kritinis mąstymas, medijos','DI raštingumas','Matematinis mąstymas','Kūryba, projektai','Emocijos, bendravimas','Programavimas, robotika','Kita']}]},
@@ -1340,6 +1356,7 @@ function makeRoom(){var q=qp('room');if(q)return q.toUpperCase().replace(/[^A-Z0
  var A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',r='';for(var i=0;i<4;i++)r+=A[Math.floor(Math.random()*A.length)];try{sessionStorage.setItem('siaures90-room',r);}catch(e){}return r;}
 var ROOM=makeRoom();
 function baseUrl(){var b=location.href.split('#')[0].split('?')[0].replace(/[^\/]*$/,'');if(qp('local'))return b;if(b.indexOf('file:')===0||b.indexOf('localhost')>-1||b.indexOf('127.0.0.1')>-1)b='https://krisvas333.github.io/bc-day/siaures-ai-90/';return b;}
+var AURL='https://krisvas333.github.io/bc-day/siaures-ai-90/medziaga.html?src=siaures-90-aciu';
 var LIVE=(function(){
  var SK='siaures-ai90-res-'+ROOM,D={ans:{},man:{},pulse:{},pulseAll:[0,0,0,0],hidden:{}};
  try{var sv=JSON.parse(localStorage.getItem(SK)||'null');if(sv&&sv.ans)D=sv;D.hidden=D.hidden||{};D.pulseAll=D.pulseAll||[0,0,0,0];}catch(e){}
@@ -1373,6 +1390,7 @@ var LIVE=(function(){
    var id=r.split('.')[0],k=r.split('.')[1];
    if(k==='__avg'){var ks=['r1','r2','r3','r4'],lab=['Atitinka siekinį','Aišku vaikui','Lengvi ir sunkūs','Faktai teisingi'];
     el.innerHTML=ks.map(function(x,i){var c=counts(id,x),n=c[0]+c[1]+c[2],avg=n?((c[0]*1+c[1]*2+c[2]*3)/n).toFixed(1):'–';return '<div><b>'+avg+'</b><span>'+lab[i]+' · n='+n+'</span></div>';}).join('');return;}
+   if(k==='__sv'){var c=counts(id,'sv'),n=0,t=0;c.forEach(function(v,i){n+=v;t+=v*(i+1);});var tc=counts(id,'ts');el.innerHTML='<div><b>'+(n?(t/n).toFixed(1):'–')+'</b><span>iš 5 · n='+n+'</span></div><div><b style="font-size:46px">'+tc[0]+' / '+tc[1]+' / '+tc[2]+'</b><span>taisyklės: taip / ne / nežino</span></div>';return;}
    if(k==='__pre'||k==='__pp'){var sl=['Kaip veikia DI','Duomenų šviesoforas','Testas pagal BUP'];
     function av(aid,x){var c=counts(aid,x),n=0,t=0;c.forEach(function(v,i){n+=v;t+=v*(i+1);});return{n:n,a:n?t/n:0};}
     el.innerHTML=OUTC.map(function(_,i){var x='o'+(i+1),b=av('tikslai',x);
@@ -1408,6 +1426,7 @@ var LIVE=(function(){
   ['joinurl'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=u.replace(/^https?:\/\//,'');});
   document.getElementById('joincode').textContent=ROOM;document.getElementById('joinmcode').textContent=ROOM;
   if(window.QRCode){try{new QRCode(document.getElementById('joinqr'),{text:u,width:360,height:360,correctLevel:QRCode.CorrectLevel.M});new QRCode(document.getElementById('joinmq'),{text:u,width:156,height:156,correctLevel:QRCode.CorrectLevel.M});
+   new QRCode(document.getElementById('aciuqr'),{text:AURL,width:272,height:272,correctLevel:QRCode.CorrectLevel.M});
    new QRCode(document.getElementById('mapqr'),{text:'https://krisvas333.github.io/vaiko-zemelapis/?src=siaures-90',width:220,height:220,correctLevel:QRCode.CorrectLevel.M});}catch(x){}}
   badge();setInterval(badge,5000);setInterval(render,10000);
   if(typeof supabase==='undefined'||!supabase.createClient){toast('Ryšio nėra: rankinis režimas M');return;}
