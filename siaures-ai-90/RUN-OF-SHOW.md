@@ -45,8 +45,8 @@ Kiekvienas įrankis, užklausa, pavyzdys ir klasių žemėlapio pakopa turi L1/L
 | 81 | 17:51 | 25 | 3 partneriai | mąstymo · tyrimo · kūrimo + užklausos · VO | „Visais trim atvejais darbą darau aš." |
 | 84 | 17:54 | 26 | ★ Kitas žingsnis | telefone: savo lygio žingsnis + užklausa + anoniminis atsiliepimas | „Puslapis lieka jūsų telefone." |
 | 88 | 17:58 | 27 | Ačiū | klausimai | „Pirma jūs. Paskui DI. Tada vėl jūs." |
-| ⏭ | — | 28 | **PAPILDOMA · Antros smegenys** | tik jei liko laiko: 28 + Enter (→ iš 27 ją praleidžia). Kris BrAIn + Tito + Gabrielio smegenys per Google Drive, įrankiai ir kaina | „Šiuos mokymus padariau su jomis per vieną vakarą." |
-| — | — | 29–30 | Priedai | „Ką dar pridėjau" (tik Kris) · šaltiniai | nerodyti salei |
+| ⏭ | · | 28 | **PAPILDOMA · Antros smegenys** | tik jei liko laiko: 28 + Enter (→ iš 27 ją praleidžia). Kris BrAIn + Tito + Gabrielio smegenys per Google Drive, įrankiai ir kaina | „Šiuos mokymus padariau su jomis per vieną vakarą." |
+| · | · | 29–30 | Priedai | „Ką dar pridėjau" (tik Kris) · šaltiniai | nerodyti salei |
 
 ## Klavišai
 → / tarpas toliau · ← atgal · **N** užrašai · **T** laikmatis · **V** Kris'o balsas · **Y** video · **S** atsarginė nuotrauka · **P** pulsas (Shift+P nulina) · **M** rankinis įvedimas · **Shift+R ×2** išvalyti klausimą · **?** pultas + kanalas · skaičius + Enter šokti · **0 + Enter** „pradėjom dabar" (laikrodis perskaičiuoja planą).
