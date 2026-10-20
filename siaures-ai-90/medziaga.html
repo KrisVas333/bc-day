@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DI mokytojams · medžiaga</title>
+<meta name="description" content="Kris Vas mokymų „DI mokytojams" medžiaga: atmintinė PDF, pristatymas, ZIP. Nemokama, galima dalintis.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ground:#FFFFFF;--surface:#F7F7F5;--ink:#0A0A0A;--muted:#595959;--line:#E5E2DE;--accent:#D90429;
+ --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;--body:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--r:4px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.55;padding:24px 16px calc(48px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto}
+.kick{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:800}
+h1{font-family:var(--mono);font-size:28px;line-height:1.15;font-weight:800;margin:6px 0 10px}
+h2{font-family:var(--mono);font-size:19px;font-weight:800;margin:28px 0 10px}
+p{margin:0 0 12px}
+.lead{color:var(--muted)}
+.btns{display:grid;gap:12px;margin:20px 0}
+.btn{display:flex;align-items:center;gap:12px;min-height:60px;padding:14px 16px;border:2px solid var(--ink);border-radius:var(--r);background:var(--ground);color:var(--ink);text-decoration:none;font-weight:700;font-size:18px;font-family:var(--body);cursor:pointer;text-align:left;width:100%}
+.btn.main{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn small{display:block;font-weight:400;font-size:14px;opacity:.85}
+.btn span.i{font-size:24px;flex:none}
+#ml-signup{margin:8px 0 4px}
+#ml-signup:empty{display:none}
+ul{padding-left:20px;margin:0 0 12px}li{margin:4px 0}
+.note{background:var(--surface);border-left:4px solid var(--accent);padding:12px 14px;border-radius:var(--r);font-size:15px;color:var(--muted);margin:20px 0}
+#shared{font-size:15px;color:var(--accent);font-weight:700;min-height:1.4em;margin-top:-4px}
+footer{font-size:13px;color:var(--muted);margin-top:28px;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="kick">Šiaurės licėjus · 2026-10-20</div>
+<h1>DI mokytojams · medžiaga</h1>
+<p class="lead">Naudokite, kartokite su kolegomis, dalinkitės. Nemokama.</p>
+
+<div id="ml-signup"></div>
+
+<div class="btns">
+ <a class="btn main" href="DI-mokytojo-atmintine.pdf" download data-track="medziaga_pdf"><span class="i">📄</span><span>Atsisiųsti atmintinę (PDF)<small>Santrauka · įrankiai ir kainos · žodynėlis · žodynas EN→LT · šaltiniai · veiksmai</small></span></a>
+ <a class="btn" href="index.html?src=medziaga" data-track="medziaga_deck"><span class="i">🖥️</span><span>Atidaryti pristatymą<small>Rodyklės → ← · K = mentoriaus faktai</small></span></a>
+ <a class="btn" href="siaures-ai-90-pristatymas.zip" download data-track="medziaga_zip"><span class="i">📦</span><span>Atsisiųsti pristatymą (ZIP)<small>Skaidrės veikia ir be interneto; telefonų kambariui reikia interneto</small></span></a>
+ <button class="btn" id="share" type="button" data-track="medziaga_share"><span class="i">🔗</span><span>Dalintis su kolega<small>Nusiųskite šią nuorodą</small></span></button>
+</div>
+<div id="shared" aria-live="polite"></div>
+
+<h2>Šią savaitę: vienas žingsnis</h2>
+<ul>
+ <li><b>L1 · Pradedu:</b> viena užklausa → 5 klausimų testas pagal BUP siekinį → patikrinkite patys.</li>
+ <li><b>L2 · Kuriu:</b> projektas savo klasei (Claude Project, savas GPT ar NotebookLM).</li>
+ <li><b>L3 · Automatizuoju:</b> antrosios smegenys ir agentai. Pradėkite nuo L1.</li>
+</ul>
+<p>Duomenų šviesoforas: 🟢 bendra medžiaga · 🟡 nuasmeninti darbai · 🔴 vardai, pažymiai, sveikata niekada.</p>
+
+<div class="note">Rodau, ką naudoju pats. Nė vienas įrankis man nemoka. Kris Vas yra Robotikos Akademijos, ExoClass ir BrAIn Club įkūrėjas.<br>⚗️ Eksperimentinė medžiaga, kurta padedant DI: gali klysti. Pastebėjote klaidą ar turite idėją? Parašykite.</div>
+
+<footer>© Kris Vas 2026 · galima naudoti ir dalintis mokymo tikslais, nurodant autorių (CC BY-NC 4.0) · krisvas.lt</footer>
+
+<script>
+(function(){
+ var b=document.getElementById('share'),o=document.getElementById('shared');
+ var url='https://krisvas333.github.io/bc-day/siaures-ai-90/medziaga.html?src=dalintis';
+ b.addEventListener('click',function(){
+  if(navigator.share){navigator.share({title:'DI mokytojams · medžiaga',text:'Nemokama atmintinė ir pristatymas apie DI mokytojams.',url:url}).catch(function(){});return;}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){o.textContent='Nuoroda nukopijuota.';},function(){o.textContent=url;});}
+  else o.textContent=url;
+ });
+})();
+</script>
+<script src="ml-form.js" defer></script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+</body>
+</html>
