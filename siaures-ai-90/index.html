@@ -1145,6 +1145,16 @@ var PULSE=['✅ Supratau','❓ Nesupratau','🧗 Per sunku','🚀 Per lengva'];
 
 var stage=document.getElementById('stage');
 var slides=[].slice.call(document.querySelectorAll('.slide'));
+/* 60 min. režimas (?trukme=60, prisimenamas): praleistos skaidrės tampa „savarankiškai" (→ jas praleidžia, N+Enter atidaro), planas 56 min. */
+var TRUKME=(function(){var t=qp('trukme');try{if(t)localStorage.setItem('siaures-ai90-trukme',t);else t=localStorage.getItem('siaures-ai90-trukme');}catch(e){}return t==='60'?60:90;})();
+if(TRUKME===60){
+ var AT60={'Prisijunkite':0,'Kas jūs?':1,'Ko tikitės?':3,'Ko išmoksite':5,'Kas aš':7,'Pulsas':8,'3 lygiai':9,'Kas yra DI?':10,'Testas: kaip veikia DI':13,'Kada DI padeda mokytis':15,'Etika':18,'Pasirinkite lygį':21,'Įrankiai':22,'L1 demo':24,'Praktika L1':27,'Ką sukūrėte':42,'Dalykai ir testai':46,'Ką išbandysite?':49,'Kitas žingsnis':51,'Ačiū':55};
+ slides.forEach(function(s){var l=s.dataset.label;if(l in AT60){s.dataset.at=AT60[l];}else if(!s.dataset.optional){s.dataset.optional='1';s.dataset.self='1';}
+  if(l==='Praktika L1')s.dataset.timer='900';
+  if(/^(Prisijunkite|Ko tikitės\?|Ko išmoksite|Praktika L1)$/.test(l))[].forEach.call(s.querySelectorAll('.kick,h2'),function(e){e.innerHTML=e.innerHTML.replace(/90 min\./g,'60 min.').replace('Praktika · 20 min.','Praktika · 15 min.');});});
+ document.title='DI mokytojams · 60 min.';
+ document.documentElement.classList.add('t60');
+}
 var LAST=slides.length-1;
 var NOTES=slides.map(function(s){var a=s.querySelector('aside.notes');return a?a.innerHTML:'';});
 var st={slide:0,step:0};
@@ -1307,7 +1317,7 @@ var QR=(function(){var K='siaures-ai90-qr',M='auto',L={auto:'QR: tik užduočių
  return{apply:apply,cycle:cycle,mode:function(){return M;},visible:vis};})();
 
 /* ===== Judėjimo pertrauka: laikas nuo pradžios, priminimas kas N min., B = 2 min. pertrauka ===== */
-var BRK=(function(){var K0='siaures-ai90-t0',KB='siaures-ai90-lastbrk',EVERY=+(qp('pertrauka')||25);if(!(EVERY>=5&&EVERY<=60))EVERY=25;
+var BRK=(function(){var K0='siaures-ai90-t0',KB='siaures-ai90-lastbrk',EVERY=+(qp('pertrauka')||(TRUKME===60?40:25));if(!(EVERY>=5&&EVERY<=60))EVERY=25;
  var t0=0,last=0,snooze=0,run=null;
  try{t0=+sessionStorage.getItem(K0)||0;last=+sessionStorage.getItem(KB)||0;}catch(e){}
  var MOVES=[['Sukame rankas','m-arms','Didelius ratus pirmyn, tada atgal.'],['Lėtai sukame galvą','m-head','Lėtai, be skubos. Pečiai atpalaiduoti.'],['Šokinėjame vietoje','m-jump','Lengvai, ant pirštų galų. Kas negali: žingsniuojame.'],['Pasitempiame','m-str','Rankos į viršų, giliai įkvepiam, iškvepiam.']];
