@@ -104,6 +104,31 @@ h3{font-family:var(--mono);font-weight:800}
 .avg div{border:2px solid var(--ink);border-radius:var(--r);padding:18px 20px}
 .avg b{display:block;font-family:var(--mono);font-size:64px;color:var(--accent);line-height:1}
 .avg span{font-size:22px;line-height:1.3}
+/* mokymosi rezultatai: prieš → po */
+.outc{display:grid;gap:16px;margin-top:22px}
+.outc .card{display:grid;grid-template-columns:64px 1fr;gap:18px;align-items:center;padding:20px 26px}
+.outc .card b.o{font-family:var(--mono);font-size:44px;color:var(--accent);line-height:1}
+.outc .card p{font-size:28px;line-height:1.3}
+.pp{display:flex;flex-direction:column;gap:16px;margin-top:14px}
+.pp .pr{display:grid;grid-template-columns:200px 1fr 150px;gap:6px 16px;align-items:center}
+.pp .pl{grid-row:span 2;font-size:22px;font-weight:700;line-height:1.2}
+.pp .trk{height:26px;background:var(--surface);border:2px solid var(--line);border-radius:var(--r);overflow:hidden}
+.pp .fil{height:100%;width:0;background:#9a9a9a;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.pp .fil.po{background:var(--accent)}
+.pp .nv{font-family:var(--mono);font-size:22px;font-weight:800;text-align:right;white-space:nowrap}
+.pp .nv.po{color:var(--accent)}
+.pp .lg{font-family:var(--mono);font-size:17px;color:var(--muted);letter-spacing:.06em}
+/* „Rask klaidą" */
+.fq{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:16px 24px;margin-top:14px}
+.fq ol{list-style:none;counter-reset:q}
+.fq li{counter-increment:q;display:grid;grid-template-columns:44px 1fr;gap:10px;font-size:25px;line-height:1.3;padding:7px 0;border-bottom:1px solid var(--line)}
+.fq li:last-child{border-bottom:0}
+.fq li:before{content:counter(q)".";font-family:var(--mono);font-weight:800;color:var(--accent)}
+.fq li i{font-style:normal;font-weight:700}
+.fq li.bad.rv{background:#fde8ec;box-shadow:inset 6px 0 0 var(--accent);padding-left:14px;margin-left:-14px}
+.fix{margin-top:14px}
+[data-upto]{display:none}
+[data-upto].show{display:block}
 /* pulso skydas */
 #pbig{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:1200px;background:#fff;border:3px solid var(--ink);border-radius:var(--r);box-shadow:14px 14px 0 var(--accent);padding:40px 50px;z-index:57;display:none}
 #pbig.on{display:block}
@@ -394,12 +419,12 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
   <div><div class="thint">Kokioms klasėms</div><div class="res narrow" data-res="kas.kl"></div></div>
  </div>
  <div class="rcount" data-count="kas">0 atsakė</div>
- <aside class="notes"><b>16:31 · 1–5 MIN.</b> <b>KĄ SAKYTI</b> Pažiūrėkim. [Perskaityk didžiausią stulpelį.] Vadinasi, šiandien pavyzdžius taikysiu daugiausia jiems. Kas iš kitų dalykų: neišsigąskit, užklausos tinka visiems.<br><b>KĄ DARYTI</b> Laukti, kol atsakys ~20. Jei internetas nesuveikia: „Pakelkite ranką, kas pradinių klasių" ir M rankiniu režimu.<br><b>TILTAS</b> O dabar svarbiausia: ko jūs tikitės?</aside>
+ <aside class="notes"><b>16:31 · 1–4 MIN.</b> <b>KĄ SAKYTI</b> Pažiūrėkim. [Perskaityk didžiausią stulpelį.] Vadinasi, šiandien pavyzdžius taikysiu daugiausia jiems. Kas iš kitų dalykų: neišsigąskit, užklausos tinka visiems.<br><b>KĄ DARYTI</b> Laukti, kol atsakys ~20. Jei internetas nesuveikia: „Pakelkite ranką, kas pradinių klasių" ir M rankiniu režimu.<br><b>TILTAS</b> O dabar svarbiausia: ko jūs tikitės?</aside>
 </section>
 
-<!-- 3 · 5 min -->
+<!-- 3 · 4 min -->
 <!-- SKAIDRĖ 3: Ko tikitės? -->
-<section class="slide" data-label="Ko tikitės?" data-steps="1" data-at="5" data-act="lukesciai">
+<section class="slide" data-label="Ko tikitės?" data-steps="1" data-at="4" data-act="lukesciai">
  <div class="kick">Užduotis 2 · telefone</div>
  <h2>Ko tikitės iš šių 90 min.? Kas dabar <em>aktualu</em> klasėje?</h2>
  <div class="cards" style="grid-template-columns:1.1fr .9fr;gap:50px;margin-top:16px">
@@ -408,11 +433,34 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
   <div><div class="thint">Ką dabar svarbiausia mokyti</div><div class="res narrow" data-res="lukesciai.pop"></div></div>
  </div>
  <div class="rcount" data-count="lukesciai">0 atsakė</div>
- <aside class="notes"><b>16:35 · 5–9 MIN.</b> <b>VIZUALAS</b> Kairėje tavo nuotrauka ir burbulas su galimais lūkesčiais (keičiasi pats). QR dabar dešinėje juostoje ir nieko neuždengia; <b>Q</b> paslepia. <b>KĄ SAKYTI</b> Perskaitau 3 didžiausius žodžius garsiai. „Matau ‚laikas'. Gerai: pirmą valandą sutaupysim laiko, antrą kursim." Jei yra „baimė" ar „sukčiavimas": „Apie tai bus atskira dalis, 33-ią minutę."<br><b>KĄ DARYTI</b> Užsirašyk 1–2 lūkesčius, prie kurių grįši pabaigoje (17:54 skaidrėje „Kitas žingsnis").<br><b>TILTAS</b> Prieš einant toliau, keli žodžiai, kas aš.</aside>
+ <aside class="notes"><b>16:34 · 4–7 MIN.</b> <b>VIZUALAS</b> Kairėje tavo nuotrauka ir burbulas su galimais lūkesčiais (keičiasi pats). QR dabar dešinėje juostoje ir nieko neuždengia; <b>Q</b> paslepia. <b>KĄ SAKYTI</b> Perskaitau 3 didžiausius žodžius garsiai. „Matau ‚laikas'. Gerai: pirmą valandą sutaupysim laiko, antrą kursim." Jei yra „baimė" ar „sukčiavimas": „Apie tai bus atskira dalis, 29-ą minutę."<br><b>KĄ DARYTI</b> Užsirašyk 1–2 lūkesčius, prie kurių grįši pabaigoje (17:54 skaidrėje „Kitas žingsnis").<br><b>TILTAS</b> O dabar: ką išsinešite po 90 min.?</aside>
 </section>
 
-<!-- 4 · 9 min -->
-<!-- SKAIDRĖ 4: Kas aš -->
+<!-- 4 · 7 min -->
+<!-- SKAIDRĖ 4: Ko išmoksite -->
+<section class="slide" data-label="Ko išmoksite" data-steps="1" data-at="7" data-act="tikslai">
+ <div class="kick">Užduotis 3 · telefone · prieš</div>
+ <div class="two" style="grid-template-columns:1.1fr .9fr;gap:56px">
+  <div>
+   <h2 style="margin-top:0">Po 90 min. <em>galėsite</em>:</h2>
+   <div class="outc">
+    <div class="card"><b class="o">①</b><p>Vienu sakiniu paaiškinti, <b>kaip veikia DI</b> ir kodėl jis klysta.</p></div>
+    <div class="card"><b class="o">②</b><p>Pagal <b>duomenų šviesoforą</b> žinoti, ką galima ir ko negalima įkelti.</p></div>
+    <div class="card hot"><b class="o">③</b><p>Sukurti ir <b>patikrinti testą</b> savo dalykui pagal BUP.</p></div>
+   </div>
+  </div>
+  <div>
+   <div class="thint">Ar galite tai dabar? Vidurkis 1–5</div>
+   <div class="pp" data-res="tikslai.__pre"></div>
+   <div class="rcount" data-count="tikslai">0 atsakė</div>
+   <p class="small" style="margin-top:18px">Pabaigoje tie patys 3 klausimai. Pamatysime, ar pasistūmėjome.</p>
+  </div>
+ </div>
+ <aside class="notes"><b>16:37 · 7–9 MIN.</b> <b>KĄ SAKYTI</b> Štai ką turėtumėte mokėti išeidami. Trys dalykai, ne daugiau. Telefone įvertinkite, kiek galite tai dabar, nuo 1 iki 5. Sąžiningai: 1 yra visiškai normalu. Pabaigoje paklausiu to paties.<br><b>KĄ DARYTI</b> Laukti ~20 atsakymų (apie 1 min.). Perskaityk žemiausią vidurkį: „Matau, kad ③ žemiausias. Tam skirsim 20 min. praktikos."<br><b>MATAVIMAS</b> Prieš ir po vidurkiai rodomi „Kitas žingsnis" skaidrėje (27). Be interneto: M, „pakelkite ranką, kas galėtų ① dabar" ir suvesk skaičius po 1–5.<br><b>TILTAS</b> Prieš einant toliau, keli žodžiai, kas aš.</aside>
+</section>
+
+<!-- 5 · 9 min -->
+<!-- SKAIDRĖ 5: Kas aš -->
 <section class="slide" data-label="Kas aš" data-steps="2" data-at="9">
  <div class="kick">Atvirai</div>
  <h2 style="font-size:54px">Turiu disleksiją, ADHD ir disgrafiją. DI man yra <em>didžiulė pagalba</em>.</h2>
@@ -438,16 +486,16 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
    <div class="kpis">
     <div><b data-count-to="2129">0</b><span>temų, darželis–12 kl.</span></div>
     <div><b data-count-to="2747">0</b><span>ryšiai tarp temų</span></div>
-    <div><b data-count-to="20">0</b><span>dalykų · gyvai 71-ą min.</span></div>
+    <div><b data-count-to="20">0</b><span>dalykų · gyvai 74-ą min.</span></div>
    </div>
   </div>
  </div>
  <p class="src">⚗️ Medžiagą ruošiau su DI pagalba. Gali būti klaidų: radote, pasakykite, taisau.</p>
- <aside class="notes"><b>16:39 · 9–11 MIN.</b> <b>KĄ SAKYTI</b> Turiu disleksiją, ADHD ir disgrafiją. Skaityti išmokau vėliau nei klasės draugai [⚠️ KRIS: „iki 11 m." ar „3–4 kl." pasakyk savo žodžiais]. DI man yra didžiulė pagalba: kaip neurodivergentiškam vadovui, mokytojui ir treneriui jis leidžia sukurti daug daugiau, nei kada galvojau. Bet tą patį įrankį mačiau ir darantį už mane tai, ką turėjau išmokti pats. Apie tai šiandien.<br><b>KĄ DARYTI</b> → atidaro „skydelį": skaičiai bėga, Brain Club Jr veikėjai juda, dešinėje žemėlapio įrašas (gyvai rodysiu 71-ą min.).<br><b>ATSKLEIDIMAS (garsiai)</b> Esu RA ir ExoClass bendraįkūrėjas. Šiandien nieko neparduodu.<br><b>SKAIČIAI</b> 20 000+ vaikų ir 700+ vietų = ExoClass kanonas (wiki/companies/exoclass.md). „10+ metų" RA = wiki. 2 129 / 2 747 / 20 = žemėlapio puslapis. ⚠️ Brain Club be skaičių. ADHD: savo žodžiais, be potipio (EU diagnozė dar laukia).<br><b>TILTAS</b> Viena taisyklė visai popietei.</aside>
+ <aside class="notes"><b>16:39 · 9–11 MIN.</b> <b>KĄ SAKYTI</b> Turiu disleksiją, ADHD ir disgrafiją. Skaityti išmokau vėliau nei klasės draugai [⚠️ KRIS: „iki 11 m." ar „3–4 kl." pasakyk savo žodžiais]. DI man yra didžiulė pagalba: kaip neurodivergentiškam vadovui, mokytojui ir treneriui jis leidžia sukurti daug daugiau, nei kada galvojau. Bet tą patį įrankį mačiau ir darantį už mane tai, ką turėjau išmokti pats. Apie tai šiandien.<br><b>KĄ DARYTI</b> → atidaro „skydelį": skaičiai bėga, Brain Club Jr veikėjai juda, dešinėje žemėlapio įrašas (gyvai rodysiu 74-ą min.).<br><b>ATSKLEIDIMAS (garsiai)</b> Esu RA ir ExoClass bendraįkūrėjas. Šiandien nieko neparduodu.<br><b>SKAIČIAI</b> 20 000+ vaikų ir 700+ vietų = ExoClass kanonas (wiki/companies/exoclass.md). „10+ metų" RA = wiki. 2 129 / 2 747 / 20 = žemėlapio puslapis. ⚠️ Brain Club be skaičių. ADHD: savo žodžiais, be potipio (EU diagnozė dar laukia).<br><b>TILTAS</b> Viena taisyklė visai popietei.</aside>
 </section>
 
-<!-- 5 · 11 min -->
-<!-- SKAIDRĖ 5: Pulsas -->
+<!-- 6 · 11 min -->
+<!-- SKAIDRĖ 6: Pulsas -->
 <section class="slide" data-label="Pulsas" data-steps="1" data-at="11">
  <div class="kick">Bet kuriuo metu · telefone</div>
  <h2>Jūsų telefone apačioje yra <em>4 mygtukai</em>. Spauskite bet kada.</h2>
@@ -461,8 +509,8 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
  <aside class="notes"><b>16:41 · 11–12 MIN.</b> <b>KĄ SAKYTI</b> Aš nematau jūsų galvų iš vidaus. Spauskite. Jei 5 žmonės paspaus „nesupratau", aš sustosiu. Tai mano vairas.<br><b>KĄ DARYTI</b> Paprašyk visų dabar paspausti vieną, kad pamatytų, jog veikia. Viršuje dešinėje mažas pulsas visą laiką; P atidaro didelį. Jei raudonas mirksi: ≥3 žmonės „nesupratau/per sunku" per 3 min.<br><b>TILTAS</b> Kad nebūtų per sunku, viską padalinau į 3 lygius.</aside>
 </section>
 
-<!-- 6 · 12 min -->
-<!-- SKAIDRĖ 6: 3 lygiai -->
+<!-- 7 · 12 min -->
+<!-- SKAIDRĖ 7: 3 lygiai -->
 <section class="slide" data-label="3 lygiai" data-steps="3" data-at="12">
  <div class="kick">Jūsų kelias</div>
  <h2>Trys laipteliai. Šiandien visi išeinate su <em>1 lygiu</em>.</h2>
@@ -474,8 +522,8 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
  <aside class="notes"><b>16:42 · 12–14 MIN.</b> <b>KĄ SAKYTI</b> Kiekvienas įrankis, užklausa ir pavyzdys šiandien turi ženklelį L1, L2 arba L3. L1 yra privalomas: išeinate mokėdami. L2 tiems, kas nori daugiau. L3 aš tik parodau, kad žinotumėt, kur kelias veda.<br><b>KĄ DARYTI</b> Trys paspaudimai: laipteliai atsiranda po vieną.<br><b>TILTAS</b> Bet pirmiausia: kas tas DI iš viso?</aside>
 </section>
 
-<!-- 7 · 14 min -->
-<!-- SKAIDRĖ 7: Kas yra DI? -->
+<!-- 8 · 14 min -->
+<!-- SKAIDRĖ 8: Kas yra DI? -->
 <section class="slide" data-label="Kas yra DI?" data-steps="2" data-at="14" data-vo="assets/vo/07.mp3" data-video="LPZh9BOjkQs">
  <div class="kick">Kas yra DI · <span class="lv l1">L1</span></div>
  <h2>DI nemąsto. Jis <em>spėja kitą žodį</em>.</h2>
@@ -491,12 +539,12 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
   </div>
  </div>
  <p class="src">Video (pasirinktinai, Y): 3Blue1Brown „Large Language Models explained briefly" (YouTube, angl.). Tikimybės demonstracijoje sugalvotos iliustracijai, ne iš tikro modelio.</p>
- <aside class="notes"><b>16:44 · 14–19 MIN.</b> <b>KĄ DARYTI</b> Spausk „Spėk žodį" 3–4 kartus. Tada patrauk slankiklį į dešinę (daug atsitiktinumo) ir vėl: žodžiai keisti. Į kairę: visada tas pats. V = mano balsu (~14 s). Y = video, jei liko laiko (rodyk 60–90 s).<br><b>KĄ SAKYTI</b> Jis spėja tikėtiniausią žodį. Todėl rašo gražiai ir kartais užtikrintai meluoja. <b>SCHEMA DEŠINĖJE</b> (juda pati): 1) tekstas suskaldomas į dalis (tokenus), 2) dalys keliauja per sluoksnius (raudoni impulsai = kur modelis „žiūri"), 3) gale tik tikimybės kitam žodžiui. Prasmės ten nėra, yra skaičiai. DI kūrėjus įkvėpė smegenys, bet DI veikia kitaip nei smegenys. Schema supaprastinta: tikri modeliai turi milijardus parametrų.<br><b>VO tekstas (assets/vo/07.mp3)</b> „DI nemąsto kaip žmogus. Jis perskaitė milžinišką kiekį teksto ir išmoko spėti, koks žodis eina toliau. Todėl kalba sklandžiai, bet gali užtikrintai sakyti netiesą. Todėl jūsų darbas lieka svarbiausias: patikrinti." ⚠️ Kris ear-check, niekas jo nepatikrino klausa.<br><b>TILTAS</b> Ką tai reiškia praktiškai? Stiprybės ir silpnybės.</aside>
+ <aside class="notes"><b>16:44 · 14–18 MIN.</b> <b>KĄ DARYTI</b> Spausk „Spėk žodį" 3–4 kartus. Tada patrauk slankiklį į dešinę (daug atsitiktinumo) ir vėl: žodžiai keisti. Į kairę: visada tas pats. V = mano balsu (~14 s). Y = video, jei liko laiko (rodyk 60–90 s).<br><b>KĄ SAKYTI</b> Jis spėja tikėtiniausią žodį. Todėl rašo gražiai ir kartais užtikrintai meluoja. <b>SCHEMA DEŠINĖJE</b> (juda pati): 1) tekstas suskaldomas į dalis (tokenus), 2) dalys keliauja per sluoksnius (raudoni impulsai = kur modelis „žiūri"), 3) gale tik tikimybės kitam žodžiui. Prasmės ten nėra, yra skaičiai. DI kūrėjus įkvėpė smegenys, bet DI veikia kitaip nei smegenys. Schema supaprastinta: tikri modeliai turi milijardus parametrų.<br><b>VO tekstas (assets/vo/07.mp3)</b> „DI nemąsto kaip žmogus. Jis perskaitė milžinišką kiekį teksto ir išmoko spėti, koks žodis eina toliau. Todėl kalba sklandžiai, bet gali užtikrintai sakyti netiesą. Todėl jūsų darbas lieka svarbiausias: patikrinti." ⚠️ Kris ear-check, niekas jo nepatikrino klausa.<br><b>TILTAS</b> Ką tai reiškia praktiškai? Stiprybės ir silpnybės.</aside>
 </section>
 
-<!-- 8 · 19 min -->
-<!-- SKAIDRĖ 8: Stiprybės ir silpnybės -->
-<section class="slide" data-label="Stiprybės ir silpnybės" data-steps="2" data-at="19">
+<!-- 9 · 18 min -->
+<!-- SKAIDRĖ 9: Stiprybės ir silpnybės -->
+<section class="slide" data-label="Stiprybės ir silpnybės" data-steps="2" data-at="18">
  <div class="kick">Ką DI daro gerai, o kur klysta</div>
  <div class="ss" data-bal="1">
   <div class="card"><div class="n">Stiprybės</div><ul>
@@ -513,25 +561,25 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
    <li><b>Lietuvių kalba</b> silpnesnė nei anglų: linksniai, stilius</li>
    <li><b>Daro už mus:</b> jei leidžiame, mąstymas traukiasi</li></ul></div>
  </div>
- <aside class="notes"><b>16:49 · 19–22 MIN.</b> <b>VIZUALAS</b> Svarstyklės: pirmiausia persveria stiprybės; paspaudus → atsiranda silpnybės ir svarstyklės išsilygina. Pusiausvyrą laiko „JŪS" (mokytojas tikrina). <b>KĄ SAKYTI</b> Kiekvienai stiprybei turiu vieną savo istoriją: [Kris, viena trumpa]. Silpnybės: svarbiausia paskutinė. Jei DI daro už mus, mes netreniruojam. Kaip sporto salėje: jei svarmenis kelia robotas, raumenys neauga.<br><b>⚠️</b> „Lietuvių kalba silpnesnė" = pastebėjimas, ne tyrimas. Sakyk „mano patirtis".<br><b>TILTAS</b> Patikrinkim, ar jau atsimenat. Telefonai.</aside>
+ <aside class="notes"><b>16:48 · 18–21 MIN.</b> <b>VIZUALAS</b> Svarstyklės: pirmiausia persveria stiprybės; paspaudus → atsiranda silpnybės ir svarstyklės išsilygina. Pusiausvyrą laiko „JŪS" (mokytojas tikrina). <b>KĄ SAKYTI</b> Kiekvienai stiprybei turiu vieną savo istoriją: [Kris, viena trumpa]. Silpnybės: svarbiausia paskutinė. Jei DI daro už mus, mes netreniruojam. Kaip sporto salėje: jei svarmenis kelia robotas, raumenys neauga.<br><b>⚠️</b> „Lietuvių kalba silpnesnė" = pastebėjimas, ne tyrimas. Sakyk „mano patirtis".<br><b>TILTAS</b> Patikrinkim, ar jau atsimenat. Telefonai.</aside>
 </section>
 
-<!-- 9 · 22 min -->
-<!-- SKAIDRĖ 9: Testas: kaip veikia DI -->
-<section class="slide quiz-slide" data-label="Testas: kaip veikia DI" data-steps="2" data-at="22" data-act="quiz1" data-k="a" data-answer="1" data-timer="60">
- <div class="kick">Užduotis 3 · aktyvus prisiminimas</div>
+<!-- 10 · 21 min -->
+<!-- SKAIDRĖ 10: Testas: kaip veikia DI -->
+<section class="slide quiz-slide" data-label="Testas: kaip veikia DI" data-steps="2" data-at="21" data-act="quiz1" data-k="a" data-answer="1" data-timer="60">
+ <div class="kick">Užduotis 4 · aktyvus prisiminimas</div>
  <h2>Kai klausiate DI, jis…</h2>
  <div class="two" style="grid-template-columns:1.3fr .7fr">
   <div class="res" data-res="quiz1.a"></div>
   <div><div class="timer" style="font-size:150px">1:00</div><div class="thint">T: laikmatis · →: atsakymas</div><div class="rcount" data-count="quiz1">0 atsakė</div></div>
  </div>
  <div class="card" data-step="1" style="margin-top:20px"><p><b>Teisingai B.</b> Spėja tikėtiniausią tęsinį. Todėl tikriname mes. Ir dar: jūs ką tik <b>prisiminėte</b>, o ne perskaitėte. Tai stipriausias mokymosi būdas, prie jo grįšim.</p></div>
- <aside class="notes"><b>16:52 · 22–25 MIN.</b> <b>KĄ DARYTI</b> T = 60 s. Kai dauguma atsakė, → atskleidžia (raudona juosta = teisingas, telefonuose irgi pasirodo).<br><b>KĄ SAKYTI</b> Nesvarbu, ar pataikėt. Svarbu, kad bandėt prisiminti. Tai vadinasi aktyvus prisiminimas (retrieval practice). Vaikai išmoksta daugiau, kai bando atsakyti, nei kai perskaito dar kartą (Roediger ir Karpicke 2006).<br><b>TILTAS</b> O dabar svarbiausias šiandienos tyrimas.</aside>
+ <aside class="notes"><b>16:51 · 21–24 MIN.</b> <b>🤸 PO ATSKLEIDIMO: B</b> = 2 min. judėjimo pertrauka (24–26 min.), tada →. <b>KĄ DARYTI</b> T = 60 s. Kai dauguma atsakė, → atskleidžia (raudona juosta = teisingas, telefonuose irgi pasirodo).<br><b>KĄ SAKYTI</b> Nesvarbu, ar pataikėt. Svarbu, kad bandėt prisiminti. Tai vadinasi aktyvus prisiminimas (retrieval practice). Vaikai išmoksta daugiau, kai bando atsakyti, nei kai perskaito dar kartą (Roediger ir Karpicke 2006).<br><b>TILTAS</b> O dabar svarbiausias šiandienos tyrimas.</aside>
 </section>
 
-<!-- 10 · 25 min -->
-<!-- SKAIDRĖ 10: Kada DI padeda mokytis -->
-<section class="slide" data-label="Kada DI padeda mokytis" data-steps="3" data-at="25" data-vo="assets/vo/10.mp3">
+<!-- 11 · 26 min -->
+<!-- SKAIDRĖ 11: Kada DI padeda mokytis -->
+<section class="slide" data-label="Kada DI padeda mokytis" data-steps="3" data-at="26" data-vo="assets/vo/10.mp3">
  <div class="kick">Svarbiausia skaidrė</div>
  <h2>DI padeda, kai <em>neduoda atsakymo iš karto</em> ir šalia yra <em>žmogus</em>.</h2>
  <div class="cards" style="grid-template-columns:1.2fr .8fr;gap:50px;margin-top:10px">
@@ -548,12 +596,12 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
    <li><b>Tutor CoPilot</b> (JAV, RCT, 900 tutorių): DI siūlo tutoriui klausimą, ne atsakymą. +4 p. p., silpnesnių tutorių mokiniams +9 p. p. <span class="grade" style="position:static">B</span></li>
    <li><b>EEF</b> (Anglija, RCT, 259 mokytojai): planavimas −31 % laiko, kokybė nenukrito <span class="grade" style="position:static">A</span></li></ul></div>
  </div>
- <aside class="notes"><b>16:55 · 25–29 MIN.</b> <b>KĄ DARYTI</b> 1 paspaudimas: stulpeliai išauga. 2: kitų tyrimų kortelė. V = mano balsu (~16 s).<br><b>KĄ SAKYTI</b> Turkijos gimnazistai. Su DI pratybose visi atrodė geriau. Bet egzamine be DI tie, kurie gavo atsakymus, surinko 17 % mažiau nei niekur nenaudoję DI. Tie, kurie gavo užuominas, neprarado nieko. Pamoka: DI turi vesti užuominomis, o ne atiduoti atsakymą. Ir šalia turi būti žmogus. Tai jūs.<br><b>⚠️</b> Bastani patikrinta šaltinyje 10-16; 2025-08 erratum turinys nepatikrintas. Įrodymų su LLM 4–5 klasėms beveik nėra: „mažiems elgiamės atsargiau".<br><b>VO (assets/vo/10.mp3)</b> „Stipriausi tyrimai rodo vieną dalyką. DI padeda, kai neduoda atsakymo iškart, o užduoda klausimą ir duoda užuominą. Ir kai šalia yra žmogus. Kai DI tiesiog atsako už vaiką, egzamine be DI tas vaikas surenka mažiau." ⚠️ ear-check.<br><b>TILTAS</b> Kaip tai daro pasaulis?</aside>
+ <aside class="notes"><b>16:56 · 26–29 MIN.</b> <b>KĄ DARYTI</b> 1 paspaudimas: stulpeliai išauga. 2: kitų tyrimų kortelė. V = mano balsu (~16 s).<br><b>KĄ SAKYTI</b> Turkijos gimnazistai. Su DI pratybose visi atrodė geriau. Bet egzamine be DI tie, kurie gavo atsakymus, surinko 17 % mažiau nei niekur nenaudoję DI. Tie, kurie gavo užuominas, neprarado nieko. Pamoka: DI turi vesti užuominomis, o ne atiduoti atsakymą. Ir šalia turi būti žmogus. Tai jūs.<br><b>⚠️</b> Bastani patikrinta šaltinyje 10-16; 2025-08 erratum turinys nepatikrintas. Įrodymų su LLM 4–5 klasėms beveik nėra: „mažiems elgiamės atsargiau".<br><b>VO (assets/vo/10.mp3)</b> „Stipriausi tyrimai rodo vieną dalyką. DI padeda, kai neduoda atsakymo iškart, o užduoda klausimą ir duoda užuominą. Ir kai šalia yra žmogus. Kai DI tiesiog atsako už vaiką, egzamine be DI tas vaikas surenka mažiau." ⚠️ ear-check.<br><b>TILTAS</b> Ir dabar etika: ko mes nedarom. (→ praleidžia „Pasaulis" (12); jei esi laike, 12 + Enter.)</aside>
 </section>
 
-<!-- 11 · 29 min -->
-<!-- SKAIDRĖ 11: Pasaulis -->
-<section class="slide" data-label="Pasaulis" data-steps="3" data-at="29" data-video="hJP5GqnTrNo">
+<!-- 12 · 29 min -->
+<!-- SKAIDRĖ 12: Pasaulis -->
+<section class="slide" data-label="Pasaulis" data-steps="3" data-at="29" data-optional="1" data-video="hJP5GqnTrNo">
  <div class="kick">JAV · Europa · Azija · 2021–2026</div>
  <h2>Pasiimame tai, kas <em>veikia</em>.</h2>
  <div class="world">
@@ -562,12 +610,12 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
   <div class="card" data-step="2"><div class="tag">🇨🇳 Azija · Kinija</div><h3>Taisyklės pagal amžių</h3><p>2025 m. gairės: pradinukai generatyvų DI naudoja <b>tik su mokytoju</b>. Pekinas: bent 8 val. DI užsiėmimų per metus ⚠️. Rezultatų dar nėra <span class="grade c" style="position:static">C</span></p><p style="margin-top:8px"><b>Pietų Korėja:</b> DI vadovėliai 2025, po ~4 mėn. atšaukti kaip privalomi. Mokytojai nebuvo paruošti <span class="grade c" style="position:static">C</span></p></div>
  </div>
  <p class="lead" data-step="2" style="font-size:28px;margin-top:20px">Pasiimame: <b>meistriškumą</b> (Alpha) · <b>mokytoją kilpoje</b> (Europa) · <b>ribas pagal amžių</b> (Kinija).</p>
- <aside class="notes"><b>16:59 · 29–33 MIN.</b> <b>KĄ SAKYTI</b> Alpha: graži idėja, bet jų skaičiai yra jų pačių. Pasiimam mastery: vaikas neina toliau, kol neįvaldė. Europa: kur DI veikia, ten jis stiprina mokytoją. Kinija: aiškios ribos, pradinukas be mokytojo prie DI neprieina. Korėja: be mokytojų paruošimo technologija nepasiteisina. Todėl jūs čia.<br><b>⚠️</b> Pekino 8 val. „per metus ar per klasę" nepatvirtinta, sakyk „bent 8 val.". Kinijos „draudimas" = spaudos formuluotė. Estija: planas, rezultatų nėra. Korėjos šaltiniai C. NENAUDOK „TimeBack licencijavimo".<br><b>Y</b> = Sal Khan TED „How AI Could Save (Not Destroy) Education" (angl.), tik jei laiko liko; tai JAV produkto (Khanmigo) autorius, ne rekomendacija.<br><b>TILTAS</b> Ir dabar etika: ko mes nedarom.</aside>
+ <aside class="notes"><b>⏭ PASIRENKAMA (+4 min.).</b> → ją praleidžia (iš 11 eina į 13). Rodyk tik jei esi laike arba klausia: <b>12 + Enter</b>. <b>KĄ SAKYTI</b> Alpha: graži idėja, bet jų skaičiai yra jų pačių. Pasiimam mastery: vaikas neina toliau, kol neįvaldė. Europa: kur DI veikia, ten jis stiprina mokytoją. Kinija: aiškios ribos, pradinukas be mokytojo prie DI neprieina. Korėja: be mokytojų paruošimo technologija nepasiteisina. Todėl jūs čia.<br><b>⚠️</b> Pekino 8 val. „per metus ar per klasę" nepatvirtinta, sakyk „bent 8 val.". Kinijos „draudimas" = spaudos formuluotė. Estija: planas, rezultatų nėra. Korėjos šaltiniai C. NENAUDOK „TimeBack licencijavimo".<br><b>Y</b> = Sal Khan TED „How AI Could Save (Not Destroy) Education" (angl.), tik jei laiko liko; tai JAV produkto (Khanmigo) autorius, ne rekomendacija.<br><b>TILTAS</b> Ir dabar etika: ko mes nedarom.</aside>
 </section>
 
-<!-- 12 · 33 min -->
-<!-- SKAIDRĖ 12: Etika -->
-<section class="slide" data-label="Etika" data-steps="2" data-at="33" data-vo="assets/vo/12.mp3">
+<!-- 13 · 29 min -->
+<!-- SKAIDRĖ 13: Etika -->
+<section class="slide" data-label="Etika" data-steps="2" data-at="29" data-vo="assets/vo/12.mp3">
  <div class="kick">Etika · vaikams ir mums</div>
  <h2>Nesukčiaujam. DI nedaro darbo <em>už mus</em>. Jis padeda <em>suprasti</em>.</h2>
  <div class="lights">
@@ -579,23 +627,23 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
   <div class="card"><div class="n">Vaikams</div><p>Pirma galvoji tu, paskui klausi DI, tada vėl galvoji tu. DI nedaro namų darbų, jis tavo treneris.</p></div>
   <div class="card hot"><div class="n">Mums, mokytojams</div><p>DI nedaro mūsų darbo. Jis padeda prisitaikyti prie <b>Gen Alpha</b> (g. 2010–2024) ir <b>Gen Beta</b> (nuo 2025), kuriems DI bus kaip elektra. Pažymį ir sprendimą priima žmogus.</p></div>
  </div>
- <aside class="notes"><b>17:03 · 33–36 MIN.</b> <b>KĄ SAKYTI</b> Grįžtam prie Turkijos tyrimo: kai DI duoda atsakymą, vaikas išmoksta mažiau. Todėl etika čia yra mokymosi mokslas. Šviesoforas: kiekvienai užduočiai pasakykite vaikams spalvą iš anksto.<br><b>ŠALTINIS</b> Šviesoforas pagal AI Assessment Scale idėją (Perkins, Furze, Roe, MacVaugh 2024), supaprastinta į 3 spalvas. ⚠️ Gen Alpha/Beta ribos = žiniasklaidos konvencija (McCrindle), ne mokslas.<br><b>VO (assets/vo/12.mp3)</b> „Mes nesukčiaujam. DI nedaro namų darbų už vaiką ir nedaro darbo už mokytoją. Jis padeda suprasti. Pirma galvoju aš, paskui klausiu DI, tada vėl galvoju aš." ⚠️ ear-check.<br><b>TILTAS</b> Dabar jūsų eilė: pasirinkite lygį.</aside>
+ <aside class="notes"><b>16:59 · 29–32 MIN.</b> <b>KĄ SAKYTI</b> Grįžtam prie Turkijos tyrimo: kai DI duoda atsakymą, vaikas išmoksta mažiau. Todėl etika čia yra mokymosi mokslas. Šviesoforas: kiekvienai užduočiai pasakykite vaikams spalvą iš anksto.<br><b>ŠALTINIS</b> Šviesoforas pagal AI Assessment Scale idėją (Perkins, Furze, Roe, MacVaugh 2024), supaprastinta į 3 spalvas. ⚠️ Gen Alpha/Beta ribos = žiniasklaidos konvencija (McCrindle), ne mokslas.<br><b>VO (assets/vo/12.mp3)</b> „Mes nesukčiaujam. DI nedaro namų darbų už vaiką ir nedaro darbo už mokytoją. Jis padeda suprasti. Pirma galvoju aš, paskui klausiu DI, tada vėl galvoju aš." ⚠️ ear-check.<br><b>TILTAS</b> Dabar jūsų eilė: pasirinkite lygį.</aside>
 </section>
 
-<!-- 13 · 36 min -->
-<!-- SKAIDRĖ 13: Pasirinkite lygį -->
-<section class="slide" data-label="Pasirinkite lygį" data-steps="1" data-at="36" data-act="lygis">
- <div class="kick">Užduotis 4 · telefone</div>
+<!-- 14 · 32 min -->
+<!-- SKAIDRĖ 14: Pasirinkite lygį -->
+<section class="slide" data-label="Pasirinkite lygį" data-steps="1" data-at="32" data-act="lygis">
+ <div class="kick">Užduotis 5 · telefone</div>
  <h2>Kuriame laiptelyje esate <em>šiandien</em>?</h2>
  <div class="res" data-res="lygis.l" style="max-width:1500px;margin-top:30px"></div>
  <div class="rcount" data-count="lygis">0 atsakė</div>
  <p class="lead" style="font-size:28px">Jūsų pasirinkimą telefonas prisimins. Pabaigoje gausite <b>savo lygio</b> kitą žingsnį šiai savaitei.</p>
- <aside class="notes"><b>17:06 · 36–38 MIN.</b> <b>KĄ SAKYTI</b> Nėra blogo atsakymo. Jei dar nesat naudoję DI, esat L1, ir puiku: 45-ą minutę visi kartu darom L1.<br><b>KĄ DARYTI</b> Pagal rezultatą: jei dauguma L1, praktikoje mentoriai eina pas L1. Jei daug L2/L3, 73–79 min. dalį gali ištęsti.<br><b>TILTAS</b> Kokie įrankiai kuriam laipteliui.</aside>
+ <aside class="notes"><b>17:02 · 32–34 MIN.</b> <b>KĄ SAKYTI</b> Nėra blogo atsakymo. Jei dar nesat naudoję DI, esat L1, ir puiku: 40-ą minutę visi kartu darom L1.<br><b>KĄ DARYTI</b> Pagal rezultatą: jei dauguma L1, praktikoje mentoriai eina pas L1. Jei daug L2/L3, 73–79 min. dalį gali ištęsti.<br><b>TILTAS</b> Kokie įrankiai kuriam laipteliui.</aside>
 </section>
 
-<!-- 14 · 38 min -->
-<!-- SKAIDRĖ 14: Įrankiai -->
-<section class="slide" data-label="Įrankiai" data-steps="2" data-at="38">
+<!-- 15 · 34 min -->
+<!-- SKAIDRĖ 15: Įrankiai -->
+<section class="slide" data-label="Įrankiai" data-steps="2" data-at="34">
  <div class="kick">Įrankiai · ką kuriam lygiui</div>
  <div class="tools">
   <div class="card"><h3>ChatGPT</h3><ul>
@@ -622,12 +670,12 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
   <div class="card hot"><div class="n">Atvirai</div><p>Rodau tuos, kuriuos naudoju pats. Nė vienas man nemoka. Yra ir kitų (Gemini, Le Chat). Copilot licencijas jau turite: rinkitės, ką leidžia mokykla.</p></div>
  </div>
  <p class="src">1–6 kl. įrankį valdo mokytojas, vaikai mąsto balsu. Amžiaus sąlygos tikrintos per antrinius šaltinius 2026-10-19 ⚠️.</p>
- <aside class="notes"><b>17:08 · 38–42 MIN.</b> <b>KĄ SAKYTI</b> Trys įrankiai, kiekvienas su ženkleliu. L1 visur yra: tiesiog pokalbis. Pirmoje–šeštoje klasėje įrankį liečia tik mokytojas.<br><b>JUNGTYS: parodyk gyvai</b> (savo Claude ar ChatGPT nustatymuose: kur jungiamas Google Drive). ⚠️ Meniu pavadinimų ir kainų nerašau, jie keičiasi; Cowork kainų nesakyk.<br><b>DUOMENYS</b> Parodyk, kur išjungiamas „mokymas iš jūsų pokalbių" (ChatGPT ir Claude privatumo nustatymuose). ⚠️ tikrink gyvai.<br><b>BIAS</b> Ši skaidrė rekomenduoja įrankius → `bias` skill'as prieš push. COI eilutė yra čia pat.<br><b>TILTAS</b> Parodau L1 gyvai.</aside>
+ <aside class="notes"><b>17:04 · 34–37 MIN.</b> <b>KĄ SAKYTI</b> Trys įrankiai, kiekvienas su ženkleliu. L1 visur yra: tiesiog pokalbis. Pirmoje–šeštoje klasėje įrankį liečia tik mokytojas.<br><b>JUNGTYS: parodyk gyvai</b> (savo Claude ar ChatGPT nustatymuose: kur jungiamas Google Drive). ⚠️ Meniu pavadinimų ir kainų nerašau, jie keičiasi; Cowork kainų nesakyk.<br><b>DUOMENYS</b> Parodyk, kur išjungiamas „mokymas iš jūsų pokalbių" (ChatGPT ir Claude privatumo nustatymuose). ⚠️ tikrink gyvai.<br><b>BIAS</b> Ši skaidrė rekomenduoja įrankius → `bias` skill'as prieš push. COI eilutė yra čia pat.<br><b>TILTAS</b> Parodau L1 gyvai.</aside>
 </section>
 
-<!-- 15 · 42 min -->
-<!-- SKAIDRĖ 15: L1 demo -->
-<section class="slide" data-label="L1 demo" data-steps="2" data-at="42" data-backup="backup/l1-testas-pavyzdys.png">
+<!-- 16 · 37 min -->
+<!-- SKAIDRĖ 16: L1 demo -->
+<section class="slide" data-label="L1 demo" data-steps="2" data-at="37" data-backup="backup/l1-testas-pavyzdys.png">
  <div class="kick"><span class="lv l1">L1</span> Gyvai · viena užklausa → testas</div>
  <div class="two" style="grid-template-columns:1fr 1fr;gap:44px">
   <div>
@@ -647,50 +695,65 @@ Sukurk 5 klausimų testą: 2 lengvi, 2 vidutiniai, 1 sunkus (atviras, mokinys pa
    </div>
   </div>
  </div>
- <aside class="notes"><b>17:12 · 42–45 MIN.</b> <b>KĄ DARYTI</b> Atidaryk ChatGPT arba Claude naršyklėje, įklijuok užklausą su tikru siekiniu (pvz. 4 kl. matematika iš emokykla.lt). Jei internetas lūžta: → parodo paruoštą pavyzdį, S = atsarginė nuotrauka.<br><b>KĄ SAKYTI</b> Trys dalykai daro užklausą gerą: kas aš, BUP siekinys, ir kokio rezultato reikia. Be siekinio DI rašo „bendrai gerai".<br><b>⚠️ PRIEŠ RENGINĮ</b> Išbandyk šią ir kitas užklausas po 2 min. (scout'ai jų gyvai nebandė). Pavyzdys dešinėje parašytas ranka kaip iliustracija, ne tikras DI išvesties įrašas. ⚠️ backup/l1-testas-pavyzdys.png = šios skaidrės ekrano kopija; tikro ChatGPT ekrano kopiją padaryk pats.<br><b>TILTAS</b> Dabar jūs. 12 minučių.</aside>
+ <aside class="notes"><b>17:07 · 37–40 MIN.</b> <b>KĄ DARYTI</b> Atidaryk ChatGPT arba Claude naršyklėje, įklijuok užklausą su tikru siekiniu (pvz. 4 kl. matematika iš emokykla.lt). Jei internetas lūžta: → parodo paruoštą pavyzdį, S = atsarginė nuotrauka.<br><b>KĄ SAKYTI</b> Trys dalykai daro užklausą gerą: kas aš, BUP siekinys, ir kokio rezultato reikia. Be siekinio DI rašo „bendrai gerai".<br><b>⚠️ PRIEŠ RENGINĮ</b> Išbandyk šią ir kitas užklausas po 2 min. (scout'ai jų gyvai nebandė). Pavyzdys dešinėje parašytas ranka kaip iliustracija, ne tikras DI išvesties įrašas. ⚠️ backup/l1-testas-pavyzdys.png = šios skaidrės ekrano kopija; tikro ChatGPT ekrano kopiją padaryk pats.<br><b>TILTAS</b> Dabar jūs. 20 minučių: pirma 3 min. rasite DI klaidą, tada savo testas.</aside>
 </section>
 
-<!-- 16 · 45 min -->
-<!-- SKAIDRĖ 16: Praktika L1 -->
-<section class="slide" data-label="Praktika L1" data-steps="2" data-at="45" data-act="rubric" data-timer="720">
- <div class="kick">Užduotis 5 · <span class="lv l1">L1</span> Praktika · 12 min. · mentoriai padeda</div>
+<!-- 17 · 40 min -->
+<!-- SKAIDRĖ 17: Praktika L1 -->
+<section class="slide quiz-slide" data-label="Praktika L1" data-steps="3" data-at="40" data-act="rubric" data-k="kl" data-answer="2" data-timer="1200">
+ <div class="kick">Užduotis 6 · <span class="lv l1">L1</span> Praktika · 20 min. · mentoriai padeda</div>
  <div class="two" style="grid-template-columns:1.25fr .75fr">
   <div>
-   <h2 style="font-size:50px;margin-top:0">Jūsų dalykas. Jūsų klasė. <em>Jūsų testas.</em></h2>
-   <div class="cards" style="grid-template-columns:1fr;gap:14px;margin-top:20px">
-    <div class="card"><p><b>1.</b> Telefone „Užklausa" → kopijuoti → įklijuoti į ChatGPT, Claude ar Copilot.</p></div>
-    <div class="card"><p><b>2.</b> Įrašykite klasę, dalyką ir siekinį iš emokykla.lt. Neturite po ranka? Parašykite temą savais žodžiais. Gaunate 5 klausimus.</p></div>
-    <div class="card"><p><b>3.</b> Įvertinkite telefone pagal 4 kriterijus. Geriausią klausimą pasidalinkite su sale.</p></div>
+   <div data-upto="1">
+    <h2 style="font-size:50px;margin-top:0">Pirmiausia: <em>rask klaidą</em>.</h2>
+    <p class="small" style="margin-top:6px">DI sukūrė testą · 4 kl. · Lietuvos istorijos datos. Viename atsakyme yra faktinė klaida.</p>
+    <div class="fq"><ol>
+     <li><span>Kas buvo vienintelis karūnuotas Lietuvos karalius? <i>Mindaugas.</i></span></li>
+     <li><span>Kurią dieną švenčiame Lietuvos valstybės atkūrimo dieną? <i>Vasario 16-ąją.</i></span></li>
+     <li class="bad" data-rv="1"><span>Kada įvyko Žalgirio mūšis? <i>1401 m.</i></span></li>
+     <li><span>Kurią dieną 1990 m. atkurta Lietuvos nepriklausomybė? <i>Kovo 11-ąją.</i></span></li>
+     <li><span>Kada Lietuva įstojo į Europos Sąjungą? <i>2004 m.</i></span></li>
+    </ol></div>
+    <div class="card hot fix" data-step="1"><p><b>3 klausimas.</b> Žalgirio mūšis įvyko <b>1410 m.</b> 1401 m. yra Vilniaus ir Radomo aktas. DI sumaišė panašius skaičius ir pasakė tai užtikrintai.</p></div>
+   </div>
+   <div data-only="2">
+    <h2 style="font-size:50px;margin-top:0">Jūsų dalykas. Jūsų klasė. <em>Jūsų testas.</em></h2>
+    <div class="cards" style="grid-template-columns:1fr;gap:14px;margin-top:20px">
+     <div class="card"><p><b>1.</b> Telefone „Užklausa" → kopijuoti → įklijuoti į ChatGPT, Claude ar Copilot.</p></div>
+     <div class="card"><p><b>2.</b> Įrašykite klasę, dalyką ir siekinį iš emokykla.lt. Neturite po ranka? Parašykite temą savais žodžiais. Gaunate 5 klausimus.</p></div>
+     <div class="card"><p><b>3.</b> Patikrinkite faktus kaip ką tik. Įvertinkite telefone pagal 4 kriterijus. Geriausią klausimą pasidalinkite su sale.</p></div>
+    </div>
    </div>
   </div>
   <div style="text-align:center">
-   <div class="timer">12:00</div>
+   <div class="timer">20:00</div>
    <div class="thint">T paleidžia</div>
-   <div class="rcount" data-count="rubric" style="font-size:30px;margin-top:20px">0 atsakė</div>
-   <p class="small" data-step="1" style="margin-top:20px">Neturite paskyros? Dirbkite poroje su kaimynu. Be telefono? Mentorius duos lapelį.</p>
+   <div data-upto="1" style="text-align:left;margin-top:16px"><div class="thint">Kuriame klausime klaida?</div><div class="res narrow" data-res="rubric.kl"></div></div>
+   <div class="rcount" data-count="rubric" style="font-size:26px;margin-top:14px">0 atsakė</div>
+   <p class="small" data-only="2" style="margin-top:20px">Neturite paskyros? Dirbkite poroje su kaimynu. Be telefono? Mentorius duos lapelį.</p>
   </div>
  </div>
- <aside class="notes"><b>17:15 · 45–57 MIN.</b> <b>KĄ DARYTI</b> T = 12:00. Povilas ir mentoriai vaikšto: pirmiausia pas tuos, kas lygio skaidrėje pasirinko L1. Po 6 min. pasakyk „pusė laiko". Po 10 min.: „Vertinkite telefone."<br><b>RUBRIKA (1–3)</b> Atitinka siekinį ir klasę · Aišku vaikui · Yra lengvų ir sunkių · Faktai teisingi (patikrinau pats).<br><b>JEI NĖRA INTERNETO</b> Užklausą jie turi telefone (jei puslapis atsidarė) arba lapelyje. Rankinis režimas M rezultatams.<br><b>TILTAS</b> Žiūrim, ką sukūrėt.</aside>
+ <aside class="notes"><b>17:10 · 40–60 MIN.</b> <b>KĄ DARYTI</b> T = 20:00 iš karto. <b>0–3 min. RASK KLAIDĄ:</b> „DI sukūrė testą. Viename atsakyme klaida. Raskite ir pažymėkite telefone." Kai dešinėje ~20 atsakymų, → atskleidžia (3 klausimas paraudonuoja, telefone irgi). <b>Tai svarbiausias įgūdis: patikrinti.</b> DI klydo užtikrintai, gražiu sakiniu. Lygiai taip pat jis klys jūsų teste.<br>→ dar kartą: savo testas (17 min.). Povilas ir mentoriai vaikšto: pirmiausia pas tuos, kas lygio skaidrėje pasirinko L1. Po 10 min. pasakyk „pusė laiko". Po 16 min.: „Vertinkite telefone."<br><b>FAKTAS</b> Žalgirio mūšis 1410-07-15; Vilniaus ir Radomo aktai 1401 m. Kiti 4 atsakymai teisingi (Mindaugas karūnuotas 1253 m.; ES nuo 2004-05-01).<br><b>RUBRIKA (1–3)</b> Atitinka siekinį ir klasę · Aišku vaikui · Yra lengvų ir sunkių · Faktai teisingi (patikrinau pats).<br><b>JEI NĖRA INTERNETO</b> „Kas rado klaidą 3 klausime? Pakelkite ranką" → M. Užklausą jie turi telefone (jei puslapis atsidarė) arba lapelyje.<br><b>TILTAS</b> Žiūrim, ką sukūrėt.</aside>
 </section>
 
-<!-- 17 · 57 min -->
-<!-- SKAIDRĖ 17: Ką sukūrėte -->
-<section class="slide" data-label="Ką sukūrėte" data-steps="1" data-at="57" data-act="rubric">
+<!-- 18 · 60 min -->
+<!-- SKAIDRĖ 18: Ką sukūrėte -->
+<section class="slide" data-label="Ką sukūrėte" data-steps="1" data-at="60" data-act="rubric">
  <div class="kick">Jūsų rezultatai</div>
  <h2>Kaip DI pavyko? <em>Jūsų</em> vertinimas.</h2>
  <div class="avg" data-res="rubric.__avg"></div>
  <div class="thint" style="margin-top:20px">Geriausi klausimai (spustelėkite, kad paslėptumėte)</div>
  <div class="wall" data-res="rubric.best"></div>
- <aside class="notes"><b>17:27 · 57–60 MIN.</b> <b>KĄ SAKYTI</b> Kur žemiausias vidurkis? Dažniausiai „faktai teisingi" arba „yra sunkių". Štai kodėl jūs reikalingi: DI duoda juodraštį, jūs darote jį gerą. Perskaityk 2 klausimus iš sienos.<br><b>KĄ DARYTI</b> Spustelėjus kortelę ji paslepiama (jei yra vardas ar netinkama). ⚠️ Prieš perskaitydamas garsiai, pažiūrėk, ar nėra vaiko vardo.<br><b>TILTAS</b> Kaip DI gali treniruoti mokymąsi, ne jį pakeisti.</aside>
+ <aside class="notes"><b>17:30 · 60–63 MIN.</b> <b>🤸 PO ŠIOS SKAIDRĖS: B</b> = 2 min. judėjimo pertrauka (63–65 min.). <b>KĄ SAKYTI</b> Kur žemiausias vidurkis? Dažniausiai „faktai teisingi" arba „yra sunkių". Štai kodėl jūs reikalingi: DI duoda juodraštį, jūs darote jį gerą. Perskaityk 2 klausimus iš sienos.<br><b>KĄ DARYTI</b> Spustelėjus kortelę ji paslepiama (jei yra vardas ar netinkama). ⚠️ Prieš perskaitydamas garsiai, pažiūrėk, ar nėra vaiko vardo.<br><b>TILTAS</b> Kaip DI gali treniruoti mokymąsi, ne jį pakeisti.</aside>
 </section>
 
-<!-- 18 · 60 min -->
-<!-- SKAIDRĖ 18: Mokymosi mokslas -->
-<section class="slide quiz-slide" data-label="Mokymosi mokslas" data-steps="3" data-at="60" data-act="recall" data-k="a" data-answer="1">
- <div class="kick">Užduotis 6 · prisiminkite be užrašų</div>
+<!-- 19 · 65 min -->
+<!-- SKAIDRĖ 19: Mokymosi mokslas -->
+<section class="slide quiz-slide" data-label="Mokymosi mokslas" data-steps="3" data-at="65" data-act="recall" data-k="a" data-answer="1">
+ <div class="kick">Užduotis 7 · prisiminkite be užrašų</div>
  <div class="two" style="grid-template-columns:1fr 1fr;gap:50px">
   <div>
-   <h2 style="font-size:46px;margin-top:0">Prieš 35 min. kalbėjom: kada DI <em>labiausiai</em> padeda mokytis?</h2>
+   <h2 style="font-size:46px;margin-top:0">Prieš 40 min. kalbėjom: kada DI <em>labiausiai</em> padeda mokytis?</h2>
    <div class="res narrow" data-res="recall.a" style="margin-top:20px"></div>
    <div class="rcount" data-count="recall">0 atsakė</div>
   </div>
@@ -698,17 +761,17 @@ Sukurk 5 klausimų testą: 2 lengvi, 2 vidutiniai, 1 sunkus (atviras, mokinys pa
    <div class="thint">Ką ką tik padarėte</div>
    <div class="cards" style="grid-template-columns:1fr;gap:12px;margin-top:10px">
     <div class="card"><p><b>Aktyvus prisiminimas:</b> bandote atsakyti, o ne skaitote dar kartą <span class="grade" style="position:static">A</span></p></div>
-    <div class="card"><p><b>Kartojimas tarpais:</b> grįžtam po 35 min., po dienos, po savaitės <span class="grade" style="position:static">A</span></p></div>
+    <div class="card"><p><b>Kartojimas tarpais:</b> grįžtam po 40 min., po dienos, po savaitės <span class="grade" style="position:static">A</span></p></div>
     <div class="card hot" data-step="2"><div class="n"><span class="lv l1">L1</span> DI kaip mokymosi treneris</div><p style="font-family:var(--mono);font-size:21px">„Esu 6 kl. mokinys. Tema: [TEMA]. Neduok atsakymo. Užduok 1 klausimą, palauk, tada pasakyk, ką supratau teisingai, ir paklausk kito."</p></div>
    </div>
   </div>
  </div>
- <aside class="notes"><b>17:30 · 60–64 MIN.</b> <b>KĄ DARYTI</b> Laukti ~20 atsakymų, → atskleidžia (B). Tada kortelės.<br><b>KĄ SAKYTI</b> Ką tik padarėte tai, ką darys jūsų mokiniai: prisiminėte po pertraukos. Tai kartojimas tarpais. DI gali tai organizuoti: „užduok man klausimą ir neduok atsakymo". Tai mokymosi mokytis treneris, ne atsakymų aparatas. Mokytojas užklausą rodo ekrane, mokiniai atsako balsu (iki 13 m. jie patys nenaudoja).<br><b>ŠALTINIAI</b> Roediger ir Karpicke 2006 (A), Cepeda ir kt. 2006 meta-analizė (A). ⚠️ iš atminties, DOI netikrinti šią sesiją.<br><b>TILTAS</b> Dabar jūsų dalykai: matematika, istorija, muzika, lietuvių.</aside>
+ <aside class="notes"><b>17:35 · 65–68 MIN.</b> <b>KĄ DARYTI</b> Laukti ~20 atsakymų, → atskleidžia (B). Tada kortelės.<br><b>KĄ SAKYTI</b> Ką tik padarėte tai, ką darys jūsų mokiniai: prisiminėte po pertraukos. Tai kartojimas tarpais. DI gali tai organizuoti: „užduok man klausimą ir neduok atsakymo". Tai mokymosi mokytis treneris, ne atsakymų aparatas. Mokytojas užklausą rodo ekrane, mokiniai atsako balsu (iki 13 m. jie patys nenaudoja).<br><b>ŠALTINIAI</b> Roediger ir Karpicke 2006 (A), Cepeda ir kt. 2006 meta-analizė (A). ⚠️ iš atminties, DOI netikrinti šią sesiją.<br><b>TILTAS</b> Dabar jūsų dalykai: matematika, istorija, muzika, lietuvių.</aside>
 </section>
 
-<!-- 19 · 64 min -->
-<!-- SKAIDRĖ 19: Dalykai ir testai -->
-<section class="slide" data-label="Dalykai ir testai" data-steps="4" data-at="64">
+<!-- 20 · 68 min -->
+<!-- SKAIDRĖ 20: Dalykai ir testai -->
+<section class="slide" data-label="Dalykai ir testai" data-steps="5" data-at="68">
  <div class="kick">Testai pagal BUP · įklijuokite siekinį iš emokykla.lt</div>
  <div data-only="0">
   <h2>🔢 Matematika · <span class="lv l1">L1</span>→<span class="lv l2">L2</span> 3 lygiai + klaidų diagnostika</h2>
@@ -740,13 +803,19 @@ Sukurk 8 klausimus: 3 informacijos paieškos, 3 išvadų darymo, 2 vertinimo.
 Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atskirai.</div>
   <p class="lead" style="font-size:26px"><span class="lv l2">L2</span> Meistriškumas: „Sukurk 20 min. užduotį ir rubriką 4 lygiams, kiekvienam 1–2 sakiniai ‚mokinys gali…'. Nerašyk pažymių, tik lygius."</p>
  </div>
+ <div data-only="4">
+  <h2>🌊 Reiškinys · <span class="lv l1">L1</span> DI kaip tyrimo partneris</h2>
+  <div class="prompt">Esu <span class="k">[N]</span> kl. mokytoja. Mokomės reiškiniais. Reiškinys: <span class="k">vanduo mūsų mieste</span>, 5 kl., 2 savaitės.
+Būk mano tyrimo partneris: 1) 5 vaikų klausimai, nuo kurių pradėtume tyrimą, 2) kokius patikimus šaltinius vaikai gali naudoti (pažymėk, kuriuos turiu patikrinti), 3) po vieną užduotį 4 dalykams: gamtos mokslai, matematika, lietuvių k., dailė, 4) vertinimo rubrika 3 lygiais. Vaikų duomenų nenaudok.</div>
+  <p class="lead" style="font-size:26px">Klausimai · šaltiniai · užduotys 4 dalykams · rubrika. <span class="lv l2">L2</span> NotebookLM: įkelkite tikrus šaltinius, pvz. miesto vandens tiekėjo viešą ataskaitą.</p>
+ </div>
  <p class="src">Pasiekimų sričių pavadinimų čia sąmoningai nerašau: įklijuokite oficialų tekstą iš emokykla.lt arba parašykite temą ir klasę savais žodžiais. Visos užklausos yra jūsų telefone, skiltyje „Užklausos".</p>
- <aside class="notes"><b>17:34 · 64–68 MIN.</b> <b>KĄ DARYTI</b> 4 paspaudimai: matematika → istorija → muzika → lietuvių (pagal salės dalykų stulpelį iš 2 skaidrės gali šokti greičiau).<br><b>KĄ SAKYTI</b> Visur tas pats triukas: įklijuojat siekinį ir lygių aprašą iš emokykla.lt. Tada DI laikosi programos, ne savo nuomonės. Ir visur paprašau pažymėti, ką tikrinti.<br><b>⚠️</b> BUP sričių pavadinimai neverifikuoti (scout'as nepasiekė PDF), todėl jų neminim. Užklausos gyvai nebandytos: išbandyk 2 min. kiekvieną prieš renginį.<br><b>TILTAS</b> O kas tinka kokio amžiaus vaikams?</aside>
+ <aside class="notes"><b>17:38 · 68–71 MIN.</b> <b>KĄ DARYTI</b> 5 paspaudimai: matematika → istorija → muzika → lietuvių → reiškinys (pagal salės dalykų stulpelį iš 2 skaidrės gali šokti greičiau).<br><b>REIŠKINYS (5 paspaudimas)</b> Tai jūsų mokyklos būdas: reiškiniais grįstas mokymasis (PhenoBL). „Vanduo mūsų mieste": DI padeda suplanuoti tyrimą keliems dalykams iš karto. Klausimus jis tik pasiūlo, tyrinėja vaikai. Užklausa telefone, L1 sąraše.<br><b>KĄ SAKYTI</b> Visur tas pats triukas: įklijuojat siekinį ir lygių aprašą iš emokykla.lt. Tada DI laikosi programos, ne savo nuomonės. Ir visur paprašau pažymėti, ką tikrinti.<br><b>⚠️</b> BUP sričių pavadinimai neverifikuoti (scout'as nepasiekė PDF), todėl jų neminim. Užklausos gyvai nebandytos: išbandyk 2 min. kiekvieną prieš renginį.<br><b>TILTAS</b> O kas tinka kokio amžiaus vaikams?</aside>
 </section>
 
-<!-- 20 · 68 min -->
-<!-- SKAIDRĖ 20: Klasių žemėlapis -->
-<section class="slide" data-label="Klasių žemėlapis" data-steps="3" data-grades="2,4,9" data-at="68">
+<!-- 21 · 71 min -->
+<!-- SKAIDRĖ 21: Klasių žemėlapis -->
+<section class="slide" data-label="Klasių žemėlapis" data-steps="3" data-grades="2,4,9" data-at="71">
  <div class="kick">Nuo darželio iki 11 klasės · tempkite arba spauskite</div>
  <div class="gm">
   <input type="range" id="gmR" min="0" max="11" step="1" value="0" aria-label="Klasė">
@@ -757,12 +826,12 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
   </div>
  </div>
  <p class="src">„Mūsų pasiūlymas" = patikrinto pasaulio pavyzdžio šiai klasei neradome. M = tik mokytojas · P = mokytojas rodo, vaikai mąsto · 13+ = mokinys pats pagal mokyklos taisykles.</p>
- <aside class="notes"><b>17:38 · 68–71 MIN.</b> <b>KĄ DARYTI</b> → rodo 3 klases: 2 kl. → 4 kl. → 9 kl. (3 min.). Kitas klases rodyk tik jei klausia: tempk slankiklį arba spausk skaičių (pasiekia visas 12).<br><b>KĄ SAKYTI</b> Iki 13 metų įrankį liečiate tik jūs. Mažesniems DI yra jūsų rankose, ne jų.<br><b>⚠️</b> Darželiui, 1, 2, 5, 6, 8 kl. patikrinto pasaulio pavyzdžio nėra: ten rodoma „mūsų pasiūlymas", ne „pasaulis taip daro". Oak „Aila" skaičiai yra paties Oak (C). Estija: planas, rezultatų nėra (C).<br><b>TILTAS</b> Toks žemėlapis yra ir mano atvirame projekte. Parodysiu.</aside>
+ <aside class="notes"><b>17:41 · 71–74 MIN.</b> <b>KĄ DARYTI</b> → rodo 3 klases: 2 kl. → 4 kl. → 9 kl. (3 min.). Kitas klases rodyk tik jei klausia: tempk slankiklį arba spausk skaičių (pasiekia visas 12).<br><b>KĄ SAKYTI</b> Iki 13 metų įrankį liečiate tik jūs. Mažesniems DI yra jūsų rankose, ne jų.<br><b>⚠️</b> Darželiui, 1, 2, 5, 6, 8 kl. patikrinto pasaulio pavyzdžio nėra: ten rodoma „mūsų pasiūlymas", ne „pasaulis taip daro". Oak „Aila" skaičiai yra paties Oak (C). Estija: planas, rezultatų nėra (C).<br><b>TILTAS</b> Toks žemėlapis yra ir mano atvirame projekte. Parodysiu.</aside>
 </section>
 
-<!-- 21 · 71 min -->
-<!-- SKAIDRĖ 21: Mokymosi žemėlapis -->
-<section class="slide" data-label="Mokymosi žemėlapis" data-steps="1" data-at="71" data-backup="backup/zemelapis.png">
+<!-- 22 · 74 min -->
+<!-- SKAIDRĖ 22: Mokymosi žemėlapis -->
+<section class="slide" data-label="Mokymosi žemėlapis" data-steps="1" data-at="74" data-backup="backup/zemelapis.png">
  <div class="kick"><span class="lv l3">L3</span> Gyvai · ką galima sukurti su DI</div>
  <div class="two" style="grid-template-columns:1.35fr .65fr;gap:40px">
   <div style="height:700px"><iframe class="live" id="mapframe" data-src="https://krisvas333.github.io/vaiko-zemelapis/?src=siaures-90" title="Vaiko mokymosi žemėlapis" loading="lazy"></iframe></div>
@@ -773,12 +842,12 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
    <p class="small" style="margin-top:10px">⚗️ Eksperimentinis, nemokamas, gali klysti. Radote klaidą? krisvas.lt</p>
   </div>
  </div>
- <aside class="notes"><b>17:41 · 71–73 MIN.</b> <b>KĄ DARYTI</b> Žemėlapis kraunamas šioje skaidrėje (iframe). Paspausk temą, parodyk ryšius. Jei nekrauna: S = ekrano nuotrauka.<br><b>KĄ SAKYTI</b> Tai mano projektas, nemokamas, nieko neparduoda. Pasidariau jį su DI: tai yra 3 lygis. Jums nereikia to daryti. Bet žinokit, kad galima.<br><b>MATAVIMAS</b> QR veda su ?src=siaures-90. ⚠️ „Huge success" = Kris'o žodžiai; skaičių (lankytojai) skaidrėje neminim, nes jų netikrinau.<br><b>TILTAS</b> Grįžtam į 2 lygį: ką galit pasidaryti patys.</aside>
+ <aside class="notes"><b>17:44 · 74–76 MIN.</b> <b>KĄ DARYTI</b> Žemėlapis kraunamas šioje skaidrėje (iframe). Paspausk temą, parodyk ryšius. Jei nekrauna: S = ekrano nuotrauka.<br><b>KĄ SAKYTI</b> Tai mano projektas, nemokamas, nieko neparduoda. Pasidariau jį su DI: tai yra 3 lygis. Jums nereikia to daryti. Bet žinokit, kad galima.<br><b>MATAVIMAS</b> QR veda su ?src=siaures-90. ⚠️ „Huge success" = Kris'o žodžiai; skaičių (lankytojai) skaidrėje neminim, nes jų netikrinau.<br><b>TILTAS</b> Grįžtam į 2 lygį: ką galit pasidaryti patys.</aside>
 </section>
 
-<!-- 22 · 73 min -->
-<!-- SKAIDRĖ 22: L2 kuriu -->
-<section class="slide" data-label="L2 kuriu" data-steps="3" data-at="73">
+<!-- 23 · 76 min -->
+<!-- SKAIDRĖ 23: L2 kuriu -->
+<section class="slide" data-label="L2 kuriu" data-steps="3" data-at="76">
  <div class="kick"><span class="lv l2">L2</span> Kuriu · paskyra + 20 min.</div>
  <div class="two" style="grid-template-columns:1fr 1fr;gap:44px">
   <div>
@@ -801,12 +870,12 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
    <div class="card hot" data-step="2" style="margin-top:18px"><div class="n">🎬 Video iš jūsų medžiagos</div><p style="font-size:22px"><span class="lv l1">L1</span> NotebookLM: įkelkite savo konspektą → garso arba vaizdo apžvalga (⚠️ LT kalbą patikrinkite).<br><span class="lv l2">L2</span> ChatGPT / Claude: 1 min. mokomojo video scenarijus + kadrų planas → filmuojate telefonu.</p></div>
   </div>
  </div>
- <aside class="notes"><b>17:43 · 73–76 MIN.</b> <b>KĄ DARYTI</b> Paspausk neteisingą atsakymą: matosi užuomina, ne atsakymas. Tada teisingą.<br><b>KĄ SAKYTI</b> Projektas atsimena jūsų klasę ir programą, nereikia kaskart aiškinti. Interaktyvus testas ekrane: klasė atsako kartu, jūs matot, kur stringa.<br><b>JUNGTYS</b> Jei klausia: parodyk gyvai savo nustatymuose. ⚠️ Meniu pavadinimų nerašau.<br><b>3 PASPAUDIMAS: VIDEO</b> „Video galite daryti ir patys: L1 NotebookLM apžvalga iš savo konspekto, L2 DI parašo 1 min. scenarijų, jūs filmuojate telefonu. Abi užklausos telefone." ⚠️ NotebookLM vaizdo apžvalgos lietuvių kalba nepatikrinta: išbandyk ryte.<br><b>⚠️</b> Testas dešinėje sukurtas Neuron'o kaip pavyzdys, ne gyvai sugeneruotas salėje.<br><b>TILTAS</b> Ir 3 lygis: tik parodau.</aside>
+ <aside class="notes"><b>17:46 · 76–79 MIN.</b> <b>KĄ DARYTI</b> Paspausk neteisingą atsakymą: matosi užuomina, ne atsakymas. Tada teisingą.<br><b>KĄ SAKYTI</b> Projektas atsimena jūsų klasę ir programą, nereikia kaskart aiškinti. Interaktyvus testas ekrane: klasė atsako kartu, jūs matot, kur stringa.<br><b>JUNGTYS</b> Jei klausia: parodyk gyvai savo nustatymuose. ⚠️ Meniu pavadinimų nerašau.<br><b>3 PASPAUDIMAS: VIDEO</b> „Video galite daryti ir patys: L1 NotebookLM apžvalga iš savo konspekto, L2 DI parašo 1 min. scenarijų, jūs filmuojate telefonu. Abi užklausos telefone." ⚠️ NotebookLM vaizdo apžvalgos lietuvių kalba nepatikrinta: išbandyk ryte.<br><b>⚠️</b> Testas dešinėje sukurtas Neuron'o kaip pavyzdys, ne gyvai sugeneruotas salėje.<br><b>TILTAS</b> Ir 3 lygis: tik parodau.</aside>
 </section>
 
-<!-- 23 · 76 min -->
-<!-- SKAIDRĖ 23: L3 antros smegenys -->
-<section class="slide" data-label="L3 antros smegenys" data-steps="2" data-at="76">
+<!-- 24 · 79 min -->
+<!-- SKAIDRĖ 24: L3 antros smegenys -->
+<section class="slide" data-label="L3 antros smegenys" data-steps="2" data-at="79" data-optional="1">
  <div class="kick"><span class="lv l3">L3</span> Automatizuoju · tik parodau</div>
  <h2>Antrosios smegenys: DI mato tik <em>klasės klaidų tipus</em>.</h2>
  <div class="sb">
@@ -820,13 +889,13 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
   <div class="card"><div class="n">BDAR</div><p>Vaiko vardas, pažymiai, elgesys, diagnozė = asmens duomenys. Ne į DI. Klausimai: mokyklos duomenų apsaugos pareigūnas.</p></div>
   <div class="card"><div class="n">ES DI aktas</div><p>Švietimas (vertinimas, priėmimas, stebėsena) = didelės rizikos sritis. Praktiškai: <b>DI nededa pažymio</b>, sprendžia mokytojas.</p></div>
  </div>
- <aside class="notes"><b>⏭ PASIRENKAMA.</b> Jei vėluoji ≥3 min., praleisk (→ 24 skaidrė), L3 lieka telefono užklausų banke. <b>17:46 · 76–79 MIN.</b> <b>KĄ SAKYTI</b> Tai, ką aš darau su savo antrosiomis smegenimis, mokytojas gali daryti su klasės modeliais. Vardai lieka popieriuje. DI mato tik „7 iš 28 painioja liekaną". Nuo ko pradėti: vienas aplankas „Klasės modeliai", 3 eilutės per savaitę. Agentai: tik kai jau darote L2 kas savaitę.<br><b>PARODYK GYVAI</b> (jei laiko yra 1 min.) savo Cowork ar Claude Code aplanką. ⚠️ Kainų nesakyk.<br><b>⚠️</b> Teisė: be datų (DI akto terminai keičiami, nepatvirtinta). Tai ne teisinė konsultacija.<br><b>TILTAS</b> Ką išbandysite pirmiausia?</aside>
+ <aside class="notes"><b>⏭ PASIRENKAMA (+3 min.).</b> → ją praleidžia (iš 23 eina į 25). Rodyk tik jei esi laike: <b>24 + Enter</b>. Kitaip L3 lieka telefono užklausų banke. <b>KĄ SAKYTI</b> Tai, ką aš darau su savo antrosiomis smegenimis, mokytojas gali daryti su klasės modeliais. Vardai lieka popieriuje. DI mato tik „7 iš 28 painioja liekaną". Nuo ko pradėti: vienas aplankas „Klasės modeliai", 3 eilutės per savaitę. Agentai: tik kai jau darote L2 kas savaitę.<br><b>PARODYK GYVAI</b> (jei laiko yra 1 min.) savo Cowork ar Claude Code aplanką. ⚠️ Kainų nesakyk.<br><b>⚠️</b> Teisė: be datų (DI akto terminai keičiami, nepatvirtinta). Tai ne teisinė konsultacija.<br><b>TILTAS</b> Ką išbandysite pirmiausia?</aside>
 </section>
 
-<!-- 24 · 79 min -->
-<!-- SKAIDRĖ 24: Ką išbandysite? -->
+<!-- 25 · 79 min -->
+<!-- SKAIDRĖ 25: Ką išbandysite? -->
 <section class="slide" data-label="Ką išbandysite?" data-steps="1" data-at="79" data-act="pirmas">
- <div class="kick">Užduotis 7 · telefone</div>
+ <div class="kick">Užduotis 8 · telefone</div>
  <h2>Ką išbandysite <em>šią savaitę</em>?</h2>
  <div class="cards" style="grid-template-columns:1.25fr .75fr;gap:50px;margin-top:10px">
   <div><div class="res narrow" data-res="pirmas.p"></div><div class="rcount" data-count="pirmas">0 atsakė</div></div>
@@ -835,8 +904,8 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
  <aside class="notes"><b>17:49 · 79–81 MIN.</b> <b>KĄ SAKYTI</b> Viena užduotis, viena savaitė. Ne penkios. Dešinėje: kaip jums sekėsi per visą popietę. [Jei daug „nesupratau": „Matau. Paaiškinsiu dar kartą per klausimus."]<br><b>TILTAS</b> Paskutinė mintis apie tai, kas DI yra.</aside>
 </section>
 
-<!-- 25 · 81 min -->
-<!-- SKAIDRĖ 25: 3 partneriai -->
+<!-- 26 · 81 min -->
+<!-- SKAIDRĖ 26: 3 partneriai -->
 <section class="slide" data-label="3 partneriai" data-steps="3" data-at="81" data-vo="assets/vo/25.mp3">
  <div class="kick">Uždarymas</div>
  <h2>DI yra jūsų <em>partneris</em>. Trimis būdais.</h2>
@@ -848,41 +917,48 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
  <aside class="notes"><b>17:51 · 81–84 MIN.</b> <b>KĄ SAKYTI</b> DI man yra trys partneriai. Mąstymo: jis klausia. Tyrimo: jis randa, aš tikrinu. Kūrimo: per kelias minutes padarau tai, ko anksčiau nespėdavau. Ir visais trim atvejais darbą darau aš.<br><b>V</b> = mano balsu (~13 s).<br><b>VO (assets/vo/25.mp3)</b> „DI man yra trys partneriai. Mąstymo partneris, kuris užduoda klausimus. Tyrimo partneris, kuris randa, o aš patikrinu. Ir kūrimo partneris, su kuriuo per kelias minutes padarau tai, ko anksčiau nespėdavau." ⚠️ ear-check.<br><b>TILTAS</b> Telefonuose dabar jūsų asmeninis kitas žingsnis.</aside>
 </section>
 
-<!-- 26 · 84 min -->
-<!-- SKAIDRĖ 26: Kitas žingsnis -->
-<section class="slide" data-label="Kitas žingsnis" data-steps="1" data-at="84" data-act="next">
- <div class="kick">Užduotis 8 · telefone · jūsų lygiui</div>
+<!-- 27 · 84 min -->
+<!-- SKAIDRĖ 27: Kitas žingsnis -->
+<section class="slide" data-label="Kitas žingsnis" data-steps="2" data-at="84" data-act="next">
+ <div class="kick">Užduotis 9 · telefone · jūsų lygiui</div>
  <div class="two" style="grid-template-columns:1fr 1fr;gap:50px">
   <div>
-   <h2 style="margin-top:0">Jūsų <em>kitas žingsnis</em> šią savaitę</h2>
-   <div class="cards" style="grid-template-columns:1fr;gap:12px;margin-top:16px">
-    <div class="card"><p><span class="lv l1">L1</span> Viena užklausa → 5 klausimų testas → patikrinu → naudoju pamokoje.</p></div>
-    <div class="card"><p><span class="lv l2">L2</span> Vienas projektas klasei + vienas interaktyvus testas ekrane.</p></div>
-    <div class="card"><p><span class="lv l3">L3</span> Aplankas „Klasės modeliai": 3 eilutės per savaitę, be vardų.</p></div>
+   <h2 style="margin-top:0;font-size:50px">Jūsų <em>kitas žingsnis</em> šią savaitę</h2>
+   <div class="cards" style="grid-template-columns:1fr;gap:10px;margin-top:14px">
+    <div class="card" style="padding:16px 24px"><p><span class="lv l1">L1</span> Viena užklausa → 5 klausimų testas → patikrinu → naudoju pamokoje.</p></div>
+    <div class="card" style="padding:16px 24px"><p><span class="lv l2">L2</span> Vienas projektas klasei + vienas interaktyvus testas ekrane.</p></div>
+    <div class="card" style="padding:16px 24px"><p><span class="lv l3">L3</span> Aplankas „Klasės modeliai": 3 eilutės per savaitę, be vardų.</p></div>
+    <div class="card hot" style="padding:16px 24px;margin-top:8px"><div class="n">Po 2 savaičių · 30 min.</div><p>Susitikimas: kiekvienas atsineša <b>vieną DI testą</b>, kurį panaudojo klasėje. Telefone spauskite „Dalyvausiu".</p><div class="res narrow" data-res="next.po" style="margin-top:10px"></div></div>
    </div>
-   <p class="small" style="margin-top:14px">Ir trumpas anoniminis atsiliepimas telefone. Man jis svarbiausias.</p>
   </div>
   <div>
-   <div class="thint">Kiek naudinga (1–5)</div><div class="res narrow" data-res="next.u"></div>
-   <div class="thint" style="margin-top:20px">Ar išbandysite per savaitę?</div><div class="res narrow" data-res="next.t"></div>
-   <div class="rcount" data-count="next">0 atsakė</div>
+   <div data-only="0">
+    <div class="thint">Kiek naudinga (1–5)</div><div class="res narrow" data-res="next.u"></div>
+    <div class="thint" style="margin-top:20px">Ar išbandysite per savaitę?</div><div class="res narrow" data-res="next.t"></div>
+   </div>
+   <div data-only="1">
+    <div class="thint">Ar galite tai dabar? Prieš → po (vidurkis 1–5)</div>
+    <div class="pp" data-res="next.__pp"></div>
+    <p class="small" style="margin-top:12px">① kaip veikia DI · ② duomenų šviesoforas · ③ testas pagal BUP</p>
+   </div>
+   <div class="rcount" data-count="next" style="margin-top:18px">0 atsakė</div>
   </div>
  </div>
- <aside class="notes"><b>17:54 · 84–88 MIN.</b> <b>KĄ SAKYTI</b> Telefone dabar matote savo lygio žingsnį ir užklausą, kurią galite nusikopijuoti. Puslapis lieka jūsų telefone. Ir trys klausimai atsiliepimui, anonimiškai.<br><b>MATAVIMAS</b> Užsirašyk: prisijungusių telefonų skaičius, atsiliepimų n, naudingumo vidurkis. D14 (11-03) → real-world-tests.md. ⚠️ Tikslas el. paštams šioje versijoje nerenkamas (join puslapis el. pašto neprašo); jei reikia, rodyk Deck A QR puslapį.<br><b>TILTAS</b> Ačiū.</aside>
+ <aside class="notes"><b>17:54 · 84–88 MIN.</b> <b>KĄ SAKYTI</b> Telefone dabar matote savo lygio žingsnį ir užklausą, kurią galite nusikopijuoti. Puslapis lieka jūsų telefone. Ir keli klausimai atsiliepimui, anonimiškai: tie patys 3 „ar galite dabar?" kaip pradžioje.<br><b>→ ANTRAS PASPAUDIMAS</b> Dešinėje prieš → po: tie patys 3 klausimai kaip 4 skaidrėje. „Pradžioje ③ buvo X, dabar Y." Jei kuris nepakilo, pasakyk tai garsiai.<br><b>PO 2 SAVAIČIŲ</b> „Po 2 savaičių 30 min. susitikimas: atsineškite vieną DI testą, kurį panaudojote klasėje. Spauskite telefone ‚Dalyvausiu'." Skaičius ekrane. Datą derink su Gražina (⚠️ dar nesutarta). Jokių vardų ar el. paštų nerenkam: skaičius tik orientacijai.<br><b>MATAVIMAS</b> Užsirašyk: prisijungusių telefonų skaičius, atsiliepimų n, naudingumo vidurkis, prieš → po vidurkiai, „Dalyvausiu" skaičius. D14 (11-03) → real-world-tests.md. ⚠️ Tikslas el. paštams šioje versijoje nerenkamas (join puslapis el. pašto neprašo); jei reikia, rodyk Deck A QR puslapį.<br><b>TILTAS</b> Ačiū.</aside>
 </section>
 
-<!-- 27 · 88 min -->
-<!-- SKAIDRĖ 27: Ačiū -->
+<!-- 28 · 88 min -->
+<!-- SKAIDRĖ 28: Ačiū -->
 <section class="slide" data-label="Ačiū" data-steps="1" data-at="88">
  <div class="kick">Klausimai</div>
  <h1 class="mid" style="margin-top:40px">Pirma jūs. Paskui DI. <em>Tada vėl jūs.</em></h1>
  <p class="lead">Ačiū Gražinai ir Povilui. Ačiū mentoriams. Ačiū jums už laiką po pamokų.</p>
  <p class="disc" style="margin-top:50px">⚗️ Eksperimentinis prototipas, sukurtas su DI. Gali klysti: svarbius dalykus pasitikrinkite. Nemokamas, nieko neparduoda. Radote klaidą? Parašykite: krisvas.lt · Kristijonas Vasiliauskas, RA ir ExoClass bendraįkūrėjas</p>
- <aside class="notes"><b>17:58 · 88–90 MIN.</b> <b>SĖKLINIAI KLAUSIMAI</b> „Ką daryti, jei vaikas atneša DI parašytą darbą?" (šviesoforas iš anksto + paprašyk paaiškinti žodžiu) · „Kurį įrankį naudoti?" (tą, kurį leidžia mokykla; Copilot licencijos jau yra) · „Ką sakyti tėvams?" (žr. „Ką dar pridėjau" #2).<br><b>D0</b> Tą patį vakarą: QR/telefonų skaičiai, atsiliepimai, kas lūžo.<br><b>⏭ PAPILDOMA</b> Jei liko laiko ar klausia apie antras smegenis: <b>28 + Enter</b> (→ ją praleidžia).</aside>
+ <aside class="notes"><b>17:58 · 88–90 MIN.</b> <b>SĖKLINIAI KLAUSIMAI</b> „Ką daryti, jei vaikas atneša DI parašytą darbą?" (šviesoforas iš anksto + paprašyk paaiškinti žodžiu) · „Kurį įrankį naudoti?" (tą, kurį leidžia mokykla; Copilot licencijos jau yra) · „Ką sakyti tėvams?" (žr. „Ką dar pridėjau" #2).<br><b>D0</b> Tą patį vakarą: QR/telefonų skaičiai, atsiliepimai, kas lūžo.<br><b>⏭ PAPILDOMA</b> Jei liko laiko ar klausia apie antras smegenis: <b>29 + Enter</b> (→ ją praleidžia).</aside>
 </section>
 
-<!-- 28 · PAPILDOMA (tik jei liks laiko; → iš 27 skaidrės ją praleidžia, atidaryk 28 + Enter arba pultu) -->
-<!-- SKAIDRĖ 28: Antros smegenys (papildomai) -->
+<!-- 29 · PAPILDOMA (tik jei liks laiko; → iš 28 skaidrės ją praleidžia, atidaryk 29 + Enter arba pultu) -->
+<!-- SKAIDRĖ 29: Antros smegenys (papildomai) -->
 <section class="slide" data-label="Antros smegenys (papildomai)" data-steps="1" data-at="90" data-optional="1">
  <div class="kick">Papildomai · jei liks laiko · <span class="lv l3">L3</span></div>
  <h2 style="font-size:52px">Mano <em>antrosios smegenys</em>: kaip gimė šie mokymai</h2>
@@ -914,16 +990,16 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
   </div>
  </div>
  <p class="src">Vaikų duomenų, vardų ir slaptažodžių ten nėra. Kainos: claude.com/pricing (tikrinta 2026-10-20), keičiasi. ⚗️ Parengta su DI.</p>
- <aside class="notes"><b>⏭ PAPILDOMA, PO „AČIŪ".</b> → iš 27 skaidrės ją praleidžia. Rodyk tik jei liko laiko arba klausia: <b>28 + Enter</b> arba pulte „28".<br><b>KĄ SAKYTI</b> Antros smegenys yra mano užrašai, sujungti taip, kad DI juos randa. Aš užfiksuoju, sutvarkau, išgryninu ir kuriu. Šiuos mokymus padariau su jomis per vieną vakarą: skaidres, telefono puslapį, užklausas. Titas, mūsų turinio kūrėjas, turi savo smegenų dalį: faktus, balsą ir taisykles postams, todėl nelaukia manęs. Gabrielius savo kompiuteryje turi savas smegenis: Brain Club Jr (Info-Gynėjai) pamokoms ir pamokų skaidrėms bei BC VR projektui. Visos trys kalbasi per Google Drive aplanką, kad niekas nedarytų to paties darbo du kartus.<br><b>Mokytojui pradžiai</b> L3 iš 23 skaidrės: vienas aplankas „Klasės modeliai", be vardų.<br><b>FAKTAI</b> CODE = Capture · Organize · Distill · Express (Forte 2022). Obsidian nemokamas asmeniniam naudojimui. Claude Pro $17 (metinis) / $20 (mėn.) = claude.com/pricing, tikrinta 2026-10-19 (USD; EUR ⚠️ nepatikrinta). Max nuo $100/mėn. (claude.com/pricing, tikrinta 2026-10-20). Tu naudoji Max; savo asmeninių išlaidų salėje nesakyk, ekrane tik viešos kainos. Google Drive nemokamai 15 GB. Gabrielio smegenys pagal BrainBridge kanoną: BC Jr / Info-Gynėjų pamokos ir BC VR, ne socialinių tinklų turinys. Agentų iš viso 8 (scout, executor, builder, mechanic, librarian, browser, desk, critic).</aside>
+ <aside class="notes"><b>⏭ PAPILDOMA, PO „AČIŪ".</b> → iš 28 skaidrės ją praleidžia. Rodyk tik jei liko laiko arba klausia: <b>29 + Enter</b> arba pulte „29".<br><b>KĄ SAKYTI</b> Antros smegenys yra mano užrašai, sujungti taip, kad DI juos randa. Aš užfiksuoju, sutvarkau, išgryninu ir kuriu. Šiuos mokymus padariau su jomis per vieną vakarą: skaidres, telefono puslapį, užklausas. Titas, mūsų turinio kūrėjas, turi savo smegenų dalį: faktus, balsą ir taisykles postams, todėl nelaukia manęs. Gabrielius savo kompiuteryje turi savas smegenis: Brain Club Jr (Info-Gynėjai) pamokoms ir pamokų skaidrėms bei BC VR projektui. Visos trys kalbasi per Google Drive aplanką, kad niekas nedarytų to paties darbo du kartus.<br><b>Mokytojui pradžiai</b> L3 iš 24 skaidrės: vienas aplankas „Klasės modeliai", be vardų.<br><b>FAKTAI</b> CODE = Capture · Organize · Distill · Express (Forte 2022). Obsidian nemokamas asmeniniam naudojimui. Claude Pro $17 (metinis) / $20 (mėn.) = claude.com/pricing, tikrinta 2026-10-19 (USD; EUR ⚠️ nepatikrinta). Max nuo $100/mėn. (claude.com/pricing, tikrinta 2026-10-20). Tu naudoji Max; savo asmeninių išlaidų salėje nesakyk, ekrane tik viešos kainos. Google Drive nemokamai 15 GB. Gabrielio smegenys pagal BrainBridge kanoną: BC Jr / Info-Gynėjų pamokos ir BC VR, ne socialinių tinklų turinys. Agentų iš viso 8 (scout, executor, builder, mechanic, librarian, browser, desk, critic).</aside>
 </section>
 
 <!-- 29 priedas · tik Kris -->
-<!-- SKAIDRĖ 29: Ką dar pridėjau (Kris) -->
+<!-- SKAIDRĖ 30: Ką dar pridėjau (Kris) -->
 <section class="slide" data-label="Ką dar pridėjau (Kris)" data-steps="1" data-at="90" data-optional="1">
  <div class="kick">Priedas · Kris'ui, ne salei</div>
  <h2>Ką dar pridėjau</h2>
  <div class="cards c3">
-  <div class="card"><div class="n">1 · Šviesoforas</div><p>🟢🟡🔴 kiekvienai užduočiai iš anksto (12 skaidrė). Mokytojai dažniausiai klausia „kaip žinoti, kad nesukčiauja": tai atsakymas, kuris veikia rytoj.</p></div>
+  <div class="card"><div class="n">1 · Šviesoforas</div><p>🟢🟡🔴 kiekvienai užduočiai iš anksto (13 skaidrė). Mokytojai dažniausiai klausia „kaip žinoti, kad nesukčiauja": tai atsakymas, kuris veikia rytoj.</p></div>
   <div class="card"><div class="n">2 · Laiškas tėvams</div><p>Telefone, skiltyje „Užklausos": užklausa, kuri parašo trumpą laišką tėvams, kaip klasė naudos DI. Skaidrumas sumažina konfliktus.</p></div>
   <div class="card hot"><div class="n">3 · 14 dienų kilpa</div><p>Kartojimas tarpais mokytojams patiems: per Gražiną po 14 d. vienas klausimas „ką išbandėte?". Tai ir rule 15 realaus pasaulio testas.</p></div>
  </div>
@@ -932,7 +1008,7 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
 </section>
 
 <!-- 30 priedas · šaltiniai -->
-<!-- SKAIDRĖ 30: Šaltiniai (priedas) -->
+<!-- SKAIDRĖ 31: Šaltiniai (priedas) -->
 <section class="slide" data-label="Šaltiniai (priedas)" data-steps="1" data-at="90">
  <div class="kick">Priedas · šaltiniai · A pakartota/RCT · B vienas geras tyrimas ar oficialus dok. · C preprint, įmonės duomenys, žiniasklaida</div>
  <div class="refs">
@@ -968,7 +1044,7 @@ Kiekvienam nurodyk, kurį BUP lygį tikrina. Atsakymus ir kriterijus pateik atsk
 <div id="toast"></div>
 <div id="nav"><button id="bPrev" aria-label="Atgal">←</button><button id="bNext" aria-label="Toliau">→</button></div>
 <div id="help"><h2>Valdymas</h2>
- <p><kbd>→</kbd>/tarpas toliau · <kbd>←</kbd> atgal · <kbd>N</kbd> užrašai · <kbd>F</kbd> pilnas ekranas · <kbd>T</kbd> laikmatis · <kbd>V</kbd> Kris'o balsas · <kbd>Y</kbd> video · <kbd>S</kbd> atsarginė nuotrauka · <kbd>P</kbd> pulsas · <kbd>M</kbd> rankinis įvedimas (be interneto) · <kbd>Shift+R</kbd> išvalyti šio klausimo atsakymus · <kbd>1</kbd>–<kbd>9</kbd>+Enter šokti · <kbd>0</kbd>+Enter laikrodis „pradėjom dabar" · <kbd>Q</kbd> QR: auto / slėpti / visur · <kbd>B</kbd> judėjimo pertrauka 2 min. · <kbd>28</kbd>+Enter papildoma „Antros smegenys"</p>
+ <p><kbd>→</kbd>/tarpas toliau · <kbd>←</kbd> atgal · <kbd>N</kbd> užrašai · <kbd>F</kbd> pilnas ekranas · <kbd>T</kbd> laikmatis · <kbd>V</kbd> Kris'o balsas · <kbd>Y</kbd> video · <kbd>S</kbd> atsarginė nuotrauka · <kbd>P</kbd> pulsas · <kbd>M</kbd> rankinis įvedimas (be interneto) · <kbd>Shift+R</kbd> išvalyti šio klausimo atsakymus · <kbd>1</kbd>–<kbd>9</kbd>+Enter šokti · <kbd>0</kbd>+Enter laikrodis „pradėjom dabar" · <kbd>Q</kbd> QR: auto / slėpti / visur · <kbd>B</kbd> judėjimo pertrauka 2 min. · <kbd>12</kbd> / <kbd>24</kbd> / <kbd>29</kbd>+Enter pasirenkamos (Pasaulis · L3 · „Antros smegenys")</p>
  <div id="pultqr"><div class="q" id="pultq"></div><div><b>Telefono pultas (Kris'ui)</b><div id="pultstate" style="font-size:22px;color:var(--muted)">jungiamės…</div><div id="pulturl" style="font-family:var(--mono);font-size:19px;word-break:break-all"></div><div id="livestate" style="font-size:22px;color:var(--muted);margin-top:10px"></div></div></div>
  <p style="margin-top:20px;font-size:21px;color:var(--muted)">? arba Esc uždaro</p></div>
 </div>
@@ -989,7 +1065,11 @@ function toast(t){var e=document.getElementById('toast');e.textContent=t;e.class
 
 /* ===== Salės veiklos (vienas tiesos šaltinis: deck'as siunčia apibrėžimą telefonams) ===== */
 var PROMPT_L1='Esu [N] kl. [DALYKO] mokytoja. Siekinys iš BUP: [ĮKLIJUOK IŠ emokykla.lt arba parašyk temą ir klasę savais žodžiais].\nSukurk 5 klausimų testą: 2 lengvi, 2 vidutiniai, 1 sunkus (atviras, mokinys paaiškina savais žodžiais). Prie kiekvieno: teisingas atsakymas ir dažniausia vaikų klaida. Klasėje ~30 vaikų, testui 10 min. Kalba paprasta. Pažymėk, ką turiu patikrinti.';
+var OUTC=['① Vienu sakiniu paaiškinti, kaip veikia DI ir kodėl jis klysta','② Pagal duomenų šviesoforą žinoti, ką galima ir ko negalima įkelti','③ Sukurti ir patikrinti testą savo dalykui pagal BUP'];
+function outcParts(){return OUTC.map(function(t,i){return {k:'o'+(i+1),type:'scale',n:5,q:t+'. Ar galite tai dabar? (1 = dar ne, 5 = lengvai)'};});}
+var FQ='DI sukūrė testą · 4 kl. · Lietuvos istorijos datos\n1. Kas buvo vienintelis karūnuotas Lietuvos karalius? Ats.: Mindaugas.\n2. Kurią dieną švenčiame Lietuvos valstybės atkūrimo dieną? Ats.: vasario 16-ąją.\n3. Kada įvyko Žalgirio mūšis? Ats.: 1401 m.\n4. Kurią dieną 1990 m. atkurta Lietuvos nepriklausomybė? Ats.: kovo 11-ąją.\n5. Kada Lietuva įstojo į Europos Sąjungą? Ats.: 2004 m.';
 var ACTS={
+ tikslai:{title:'Ko išmoksite',parts:outcParts()},
  kas:{title:'Kas šiandien salėje?',parts:[
   {k:'d',type:'multi',max:3,q:'Ką dėstote? (iki 3)',opts:['Pradinis ugdymas','Lietuvių k.','Matematika','Istorija, pilietiškumas','Muzika, menai','Gamtos m., STEAM','Užsienio k.','Kita']},
   {k:'kl',type:'multi',max:3,q:'Kokioms klasėms? (iki 3)',opts:['Darželis, priešmokyklinė','1–2 kl.','3–4 kl.','5–6 kl.','7–8 kl.','9–10 kl. (I–II g.)','11–12 kl. (III–IV g.)']}]},
@@ -1001,6 +1081,8 @@ var ACTS={
  lygis:{title:'Jūsų lygis',parts:[
   {k:'l',type:'choice',q:'Kuriame laiptelyje esate šiandien?',opts:['L1 · Pradedu: dar beveik nenaudoju DI','L2 · Kuriu: naudoju, noriu projektų ir testų','L3 · Automatizuoju: noriu agentų ir sistemų']}]},
  rubric:{title:'Praktika: jūsų testas',parts:[
+  {k:'fq',type:'info',q:'0. Rask klaidą (3 min.): DI sukūrė šį testą. Viename atsakyme yra faktinė klaida.',text:FQ},
+  {k:'kl',type:'choice',q:'Kuriame klausime klaida?',opts:['1 klausimas','2 klausimas','3 klausimas','4 klausimas','5 klausimas'],sendNow:true,okMsg:'✅ Radote! Žalgirio mūšis įvyko 1410 m. Tikrinti yra svarbiausias įgūdis.',badMsg:'Klaida 3 klausime: Žalgirio mūšis įvyko 1410 m. (1401 m. yra Vilniaus ir Radomo aktas). Tikrinti yra svarbiausias įgūdis.'},
   {k:'copy',type:'copy',q:'1. Užklausa (kopijuokite į ChatGPT, Claude ar Copilot)',text:PROMPT_L1},
   {k:'s',type:'choice',q:'2. Jūsų dalykas',opts:['Pradinis ugdymas','Lietuvių k.','Matematika','Istorija','Muzika, menai','Kita']},
   {k:'r1',type:'scale',n:3,q:'3. Atitinka siekinį ir klasę (1–3)'},
@@ -1014,8 +1096,9 @@ var ACTS={
   {k:'p',type:'choice',q:'Ką išbandysite šią savaitę?',opts:['L1 · Testas iš vienos užklausos','L1 · Tekstas 3 sudėtingumais','L1 · NotebookLM iš savo medžiagos','L2 · Projektas klasei ar dalykui','L2 · Interaktyvus testas ekrane','L3 · Antrosios smegenys, agentai']}]},
  next:{title:'Jūsų kitas žingsnis',next:true,parts:[
   {k:'u',type:'scale',n:5,q:'Kiek naudingi buvo mokymai? (1–5)'},
-  {k:'t',type:'choice',q:'Ar išbandysite per savaitę?',opts:['Taip','Gal','Ne']},
-  {k:'f',type:'text',q:'Vienas dalykas, kurį pakeistumėte (anonimiškai, be vardų)',ph:'Neprivaloma'}]}
+  {k:'t',type:'choice',q:'Ar išbandysite per savaitę?',opts:['Taip','Gal','Ne']}].concat(outcParts()).concat([
+  {k:'po',type:'choice',q:'Po 2 savaičių: 30 min. susitikimas. Kiekvienas atsineša vieną DI testą, kurį panaudojo klasėje.',opts:['Dalyvausiu','Dar nežinau'],sendNow:true},
+  {k:'f',type:'text',q:'Vienas dalykas, kurį pakeistumėte (anonimiškai, be vardų)',ph:'Neprivaloma'}])}
 };
 var PULSE=['✅ Supratau','❓ Nesupratau','🧗 Per sunku','🚀 Per lengva'];
 
@@ -1033,6 +1116,8 @@ function render(){
  var s=slides[st.slide];
  s.querySelectorAll('[data-step]').forEach(function(el){el.classList.toggle('show',+el.dataset.step<=st.step);});
  s.querySelectorAll('[data-only]').forEach(function(el){el.classList.toggle('show',+el.dataset.only===st.step);});
+ s.querySelectorAll('[data-upto]').forEach(function(el){el.classList.toggle('show',st.step<=+el.dataset.upto);});
+ s.querySelectorAll('[data-rv]').forEach(function(el){el.classList.toggle('rv',st.step>=+el.dataset.rv);});
  if(s.classList.contains('quiz-slide'))LIVE.render();
  var ch=document.getElementById('bchart');if(ch)ch.classList.toggle('go',slides.indexOf(ch.closest('.slide'))===st.slide&&st.step>=1);
  if(s.dataset.label==='Klasių žemėlapis')GM.set(+(s.dataset.grades||'0').split(',')[st.step]||0,true);
@@ -1258,6 +1343,12 @@ var LIVE=(function(){
    var id=r.split('.')[0],k=r.split('.')[1];
    if(k==='__avg'){var ks=['r1','r2','r3','r4'],lab=['Atitinka siekinį','Aišku vaikui','Lengvi ir sunkūs','Faktai teisingi'];
     el.innerHTML=ks.map(function(x,i){var c=counts(id,x),n=c[0]+c[1]+c[2],avg=n?((c[0]*1+c[1]*2+c[2]*3)/n).toFixed(1):'–';return '<div><b>'+avg+'</b><span>'+lab[i]+' · n='+n+'</span></div>';}).join('');return;}
+   if(k==='__pre'||k==='__pp'){var sl=['Kaip veikia DI','Duomenų šviesoforas','Testas pagal BUP'];
+    function av(aid,x){var c=counts(aid,x),n=0,t=0;c.forEach(function(v,i){n+=v;t+=v*(i+1);});return{n:n,a:n?t/n:0};}
+    el.innerHTML=OUTC.map(function(_,i){var x='o'+(i+1),b=av('tikslai',x);
+     if(k==='__pre')return '<div class="pr"><div class="pl" style="grid-row:auto">'+esc(sl[i])+'</div><div class="trk"><div class="fil" style="width:'+Math.round(b.a/5*100)+'%"></div></div><div class="nv">'+(b.n?b.a.toFixed(1):'–')+' <span class="lg">n='+b.n+'</span></div></div>';
+     var a=av('next',x);
+     return '<div class="pr"><div class="pl">'+esc(sl[i])+'</div><div class="trk"><div class="fil" style="width:'+Math.round(b.a/5*100)+'%"></div></div><div class="nv">prieš '+(b.n?b.a.toFixed(1):'–')+'</div><div class="trk"><div class="fil po" style="width:'+Math.round(a.a/5*100)+'%"></div></div><div class="nv po">po '+(a.n?a.a.toFixed(1):'–')+'</div></div>';}).join('');return;}
    var p=partOf(id,k);if(!p)return;
    if(p.type==='words'){var m=words(id,k),ws=Object.keys(m).sort(function(a,b){return m[b]-m[a];}).slice(0,40),mx=ws.length?m[ws[0]]:1;
     el.innerHTML=ws.length?ws.map(function(w){return '<span style="font-size:'+Math.round(28+62*m[w]/mx)+'px">'+esc(w)+'</span>';}).join(''):'<span class="empty">Laukiam žodžių iš telefonų…</span>';return;}
@@ -1300,7 +1391,7 @@ var LIVE=(function(){
   if(!act){m.innerHTML='<h2 style="margin:0">Rankinis įvedimas</h2><p style="margin-top:12px">Šioje skaidrėje klausimo nėra. M uždaro.</p>';m.classList.add('on');return;}
   var a=ACTS[act];D.man[act]=D.man[act]||{};var h='<h2 style="margin:0;font-size:40px">Rankinis įvedimas · '+esc(a.title)+'</h2><p class="small">Kai nėra interneto: „pakelkite ranką, kas…", suskaičiuok, spausk +. M uždaro.</p>';
   h+='<div class="mr"><span>Kiek žmonių atsakė (rankomis)</span><button data-m="__n" data-i="-1">−</button><b style="text-align:center;font-family:var(--mono)">'+(D.man[act].__n||0)+'</b><button data-m="__n" data-i="1">+</button></div>';
-  a.parts.forEach(function(p){if(p.type==='copy')return;h+='<h3>'+esc(p.q)+'</h3>';
+  a.parts.forEach(function(p){if(p.type==='copy'||p.type==='info')return;h+='<h3>'+esc(p.q)+'</h3>';
    if(p.type==='words'||p.type==='text'){h+='<input data-w="'+p.k+'" placeholder="Įrašyk ir spausk Enter"> <span class="small">'+(((D.man[act][p.k+'_w'])||[]).length)+' įrašyta</span>';return;}
    var labs=p.opts||Array.apply(null,{length:p.n}).map(function(_,i){return String(i+1);});var arr=D.man[act][p.k]=D.man[act][p.k]||labs.map(function(){return 0;});
    labs.forEach(function(l,i){h+='<div class="mr"><span>'+esc(l)+'</span><button data-m="'+p.k+'" data-i="'+i+'" data-d="-1">−</button><b style="text-align:center;font-family:var(--mono)">'+arr[i]+'</b><button data-m="'+p.k+'" data-i="'+i+'" data-d="1">+</button></div>';});});
