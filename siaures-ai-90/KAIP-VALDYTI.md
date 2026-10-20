@@ -1,6 +1,6 @@
 # KAIP VALDYTI · DI mokytojams (90 min.)
 
-**Kur:** Šiaurės licėjus · **Kada:** An, 2026-10-20, 16:30 · **Paruošta:** 2026-10-19 · **atnaujinta:** 2026-10-20 v2 (nauja 4 skaidrė „Ko išmoksite", „Rask klaidą" 17, reiškinys 20, „Dalyvausiu" 27, pasirenkamos 12 ir 24, praktika 20 min.; visi numeriai nuo 4 +1)
+**Kur:** Šiaurės licėjus · **Kada:** An, 2026-10-20, 16:30 · **Paruošta:** 2026-10-19 · **atnaujinta:** 2026-10-20 v2 (nauja 4 skaidrė „Ko išmoksite", „Rask klaidą" 17, reiškinys 20, „Dalyvausiu" 27, pasirenkamos 12 ir 24, praktika 20 min.; visi numeriai nuo 4 +1) · **v3 2026-10-20 14:30:** ↺ **Atstatyti** (Shift+X) ir 📘 **Mentoriui** (K)
 
 ---
 
@@ -45,8 +45,10 @@ http://localhost:8899/siaures-ai-90/index.html
 | **Shift+P** (didžioji) | nunulina pulsą |
 | **M** | rankinis įvedimas (kai nėra interneto) |
 | **Shift+R, du kartus** | išvalo šios skaidrės atsakymus |
+| **Shift+X, du kartus per 3 s** | ↺ **ATSTATYTI VISKĄ**: visi atsakymai, pulsas, rankiniai skaičiai, laikrodžiai, 1 skaidrė. Pirmas paspaudimas tik paklausia „Tikrai išvalyti viską?“. Tas pats mygtukas **↺ Atstatyti** viršuje dešinėje ir pagalboje (?) |
+| **K** | 📘 **Mentoriui**: dešinėje skydelis su 3–5 papildomais faktais (su šaltiniu ir A/B/C) ir 1–3 pavyzdžiais klasėje šiai skaidrei. **K** arba **Esc** uždaro. Pagal nutylėjimą paslėpta: rodyk salei tik jei nori. Mygtukas **📘 Mentoriui** viršuje |
 | **?** | pagalba, pulto QR ir kodas |
-| **Esc** | uždaro pagalbą, pulsą ir langus |
+| **Esc** | uždaro Mentoriaus skydelį, pagalbą, pulsą ir langus |
 | **skaičius + Enter** | šokti į skaidrę. Pvz. `16` + Enter |
 | **0 + Enter** | „pradėjom dabar“: laikrodis perskaičiuoja planą |
 | **Q** | QR juosta dešinėje: **auto** (tik užduočių skaidrėse) → **paslėpta** → **visose** → auto. Kai rodoma, turinys pasislenka ir niekas neuždengiama. Režimas lieka iki naršyklės skirtuko uždarymo |
@@ -77,7 +79,7 @@ Pertraukos (**B**): po 10 skaidrės (24 min.) ir po 18 skaidrės (63 min.). Jos 
 
 1. Deck'e **spausk ?**
 2. Telefonu **nuskenuok** QR (jis rodo `pultas.html?room=KODAS`).
-3. Telefone matai: skaidrės pavadinimą, užrašus, **← →**, šuolį į skaidrę, atskleidimą (quiz), laikmatį, balsą, **📱 QR** (tas pats kaip Q) ir **🤸 Pertrauka 2 min.** (tas pats kaip B; raudonas, kai laikas pertraukai).
+3. Telefone matai: skaidrės pavadinimą, užrašus, **← →**, šuolį į skaidrę, atskleidimą (quiz), laikmatį, balsą, **📱 QR** (tas pats kaip Q) ir **🤸 Pertrauka 2 min.** (tas pats kaip B; raudonas, kai laikas pertraukai), **📘 Mentoriui** (rodo ar slepia skydelį ekrane; „Skaityti čia“ atidaro tą pačią medžiagą tavo telefone) ir **↺ Atstatyti viską** (du paspaudimai per 3 s).
 4. Būsena `✅ pultas prijungtas`. Jei raudona: perkrauk pultą arba **naudok klaviatūrą**.
 
 ⚠️ Pultas veikia tik su internetu (4G tinka). Be jo klaviatūra veikia visada.
@@ -91,6 +93,7 @@ Pertraukos (**B**): po 10 skaidrės (24 min.) ir po 18 skaidrės (63 min.). Jos 
 3. Jei QR neveikia: jie atidaro tą patį adresą ir **įveda kodą** apačioje.
 4. Telefone matys klausimą, kai tik pasieksi skaidrę su ★.
 5. **Užklausų bankas (19 vnt.)** telefone veikia ir be ryšio. Mygtukas „Kopijuoti“.
+6. **📘 Mentoriui** (viršuje dešinėje): mentoriai ir mokytojai savo telefone skaito papildomus faktus ir pavyzdžius **tai skaidrei, kuri dabar ekrane**. Rodyklės ‹ › leidžia naršyti kitas skaidres.
 
 🔴 **PRIEŠ RENGINĮ privaloma: push** (žr. 9 dalį). Kol nėra push, QR veda į **404**.
 
@@ -116,7 +119,8 @@ Pertraukos (**B**): po 10 skaidrės (24 min.) ir po 18 skaidrės (63 min.). Jos 
 
 - **Vienas klausimas:** toje skaidrėje **Shift+R, du kartus** per 2,5 s.
 - **Pulsas:** **Shift+P**.
-- **Visas deck'as iš naujo** (nauja sesija): atidaryk su nauju kodu:
+- **Viskas iš naujo, tas pats kodas (rekomenduojama, pvz. po bandymo prieš 16:30):** **Shift+X, du kartus per 3 s** (arba **↺ Atstatyti** viršuje / pulte). Išvalo visus atsakymus, pulsą, rankinius skaičius, paslėptus atsakymus, šio kambario `localStorage`, sustabdo laikmatį, plano laikrodį grąžina į 16:30, pertraukų laiką į 0:00, grįžta į 1 skaidrę. Telefonai gauna „reset“ ir pamiršta savo atsakymus, todėl gali atsakyti iš naujo. Telefonas, kuris tuo metu buvo be ryšio, pasiveja po kito ekrano signalo (iki 15 s). Serveryje nieko trinti nereikia: atsakymai keliauja tik per Realtime broadcast ir niekur nesaugomi. **Kodas ir QR lieka tie patys.** Jei pradedi vėliau nei 16:30: po atstatymo spausk **0 + Enter** 1 skaidrėje.
+- **Visas deck'as su nauju kodu** (atskira sesija):
 
 ```
 http://localhost:8899/siaures-ai-90/index.html?room=ABCD

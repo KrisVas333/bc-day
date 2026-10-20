@@ -28,6 +28,10 @@ button:active{transform:scale(.97);filter:brightness(1.3)}
 #notes b{color:#ff8a9d;font-size:12px;letter-spacing:.1em}
 .roomrow{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}
 .roomrow input{font:inherit;font-weight:800;font-size:18px;letter-spacing:.2em;text-transform:uppercase;border:2px solid #333;border-radius:4px;background:#141414;color:var(--ink);padding:12px;text-align:center}
+.rst{width:100%;background:#2a2a2a;border:2px solid #444}.rst.arm{background:var(--red);border-color:var(--red)}
+#mnt{background:var(--card);border-radius:4px;padding:12px 14px;font-size:15px;line-height:1.45;-webkit-user-select:text;user-select:text;margin-top:8px}
+#mnt h3{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#ff8a9d;margin:10px 0 6px}#mnt ul{padding-left:18px}#mnt li{margin:0 0 8px}#mnt .ms{display:block;color:var(--mute);font-size:13px}#mnt pre{white-space:pre-wrap;word-break:break-word;font-size:13px;background:#000;padding:8px;border-radius:4px;margin-top:6px}
+#bMent.on{background:var(--red)}
 .foot{margin-top:18px;font-size:12px;color:var(--mute);line-height:1.4}
 </style>
 </head>
@@ -42,12 +46,15 @@ button:active{transform:scale(.97);filter:brightness(1.3)}
 <div class="sec"><h2>Salė</h2><div id="live" class="sl" style="font-size:16px">…</div></div>
 <div class="sec"><h2>Ekranas</h2><div class="grid g2"><button id="bQr" onclick="tx('qr',{})">📱 QR: auto</button><button id="bBrk" onclick="tx('brk',{})">🤸 Pertrauka 2 min.</button></div><div id="elap" style="font-size:14px;color:var(--mute);margin:6px 4px 0">⏱ 0:00 nuo pradžios</div></div>
 <div class="sec"><h2>Ką sakyti</h2><div id="notes">…</div></div>
+<div class="sec"><h2>📘 Mentoriui</h2><button id="bMent" style="width:100%" onclick="tx('mentor',{})">📘 Rodyti ekrane / slėpti</button><details><summary style="padding:12px 4px;font-weight:800;cursor:pointer">Skaityti čia (šios skaidrės faktai ir pavyzdžiai)</summary><div id="mnt">…</div></details></div>
+<div class="sec"><h2>Atstatyti</h2><button id="bRst" class="rst" onclick="rst()">↺ Atstatyti viską (atsakymai + laikrodžiai)</button></div>
 <div class="sec"><h2>Šokti į skaidrę</h2><div class="grid" id="jump"></div></div>
 <div class="sec"><h2>Salės kodas</h2><div class="roomrow"><input id="roomInp" maxlength="4" placeholder="KODAS"><button onclick="setRoom()">🔁</button></div></div>
 <div class="foot">Kodas rodomas deck'e paspaudus <b>?</b>. Žalia = deck'as atsakė. Niekas nesaugoma, jokių asmens duomenų. Reikia interneto abiejuose įrenginiuose; be jo deck'as veikia klaviatūra.</div>
+<script src="mentor.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
 <script>
-/* Kanalas di90-pultas-<ROOM>. Siunčia: nav{dir} goto{i} quiz timer vo qr brk hello ping · Priima: slide/pong{i,n,label,notes,quiz,timer} */
+/* Kanalas di90-pultas-<ROOM>. Siunčia: nav{dir} goto{i} quiz timer vo qr brk mentor reset{go:1} hello ping · Priima: slide/pong{i,n,label,notes,quiz,timer} */
 var SB_URL="https://iiekmeylpppczicrsxho.supabase.co",SB_KEY="sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF";
 function qs(k){try{return new URLSearchParams(location.search).get(k)}catch(e){return null}}
 var ROOM=String(qs("room")||(function(){try{return localStorage.getItem("di90-pult-room")}catch(e){return null}})()||"DEMO").toUpperCase().slice(0,4);
@@ -57,7 +64,13 @@ function setState(t,c){var s=$("state");s.textContent=t;s.className=c||""}
 function show(id,on){$(id).classList.toggle("hide",!on)}
 function tx(ev,pl){if(ev!=="hello"&&ev!=="ping"){try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}}if(!ch||!ready){setState("nėra kanalo. Spausk 🔁","");return}pl=pl||{};pl.cid=CID;try{ch.send({type:"broadcast",event:ev,payload:pl})}catch(e){setState("nepavyko išsiųsti","")}}
 function nav(d){tx("nav",{dir:d})}
-function paint(s){if(!s)return;cur=s.i|0;N=s.n|0||N;$("slLabel").textContent=s.label||"…";$("slCount").textContent=(cur+1)+" / "+N;$("notes").innerHTML=s.notes||"…";
+function esc(t){return String(t==null?"":t).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var rArm=0,rT=null;
+function rst(){var b=$("bRst"),now=Date.now();if(now-rArm>3000){rArm=now;b.classList.add("arm");b.textContent="Tikrai išvalyti viską? Spauskite dar kartą per 3 s";clearTimeout(rT);rT=setTimeout(function(){rArm=0;b.classList.remove("arm");b.textContent="↺ Atstatyti viską (atsakymai + laikrodžiai)"},3000);return}
+ rArm=0;clearTimeout(rT);b.classList.remove("arm");b.textContent="↺ Išsiųsta: deck'as valo";tx("reset",{go:1});setTimeout(function(){b.textContent="↺ Atstatyti viską (atsakymai + laikrodžiai)"},2500)}
+function mentorHtml(label){var m=(window.MENTOR||{})[label];if(!m)return "Šiai skaidrei papildomos medžiagos nėra.";
+ return "<h3>Faktai</h3><ul>"+(m.f||[]).map(function(x){return "<li>"+esc(x.t)+(x.s||x.g?"<span class='ms'>"+(x.g?x.g+" · ":"")+esc(x.s||"")+"</span>":"")+"</li>"}).join("")+"</ul><h3>Pavyzdžiai klasėje</h3>"+(m.e||[]).map(function(x){return "<p><b>"+esc(x.t)+"</b><br>"+esc(x.d)+"</p>"+(x.p?"<pre>"+esc(x.p)+"</pre>":"")}).join("")}
+function paint(s){if(!s)return;cur=s.i|0;N=s.n|0||N;$("slLabel").textContent=s.label||"…";$("slCount").textContent=(cur+1)+" / "+N;$("notes").innerHTML=s.notes||"…";$("mnt").innerHTML=mentorHtml(s.label);$("bMent").classList.toggle("on",!!s.mentor);$("bMent").textContent=s.mentor?"📘 Ekrane rodoma · slėpti":"📘 Rodyti ekrane";
  show("secQuiz",!!s.quiz);show("secTimer",!!s.timer);show("secVo",!!s.vo);
  if(s.qr){$("bQr").textContent="📱 QR: "+({auto:"auto",off:"paslėptas",all:"visur"}[s.qr]||s.qr)+(s.qrOn?" · rodomas":"");}
  $("bBrk").textContent=s.brk?"⏹ Baigti pertrauką":"🤸 Pertrauka 2 min.";$("bBrk").style.background=(s.brkDue&&!s.brk)?"var(--red)":"";

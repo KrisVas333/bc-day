@@ -59,10 +59,24 @@ details[open]>summary:before{content:"−"}
 .room button{min-height:52px;padding:0 16px;font-family:var(--mono);font-weight:800;font-size:16px;border:2px solid var(--ink);border-radius:var(--r);background:#fff;color:var(--ink)}
 .disc{font-size:15px;color:var(--muted);line-height:1.45;margin-top:22px}
 .hide{display:none!important}
+#mBtn{min-height:44px;font-family:var(--mono);font-size:14px;font-weight:800;padding:4px 10px;border:2px solid var(--ink);border-radius:var(--r);background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+header{flex-wrap:wrap;gap:6px}
+.hr{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+#mentorBox{position:fixed;inset:0;background:#fff;z-index:40;overflow-y:auto;padding:calc(12px + env(safe-area-inset-top,0px)) 16px calc(40px + env(safe-area-inset-bottom,0px))}
+#mentorBox .in{max-width:560px;margin:0 auto}
+#mentorBox .top{display:flex;justify-content:space-between;align-items:center;gap:8px;position:sticky;top:0;background:#fff;padding:6px 0 10px;border-bottom:1px solid var(--line)}
+#mentorBox .top b{font-family:var(--mono);font-size:15px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+#mentorBox .top button,#mentorBox .nv button{min-height:48px;min-width:48px;font-family:var(--mono);font-size:16px;font-weight:800;padding:6px 12px;border:2px solid var(--ink);border-radius:var(--r);background:#fff;color:var(--ink);cursor:pointer}
+#mentorBox .nv{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;margin-top:10px}
+#mentorBox .nv span{font-size:15px;color:var(--muted);text-align:center}
+#mentorBox ul{padding-left:22px}#mentorBox li{margin:0 0 12px;font-size:18px}
+#mentorBox .ms{display:block;font-size:15px;color:var(--muted)}
+#mentorBox .g{display:inline-block;font-family:var(--mono);font-weight:800;font-size:14px;border:2px solid var(--ink);border-radius:var(--r);padding:0 6px;margin-right:6px}
 </style>
 </head>
 <body>
-<header><b>DI <em>mokytojams</em></b><span id="conn">jungiamės…</span></header>
+<header><b>DI <em>mokytojams</em></b><span class="hr"><button id="mBtn" type="button" aria-label="Mentoriui: papildomi faktai šiai skaidrei">📘 Mentoriui</button><span id="conn">jungiamės…</span></span></header>
+<div id="mentorBox" class="hide" role="dialog" aria-label="Mentoriui"><div class="in" id="mentorIn"></div></div>
 
 <main>
  <section id="actBox">
@@ -94,6 +108,7 @@ details[open]>summary:before{content:"−"}
  </div>
 </div>
 
+<script src="mentor.js"></script>
 <script>
 var SB_URL="https://iiekmeylpppczicrsxho.supabase.co",SB_KEY="sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF";
 function $(id){return document.getElementById(id);}
@@ -153,6 +168,7 @@ function connect(){if(!ROOM){conn('įveskite kodą','bad');$('actHint').textCont
  client=client||supabase.createClient(SB_URL,SB_KEY);
  ch=client.channel('di90-'+ROOM,{config:{broadcast:{self:false}}});
  ch.on('broadcast',{event:'state'},function(m){lastSeen=Date.now();conn('🟢 '+ROOM,'ok');onState((m&&m.payload)||{});});
+ ch.on('broadcast',{event:'reset'},function(m){lastSeen=Date.now();onReset(((m&&m.payload)||{}).epoch);});
  ch.on('broadcast',{event:'ack'},function(m){var p=(m&&m.payload)||{};if(p.cid===CID){acked[p.act]=1;lastSeen=Date.now();showAck(p.act);}});
  ch.subscribe(function(s){if(s==='SUBSCRIBED'){ok=true;conn('laukiam ekrano…','');send('hello');flush();
    if(hb)clearInterval(hb);hb=setInterval(function(){send('ping');if(Date.now()-lastSeen>40000)conn('ekranas tyli · '+ROOM,'bad');},20000);}
@@ -161,7 +177,7 @@ function connect(){if(!ROOM){conn('įveskite kodą','bad');$('actHint').textCont
 $('roomBtn').onclick=function(){var v=String($('roomInp').value||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4);if(v.length<4)return;ROOM=v;try{history.replaceState(null,'','?r='+ROOM);}catch(e){}connect();};
 
 /* ===== Veiklos atvaizdavimas ===== */
-function onState(s){lastState=s;if(!s.act||!s.def){if(cur!==null){cur=null;}idle();return;}
+function onState(s){if(s.epoch!=null&&checkEpoch(s.epoch))return onState(s);lastState=s;if(s.slide)MV.follow(s.slide);if(!s.act||!s.def){if(cur!==null){cur=null;}idle();return;}
  if(cur!==s.act){cur=s.act;draw(s);tr('di90_act',{act:s.act});}else if(s.reveal)markReveal(s);}
 function idle(){$('nextBox').classList.add('hide');$('actBox').classList.remove('hide');$('actTitle').textContent='Klausomės';$('actHint').textContent='Kitas klausimas atsiras čia automatiškai. Pulsą galite spausti bet kada.';$('actBody').innerHTML='';}
 function draw(s){var d=s.def,box=$('actBody'),prev=sent[s.act]||{};$('actTitle').textContent=d.title;$('actHint').textContent='';box.innerHTML='';
@@ -203,6 +219,39 @@ function drawNext(){var lv=LEVEL||'l1',n=NEXT[lv],box=$('nextBox');box.classList
  box.innerHTML='<h1>Jūsų kitas žingsnis</h1><div class="card hot"><b><span class="lv '+lv+'">'+lv.toUpperCase()+'</span>'+esc(n[0])+'</b><p style="margin-top:8px">'+esc(n[1])+'</p></div>'+(LEVEL?'':'<p class="hint" style="margin-top:6px">Lygio nepasirinkote, todėl rodome L1. Kiti lygiai: užklausų skiltyje žemiau.</p>');
  box.appendChild(promptCard(BANK[n[2]][0],BANK[n[2]][1],BANK[n[2]][2]));tr('di90_next',{lv:lv});}
 
+/* ===== RESET iš ekrano: epocha. Pasikeitė = pamirštam atsakymus šiam kambariui ir leidžiam atsakyti iš naujo ===== */
+function epKey(){return 'di90-ep-'+ROOM;}
+function wipe(){sent={};ls('di90-sent','{}');acked={};rvShown={};queue=[];LEVEL=null;try{localStorage.removeItem('di90-level');}catch(e){}cur=null;tr('di90_reset',{});}
+function checkEpoch(ep){var k=epKey(),old=ls(k);if(old===null||old===undefined||old===''){ls(k,String(ep));return false;}if(String(ep)===String(old))return false;ls(k,String(ep));wipe();return true;}
+function onReset(ep){if(ep==null)return;var k=epKey();if(String(ls(k))===String(ep))return;ls(k,String(ep));wipe();
+ if(lastState){var s=lastState;s.epoch=ep;cur=null;onState(s);}else idle();
+ $('actHint').textContent='Ekranas išvalytas. Galite atsakyti iš naujo.';}
+
+/* ===== MENTORIUI: dabartinės skaidrės papildomi faktai ir pavyzdžiai (mentor.js) ===== */
+var MV=(function(){var open=false,live=null,idx=-1,manual=false;
+ function keys(){return Object.keys(window.MENTOR||{});}
+ function follow(sl){live=sl;if(open&&!manual)paint();}
+ function paint(){var K=keys(),label=null,num='';
+  if(!manual&&live&&live.label){label=live.label;idx=K.indexOf(label);num=(live.i+1)+' skaidrė';}
+  else{if(idx<0)idx=0;label=K[idx];num='';}
+  var m=(window.MENTOR||{})[label],h='<div class="top"><b>📘 Mentoriui</b><button type="button" id="mClose">✕ Uždaryti</button></div>';
+  h+='<div class="nv"><button type="button" id="mPrev" aria-label="Ankstesnė">‹</button><span>'+(manual?'Naršote patys · <u id="mLive">grįžti prie ekrano</u>':(live?'Rodo tai, kas ekrane':'Ekranas dar neprisijungė'))+'</span><button type="button" id="mNext" aria-label="Kita">›</button></div>';
+  h+='<h1 style="font-size:22px">'+esc(label||'Medžiaga kraunasi')+'</h1>'+(num?'<p class="hint">'+esc(num)+'</p>':'');
+  if(!m)h+='<p class="hint" style="margin-top:10px">Šiai skaidrei papildomos medžiagos nėra.</p>';
+  else{h+='<h2>Faktai</h2><ul>'+(m.f||[]).map(function(x){return '<li>'+esc(x.t)+(x.s||x.g?'<span class="ms">'+(x.g?'<span class="g">'+esc(x.g)+'</span>':'')+esc(x.s||'')+'</span>':'')+'</li>';}).join('')+'</ul>';
+   h+='<h2>Pavyzdžiai klasėje</h2>';}
+  var I=$('mentorIn');I.innerHTML=h;
+  if(m)(m.e||[]).forEach(function(x){var d=document.createElement('div');d.className='card';d.innerHTML='<b>'+esc(x.t)+'</b><p style="margin-top:6px">'+esc(x.d)+'</p>'+(x.p?'<pre>'+esc(x.p)+'</pre>':'');
+   if(x.p){var b=document.createElement('button');b.className='copy';b.textContent='Kopijuoti';b.onclick=function(){copyText(x.p,b);};d.appendChild(b);}I.appendChild(d);});
+  $('mClose').onclick=close;
+  $('mPrev').onclick=function(){var K=keys();if(!K.length)return;if(idx<0)idx=0;manual=true;idx=(idx-1+K.length)%K.length;paint();};
+  $('mNext').onclick=function(){var K=keys();if(!K.length)return;manual=true;idx=(idx+1)%K.length;paint();};
+  var L=$('mLive');if(L)L.onclick=function(){manual=false;paint();};}
+ function show(){open=true;manual=false;$('mentorBox').classList.remove('hide');paint();$('mentorBox').scrollTop=0;tr('di90_mentor',{label:live&&live.label||''});}
+ function close(){open=false;$('mentorBox').classList.add('hide');}
+ return{follow:follow,show:show,close:close,open:function(){return open;},label:function(){var K=keys();return(!manual&&live&&live.label)?live.label:K[idx];}};})();
+$('mBtn').onclick=MV.show;
+
 /* ===== Pulsas ===== */
 [].forEach.call(document.querySelectorAll('#pulse button'),function(b){b.onclick=function(){var v=+b.dataset.p;send('pulse',{v:v});tr('di90_pulse',{v:v});
  [].forEach.call(document.querySelectorAll('#pulse button'),function(x){x.classList.toggle('sel',x===b);});try{navigator.vibrate&&navigator.vibrate(15);}catch(e){}
@@ -210,7 +259,7 @@ function drawNext(){var lv=LEVEL||'l1',n=NEXT[lv],box=$('nextBox');box.classList
 
 idle();
 (function load(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js';s.onload=connect;s.onerror=connect;document.head.appendChild(s);})();
-window.__join={CID:CID,ROOM:function(){return ROOM;},sent:function(){return sent;},acked:acked,cur:function(){return cur;},LEVEL:function(){return LEVEL;},ok:function(){return ok;}};
+window.__join={MV:MV,epoch:function(){return ls(epKey());},ROOM:function(){return ROOM;},sent:function(){return sent;},acked:acked,cur:function(){return cur;},LEVEL:function(){return LEVEL;},ok:function(){return ok;}};
 </script>
 <script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
 </body>

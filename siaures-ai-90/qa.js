@@ -376,6 +376,99 @@ console.log('\n== Telefonas 360 px ==');
   ok('telefono B JS klaidų 0',B.errs.length===0,B.errs.join(' | '));
   if(SHOTS){await p.evaluate(()=>{document.querySelectorAll('details').forEach(d=>d.open=false);scrollTo(0,0);});await sleep(200);await p.screenshot({path:__dirname+'/qa-shot-phone.png'});}
 }
+/* ---------- MENTOR + RESET (engine, 2026-10-20) ---------- */
+console.log('\n== Mentoriui ==');
+{
+  const KRIS_ONLY=['Ką dar pridėjau (Kris)'];
+  const chk=await deck.evaluate(ko=>{const M=window.MENTOR||{},bad=[],aud=__deck.slides.map(s=>s.dataset.label).filter(l=>ko.indexOf(l)<0);
+    aud.forEach(l=>{const m=M[l];if(!m){bad.push(l+':nėra');return;}const f=m.f||[],e=m.e||[];
+      if(f.length<3||f.length>5)bad.push(l+':f='+f.length);if(e.length<1||e.length>3)bad.push(l+':e='+e.length);
+      if(!f.every(x=>x.t&&x.t.length>10))bad.push(l+':f tuščias');if(!e.every(x=>x.t&&x.d))bad.push(l+':e tuščias');
+      if(!f.every(x=>!x.g||/^[ABC]$/.test(x.g)))bad.push(l+':g');});
+    return{n:aud.length,bad:bad,keys:Object.keys(M).length,extra:Object.keys(M).filter(k=>aud.indexOf(k)<0),dash:/—/.test(JSON.stringify(M))};},KRIS_ONLY);
+  ok('MENTOR: kiekviena salės skaidrė ('+chk.n+') turi 3–5 faktus + 1–3 pavyzdžius',chk.bad.length===0,chk.bad.join(', '));
+  ok('MENTOR: raktai = data-label (nėra pašalinių)',chk.extra.length===0,chk.extra.join(', '));
+  ok('MENTOR: faktai su A/B/C lygiu turi šaltinį',await deck.evaluate(()=>Object.values(window.MENTOR||{}).every(m=>(m.f||[]).every(x=>!x.g||!!x.s))));
+  ok('MENTOR: em dash 0 (mentor.js)',!chk.dash);
+  ok('MENTOR: pagal nutylėjimą paslėpta',await deck.evaluate(()=>!document.getElementById('mentor').classList.contains('on')&&!__deck.MENTOR_UI.on()));
+  await deck.evaluate(()=>__deck.goTo(7,0));await sleep(300);
+  await deck.keyboard.press('k');await sleep(250);
+  ok('K atidaro skydelį su šios skaidrės medžiaga',await deck.evaluate(()=>{const m=document.getElementById('mentor');return m.classList.contains('on')&&m.textContent.indexOf(__deck.slides[__deck.st.slide].dataset.label)>-1&&m.querySelectorAll('li').length>=3&&m.querySelectorAll('.mex').length>=1;}));
+  ok('skydelis telpa ekrane (1920×1080), šriftas ≥22 px',await deck.evaluate(()=>{const m=document.getElementById('mentor'),r=m.getBoundingClientRect(),li=m.querySelector('li');return r.right<=innerWidth+1&&r.bottom<=innerHeight+1&&parseFloat(getComputedStyle(li).fontSize)>=22;}));
+  if(SHOTS){await sleep(300);await deck.screenshot({path:__dirname+'/qa-shot-mentor.png'});}
+  await deck.keyboard.press('ArrowRight');await sleep(300);
+  ok('→ atnaujina skydelį kitai skaidrei',await deck.evaluate(()=>document.getElementById('mentor').textContent.indexOf(__deck.slides[__deck.st.slide].dataset.label)>-1));
+  await deck.keyboard.press('k');await sleep(200);
+  ok('K antrą kartą uždaro',await deck.evaluate(()=>!document.getElementById('mentor').classList.contains('on')));
+  await deck.evaluate(()=>document.getElementById('bMentor').click());await sleep(200);
+  ok('📘 mygtukas viršuje atidaro',await deck.evaluate(()=>document.getElementById('mentor').classList.contains('on')));
+  await deck.keyboard.press('Escape');await sleep(200);
+  ok('Esc uždaro',await deck.evaluate(()=>!document.getElementById('mentor').classList.contains('on')));
+  // telefonas
+  const p=A.p;await p.evaluate(()=>document.querySelectorAll('details').forEach(d=>d.open=false));
+  await deck.evaluate(()=>__deck.goTo(8,0));await sleep(400);
+  await p.evaluate(()=>document.getElementById('mBtn').click());
+  const lab8=await deck.evaluate(()=>__deck.slides[8].dataset.label);
+  ok('telefonas: „Mentoriui" rodo DABARTINĖS skaidrės medžiagą',await until(()=>p.evaluate(l=>{const b=document.getElementById('mentorBox');return !b.classList.contains('hide')&&b.querySelector('h1').textContent===l&&b.querySelectorAll('li').length>=3;},lab8),8000));
+  ok('telefonas: mentoriaus lange be horizontalaus scroll, mygtukai ≥44 px',await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&[].every.call(document.querySelectorAll('#mentorBox button'),b=>b.getBoundingClientRect().height>=44)));
+  if(SHOTS){await sleep(200);await p.screenshot({path:__dirname+'/qa-shot-phone-mentor.png'});}
+  await deck.evaluate(()=>__deck.goTo(10,0));const lab10=await deck.evaluate(()=>__deck.slides[10].dataset.label);
+  ok('telefonas: ekranui perjungus skaidrę, medžiaga atsinaujina',await until(()=>p.evaluate(l=>document.querySelector('#mentorBox h1').textContent===l,lab10),8000));
+  await p.evaluate(()=>document.getElementById('mNext').click());
+  ok('telefonas: › naršo toliau savarankiškai',await p.evaluate(l=>document.querySelector('#mentorBox h1').textContent!==l,lab10));
+  await p.evaluate(()=>document.getElementById('mClose').click());
+  ok('telefonas: ✕ uždaro',await p.evaluate(()=>document.getElementById('mentorBox').classList.contains('hide')));
+  // pultas
+  await P.evaluate(()=>document.getElementById('bMent').click());
+  ok('pultas: 📘 rodo skydelį deck\'e',await until(()=>deck.evaluate(()=>__deck.MENTOR_UI.on())));
+  ok('pultas: mentoriaus tekstas skaitomas telefone',await until(()=>P.evaluate(()=>document.querySelectorAll('#mnt li').length>=3)));
+  if(SHOTS){await P.evaluate(()=>{document.querySelector('#mnt').closest('details').open=true;document.getElementById('bMent').scrollIntoView();});await sleep(200);await P.screenshot({path:__dirname+'/qa-shot-pultas-mentor.png'});}
+  await P.evaluate(()=>document.getElementById('bMent').click());
+  ok('pultas: antras 📘 paslepia',await until(()=>deck.evaluate(()=>!__deck.MENTOR_UI.on())));
+}
+console.log('\n== Atstatyti (RESET) ==');
+{
+  const SK='siaures-ai90-res-'+ROOM;
+  ok('prieš RESET: atsakymų ir pulso yra',await deck.evaluate(()=>{const D=__deck.LIVE.D();return Object.keys(D.ans).length>=5&&D.pulseAll.reduce((a,b)=>a+b,0)>=2;}));
+  const rbi2=await deck.evaluate(()=>__deck.slides.findIndex(s=>s.dataset.label==='Praktika L1'));
+  await deck.evaluate(i=>__deck.goTo(i,0),rbi2);await sleep(200);
+  await deck.keyboard.press('t');await sleep(2300);
+  await deck.keyboard.type('0');await deck.keyboard.press('Enter');await sleep(200);
+  ok('prieš RESET: laikmatis eina, plano laikrodis perstatytas, pertraukų laikas skaičiuoja',await deck.evaluate(()=>!!__deck.T.iv&&localStorage.getItem('siaures-ai90-start')!==null&&!!sessionStorage.getItem('siaures-ai90-t0')));
+  await deck.keyboard.down('Shift');await deck.keyboard.press('X');await deck.keyboard.up('Shift');await sleep(250);
+  ok('Shift+X vieną kartą: rodo „Tikrai išvalyti viską? Spauskite dar kartą per 3 s", nieko nevalo',await deck.evaluate(()=>{const b=document.getElementById('rconfirm');return b.classList.contains('on')&&/Tikrai išvalyti viską\? Spauskite dar kartą per 3 s/.test(b.textContent)&&Object.keys(__deck.LIVE.D().ans).length>=5&&__deck.st.slide>0;}));
+  if(SHOTS){await deck.screenshot({path:__dirname+'/qa-shot-reset-confirm.png'});}
+  await sleep(3300);
+  ok('po 3 s patvirtinimas dingsta, duomenys liko',await deck.evaluate(()=>!document.getElementById('rconfirm').classList.contains('on')&&Object.keys(__deck.LIVE.D().ans).length>=5));
+  await deck.evaluate(()=>document.getElementById('bReset').click());await sleep(150);
+  ok('↺ mygtukas viršuje: 1 paspaudimas tik ginkluoja',await deck.evaluate(()=>__deck.RESET.armed()&&document.getElementById('bReset').classList.contains('arm')&&Object.keys(__deck.LIVE.D().ans).length>=5));
+  await deck.evaluate(()=>document.getElementById('bReset').click());await sleep(500);
+  const r=await deck.evaluate(SK=>{const D=__deck.LIVE.D(),s=JSON.parse(localStorage.getItem(SK)||'{}'),t=__deck.slides.find(x=>x.dataset.label==='Praktika L1').querySelector('.timer');
+    const st=__deck.START();return{ans:Object.keys(D.ans).length,man:Object.keys(D.man).length,pulse:Object.keys(D.pulse).length,pa:D.pulseAll.join(),hid:Object.keys(D.hidden).length,ep:D.epoch,lsAns:Object.keys(s.ans||{}).length,lsEp:s.epoch,
+      iv:!!__deck.T.iv,tt:t.textContent,run:t.classList.contains('run'),slide:__deck.st.slide,el:__deck.BRK.elapsed(),t0:sessionStorage.getItem('siaures-ai90-t0'),start:localStorage.getItem('siaures-ai90-start'),hh:st.getHours()+':'+st.getMinutes(),banner:document.getElementById('rconfirm').classList.contains('on')};},SK);
+  ok('RESET: visi atsakymai, rankiniai, pulsas, paslėpti = 0',r.ans===0&&r.man===0&&r.pulse===0&&r.pa==='0,0,0,0'&&r.hid===0,JSON.stringify(r));
+  ok('RESET: localStorage šiam kambariui išvalytas (nauja epocha)',r.lsAns===0&&r.lsEp===r.ep&&r.ep>0);
+  ok('RESET: laikmatis sustabdytas ir grąžintas į 20:00',!r.iv&&!r.run&&r.tt==='20:00',r.tt);
+  ok('RESET: plano laikrodis 16:30, pertraukų laikas 0:00, 1 skaidrė',r.start===null&&r.hh==='16:30'&&r.el==='0:00'&&r.t0===null&&r.slide===0,JSON.stringify(r));
+  ok('RESET: deck\'as skaičiuoja 0 atsakymų visose veiklose',await deck.evaluate(()=>Object.keys(__deck.ACTS).every(k=>__deck.LIVE.respondents(k)===0)));
+  ok('RESET: telefonas A pamiršo atsakymus (reset broadcast)',await until(()=>A.p.evaluate(()=>Object.keys(__join.sent()).length===0&&__join.LEVEL()===null),8000));
+  await deck.evaluate(()=>__deck.goTo(1,0));
+  ok('po RESET telefone klausimas be pažymėjimų',await until(()=>A.p.evaluate(()=>document.getElementById('actTitle').textContent==='Kas šiandien salėje?'&&document.querySelectorAll('.opt.sel').length===0&&!/Ekrane/.test((document.getElementById('msg')||{}).textContent||'')),8000));
+  await tapOpt(A,'d',0);await A.p.evaluate(()=>document.querySelector('.send').click());
+  ok('po RESET telefonas gali atsakyti iš naujo (ekrane 1 atsakė + ✅)',await until(()=>deck.evaluate(()=>/^1 atsakė/.test(document.querySelector('.slide.on [data-count="kas"]').textContent)))&&await until(()=>A.p.evaluate(()=>/Ekrane/.test(document.getElementById('msg').textContent))));
+  // telefonas, praleidęs reset broadcast, pasiveja per epochą
+  await B.p.evaluate(r=>{localStorage.setItem('di90-ep-'+r,'123');window.sent={kas:{d:[1]}};},ROOM);
+  await deck.evaluate(()=>{__deck.goTo(2,0);__deck.goTo(1,0);});
+  ok('praleidęs reset telefonas pasiveja per epochą (state)',await until(()=>B.p.evaluate(()=>Object.keys(__join.sent()).length===0),8000));
+  // pultas: dvigubas paspaudimas
+  await P.evaluate(()=>document.getElementById('bRst').click());await sleep(1200);
+  ok('pultas: 1 paspaudimas rodo „Tikrai…", deck\'as nevalo',await P.evaluate(()=>/Tikrai išvalyti viską\? Spauskite dar kartą per 3 s/.test(document.getElementById('bRst').textContent))&&await deck.evaluate(()=>Object.keys(__deck.LIVE.D().ans).length===1));
+  await P.evaluate(()=>document.getElementById('bRst').click());
+  ok('pultas: 2 paspaudimas per 3 s išvalo deck\'ą',await until(()=>deck.evaluate(()=>Object.keys(__deck.LIVE.D().ans).length===0&&__deck.st.slide===0),8000));
+  ok('pultas JS klaidų 0 (mentor + reset)',pErrs.length===0,pErrs.join(' | '));
+  ok('telefonų JS klaidų 0 (mentor + reset)',A.errs.length===0&&B.errs.length===0,A.errs.concat(B.errs).join(' | '));
+  ok('em dash 0 (pultas, deck)',!/—/.test(await P.content())&&!/—/.test(await deck.content()));
+}
 /* ---------- be ryšio ---------- */
 console.log('\n== Be ryšio ==');
 {

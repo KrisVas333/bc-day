@@ -238,6 +238,25 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
 #pultqr .q img,#pultqr .q canvas{width:180px!important;height:180px!important}
 #toast{position:absolute;left:50%;top:100px;transform:translateX(-50%);background:var(--ink);color:#fff;font-family:var(--mono);font-weight:800;font-size:22px;padding:10px 18px;border-radius:var(--r);z-index:61;opacity:0;transition:opacity .3s;pointer-events:none}
 #toast.on{opacity:1}
+/* RESET + MENTOR (engine) */
+.pbtn{font-family:var(--mono);font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:#fff;color:var(--ink);border-color:var(--ink);cursor:pointer;line-height:1.2}
+.pbtn:hover{border-color:var(--accent);color:var(--accent)}
+.pbtn.arm{background:var(--accent);border-color:var(--accent);color:#fff}
+#rconfirm{position:absolute;left:50%;top:110px;transform:translateX(-50%);background:var(--accent);color:#fff;font-family:var(--mono);font-weight:800;font-size:34px;padding:22px 36px;border-radius:var(--r);z-index:62;display:none;text-align:center;line-height:1.3;max-width:1500px}
+#rconfirm.on{display:block}
+#rconfirm small{display:block;font-size:22px;font-weight:700;margin-top:6px;opacity:.9}
+#mentor{position:absolute;right:0;top:84px;bottom:0;width:860px;background:#fff;border-left:4px solid var(--accent);z-index:57;display:none;overflow:auto;padding:26px 40px 40px;font-size:24px;line-height:1.45;box-shadow:-12px 0 40px rgba(0,0,0,.08)}
+#mentor.on{display:block}
+#mentor .mk{font-family:var(--mono);font-size:18px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+#mentor h3{font-family:var(--mono);font-size:26px;margin:20px 0 8px}
+#mentor h2{font-size:36px;margin:6px 0 0;line-height:1.15}
+#mentor ul{margin:0;padding-left:28px}
+#mentor li{margin:0 0 12px}
+#mentor .ms{display:block;font-size:19px;color:var(--muted);margin-top:2px}
+#mentor .g{display:inline-block;font-family:var(--mono);font-weight:800;font-size:17px;border:2px solid var(--ink);border-radius:var(--r);padding:0 7px;margin-right:6px}
+#mentor .mex{background:var(--surface);border:2px solid var(--ink);border-radius:var(--r);padding:14px 18px;margin:0 0 12px}
+#mentor .mex p{margin:4px 0 0;font-size:23px}
+#mentor pre{font-family:var(--mono);font-size:19px;line-height:1.4;white-space:pre-wrap;word-break:break-word;background:var(--ink);color:#fff;border-radius:var(--r);padding:12px 14px;margin:10px 0 0}
 /* ===== 2026-10-20 Kris pataisos ===== */
 /* QR bėgelis dešinėje: kai rodomas, skaidrės turinys susitraukia (niekada neuždengia). Q = rodyti/slėpti */
 #stage.qr-on .slide.on{padding-right:330px}
@@ -386,7 +405,7 @@ iframe.live{width:100%;height:100%;border:2px solid var(--ink);border-radius:var
 <div id="stage">
 <canvas id="net" width="1920" height="1080"></canvas>
 <div id="bar"><span>Šiaurės licėjus · <b>DI mokytojams</b></span>
- <span class="r"><span class="pill" id="elapsed" title="Nuo pradžios · B judėjimo pertrauka">⏱ 0:00</span><span class="pill" id="clock" title="Dabar · planas">--:--</span><span id="pmini" title="Pulsas (P)"><i class="p0"></i><i class="p1"></i><i class="p2"></i><i class="p3"></i></span><span class="pill" id="joinbadge">📱 …</span><span class="pill" id="pultbadge">🎛 …</span></span></div>
+ <span class="r"><span class="pill" id="elapsed" title="Nuo pradžios · B judėjimo pertrauka">⏱ 0:00</span><span class="pill" id="clock" title="Dabar · planas">--:--</span><span id="pmini" title="Pulsas (P)"><i class="p0"></i><i class="p1"></i><i class="p2"></i><i class="p3"></i></span><span class="pill" id="joinbadge">📱 …</span><span class="pill" id="pultbadge">🎛 …</span><button class="pill pbtn" id="bMentor" title="Mentoriui: papildomi faktai ir pavyzdžiai (K)">📘 Mentoriui</button><button class="pill pbtn" id="bReset" title="Atstatyti viską: atsakymai ir laikrodžiai (Shift+X du kartus)">↺ Atstatyti</button></span></div>
 
 <!-- 1 · 0 min -->
 <!-- SKAIDRĖ 1: Prisijunkite -->
@@ -1044,13 +1063,17 @@ Būk mano tyrimo partneris: 1) 5 vaikų klausimai, nuo kurių pradėtume tyrimą
 <div id="notes"></div>
 <div id="count"></div>
 <div id="toast"></div>
+<div id="mentor" aria-label="Mentoriui"></div>
+<div id="rconfirm" role="alert"></div>
 <div id="nav"><button id="bPrev" aria-label="Atgal">←</button><button id="bNext" aria-label="Toliau">→</button></div>
 <div id="help"><h2>Valdymas</h2>
  <p><kbd>→</kbd>/tarpas toliau · <kbd>←</kbd> atgal · <kbd>N</kbd> užrašai · <kbd>F</kbd> pilnas ekranas · <kbd>T</kbd> laikmatis · <kbd>V</kbd> Kris'o balsas · <kbd>Y</kbd> video · <kbd>S</kbd> atsarginė nuotrauka · <kbd>P</kbd> pulsas · <kbd>M</kbd> rankinis įvedimas (be interneto) · <kbd>Shift+R</kbd> išvalyti šio klausimo atsakymus · <kbd>1</kbd>–<kbd>9</kbd>+Enter šokti · <kbd>0</kbd>+Enter laikrodis „pradėjom dabar" · <kbd>Q</kbd> QR: auto / slėpti / visur · <kbd>B</kbd> judėjimo pertrauka 2 min. · <kbd>12</kbd> / <kbd>24</kbd> / <kbd>29</kbd>+Enter pasirenkamos (Pasaulis · L3 · „Antros smegenys")</p>
  <div id="pultqr"><div class="q" id="pultq"></div><div><b>Telefono pultas (Kris'ui)</b><div id="pultstate" style="font-size:22px;color:var(--muted)">jungiamės…</div><div id="pulturl" style="font-family:var(--mono);font-size:19px;word-break:break-all"></div><div id="livestate" style="font-size:22px;color:var(--muted);margin-top:10px"></div></div></div>
+ <p style="margin-top:14px"><kbd>K</kbd> 📘 Mentoriui: papildomi faktai ir pavyzdžiai šiai skaidrei (pagal nutylėjimą paslėpta; telefone mygtukas „Mentoriui“) · <kbd>Shift+X</kbd> dukart per 3 s ↺ Atstatyti viską: visi salės atsakymai, pulsas, rankiniai skaičiai, laikrodžiai, grįžta į 1 skaidrę, telefonai gali atsakyti iš naujo <button class="pill pbtn" id="hReset" style="font-size:20px;margin-left:8px">↺ Atstatyti</button></p>
  <p style="margin-top:20px;font-size:21px;color:var(--muted)">? arba Esc uždaro</p></div>
 </div>
 
+<script src="mentor.js"></script>
 <script>
 /* neuron canvas: vos matomas (opacity .07), statinis, jei prefers-reduced-motion */
 (function(){var c=document.getElementById('net'),x=c.getContext('2d'),N=46,P=[],still=matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -1127,7 +1150,7 @@ function render(){
  document.getElementById('voBtn').classList.toggle('on',!!s.dataset.vo);
  var mf=document.getElementById('mapframe');if(mf&&mf.closest('.slide')===s&&!mf.src)mf.src=mf.dataset.src;
  QR.apply();ANIM.onRender(s);
- renderNotes();clock();
+ renderNotes();clock();if(window.MENTOR_UI&&MENTOR_UI.on())MENTOR_UI.paint();
  try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}
  try{if(window.bt)window.bt('deck_slide',{i:st.slide+1});}catch(e){}
  LIVE.setAct(s.dataset.act||null);
@@ -1142,7 +1165,8 @@ function reveal(){var s=slides[st.slide];if(!s.classList.contains('quiz-slide'))
 function closeOverlays(){['vid','backup','manual'].forEach(function(id){var e=document.getElementById(id);e.classList.remove('on');});document.getElementById('vid').innerHTML='';}
 
 /* laikrodis: dabar vs planas (16:30 + data-at) */
-var START=(function(){var d=new Date();d.setHours(16,30,0,0);try{var v=localStorage.getItem('siaures-ai90-start');if(v){var t=new Date(+v);if(t.toDateString()===new Date().toDateString())return t;}}catch(e){}return d;})();
+function startDefault(){var d=new Date();d.setHours(16,30,0,0);return d;}
+var START=(function(){var d=startDefault();try{var v=localStorage.getItem('siaures-ai90-start');if(v){var t=new Date(+v);if(t.toDateString()===new Date().toDateString())return t;}}catch(e){}return d;})();
 function hm(d){return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
 function clock(){var s=slides[st.slide],at=+(s.dataset.at||0),plan=new Date(START.getTime()+at*60000),now=new Date(),c=document.getElementById('clock');
  var diff=Math.round((now-plan)/60000),inEvent=now>START&&now-START<3*3600000;
@@ -1188,10 +1212,12 @@ addEventListener('keydown',function(e){var k=e.key;if(e.target&&/INPUT|TEXTAREA/
  else if(k==='P'){LIVE.resetPulse();}
  else if(k==='m'||k==='M'){LIVE.manual();}
  else if(k==='R'){LIVE.resetAct();}
+ else if(k==='X'){RESET.press();}
+ else if(k==='k'||k==='K'){MENTOR_UI.toggle();}
  else if(k==='?'){document.getElementById('help').classList.toggle('on');}
  else if(k==='q'||k==='Q'){QR.cycle();}
  else if(k==='b'||k==='B'){BRK.toggle();}
- else if(k==='Escape'){document.getElementById('help').classList.remove('on');closeOverlays();document.getElementById('pbig').classList.remove('on');BRK.esc();}
+ else if(k==='Escape'){if(MENTOR_UI.on()){MENTOR_UI.close();return;}document.getElementById('help').classList.remove('on');closeOverlays();document.getElementById('pbig').classList.remove('on');BRK.esc();}
  else if(/^[0-9]$/.test(k)){jumpBuf+=k;}
  else if(k==='Enter'&&jumpBuf){if(jumpBuf==='0'){START=new Date(Date.now()-(+(slides[st.slide].dataset.at||0))*60000);try{localStorage.setItem('siaures-ai90-start',START.getTime());}catch(x){}clock();toast('Laikrodis: planas nuo dabar');}else goTo(+jumpBuf-1,0);jumpBuf='';}
  else if(k==='Home'){goTo(0,0);}
@@ -1286,7 +1312,8 @@ var BRK=(function(){var K0='siaures-ai90-t0',KB='siaures-ai90-lastbrk',EVERY=+(q
  function stop(){if(run){clearInterval(run);run=null;}document.getElementById('move').classList.remove('on');last=Date.now();snooze=0;try{sessionStorage.setItem(KB,last);}catch(e){}tick();if(window.PULT)PULT.sync();}
  function toggle(){if(run)stop();else open();}
  setInterval(tick,5000);tick();
- return{start:start,toggle:toggle,esc:esc,tick:tick,on:function(){return !!run;},due:function(){return !!due();},elapsed:function(){return t0?mmss((Date.now()-t0)/1000):'0:00';},EVERY:EVERY};})();
+ function reset(){if(run){clearInterval(run);run=null;}document.getElementById('move').classList.remove('on');t0=0;last=0;snooze=0;wasDue=false;try{sessionStorage.removeItem(K0);sessionStorage.removeItem(KB);}catch(e){}tick();}
+ return{start:start,toggle:toggle,esc:esc,tick:tick,reset:reset,on:function(){return !!run;},due:function(){return !!due();},elapsed:function(){return t0?mmss((Date.now()-t0)/1000):'0:00';},EVERY:EVERY};})();
 
 /* ===== Gyvi vizualai: skaitikliai, žemėlapio video, klausimų burbulas, svarstyklės, CODE ciklas ===== */
 var ANIM=(function(){var still=matchMedia('(prefers-reduced-motion:reduce)').matches,done=new WeakSet(),askT=null,codeT=null;
@@ -1316,6 +1343,7 @@ function baseUrl(){var b=location.href.split('#')[0].split('?')[0].replace(/[^\/
 var LIVE=(function(){
  var SK='siaures-ai90-res-'+ROOM,D={ans:{},man:{},pulse:{},pulseAll:[0,0,0,0],hidden:{}};
  try{var sv=JSON.parse(localStorage.getItem(SK)||'null');if(sv&&sv.ans)D=sv;D.hidden=D.hidden||{};D.pulseAll=D.pulseAll||[0,0,0,0];}catch(e){}
+ D.epoch=D.epoch||0;
  var ch=null,ok=false,seen={},act=null,rt=null;
  function save(){try{localStorage.setItem(SK,JSON.stringify(D));}catch(e){}}
  function present(){var n=0,now=Date.now();for(var k in seen)if(now-seen[k]<70000)n++;return n;}
@@ -1323,7 +1351,7 @@ var LIVE=(function(){
   var l=document.getElementById('livestate');if(l)l.textContent='Salės kanalas: '+(ok?'atidarytas':'neprisijungta')+' · telefonų: '+present();}
  function send(ev,pl){if(!ch||!ok)return false;try{ch.send({type:'broadcast',event:ev,payload:pl});return true;}catch(e){return false;}}
  function revealOf(id){var s=slides[st.slide];if(s.dataset.act===id&&s.classList.contains('quiz-slide')&&st.step>=1)return{k:s.dataset.k,ans:+s.dataset.answer};return null;}
- function stateMsg(){return{act:act,def:act?ACTS[act]:null,reveal:act?revealOf(act):null,room:ROOM};}
+ function stateMsg(){return{act:act,def:act?ACTS[act]:null,reveal:act?revealOf(act):null,room:ROOM,epoch:D.epoch,slide:{i:st.slide,n:slides.length,label:slides[st.slide].dataset.label}};}
  function setAct(id){act=id;send('state',stateMsg());render();}
  /* agregacija */
  function partOf(id,k){var a=ACTS[id];if(!a)return null;for(var i=0;i<a.parts.length;i++)if(a.parts[i].k===k)return a.parts[i];return null;}
@@ -1403,7 +1431,9 @@ var LIVE=(function(){
  var rArm=0;
  function resetAct(){if(!act)return;if(Date.now()-rArm>2500){rArm=Date.now();toast('Dar kartą Shift+R: išvalyti „'+ACTS[act].title+'"');return;}delete D.ans[act];delete D.man[act];save();render();toast('Išvalyta');}
  function resetPulse(){D.pulse={};save();render();toast('Pulsas nulintas');}
- return{init:init,setAct:setAct,render:render,manual:manual,resetAct:resetAct,resetPulse:resetPulse,handle:handle,D:function(){return D;},ok:function(){return ok;},present:present,respondents:respondents,stateMsg:stateMsg};
+ /* RESET: visa salė iš naujo. Serveryje nieko nėra (tik broadcast), todėl valom šios naršyklės kambario saugyklą ir siunčiam telefonams reset{epoch}. Kambario kodas ir QR lieka tie patys. */
+ function resetAll(){D={ans:{},man:{},pulse:{},pulseAll:[0,0,0,0],hidden:{},epoch:Date.now()};rArm=0;save();document.getElementById('manual').classList.remove('on');send('reset',{epoch:D.epoch,room:ROOM});render();return D.epoch;}
+ return{init:init,setAct:setAct,render:render,manual:manual,resetAct:resetAct,resetPulse:resetPulse,resetAll:resetAll,handle:handle,D:function(){return D;},ok:function(){return ok;},present:present,respondents:respondents,stateMsg:stateMsg};
 })();
 
 /* ===== Telefono pultas Kris'ui (kaip Deck A, kanalas di90-pultas-<ROOM>) ===== */
@@ -1413,7 +1443,7 @@ var PULT=(function(){
  function state(t,good){var e=document.getElementById('pultstate');if(e)e.textContent=t;var b=document.getElementById('pultbadge');if(b){b.textContent='🎛 '+(good?'pultas ✓':'pultas');b.className='pill'+(good?' ok':'');}}
  function send(ev,pl){if(!ch||!ok)return;try{ch.send({type:'broadcast',event:ev,payload:pl});}catch(e){}}
  function snap(){var s=slides[st.slide];return{i:st.slide,n:slides.length,label:s.dataset.label,notes:NOTES[st.slide],quiz:s.classList.contains('quiz-slide'),timer:!!s.dataset.timer,vo:!!s.dataset.vo,room:ROOM,
-  live:s.dataset.act?(LIVE.respondents(s.dataset.act)+' atsakė · '+LIVE.present()+' telefonų'):(LIVE.present()+' telefonų'),at:+(s.dataset.at||0),qr:QR.mode(),qrOn:QR.visible(),brk:BRK.on(),brkDue:BRK.due(),el:BRK.elapsed(),opt:!!s.dataset.optional};}
+  live:s.dataset.act?(LIVE.respondents(s.dataset.act)+' atsakė · '+LIVE.present()+' telefonų'):(LIVE.present()+' telefonų'),at:+(s.dataset.at||0),qr:QR.mode(),qrOn:QR.visible(),brk:BRK.on(),brkDue:BRK.due(),el:BRK.elapsed(),opt:!!s.dataset.optional,mentor:MENTOR_UI.on(),hasMentor:!!MENTOR_UI.data(s.dataset.label)};}
  function sync(){if(!ok)return;var now=Date.now();if(now-lastSent<150){clearTimeout(pending);pending=setTimeout(sync,160);return;}lastSent=now;send('slide',snap());}
  function handle(ev,pl){phones[(pl&&pl.cid)||'anon']=Date.now();state('✅ pultas prijungtas · '+ROOM,true);
   if(ev==='nav'){(pl.dir<0)?prev():next();}
@@ -1423,23 +1453,54 @@ var PULT=(function(){
   else if(ev==='vo'){playVo();}
   else if(ev==='qr'){QR.cycle();}
   else if(ev==='brk'){BRK.toggle();}
+  else if(ev==='mentor'){MENTOR_UI.toggle();}
+  else if(ev==='reset'){if(pl&&pl.go)RESET.run('pultas');}
   else if(ev==='hello'||ev==='ping'){send('pong',snap());}}
  function init(){var u=url();var e=document.getElementById('pulturl');if(e)e.textContent=u;
   var q=document.getElementById('pultq');if(q&&window.QRCode){try{new QRCode(q,{text:u,width:180,height:180,correctLevel:QRCode.CorrectLevel.M});}catch(x){}}
   state('jungiamės…',false);
   if(typeof supabase==='undefined'||!supabase.createClient){state('pultas nepasiekiamas · klaviatūra veikia',false);return;}
   try{var client=supabase.createClient(SB_URL,SB_KEY);ch=client.channel('di90-pultas-'+ROOM,{config:{broadcast:{self:false}}});
-   ['nav','goto','quiz','timer','vo','qr','brk','hello','ping'].forEach(function(ev){ch.on('broadcast',{event:ev},function(m){try{handle(ev,(m&&m.payload)||{});}catch(x){console.warn(x);}});});
+   ['nav','goto','quiz','timer','vo','qr','brk','mentor','reset','hello','ping'].forEach(function(ev){ch.on('broadcast',{event:ev},function(m){try{handle(ev,(m&&m.payload)||{});}catch(x){console.warn(x);}});});
    ch.subscribe(function(s){if(s==='SUBSCRIBED'){ok=true;state('kanalas atidarytas · laukiam telefono',false);sync();}else if(s==='CHANNEL_ERROR'||s==='TIMED_OUT')state('pultas nepasiekiamas ('+s+')',false);});
   }catch(x){state('pultas nepasiekiamas',false);}}
  return{init:init,sync:sync,ROOM:ROOM};
 })();
+/* ===== MENTOR: papildomi faktai ir pavyzdžiai kiekvienai skaidrei (duomenys mentor.js → MENTOR[data-label]); K / 📘, pagal nutylėjimą paslėpta ===== */
+var MENTOR_UI=(function(){var on=false;
+ function data(label){var M=window.MENTOR||{};return M[label]||null;}
+ function html(label,i){var m=data(label);var h='<div class="mk">📘 Mentoriui · '+(i+1)+' · K arba Esc uždaro</div><h2>'+esc(label)+'</h2>';
+  if(!m)return h+'<p style="margin-top:16px">Šiai skaidrei papildomos medžiagos nėra.</p>';
+  h+='<h3>Faktai</h3><ul>'+(m.f||[]).map(function(x){return '<li>'+esc(x.t)+(x.s||x.g?'<span class="ms">'+(x.g?'<span class="g">'+esc(x.g)+'</span>':'')+esc(x.s||'')+'</span>':'')+'</li>';}).join('')+'</ul>';
+  h+='<h3>Pavyzdžiai klasėje</h3>'+(m.e||[]).map(function(x){return '<div class="mex"><b>'+esc(x.t)+'</b><p>'+esc(x.d)+'</p>'+(x.p?'<pre>'+esc(x.p)+'</pre>':'')+'</div>';}).join('');return h;}
+ function paint(){var el=document.getElementById('mentor');el.classList.toggle('on',on);document.getElementById('bMentor').classList.toggle('arm',on);if(on){el.innerHTML=html(slides[st.slide].dataset.label,st.slide);el.scrollTop=0;}}
+ function toggle(){on=!on;paint();if(window.PULT)PULT.sync();try{if(window.bt)window.bt('deck_mentor',{on:on,i:st.slide+1});}catch(e){}}
+ function close(){on=false;paint();if(window.PULT)PULT.sync();}
+ return{toggle:toggle,close:close,paint:paint,on:function(){return on;},data:data,html:html};})();
+document.getElementById('bMentor').onclick=function(e){e.stopPropagation();MENTOR_UI.toggle();this.blur();};
+
+/* ===== RESET: dvigubas paspaudimas per 3 s → visi atsakymai, pulsas, rankiniai skaičiai, laikmačiai, plano laikrodis, pertraukų laikmatis, 1 skaidrė, telefonams reset ===== */
+var RESET=(function(){var arm=0,t=null,WIN=3000;
+ function banner(on){var b=document.getElementById('rconfirm');b.innerHTML='↺ Tikrai išvalyti viską? Spauskite dar kartą per 3 s<small>Atsakymai, pulsas, laikrodžiai. Grįšim į 1 skaidrę.</small>';b.classList.toggle('on',on);
+  [].forEach.call(document.querySelectorAll('#bReset,#hReset'),function(x){x.classList.toggle('arm',on);});}
+ function press(){var now=Date.now();if(now-arm>WIN){arm=now;banner(true);clearTimeout(t);t=setTimeout(function(){arm=0;banner(false);},WIN);return false;}
+  arm=0;clearTimeout(t);banner(false);run('deck');return true;}
+ function run(src){stopTimer();T.left=0;T.el=null;resetTimerView();stopVo();closeOverlays();
+  ['help','pbig','manual'].forEach(function(id){document.getElementById(id).classList.remove('on');});MENTOR_UI.close();
+  var ep=LIVE.resetAll();
+  try{localStorage.removeItem('siaures-ai90-start');}catch(e){}START=startDefault();
+  BRK.reset();jumpBuf='';
+  goTo(0,0);toast('↺ Viskas išvalyta: 1 skaidrė, laikrodžiai iš naujo');
+  try{if(window.bt)window.bt('deck_reset',{src:src||'deck'});}catch(e){}return ep;}
+ return{press:press,run:run,armed:function(){return Date.now()-arm<=WIN;}};})();
+[].forEach.call(document.querySelectorAll('#bReset,#hReset'),function(b){b.onclick=function(e){e.stopPropagation();RESET.press();b.blur();};});
+
 function loadLib(src,cb){var s=document.createElement('script');s.src=src;s.onload=cb;s.onerror=cb;document.head.appendChild(s);}
 loadLib('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js',function(){loadLib('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js',function(){LIVE.init();PULT.init();});});
 
 resetTimerView();
 (function(){var s=null;try{s=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}if(s&&typeof s.slide==='number'&&s.slide<=LAST){st.slide=s.slide;st.step=0;}render();})();
-window.__deck={st:st,goTo:goTo,next:next,prev:prev,slides:slides,NOTES:NOTES,PULT:PULT,LIVE:LIVE,ACTS:ACTS,GM:GM,NW:NW,QR:QR,BRK:BRK,ANIM:ANIM,toggleTimer:toggleTimer,ROOM:ROOM,playVo:playVo,VO:VO};
+window.__deck={st:st,goTo:goTo,next:next,prev:prev,slides:slides,NOTES:NOTES,PULT:PULT,LIVE:LIVE,ACTS:ACTS,GM:GM,NW:NW,QR:QR,BRK:BRK,ANIM:ANIM,RESET:RESET,MENTOR_UI:MENTOR_UI,T:T,START:function(){return START;},toggleTimer:toggleTimer,ROOM:ROOM,playVo:playVo,VO:VO};
 </script>
 </body>
 </html>
