@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Technologijų etiketas · pultelis</title>
+<!-- Tėvų telefonas (Šiaurės licėjus 2026-10-22). Anoniminiai atsakymai → Supabase te_tevai_atsakymai. Jokių vardų, jokių slapukų. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFFFF;--bg2:#F7F7F5;--ink:#0A0A0A;--mut:#5A5A5A;--line:#E4E4E0;--red:#D90429;--ok:#1B7F3B;--r:4px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;min-height:100vh;padding:16px 16px 40px}
+h1,h2,.mono{font-family:"JetBrains Mono",monospace;letter-spacing:-.02em}
+header{display:flex;justify-content:space-between;align-items:center;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--mut);margin-bottom:18px}
+header b{color:var(--red)}
+#st{font-size:13px}
+.ok{color:var(--ok)}.bad{color:var(--red)}
+h2{font-size:24px;line-height:1.2;margin:8px 0 18px}
+.kick{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:700}
+button.o{display:block;width:100%;text-align:left;padding:16px 14px;margin:0 0 10px;font:600 18px Inter,sans-serif;background:var(--bg2);color:var(--ink);border:1.5px solid var(--line);border-radius:var(--r);cursor:pointer}
+button.o:active,button.o.sel{border-color:var(--red);background:#fff}
+button.o.sel{box-shadow:inset 4px 0 0 var(--red)}
+.stars{display:flex;justify-content:space-between;gap:6px;margin:6px 0 16px}
+.stars button{flex:1;font-size:40px;line-height:1;padding:12px 0;background:var(--bg2);border:1.5px solid var(--line);border-radius:var(--r);color:#bbb;cursor:pointer}
+.stars button.on{color:var(--red);border-color:var(--red)}
+textarea{width:100%;min-height:90px;font:500 18px Inter,sans-serif;padding:12px;border:1.5px solid var(--line);border-radius:var(--r);margin-bottom:10px}
+.go{display:block;width:100%;padding:16px;font:800 18px "JetBrains Mono",monospace;background:var(--ink);color:#fff;border:0;border-radius:var(--r);cursor:pointer}
+.go.red{background:var(--red)}
+.done{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:18px;font-size:18px;line-height:1.4}
+.wait{color:var(--mut);font-size:18px;line-height:1.45}
+.hint{font-size:13px;color:var(--mut);margin-top:14px;line-height:1.4}
+#share{display:none;margin-top:22px}
+.big{font-size:20px;line-height:1.4}
+a{color:var(--red)}
+</style>
+</head>
+<body>
+<header><span>📱 Technologijų etiketas · <b id="rm">—</b></span><span id="st" class="bad">● jungiamasi</span></header>
+<main id="main">
+  <div class="kick">Sveiki!</div>
+  <h2>Jūsų telefonas dabar yra pultelis.</h2>
+  <p class="wait">Klausimai pasirodys čia patys, kai Kris juos parodys ekrane. Atsakymai anoniminiai.</p>
+</main>
+<section id="share">
+  <div class="kick">Patiko?</div>
+  <h2>Pasidalink su kitais tėvais</h2>
+  <p class="big">Užtenka kelių, kad prasidėtų. Nusiųsk draugui, klasės grupei ar į darbą.</p><br>
+  <button class="go red" id="shareBtn">↗ Pasidalinti</button><br>
+  <a class="go" id="medBtn" style="text-align:center;text-decoration:none" href="medziaga.html?src=te-siaures-join">📄 Visa medžiaga sau</a>
+</section>
+<p class="hint">Neveikia? Atnaujinkite puslapį. Mes nerenkame vardų ir nenaudojame slapukų. Atsakymai saugomi anonimiškai, kad Kris matytų suvestinę.</p>
+
+<script src="polls.js"></script>
+<script src="assets/lib/supabase.js"></script>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)};
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+var q=new URLSearchParams(location.search),ROOM=(q.get('k')||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,12);
+$('#rm').textContent=ROOM||'?';
+var CID=ls('te-cid')||(Math.random().toString(36).slice(2)+Date.now().toString(36));ls('te-cid',CID);
+var sent={};try{sent=JSON.parse(ls('te-sent-'+ROOM)||'{}')}catch(e){}
+var client=null,ch=null,ok=false,curPoll=undefined,lastSeen=0,lastHi=0,sharedShown=false;
+var SHARE=TE.BASE+'medziaga.html?src=te-siaures-share';
+function conn(t,c){$('#st').textContent=t;$('#st').className=c}
+if(!ROOM){$('#main').innerHTML='<h2>Trūksta kambario kodo.</h2><p class="wait">Nuskenuokite QR kodą ekrane dar kartą.</p>';return}
+
+function render(id){
+  curPoll=id;var m=$('#main');
+  if(!id){m.innerHTML='<div class="kick">Klausomės</div><h2>Kitas klausimas pasirodys čia.</h2><p class="wait">Galite padėti telefoną ekranu žemyn. 🙂</p>';return}
+  var P=TE.POLLS[id];if(!P)return;
+  if(sent[id]!==undefined&&!(P.follow&&sent[P.follow]===undefined)){thanks(id);return}
+  if(sent[id]!==undefined&&P.follow){render(P.follow);return}
+  var h='<div class="kick">Klausimas</div><h2>'+P.q+'</h2>';
+  if(P.type==='choice'){h+=P.o.map(function(o,i){return '<button class="o" data-i="'+i+'">'+o+'</button>'}).join('')}
+  else if(P.type==='stars'){h+='<div class="stars">'+[1,2,3,4,5].map(function(v){return '<button data-v="'+v+'">★</button>'}).join('')+'</div><button class="go red" id="sendS" disabled>Siųsti</button>'}
+  else{h+='<textarea id="tx" maxlength="'+(P.max||60)+'" placeholder="Rašykite čia"></textarea><button class="go red" id="sendT">Siųsti</button>'+(P.hidden?'<p class="hint"><a href="#" id="skip">Praleisti</a></p>':'')}
+  m.innerHTML=h;
+  if(P.type==='choice')Array.prototype.forEach.call(m.querySelectorAll('button.o'),function(b){b.onclick=function(){b.classList.add('sel');submit(id,P.o[+b.dataset.i])}});
+  if(P.type==='stars'){var pick=0;Array.prototype.forEach.call(m.querySelectorAll('.stars button'),function(b){b.onclick=function(){pick=+b.dataset.v;Array.prototype.forEach.call(m.querySelectorAll('.stars button'),function(x){x.classList.toggle('on',+x.dataset.v<=pick)});$('#sendS').disabled=false}});$('#sendS').onclick=function(){if(pick)submit(id,String(pick))}}
+  if(P.type==='text'){$('#sendT').onclick=function(){var v=$('#tx').value.trim();if(v)submit(id,v.slice(0,P.max||60))};if($('#skip'))$('#skip').onclick=function(e){e.preventDefault();sent[id]='';ls('te-sent-'+ROOM,JSON.stringify(sent));thanks(id)}}
+}
+function thanks(id){
+  var P=TE.POLLS[id];var isLast=id==='p8'||id==='p8t';
+  $('#main').innerHTML='<div class="done">✅ Ačiū! Atsakymas ekrane.<br><span class="wait">Žiūrėkite į ekraną, ten jau matosi rezultatai.</span></div>';
+  if(isLast)showShare();
+}
+function showShare(){if(sharedShown)return;sharedShown=true;$('#share').style.display='block';ls('te-share-'+ROOM,'1')}
+function submit(id,answer){
+  sent[id]=answer;ls('te-sent-'+ROOM,JSON.stringify(sent));
+  var row={room:ROOM,poll_id:id,answer:String(answer).slice(0,200),anon_id:CID.slice(0,64)};
+  var tries=0;(function ins(){if(!client){if(++tries<6)setTimeout(ins,1500);return}
+    client.from('te_tevai_atsakymai').insert(row).then(function(r){if(r&&r.error&&++tries<4)setTimeout(ins,1500);else if(ch&&ok){try{ch.send({type:'broadcast',event:'ans',payload:{cid:CID,poll:id}})}catch(e){}}})})();
+  var P=TE.POLLS[id];if(P&&P.follow){render(P.follow);showShare();return}
+  thanks(id);
+}
+function connect(){
+  if(typeof supabase==='undefined'||!supabase.createClient){conn('● nėra ryšio','bad');return}
+  client=supabase.createClient(TE.SB_URL,TE.SB_KEY);
+  ch=client.channel(TE.CHANNEL+ROOM,{config:{broadcast:{self:false}}});
+  ch.on('broadcast',{event:'state'},function(m){lastSeen=Date.now();conn('● prisijungta','ok');var p=m.payload||{};var id=p.poll||null;
+    if(Date.now()-lastHi>8000){lastHi=Date.now();try{ch.send({type:'broadcast',event:'hi',payload:{cid:CID}})}catch(e){}}
+    if(id!==curPoll&&!(curPoll&&TE.POLLS[curPoll]&&TE.POLLS[curPoll].hidden&&id==='p8'))render(id);if(p.last&&sent.p8!==undefined)showShare()});
+  ch.subscribe(function(s){ok=s==='SUBSCRIBED';if(ok){conn('● laukiam ekrano','ok');try{ch.send({type:'broadcast',event:'hello',payload:{cid:CID}})}catch(e){}}else conn('● '+s.toLowerCase(),'bad')});
+}
+setInterval(function(){if(ch&&ok){try{ch.send({type:'broadcast',event:'hi',payload:{cid:CID}})}catch(e){}}if(lastSeen&&Date.now()-lastSeen>20000)conn('● ekranas nematomas','bad')},10000);
+$('#shareBtn').onclick=function(){var d={title:'Technologijų etiketas',text:'Stalo manieros telefonams. Pažiūrėk, mums patiko:',url:SHARE};
+  if(navigator.share)navigator.share(d).catch(function(){});else{try{navigator.clipboard.writeText(SHARE);$('#shareBtn').textContent='✅ Nuoroda nukopijuota'}catch(e){$('#shareBtn').textContent=SHARE}}};
+if(ls('te-share-'+ROOM))showShare();
+connect();
+})();
+</script>
+</body>
+</html>

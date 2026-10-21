@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pultas · Technologijų etiketas</title>
+<!-- Kris'o pultas: valdo skaidres per Supabase Realtime (kanalas te-siaures-KAMBARYS). Tik Kris'ui, ne salei. -->
+<style>
+:root{--ink:#0A0A0A;--mut:#5A5A5A;--line:#E4E4E0;--red:#D90429;--r:4px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:#fff;color:var(--ink);padding:14px;min-height:100vh;user-select:none}
+header{display:flex;justify-content:space-between;font:700 13px ui-monospace,monospace;color:var(--mut);margin-bottom:10px}
+#st.ok{color:#1B7F3B}#st.bad{color:var(--red)}
+#lab{font:800 22px ui-monospace,monospace;margin:4px 0 8px}
+#notes{font-size:15px;line-height:1.4;color:var(--mut);background:#F7F7F5;border:1px solid var(--line);border-radius:var(--r);padding:10px;max-height:28vh;overflow:auto;margin-bottom:12px}
+.nav{display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-bottom:12px}
+.nav button{height:22vh;font:800 34px ui-monospace,monospace;border:0;border-radius:var(--r);background:#F0F0EC;color:var(--ink)}
+.nav button.nx{background:var(--red);color:#fff}
+.row{display:flex;gap:8px;margin-bottom:10px}
+.row button{flex:1;padding:14px 6px;font:700 15px ui-monospace,monospace;border:1px solid var(--line);border-radius:var(--r);background:#fff}
+select{width:100%;padding:12px;font:600 16px Inter,sans-serif;border:1px solid var(--line);border-radius:var(--r)}
+</style>
+</head>
+<body>
+<header><span>🎛 Pultas · <b id="rm">—</b></span><span id="st" class="bad">● jungiamasi</span></header>
+<div id="lab">—</div>
+<div id="notes">Užrašai pasirodys, kai ekranas atsilieps.</div>
+<div class="nav"><button id="pv">←</button><button id="nx" class="nx">TOLIAU →</button></div>
+<div class="row"><button id="qa">⏱ Klausimų laikmatis</button><button id="ping">↻ Atnaujinti</button></div>
+<select id="go"><option>Šokti į skaidrę…</option></select>
+<script src="polls.js"></script>
+<script src="assets/lib/supabase.js"></script>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)};
+var ROOM=(new URLSearchParams(location.search).get('k')||'').toUpperCase().replace(/[^A-Z]/g,'');$('#rm').textContent=ROOM||'?';
+if(!ROOM||typeof supabase==='undefined'){$('#st').textContent='● nėra kodo ar ryšio';return}
+var client=supabase.createClient(TE.SB_URL,TE.SB_KEY),ch=client.channel(TE.CHANNEL+ROOM,{config:{broadcast:{self:false}}}),ok=false,filled=false;
+function cmd(a,i){if(!ok)return;try{ch.send({type:'broadcast',event:'cmd',payload:{a:a,i:i}})}catch(e){};try{if(navigator.vibrate&&navigator.userActivation&&navigator.userActivation.hasBeenActive)navigator.vibrate(15)}catch(e){}}
+ch.on('broadcast',{event:'deck'},function(m){var p=m.payload||{};$('#lab').textContent=(p.slide+1)+'/'+p.total+' · '+(p.label||'');$('#notes').textContent=p.notes||'—';$('#st').textContent='● ekranas atsiliepė';$('#st').className='ok';
+  if(!filled&&p.labels){filled=true;$('#go').innerHTML='<option>Šokti į skaidrę…</option>'+p.labels.map(function(l,i){return '<option value="'+i+'">'+(i+1)+'. '+l+'</option>'}).join('')}});
+ch.on('broadcast',{event:'state'},function(m){var p=m.payload||{};$('#lab').textContent=(p.slide+1)+'/'+p.total+' · '+(p.label||'')});
+ch.subscribe(function(s){ok=s==='SUBSCRIBED';$('#st').textContent=ok?'● prisijungta':'● '+s.toLowerCase();$('#st').className=ok?'ok':'bad';if(ok)cmd('ping')});
+$('#nx').onclick=function(){cmd('next')};$('#pv').onclick=function(){cmd('prev')};$('#qa').onclick=function(){cmd('qa')};$('#ping').onclick=function(){cmd('ping')};
+$('#go').onchange=function(){var v=parseInt(this.value,10);if(!isNaN(v))cmd('goto',v);this.selectedIndex=0};
+})();
+</script>
+</body>
+</html>

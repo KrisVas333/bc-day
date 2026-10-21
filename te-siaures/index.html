@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Technologijų etiketas · Kris Vas</title>
+<!-- Kris Vas · Šiaurės licėjus (Riešė) · 2026-10-22 18:00 · Psichikos sveikatos diena · tėvams ir mokytojams · 45 min.
+     Valdymas: KAIP-VALDYTI.md. Faktai ir įvertinimai A/B/C: skaidrių K skydeliai + Šaltiniai. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFFFF;--bg2:#F7F7F5;--ink:#0A0A0A;--mut:#5A5A5A;--line:#E4E4E0;--red:#D90429;--red2:#FF0000;--ok:#1B7F3B;--r:4px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;overflow:hidden}
+#net{position:fixed;inset:0;z-index:0;opacity:.35;pointer-events:none}
+.slide{position:fixed;inset:0;z-index:1;display:none;padding:4.2vh 5vw 7vh;flex-direction:column;justify-content:center;gap:2.4vh}
+.slide.on{display:flex;animation:in .45s ease both}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+h1,h2,h3,.mono{font-family:"JetBrains Mono",monospace;letter-spacing:-.02em}
+h1{font-size:clamp(40px,6.4vw,110px);line-height:1.02;font-weight:800}
+h2{font-size:clamp(30px,4.1vw,70px);line-height:1.08;font-weight:800}
+h3{font-size:clamp(20px,2vw,34px);font-weight:700}
+p,li{font-size:clamp(20px,1.9vw,34px);line-height:1.38;max-width:62ch}
+.big{font-size:clamp(24px,2.5vw,44px);line-height:1.3}
+.mut{color:var(--mut)}
+.red{color:var(--red)}
+.kick{font-family:"JetBrains Mono",monospace;font-size:clamp(14px,1.15vw,20px);color:var(--red);text-transform:uppercase;letter-spacing:.14em;font-weight:700}
+.row{display:flex;gap:3vw;align-items:center}
+.col{display:flex;flex-direction:column;gap:1.6vh}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:center}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:2vw}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6vw}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:2.2vh 1.6vw}
+.card b{display:block;font-family:"JetBrains Mono",monospace;font-size:clamp(18px,1.6vw,28px);margin-bottom:.6vh}
+.card span{font-size:clamp(15px,1.25vw,22px);color:var(--mut);line-height:1.35;display:block}
+.card span.grade{display:inline-block;font-size:clamp(11px,.85vw,15px);margin:.6vh 0 0}
+.grade{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.62em;font-weight:700;border:1.5px solid currentColor;border-radius:var(--r);padding:0 .35em;margin-left:.4em;vertical-align:middle;color:var(--mut)}
+.grade.A{color:var(--ok)}.grade.C{color:#B26B00}
+.src{position:absolute;left:5vw;bottom:2.4vh;font-size:clamp(12px,.95vw,16px);color:var(--mut);max-width:80vw}
+.num{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:clamp(56px,8vw,150px);line-height:1;color:var(--red)}
+.num small{font-size:.4em;color:var(--ink)}
+.stat{display:flex;flex-direction:column;gap:1vh}
+.stat p{font-size:clamp(16px,1.35vw,24px)}
+.quote{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:clamp(28px,3.6vw,62px);line-height:1.15;border-left:6px solid var(--red);padding-left:2vw}
+/* photos */
+.wall{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:27vh;gap:.8vw}
+.ph{position:relative;overflow:hidden;border-radius:var(--r);background:#ddd}
+.ph img{width:100%;height:100%;object-fit:cover;transform:scale(1.08)}
+.slide.on .ph img{animation:kb 18s ease-out both}
+@keyframes kb{from{transform:scale(1.14) translate(1%,1%)}to{transform:scale(1.02)}}
+.ph i{position:absolute;left:0;bottom:0;right:0;padding:.8vh .7vw;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;font-style:normal;font-weight:700;font-size:clamp(14px,1.2vw,22px)}
+.ph.wide{grid-column:span 2}
+.ph.gray img{filter:grayscale(1)}
+.hero{height:62vh}
+/* split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:0;height:66vh;border-radius:var(--r);overflow:hidden}
+.split>div{position:relative}
+.split img{width:100%;height:100%;object-fit:cover}
+.split .lbl{position:absolute;top:2vh;left:1.4vw;background:#fff;padding:.6vh 1vw;border-radius:var(--r);font-family:"JetBrains Mono",monospace;font-weight:800;font-size:clamp(16px,1.5vw,28px)}
+.split .lbl.r{background:var(--red);color:#fff}
+/* chart */
+svg.chart{width:100%;height:56vh;overflow:visible}
+svg.chart .ln{fill:none;stroke-width:6;stroke-linecap:round;stroke-dasharray:2000;stroke-dashoffset:2000}
+.slide.on svg.chart .ln{animation:draw 2.4s .3s ease forwards}
+.slide.on svg.chart .ln.b{animation-delay:1.1s}
+@keyframes draw{to{stroke-dashoffset:0}}
+svg.chart text{font-family:"JetBrains Mono",monospace;font-size:22px;fill:var(--mut)}
+svg.chart .lab{font-size:26px;font-weight:800}
+/* timeline */
+.tl{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4vw;position:relative;padding-top:4vh}
+.tl:before{content:"";position:absolute;left:0;right:0;top:1.6vh;height:4px;background:var(--line)}
+.tl>div{position:relative;opacity:0;transform:translateY(10px)}
+.slide.on .tl>div{animation:in .5s ease forwards}
+.slide.on .tl>div:nth-child(2){animation-delay:.5s}.slide.on .tl>div:nth-child(3){animation-delay:1s}.slide.on .tl>div:nth-child(4){animation-delay:1.5s}
+.tl>div:before{content:"";position:absolute;top:-3.1vh;left:0;width:18px;height:18px;border-radius:50%;background:var(--red)}
+.tl b{font-family:"JetBrains Mono",monospace;font-size:clamp(26px,2.6vw,46px);color:var(--red);display:block}
+/* steps */
+.step{opacity:0;transition:opacity .35s, transform .35s;transform:translateY(8px)}
+.step.show{opacity:1;transform:none}
+/* rules */
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:1.1vh 2.6vw}
+.rules div{display:flex;gap:1vw;align-items:baseline;font-size:clamp(18px,1.75vw,32px);font-weight:600;border-bottom:1px solid var(--line);padding-bottom:.8vh}
+.rules div b{font-family:"JetBrains Mono",monospace;color:var(--red);min-width:2.4ch}
+.manners{display:grid;grid-template-columns:1fr auto 1fr;gap:1.2vh 2vw;align-items:center}
+.manners div{font-size:clamp(18px,1.75vw,32px);font-weight:600}
+.manners .ar{color:var(--red);font-family:"JetBrains Mono",monospace;font-weight:800}
+/* poll */
+.poll{display:grid;grid-template-columns:1fr 30vh;gap:3vw;align-items:center}
+.qrbox{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:1.4vh;text-align:center}
+.qrbox .qr{width:100%;aspect-ratio:1}
+.qrbox .qr img,.qrbox .qr canvas{width:100%!important;height:auto!important}
+.qrbox .code{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:clamp(22px,2.4vw,42px);letter-spacing:.12em;color:var(--red)}
+.qrbox .url{font-size:clamp(11px,.85vw,15px);color:var(--mut);word-break:break-all}
+.bars{display:flex;flex-direction:column;gap:1.2vh;margin-top:1vh}
+.bar{display:grid;grid-template-columns:minmax(12ch,34%) 1fr 6ch;gap:1vw;align-items:center;font-size:clamp(16px,1.5vw,27px);font-weight:600}
+.bar .t{height:4.4vh;background:var(--bg2);border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+.bar .f{height:100%;width:0;background:var(--red);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.bar .n{font-family:"JetBrains Mono",monospace;text-align:right}
+.bar.top .f{background:var(--red2)}
+.pmeta{font-family:"JetBrains Mono",monospace;font-size:clamp(14px,1.1vw,19px);color:var(--mut)}
+.words{display:flex;flex-wrap:wrap;gap:1vh 1vw;margin-top:1vh;max-height:46vh;overflow:hidden}
+.words span{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:.6vh 1vw;font-size:clamp(16px,1.6vw,30px);font-weight:600;animation:in .4s ease both}
+.stars{font-size:clamp(60px,8vw,140px);color:var(--red);letter-spacing:.05em;font-family:"JetBrains Mono",monospace;font-weight:800}
+/* pledge */
+.pledge{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:clamp(32px,4.4vw,78px);line-height:1.14}
+.pledge span{display:block;opacity:0}
+.slide.on .pledge span{animation:in .6s ease forwards}
+.slide.on .pledge span:nth-child(2){animation-delay:1.4s}.slide.on .pledge span:nth-child(3){animation-delay:2.8s}
+/* ui chrome */
+#bar{position:fixed;top:0;left:0;height:4px;background:var(--red);z-index:20;transition:width .3s}
+#hud{position:fixed;top:1.2vh;right:1.2vw;z-index:30;display:flex;gap:.6vw;align-items:center;font-family:"JetBrains Mono",monospace;font-size:14px}
+#hud span,#hud button{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:4px 8px;color:var(--ink);font:inherit;cursor:pointer}
+#hud .live{color:var(--ok)} #hud .dead{color:var(--red)}
+#notes,#kpanel,#help{position:fixed;z-index:40;background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:0 10px 40px rgba(0,0,0,.12);display:none;overflow:auto}
+#notes{left:1vw;right:1vw;bottom:1vh;max-height:34vh;padding:1.4vh 1.4vw;font-size:18px;line-height:1.45}
+#kpanel{right:1vw;top:6vh;bottom:6vh;width:min(560px,42vw);padding:2vh 1.4vw;font-size:17px;line-height:1.45}
+#kpanel h3{margin-bottom:1vh}#kpanel li{font-size:16px;margin:0 0 1vh 1.1em}
+#help{left:50%;top:50%;transform:translate(-50%,-50%);width:min(860px,92vw);max-height:90vh;padding:2.4vh 2vw;font-size:16px}
+#help table{border-collapse:collapse;width:100%}#help td{border-bottom:1px solid var(--line);padding:5px 8px;vertical-align:top}
+#help td:first-child{font-family:"JetBrains Mono",monospace;font-weight:700;white-space:nowrap}
+#qrstrip{position:fixed;right:1.2vw;bottom:8vh;z-index:15;width:15vh;display:none}
+#qrstrip.on{display:block}
+#vid{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:2vh;color:#fff}
+#vid iframe{width:80vw;height:45vw;max-height:80vh;border:0;border-radius:var(--r)}
+#vid a{color:#fff}
+.k,.n{display:none}
+.timer{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:clamp(80px,12vw,220px);color:var(--red)}
+.foot{position:fixed;right:1.2vw;bottom:1.2vh;z-index:20;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--mut)}
+.disc{font-size:clamp(13px,1vw,17px);color:var(--mut);border-top:1px solid var(--line);padding-top:1vh;max-width:none}
+.vbtn{display:inline-flex;gap:.6vw;align-items:center;background:var(--ink);color:#fff;border-radius:var(--r);padding:1.2vh 1.4vw;font-family:"JetBrains Mono",monospace;font-weight:700;font-size:clamp(16px,1.4vw,24px);cursor:pointer;border:0}
+.bib li{font-size:clamp(12px,.92vw,16px);line-height:1.35;margin:0 0 .5vh 1.4em;max-width:none}
+.bib a{color:var(--ink)}
+.cols2{columns:2;column-gap:3vw}
+</style>
+</head>
+<body>
+<canvas id="net"></canvas>
+<div id="bar"></div>
+<div id="hud"><span id="conn" class="dead">● jungiamasi</span><span id="ppl">📱 0</span><span id="room">—</span><span id="clock">0:00</span><button id="hbtn" title="Pagalba (?)">?</button></div>
+<div class="foot" id="foot">Kris Vas · Technologijų etiketas</div>
+<div id="qrstrip" class="qrbox"><div class="qr" id="qrS"></div><div class="code" id="codeS"></div></div>
+
+<!-- ============ 1 PRADŽIA + prisijungimas ============ -->
+<section class="slide" data-sec="75" data-poll="p0" data-label="Prisijunkite">
+  <div class="poll">
+    <div class="col">
+      <div class="kick">Šiaurės licėjus · Psichikos sveikatos diena</div>
+      <h1>Technologijų<br><span class="red">etiketas</span></h1>
+      <p class="big">Stalo manieros telefonams. Namuose, mokykloje, darbe ir lauke.</p>
+      <p class="mut">Kris Vas · 2026-10-22</p>
+      <div class="pq"></div>
+    </div>
+    <div class="qrbox"><div class="qr"></div><div class="code"></div><div class="url"></div><p class="mut" style="font-size:16px">Nuskenuokite telefonu. Jis taps jūsų pulteliu.</p></div>
+  </div>
+  <div class="n">Pasisveikink. „Prašau išsitraukti telefoną. Taip, šiandien vienintelį kartą pats to prašau." Kol jungiasi, paklausk: kas jūs šiandien? Laukti, kol 📱 skaičius viršuje sustos. 90 s.</div>
+  <div class="k"><h3>Kodėl pradedam nuo telefono</h3><ul><li>Paradoksas sąmoningas: telefonas kaip įrankis su aiškiu tikslu. Tai ir yra etiketas.</li><li>Jei internetas neveikia: „Pakelkite rankas" vietoj balsavimo.</li></ul></div>
+</section>
+
+<!-- ============ 2 KABLIUKAS ============ -->
+<section class="slide" data-sec="60" data-label="Kabliukas">
+  <div class="quote">Šiandien, kol kalbėsiu, kažkas išsitrauks telefoną.</div>
+  <p class="big step">Aš nežinosiu: fotografuoji? Užsirašai? Ar jau esi kitur?</p>
+  <p class="big step red"><b>Tada jaučiuosi, kad nesu svarbus.</b></p>
+  <div class="n">Lėtai. Pauzė po pirmos eilutės. „Man skauda labiausiai per pranešimus. Nenoriu spėlioti. O jūs?" → pereik prie klausimo.</div>
+</section>
+
+<!-- ============ 3 KLAUSIMAS 1 ============ -->
+<section class="slide" data-sec="75" data-poll="p1" data-label="Ką jauti?">
+  <div class="poll"><div class="col"><div class="kick">Klausimas 1</div><h2 class="pqh"></h2><div class="pq"></div></div>
+  <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
+  <div class="n">Perskaityk atsakymus garsiai. Jei daug „priklauso, kam naudoja": „Būtent. Problema ne telefone. Problema, kad aš nežinau, kam."</div>
+</section>
+
+<!-- ============ 4 KAS AŠ ============ -->
+<section class="slide" data-sec="60" data-label="Kas aš">
+  <div class="grid2">
+    <div class="ph hero"><img src="assets/img/kris-portretas.jpg" alt="Kris Vas"></div>
+    <div class="col">
+      <div class="kick">Kodėl kalbu aš</div>
+      <h2>Kris Vas</h2>
+      <p>13 metų kuriu būrelius vaikams. Tikiu knygomis, tikromis patirtimis, galerijomis, muziejais, knygynais ir bibliotekomis.</p>
+      <p class="red"><b>Ne mokslininkas. Žmogus, kuris kasdien mato šią problemą ir nori ją spręsti.</b></p>
+      <p class="disc">Atvirai: esu Robotikos Akademijos bendraįkūrėjas. Mūsų būreliuose telefonų nėra. Šiandien kalbu ne apie būrelius, o apie mus visus.</p>
+    </div>
+  </div>
+  <div class="n">Trumpai, 60 s. Interesų konfliktą pasakyk garsiai, ne tik ekrane. Niekada nesakyk „kaip tėvas".</div>
+</section>
+
+<!-- ============ 5 KUR BEPAŽIŪRĖTUM ============ -->
+<section class="slide" data-sec="90" data-label="Kur bepažiūrėtum">
+  <div class="kick">Kur bepažiūrėtum</div>
+  <div class="wall">
+    <div class="ph wide"><img src="assets/photos/scene-vaikai-telefonai.jpg" alt=""><i>Kartu prie stalo. Kiekvienas atskirai.</i></div>
+    <div class="ph"><img src="assets/photos/scene-restoranas.jpg" alt=""><i>Restoranas</i></div>
+    <div class="ph"><img src="assets/photos/scene-eile.jpg" alt=""><i>Eilė</i></div>
+    <div class="ph"><img src="assets/photos/scene-koncertas.jpg" alt=""><i>Renginys</i></div>
+    <div class="ph"><img src="assets/photos/scene-stotis.jpg" alt=""><i>Stotelė</i></div>
+    <div class="ph"><img src="assets/photos/scene-gatve.jpg" alt=""><i>Gatvė</i></div>
+    <div class="ph"><img src="assets/photos/scene-sporto-sale.jpg" alt=""><i>Sporto salė</i></div>
+  </div>
+  <div class="n">Pasakok scenas iš savo patirties: kiemas, kur vaikai nebežaidžia kartu; pertrauka mokykloje be telefonų taisyklės: niekas nekalba, nežaidžia, nesimoko vieni iš kitų; restoranas: vaikui ausinės ir planšetė su YouTube Shorts, jokio stalo žaidimo, jokios įdomios temos; eilė, kur vietoj pokalbio su nepažįstamu išsitraukiam telefoną. 100 s.</div>
+  <div class="k"><h3>Papildomai</h3><ul><li>Radesky ir kt. 2014 (Pediatrics): greito maisto restoranuose 40 iš 55 suaugusiųjų valgant naudojo įrenginius. Stebėjimas, 1 miestas. <span class="grade">B-</span></li></ul></div>
+</section>
+
+<!-- ============ 6 PIRMIAUSIA SUAUGĘ ============ -->
+<section class="slide" data-sec="80" data-label="Pirmiausia suaugę">
+  <div class="kick">Ne tik vaikai. Pirmiausia mes.</div>
+  <div class="grid3">
+    <div class="stat"><div class="num" data-count="46">0<small>%</small></div><p>paauglių sako: kai jie kalba, tėtis ar mama bent kartais būna užsiėmę telefonu <span class="grade">B</span></p></div>
+    <div class="stat"><div class="num" data-count="47">0<small>%</small></div><p>tėvų patys sako: telefone praleidžia per daug laiko <span class="grade">B</span></p></div>
+    <div class="stat"><div class="num" data-count="40" data-of="55">0</div><p>iš 55 suaugusiųjų restorane valgydami naudojo įrenginį <span class="grade">B-</span></p></div>
+  </div>
+  <p class="big step">Darbe nuobodu? Telefonas. Kažkas išsitraukė? <b>Išsitraukiam ir mes.</b> Vaikai kopijuoja ne žodžius, o mus.</p>
+  <div class="src">Pew Research Center 2024 (JAV, 1 453 paauglių ir tėvų poros) · Radesky ir kt. 2014, Pediatrics</div>
+  <div class="n">„Kai matom blogą pavyzdį, kartojam. Ir tai keliauja per visas kartas." Pasakyk ir apie panelines diskusijas: aukšto lygio žmonės diskusijos viduryje išsitraukia telefoną. Neturim standarto, kad telefonas turi savo vietą ir laiką.</div>
+  <div class="k"><h3>Atsargiai</h3><ul><li>Pew duomenys: JAV, savęs vertinimas, ne priežastis.</li><li>„Veidrodiniai neuronai" kaip paaiškinimas yra populiarus, bet moksle ginčytinas. Sakyk „kopijuojam", ne „veidrodiniai neuronai įrodo".</li><li>Lietuvos tėvų elgesio su telefonu tyrimo neradom. Sakyk tai atvirai, jei klaus.</li></ul></div>
+</section>
+
+<!-- ============ 7 2010 ============ -->
+<section class="slide" data-sec="65" data-label="2010">
+  <div class="kick">Kas nutiko per 15 metų</div>
+  <h2>2010 metai viską pakeitė</h2>
+  <div class="tl">
+    <div><b>2010 IV</b><p>iPad. Planšetė vaikų rankose.</p></div>
+    <div><b>2010 VI</b><p>iPhone 4 su priekine kamera. Asmenukių era.</p></div>
+    <div><b>2010 X</b><p>Instagram. Gyvenimas kaip vitrina.</p></div>
+    <div><b>2010–2015</b><p>„Didysis perjungimas": vaikystė persikelia į telefoną.</p></div>
+  </div>
+  <div class="src">Haidt, J. (2024). The Anxious Generation, 1 dalis.</div>
+  <div class="n">Haidt'o terminas: „The Great Rewiring". Iki 2010 telefonas buvo skambinti. Po 2015 dauguma paauglių turi išmanųjį su socialiniais tinklais ir priekine kamera.</div>
+</section>
+
+<!-- ============ 8 VAIKYSTĖ ============ -->
+<section class="slide" data-sec="65" data-label="Dvi vaikystės">
+  <div class="split">
+    <div><img src="assets/photos/scene-zaidimas-lauke.jpg" alt=""><span class="lbl">Žaidimais grįsta vaikystė</span></div>
+    <div class="ph gray" style="border-radius:0"><img src="assets/photos/scene-vaikai-telefonai.jpg" alt=""><span class="lbl r">Telefonu grįsta vaikystė</span></div>
+  </div>
+  <div class="src">Haidt, J. (2024). The Anxious Generation: „play-based childhood → phone-based childhood".</div>
+  <div class="n">Haidt'o mintis: per daug saugom realiame pasaulyje (nevaliojam vieni į kiemą), per mažai saugom virtualiame. Kiemas, laisvas žaidimas, rizika ir draugai pakeisti ekranu.</div>
+</section>
+
+<!-- ============ 9 GRAFIKAS ============ -->
+<section class="slide" data-sec="70" data-label="Depresija">
+  <div class="kick">JAV paaugliai 12–17 m., sunkus depresijos epizodas per metus</div>
+  <svg class="chart" viewBox="0 0 1200 520">
+    <line x1="80" y1="460" x2="1160" y2="460" stroke="#ccc" stroke-width="2"/>
+    <text x="80" y="500">2011</text><text x="1100" y="500">2021</text>
+    <text x="10" y="460">0 %</text><text x="10" y="240">15 %</text><text x="10" y="30">30 %</text>
+    <line x1="80" y1="240" x2="1160" y2="240" stroke="#eee" stroke-width="2"/>
+    <line x1="80" y1="30" x2="1160" y2="30" stroke="#eee" stroke-width="2"/>
+    <line x1="372" y1="30" x2="372" y2="460" stroke="#D90429" stroke-dasharray="6 8" stroke-width="2"/>
+    <text x="382" y="60" fill="#D90429">2014–15: dauguma jau su išmaniuoju</text>
+    <path class="ln" stroke="#D90429" d="M80 286 L264 270 L372 236 L480 190 L588 150 L696 120 L804 96 L912 90 L1020 70 L1160 41"/>
+    <path class="ln b" stroke="#0A0A0A" d="M80 395 L372 383 L588 360 L804 335 L1020 315 L1160 295"/>
+    <text class="lab" x="1170" y="45" fill="#D90429">29,2 %</text>
+    <text class="lab" x="1170" y="300" fill="#0A0A0A">11,5 %</text>
+    <text class="lab" x="90" y="330" fill="#D90429">mergaitės ~12 %</text>
+    <text class="lab" x="90" y="435" fill="#0A0A0A">berniukai ~4,5 %</text>
+  </svg>
+  <div class="src">2021: NIMH / NSDUH (A). 2011 ir tarpiniai taškai: apytiksliai pagal Haidt (2024) grafiką, ne tikslūs metiniai duomenys.</div>
+  <div class="n">Pasakyk: „Per 10 metų mergaičių beveik 2,5 karto daugiau." Linija tarp taškų iliustracinė. Jei klaus: tai JAV duomenys. Lietuvoje panašaus ilgalaikio grafiko neradau.</div>
+  <div class="k"><h3>Faktai</h3><ul><li>NIMH (NSDUH 2021): 29,2 % mergaičių, 11,5 % berniukų 12–17 m. <span class="grade A">A</span></li><li>2011 m. ~12 % ir ~4,5 %: pagal Haidt (2024) grafiką. <span class="grade">B</span> ⚠️ tikslinti</li></ul></div>
+</section>
+
+<!-- ============ 10 SKAIČIAI ============ -->
+<section class="slide" data-sec="70" data-label="Skaičiai">
+  <div class="kick">15 metų skaičiais</div>
+  <div class="grid3">
+    <div class="stat"><div class="num" data-count="95">0<small>%</small></div><p>JAV paauglių turi išmanųjį telefoną (2014–15 m.: 73 %) <span class="grade A">A</span></p></div>
+    <div class="stat"><div class="num" data-count="46">0<small>%</small></div><p>paauglių internete „beveik visą laiką" (2014–15 m.: 24 %) <span class="grade A">A</span></p></div>
+    <div class="stat"><div class="num" data-count="188" data-pre="+">0<small>%</small></div><p>savęs žalojimo atvejų skubios pagalbos skyriuose, mergaitės 10–14 m., 2010–2020 <span class="grade">B</span></p></div>
+  </div>
+  <p class="big step">Laikas su draugais gyvai: <b class="red">beveik perpus mažiau</b> per dešimtmetį.</p>
+  <div class="src">Pew Research Center 2015 ir 2024 · Haidt 2024 pagal CDC duomenis · Haidt 2024 pagal JAV laiko naudojimo tyrimą (ATUS, 15–24 m.)</div>
+  <div class="k"><h3>Atsargiai</h3><ul><li>+188 % ir „perpus mažiau su draugais" cituojami iš Haidt knygos, pirminiai CDC ir ATUS duomenys neatidaryti. <span class="grade">B</span></li><li>Visi skaičiai iš JAV.</li></ul></div>
+</section>
+
+<!-- ============ 11 4 ŽALOS ============ -->
+<section class="slide" data-sec="60" data-label="4 žalos">
+  <div class="kick">Haidt: 4 pagrindinės žalos</div>
+  <div class="grid4">
+    <div class="card"><b>01 Vienatvė</b><span>Mažiau laiko akis į akį</span></div>
+    <div class="card"><b>02 Miegas</b><span>Telefonas lovoje, miego mažiau</span></div>
+    <div class="card"><b>03 Dėmesys</b><span>Pranešimai skaido mintis</span></div>
+    <div class="card"><b>04 Priklausomybė</b><span>Programėlės kurtos grąžinti mus atgal</span></div>
+  </div>
+  <div class="src">Haidt, J. (2024). The Anxious Generation, 2 dalis.</div>
+  <div class="n">Neskaityk visų, parodyk ir pasakyk vieną: „Iš šitų keturių aš labiausiai matau trečią."</div>
+</section>
+
+<!-- ============ 12 KRITIKA ============ -->
+<section class="slide" data-sec="50" data-label="Ką sako kritikai">
+  <div class="kick">Sąžiningai</div>
+  <h2>Ne visi mokslininkai sutinka</h2>
+  <p>Kritikai (C. Odgers, A. Orben, A. Przybylski) sako: ryšys tarp ekranų ir paauglių psichikos yra <b>silpnas ir ginčijamas</b>, o priežastis neįrodyta.</p>
+  <p class="big red step"><b>Bet etiketui nereikia įrodymų.</b> Mes nelaukiam tyrimų, kad nustotume rūgti prie stalo.</p>
+  <div class="src">Odgers, C. (2024), Nature knygos apžvalga · Orben ir Przybylski darbai · Haidt atsako afterbabel.com</div>
+  <div class="n">Mokytojų salėje tai sustiprina pasitikėjimą. 50 s. Pasakyk: „Aš nesiginčiju, ar telefonas sukelia depresiją. Aš sakau: mums reikia susitarimų, kaip elgiamės vieni su kitais."</div>
+</section>
+
+<!-- ============ 13 KLAUSIMAS 2 ============ -->
+<section class="slide" data-sec="70" data-poll="p2" data-label="Vakarienė">
+  <div class="poll"><div class="col"><div class="kick">Klausimas 2</div><h2 class="pqh"></h2><div class="pq"></div></div>
+  <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
+  <div class="n">Sąžiningai, be gėdos. Pakomentuok tik daugumą.</div>
+</section>
+
+<!-- ============ 14 SUKURTA UŽKABINTI ============ -->
+<section class="slide" data-sec="65" data-label="Sukurta užkabinti">
+  <div class="kick">Tai ne silpna valia. Tai dizainas.</div>
+  <div class="grid3">
+    <div class="card"><b>∞ Begalinis sraigtas</b><span>Nėra pabaigos, nėra kur sustoti</span></div>
+    <div class="card"><b>🔔 Pranešimai ir garsai</b><span>Kažkas kitas sprendžia, kada pažiūrėsi</span></div>
+    <div class="card"><b>▶ Trumpi video</b><span>Shorts, TikTok, Reels: vienas po kito</span></div>
+    <div class="card"><b>🎮 „Nemokami" žaidimai</b><span>Dėžutės, serijos, kasdieniai prizai</span></div>
+    <div class="card"><b>❤ Patiktukai</b><span>Kiek mane mėgsta? Pažiūrėsiu dar kartą</span></div>
+    <div class="card"><b>⏸ Nuobodulio nebėra</b><span>O nuobodulyje gimsta idėjos ir pokalbiai</span></div>
+  </div>
+  <div class="n">„Praradom nuobodulį ir pagarbą šalia esančiam žmogui." Nesakyk „priklausomybė" kaip diagnozė; sakyk „sukurta, kad grįžtume".</div>
+</section>
+
+<!-- ============ 15 DRAUDIMAS ============ -->
+<section class="slide" data-sec="60" data-label="Draudimas">
+  <div class="kick">Ar užtenka uždrausti?</div>
+  <h2>Draudimas vienas <span class="red">neišsprendžia</span></h2>
+  <p>JK, 30 mokyklų, 1 227 mokiniai: griežtos telefonų taisyklės mokykloje <b>nebuvo susijusios</b> su geresne savijauta ar miegu. Daugiau asmeninio naudojimo buvo susiję su blogesne.</p>
+  <p class="big step">Telefonas grįžta namo, į autobusą, į kiemą. <b>Reikia ne draudimo, o susitarimo. Ir pavyzdžio.</b></p>
+  <div class="src">Goodyear ir kt. (2025), SMART Schools, Lancet Regional Health Europe. Skerspjūvio tyrimas: ryšys, ne priežastis. <span class="grade">B</span></div>
+  <div class="n">„Joks draudimas vienas nieko neišsprendė." Bet nesakyk, kad draudimai blogi: mokykla be telefonų pertraukose yra gerai, tik to neužtenka.</div>
+</section>
+
+<!-- ============ 16 KLAUSIMAS 3 ============ -->
+<section class="slide" data-sec="60" data-poll="p3" data-label="Draudimas?">
+  <div class="poll"><div class="col"><div class="kick">Klausimas 3</div><h2 class="pqh"></h2><div class="pq"></div></div>
+  <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
+</section>
+
+<!-- ============ 17 STALO ETIKETAS ============ -->
+<section class="slide" data-sec="60" data-label="Kodėl atsirado etiketas">
+  <div class="grid2">
+    <div class="ph hero"><img src="assets/photos/scene-valgymas-kartu.jpg" alt=""></div>
+    <div class="col">
+      <div class="kick">1530 metai</div>
+      <h2>Kodėl atsirado stalo etiketas?</h2>
+      <p>Erazmas Roterdamietis parašė knygelę vaikams apie elgesį prie stalo. Ji tapo bestseleriu visoje Europoje.</p>
+      <p class="step">Etiketas atsirado ne iš draudimų. Jis atsirado, kad <b>kartu būti būtų malonu ir saugu.</b></p>
+    </div>
+  </div>
+  <div class="src">Erasmus (1530), De civilitate morum puerilium · Elias, N. (1939), Civilizacijos procesas</div>
+  <div class="k"><h3>Papildomai</h3><ul><li>Sociologas N. Elias aprašė, kaip per šimtmečius manieros tapo savaime suprantamos: tai, kas buvo normalu, tapo gėdinga.</li><li>Tas pats gali nutikti telefonams prie stalo.</li></ul></div>
+</section>
+
+<!-- ============ 18 MANIEROS ============ -->
+<section class="slide" data-sec="70" data-label="Stalo → technologijų">
+  <div class="kick">Tai jau mokam</div>
+  <h2>Stalo etiketas → Technologijų etiketas</h2>
+  <div class="manners">
+    <div>Negazuojam ir nerūgstam prie stalo</div><div class="ar">→</div><div>Nescrollinam, kai kitas kalba</div>
+    <div class="step">Sakom „prašau" ir „ačiū"</div><div class="ar step">→</div><div class="step">Sakom: „Atsiprašau, užsirašysiu"</div>
+    <div class="step">Žiūrim į akis</div><div class="ar step">→</div><div class="step">Veidas prieš ekraną</div>
+    <div class="step">Esam mandagūs</div><div class="ar step">→</div><div class="step">Telefonas turi savo vietą ir laiką</div>
+  </div>
+  <div class="n">Juokinga dalis: „Juk niekas prie stalo negazuoja. Niekas nedraudžia, bet niekas ir nedaro. Taip bus ir su telefonais."</div>
+</section>
+
+<!-- ============ 19 10 TAISYKLIŲ ============ -->
+<section class="slide" data-sec="90" data-label="10 taisyklių">
+  <div class="kick">Technologijų etiketas · v1</div>
+  <h2>10 taisyklių</h2>
+  <div class="rules">
+    <div><b>01</b>Veidas prieš telefoną</div><div><b>06</b>Pirma laikmatis</div>
+    <div><b>02</b>Stalas be telefonų</div><div><b>07</b>Pilka reiškia ramu</div>
+    <div><b>03</b>Pranešimai išjungti</div><div><b>08</b>Viena užduotis, vienas ekranas</div>
+    <div><b>04</b>Klausk prieš fotografuodamas</div><div><b>09</b>Telefonai miega ne miegamajame</div>
+    <div><b>05</b>Skambutis palauks</div><div><b>10</b>Pasakyk, kai padėjo DI</div>
+  </div>
+  <div class="n">Neskaityk visų. Išsirink 3, kurias pats laikai, ir papasakok kaip. Visos su šaltiniais yra medžiagoje per QR pabaigoje.</div>
+</section>
+
+<!-- ============ 20 PATARIMAI ============ -->
+<section class="slide" data-sec="100" data-label="Patarimai">
+  <div class="kick">Kaip pradėti šį vakarą</div>
+  <div class="grid3">
+    <div class="card"><b>🩶 Pilkas ekranas</b><span>Spalvos traukia. Mažuose tyrimuose −20…−50 min. per dieną.</span><span class="grade">B</span></div>
+    <div class="card"><b>🏠 Telefono namelis</b><span>Dėžutė prie durų. Kai kartu, telefonai ten.</span><span class="grade">B-</span></div>
+    <div class="card"><b>🔕 Be pranešimų ir garsų</b><span>Tu sprendi, kada žiūri.</span><span class="grade">B</span></div>
+    <div class="card"><b>🎯 Tikslingai</b><span>Prieš paimdamas: „Kam? Kodėl dabar?"</span><span class="grade">B</span></div>
+    <div class="card"><b>🎮 Žaidžiam kartu</b><span>Naujos technologijos: kartu ir dalinamės, ką išmokom.</span><span class="grade">B-</span></div>
+    <div class="card"><b>📓 Popierius</b><span>Knyga vietoj sraigto. Sąsiuvinis. Padėkos raštelis.</span><span class="grade">B</span></div>
+  </div>
+  <p class="step big">Išsitrauki telefoną prie žmogaus? <b class="red">Pasakyk kam:</b> „užsirašysiu", „nufotografuosiu", „parodysiu".</p>
+  <div class="src">Pilkas ekranas: Holte ir Ferraro 2020; Dekker ir Baumgartner 2024; Price 2018; Haidt ir Price 2025 (The Amazing Generation, p. 92) · Pranešimai: Kushlev ir kt. 2016 · Popierius: Delgado ir kt. 2018</div>
+  <div class="n">Pilkas ekranas: pasakyk savo patirtį, bet NE „30 %" kaip faktą (tai tavo n=1). Telefono namelis: parodyk fizinę dėžutę, jei turi. „Padaryk priklausomybę mažiau patrauklią."</div>
+  <div class="k"><h3>Įrodymų lygis</h3><ul><li>Pilkas ekranas: maži tyrimai su jaunais suaugusiais; atrakinimų skaičius nesikeitė; vaikų tyrimų beveik nėra. <span class="grade">B</span></li><li>Pranešimai: Kushlev, Proulx, Dunn 2016 (CHI): įjungti pranešimai → daugiau neatidumo. <span class="grade">B</span></li><li>Skaitymas iš popieriaus: Delgado ir kt. 2018 metaanalizė, supratimas geresnis iš popieriaus. <span class="grade A">A</span></li><li>Užrašai ranka: Mueller ir Oppenheimer 2014, bet replikacijos (Morehead 2019) nevienareikšmės. <span class="grade C">C</span></li></ul></div>
+</section>
+
+<!-- ============ 21 DI ============ -->
+<section class="slide" data-sec="60" data-label="DI">
+  <div class="kick">Naujos technologijos</div>
+  <h2>Telefonas pasiima dėmesį.<br><span class="red">DI gali pasiimti mąstymą.</span></h2>
+  <p class="step">Kai kuri su DI, pasakyk: <b>„padėjo DI"</b>. DI kaip mokymosi treneris, ne vietoj tavęs.</p>
+  <p class="step">DI parašytą tekstą jauti iš karto. Jame nėra skonio. Ir nėra tavęs.</p>
+  <div class="src">Kosmyna ir kt. (2025), „Your Brain on ChatGPT", MIT Media Lab, nerecenzuotas preprintas, 54 dalyviai. <span class="grade C">C</span></div>
+  <div class="n">MIT tyrimą minėk atsargiai: „ankstyvas, mažas tyrimas rodo, kad rašant su DI mažiau įsimenam savo tekstą". Ne „DI gadina smegenis".</div>
+</section>
+
+<!-- ============ 22 GRĮŽKIM ============ -->
+<section class="slide" data-sec="50" data-label="Tikras gyvenimas">
+  <div class="kick">Grįžkim į tikrą gyvenimą</div>
+  <div class="wall">
+    <div class="ph wide"><img src="assets/photos/scene-zaidimas-lauke.jpg" alt=""><i>Kiemas</i></div>
+    <div class="ph"><img src="assets/photos/scene-stalo-zaidimas.jpg" alt=""><i>Stalo žaidimai</i></div>
+    <div class="ph"><img src="assets/photos/scene-sasiuvinis.jpg" alt=""><i>Sąsiuvinis</i></div>
+    <div class="ph wide"><img src="assets/photos/scene-valgymas-kartu.jpg" alt=""><i>Vakarienė kartu</i></div>
+    <div class="ph wide"><img src="assets/photos/scene-knyga.jpg" alt=""><i>Knyga</i></div>
+  </div>
+  <div class="n">„Šimtai koncertų video, kurių niekada nežiūrėsim. Maisto nuotraukos. Sraigtas iš nuobodulio. Tai švaisto mūsų gyvenimą." Pasiūlyk: nešiokimės daugiau knygų nei telefonų. Galerijos, muziejai, knygynai, bibliotekos.</div>
+</section>
+
+<!-- ============ 23 KLAUSIMAS 4 ============ -->
+<section class="slide" data-sec="70" data-poll="p4" data-label="Kurią taisyklę?">
+  <div class="poll"><div class="col"><div class="kick">Klausimas 4</div><h2 class="pqh"></h2><div class="pq"></div></div>
+  <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
+</section>
+
+<!-- ============ 24 KLAUSIMAS 5 ============ -->
+<section class="slide" data-sec="60" data-poll="p5" data-label="Kur sunkiausia?">
+  <div class="poll"><div class="col"><div class="kick">Klausimas 5</div><h2 class="pqh"></h2><div class="pq"></div></div>
+  <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
+  <div class="n">Kur sunkiausia, ten ir pradėkim. Paklausk vieno žmogaus balsu: „Kodėl?"</div>
+</section>
+
+<!-- ============ 25 5 % ============ -->
+<section class="slide" data-sec="80" data-label="Mažuma keičia normas">
+  <div class="kick">Kiek žmonių reikia, kad norma pasikeistų?</div>
+  <div class="grid3">
+    <div class="stat"><div class="num" data-count="25">0<small>%</small></div><p>Eksperimente įsipareigojusi mažuma (~25 %) apvertė grupės normą <span class="grade A">A</span></p></div>
+    <div class="stat"><div class="num" data-count="3.5" data-dec="1">0<small>%</small></div><p>Istorinis pastebėjimas: taikūs judėjimai, kuriuose aktyviai dalyvavo 3,5 % gyventojų, dažniausiai laimėjo <span class="grade">B</span></p></div>
+    <div class="stat"><div class="num">5<small>%</small></div><p><b>Mūsų tikslas:</b> pirmieji tėvai, vaikai ir mokytojai, kurie tiki, laikosi ir saugo šį standartą</p></div>
+  </div>
+  <p class="big step"><b>Aukšti standartai. Didelė šiluma.</b> Ne bausmės, o pavyzdys.</p>
+  <div class="src">Centola ir kt. (2018), Science 360 · Chenoweth ir Stephan (2011), Why Civil Resistance Works · 5 % yra Kris'o tikslas, ne tyrimo skaičius.</div>
+  <div class="n">Svarbu sąžiningai: „5 % nėra mokslinis skaičius. Tai mano tikslas: pradėti nuo mažumos, kuri tiki." Šiluma: nesigėdinam, neperšam, rodom.</div>
+</section>
+
+<!-- ============ 26 KLAUSIMAS 6 ============ -->
+<section class="slide" data-sec="60" data-poll="p6" data-label="Pirmieji 5 %">
+  <div class="poll"><div class="col"><div class="kick">Klausimas 6</div><h2 class="pqh"></h2><div class="pq"></div></div>
+  <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
+</section>
+
+<!-- ============ 27 KLAUSIMAS KARTAI ============ -->
+<section class="slide" data-sec="40" data-optional="1" data-label="Prisiminimai">
+  <div class="quote">Ar Z ir Alfa karta bus pirmosios, kurios turės daugiau prisiminimų iš Roblox, Minecraft ir Brawl Stars nei iš tikro gyvenimo?</div>
+  <p class="big step red"><b>Negalim pakeisti kartos, jei nepakeisim savęs.</b></p>
+  <div class="n">Tai klausimas, ne faktas: tyrimo, kuris tai matuotų, neradom. „Mane šita mintis sugniuždė. Noriu tai pakeisti." Pasirenkama skaidrė (praleidžiama →, jei vėluoji).</div>
+</section>
+
+<!-- ============ 28 PRIESAIKA ============ -->
+<section class="slide" data-sec="50" data-label="Priesaika">
+  <div class="kick">Sakom kartu</div>
+  <div class="pledge"><span>Kai esu su tavimi,</span><span>visas mano dėmesys tavo,</span><span class="red">nes tu svarbus.</span></div>
+  <p class="big step">Aš pasirinkau būti čia. Telefonas šią žinią padaro neaiškią.</p>
+  <div class="n">Paprašyk visų atsistoti, jei drąsu. Sakom kartu, garsiai, vieną kartą. Filmavimui: geras kadras.</div>
+</section>
+
+<!-- ============ 29 KLAUSIMAS 7 ============ -->
+<section class="slide" data-sec="60" data-poll="p7" data-label="Ką pakeisi?">
+  <div class="poll"><div class="col"><div class="kick">Klausimas 7</div><h2 class="pqh"></h2><div class="pq"></div></div>
+  <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
+  <div class="n">Perskaityk 3–4 atsakymus garsiai. Žodžiai rodomi tik iki 60 ženklų.</div>
+</section>
+
+<!-- ============ 30 VIDEO (pasirenkama) ============ -->
+<section class="slide" data-sec="0" data-optional="1" data-label="Video" data-video="DH9L7vJ03DE">
+  <div class="kick">Pasirenkama · jei liko laiko</div>
+  <h2>Pasiklausykim pačių autorių</h2>
+  <div class="grid3">
+    <button class="vbtn" data-yt="DH9L7vJ03DE">▶ Jonathan Haidt · TED</button>
+    <button class="vbtn" data-yt="0tVw2xArV0k">▶ Simon Sinek · telefonai ir santykiai</button>
+    <button class="vbtn" data-yt="Y74Y7hAqD1A">▶ Catherine Price · CBS</button>
+  </div>
+  <p class="mut">Y paleidžia pirmą. Visi trys yra medžiagoje per QR.</p>
+  <div class="n">Video angliškai. Rodyk tik 60–90 s, jei liko laiko. Interneto nėra? Praleisk.</div>
+</section>
+
+<!-- ============ 31 KLAUSIMAI ============ -->
+<section class="slide" data-sec="600" data-label="Klausimai">
+  <div class="row" style="justify-content:space-between">
+    <div class="col"><div class="kick">Jūsų klausimai</div><h1>Klauskite.</h1><p class="mut">T: laikmatis 10 min.</p></div>
+    <div class="timer" id="qtimer">10:00</div>
+  </div>
+  <div class="n">10 min. Jei tylu, pradėk pats: „Dažniausias klausimas, kurį gaunu: nuo kokio amžiaus telefonas?" Haidt: ne iki ~14 m. (išmanusis), socialiniai tinklai ne iki 16. Tai jo norma, ne įstatymas.</div>
+  <div class="k"><h3>Haidt'o 4 normos</h3><ul><li>Jokio išmaniojo iki ~14 m. (iki gimnazijos)</li><li>Jokių socialinių tinklų iki 16</li><li>Mokyklos be telefonų</li><li>Daugiau laisvo žaidimo ir savarankiškumo</li></ul></div>
+</section>
+
+<!-- ============ 32 ĮVERTINIMAS ============ -->
+<section class="slide" data-sec="60" data-poll="p8" data-label="Įvertinimas">
+  <div class="poll"><div class="col"><div class="kick">Paskutinis klausimas</div><h2 class="pqh"></h2><div class="pq"></div></div>
+  <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
+  <div class="n">„Būkite atviri. Taip aš tobulėju." Telefonuose po to atsiras mygtukas „Pasidalink su kitais tėvais".</div>
+</section>
+
+<!-- ============ 33 AČIŪ ============ -->
+<section class="slide" data-sec="30" data-label="Ačiū">
+  <div class="grid2">
+    <div class="col">
+      <div class="kick">Ačiū, kad buvote čia</div>
+      <h1>Geriausias žaidimas yra <span class="red">tikras gyvenimas.</span></h1>
+      <p>Pasidalinkite su kitais tėvais, darbe, draugais. Užtenka kelių, kad prasidėtų.</p>
+      <p class="mono" style="font-size:clamp(16px,1.4vw,24px)">Kris Vas · IG @kristijonas.vas · TikTok @krisvas369 · LinkedIn</p>
+    </div>
+    <div class="row" style="gap:2vw">
+      <div class="ph" style="width:22vw;height:52vh"><img src="assets/img/kris-aciu.jpg" alt="Kris Vas"></div>
+      <div class="qrbox" style="width:24vh"><div class="qr" id="qrM"></div><p style="font-size:16px"><b>Medžiaga sau ir kitiems</b></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRIEDAS: ŠALTINIAI ============ -->
+<section class="slide" data-sec="0" data-label="Šaltiniai" data-appendix="1">
+  <div class="kick">Šaltiniai · įrodymų lygis A stiprus · B vidutinis · C silpnas</div>
+  <ol class="bib cols2">
+    <li>Haidt, J. (2024). <i>The Anxious Generation</i>. Penguin Press. <a href="https://www.anxiousgeneration.com">anxiousgeneration.com</a> (ginčijama, žr. 9)</li>
+    <li>Haidt, J., Price, C. (2025). <i>The Amazing Generation</i>, p. 92 (pilkas ekranas).</li>
+    <li>NIMH. Major Depression statistics (NSDUH 2021). <a href="https://www.nimh.nih.gov/health/statistics/major-depression">nimh.nih.gov</a> A</li>
+    <li>Pew Research Center (2024-12-12). Teens, Social Media and Technology 2024. <a href="https://www.pewresearch.org/internet/2024/12/12/teens-social-media-and-technology-2024/">pewresearch.org</a> A</li>
+    <li>Pew Research Center (2015-04-09). Teens, Social Media &amp; Technology Overview 2015. <a href="https://www.pewresearch.org/internet/2015/04/09/teens-social-media-technology-2015/">pewresearch.org</a> A</li>
+    <li>Pew Research Center (2024-03-11). How Teens and Parents Approach Screen Time. <a href="https://www.pewresearch.org/internet/2024/03/11/how-teens-and-parents-approach-screen-time/">pewresearch.org</a> B</li>
+    <li>Radesky, J. ir kt. (2014). Patterns of mobile device use by caregivers and children during meals. <i>Pediatrics</i>. <a href="https://pubmed.ncbi.nlm.nih.gov/24616357/">pubmed</a> B-</li>
+    <li>Goodyear, V. ir kt. (2025). SMART Schools. <i>Lancet Regional Health Europe</i>. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11850730/">pmc</a> B</li>
+    <li>Odgers, C. (2024). Knygos apžvalga, <i>Nature</i>; Orben, A., Przybylski, A. (2019). <i>Nature Human Behaviour</i>. <a href="https://doi.org/10.1038/s41562-018-0506-1">doi</a></li>
+    <li>Centola, D. ir kt. (2018). Experimental evidence for tipping points in social convention. <i>Science</i> 360. <a href="https://doi.org/10.1126/science.aas8827">doi</a> A</li>
+    <li>Chenoweth, E., Stephan, M. (2011). <i>Why Civil Resistance Works</i>. Columbia UP. B</li>
+    <li>Erasmus (1530). <i>De civilitate morum puerilium</i>. · Elias, N. (1939). <i>Über den Prozess der Zivilisation</i>.</li>
+    <li>Price, C. (2018). <i>How to Break Up with Your Phone</i>. Ten Speed Press.</li>
+    <li>Holte, A., Ferraro, F. (2020). <i>Social Science Journal</i>; Dekker, C., Baumgartner, S. (2024). <i>Mobile Media &amp; Communication</i>. B</li>
+    <li>Kushlev, K., Proulx, J., Dunn, E. (2016). „Silence your phones". <i>CHI '16</i>. B</li>
+    <li>Delgado, P. ir kt. (2018). Don't throw away your printed books. <i>Educational Research Review</i> 25. A</li>
+    <li>Mueller, P., Oppenheimer, D. (2014). <i>Psychological Science</i>; Morehead, K. ir kt. (2019) replikacija. C</li>
+    <li>Kosmyna, N. ir kt. (2025). Your Brain on ChatGPT. arXiv preprintas. C</li>
+    <li>Przybylski &amp; Weinstein (2013); Ward ir kt. (2017) „Brain Drain": replikacijos nepavyko. C, į pranešimą neįtraukta.</li>
+    <li>Video: TED „How Screens Stole Childhood" (J. Haidt) · Simon Sinek „How Cell Phones Impact Our Relationships" · CBS Mornings (C. Price).</li>
+  </ol>
+</section>
+
+<!-- ============ PRIEDAS: NUOTRAUKOS ============ -->
+<section class="slide" data-sec="0" data-label="Nuotraukos" data-appendix="1">
+  <div class="kick">Nuotraukų autoriai ir licencijos (Wikimedia Commons)</div>
+  <ol class="bib cols2" id="credits"></ol>
+</section>
+
+<div id="notes"></div>
+<div id="kpanel"></div>
+<div id="vid"><iframe id="vframe" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe><a id="vlink" target="_blank" rel="noopener">Nepaleidžia? Atidaryti YouTube</a><p>Esc uždaro</p></div>
+<div id="help">
+  <h3>Valdymas</h3>
+  <table>
+    <tr><td>→ · tarpas</td><td>toliau (pirma parodo žingsnius)</td></tr>
+    <tr><td>←</td><td>atgal</td></tr>
+    <tr><td>skaičius + Enter</td><td>šokti į skaidrę</td></tr>
+    <tr><td>N</td><td>užrašai (tik tau)</td></tr>
+    <tr><td>K</td><td>papildomi faktai ir įrodymų lygiai</td></tr>
+    <tr><td>Q</td><td>QR kampe visose skaidrėse</td></tr>
+    <tr><td>F</td><td>pilnas ekranas</td></tr>
+    <tr><td>T</td><td>klausimų laikmatis (10 min.)</td></tr>
+    <tr><td>Y</td><td>video (video skaidrėje)</td></tr>
+    <tr><td>Shift+X ×2</td><td>naujas kambarys: visi rezultatai nuo nulio (repeticijai)</td></tr>
+    <tr><td>Esc</td><td>uždaro langus</td></tr>
+  </table>
+  <p style="margin-top:1.4vh">Tavo pultas telefone: <b id="pultUrl"></b></p>
+  <div class="qrbox" style="width:180px;margin-top:1vh"><div class="qr" id="qrP"></div><div class="mut" style="font-size:13px">Pultas Kris'ui</div></div>
+</div>
+
+<script src="polls.js"></script>
+<script src="assets/lib/qrcode.min.js"></script>
+<script src="assets/lib/supabase.js"></script>
+<script>
+(function(){
+var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+var slides=$$('.slide'),cur=0,stepI=0,typed='';
+/* ---------- kambarys ---------- */
+var q=new URLSearchParams(location.search);
+function newRoom(){var a='ABCDEFGHJKLMNPRSTUVZ',s='';for(var i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
+var ROOM=(q.get('room')||ls('te-room')||newRoom()).toUpperCase();ls('te-room',ROOM);
+var BASE=location.protocol==='file:'||/localhost|127\.0\.0\.1/.test(location.hostname)?TE.BASE:location.href.replace(/[^\/]*$/,'');
+var JOIN=BASE+'join.html?k='+ROOM, PULT=BASE+'pultas.html?k='+ROOM, MED=BASE+'medziaga.html?src=te-siaures-qr';
+function qr(el,text){if(!el)return;el.innerHTML='';try{new QRCode(el,{text:text,width:512,height:512,correctLevel:QRCode.CorrectLevel.M})}catch(e){el.textContent=text}}
+function paintQR(){
+  $$('.slide .qrbox .qr').forEach(function(el){if(el.id!=='qrM')qr(el,JOIN)});
+  $$('.slide .qrbox .code').forEach(function(el){el.textContent=ROOM});
+  $$('.slide .qrbox .url').forEach(function(el){el.textContent=JOIN.replace(/^https?:\/\//,'')});
+  qr($('#qrS'),JOIN);$('#codeS').textContent=ROOM;qr($('#qrM'),MED);qr($('#qrP'),PULT);
+  $('#room').textContent=ROOM;$('#pultUrl').textContent=PULT.replace(/^https?:\/\//,'');
+}
+/* ---------- nuotraukų kreditai ---------- */
+fetch('assets/photos/credits.json').then(function(r){return r.json()}).then(function(c){
+  $('#credits').innerHTML=c.filter(function(x){return x.scene!=='konferencija'}).map(function(x){
+    return '<li>'+x.scene+': '+(x.author||'nežinomas autorius').replace(/</g,'')+' · '+x.license+' · <a href="'+x.page+'">'+x.title.replace('File:','')+'</a></li>'}).join('')}).catch(function(){});
+/* ---------- navigacija ---------- */
+function steps(s){return $$('.step',s)}
+function show(i,keepStep){
+  i=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach(function(s,j){s.classList.toggle('on',j===i)});
+  cur=i;stepI=0;steps(slides[i]).forEach(function(e){e.classList.remove('show')});
+  $('#bar').style.width=((i+1)/slides.length*100)+'%';
+  $('#notes').innerHTML='<b>'+(i+1)+'/'+slides.length+' · '+(slides[i].dataset.label||'')+'</b> · ~'+Math.round((slides[i].dataset.sec||0)/6)/10+' min.<br>'+(($('.n',slides[i])||{}).innerHTML||'');
+  var k=$('.k',slides[i]);$('#kpanel').innerHTML=k?k.innerHTML:'<p class="mut">Šiai skaidrei papildomų faktų nėra.</p>';
+  counters(slides[i]);setupPoll(slides[i]);broadcast();ls('te-slide',String(i));
+}
+function next(){var st=steps(slides[cur]);if(stepI<st.length){st[stepI++].classList.add('show');return}
+  show(cur+1)}
+function prev(){if(stepI>0){steps(slides[cur])[--stepI].classList.remove('show');return}show(cur-1)}
+/* ---------- skaitikliai ---------- */
+function counters(s){$$('[data-count]',s).forEach(function(el){
+  var to=parseFloat(el.dataset.count),dec=+(el.dataset.dec||0),pre=el.dataset.pre||'',suf=el.querySelector('small')?el.querySelector('small').outerHTML:'',of=el.dataset.of,t0=performance.now();
+  (function f(t){var p=Math.min(1,(t-t0)/1400),e=1-Math.pow(1-p,3),v=(to*e).toFixed(dec).replace('.',',');
+    el.innerHTML=pre+v+(of?'<small> / '+of+'</small>':suf);if(p<1&&s.classList.contains('on'))requestAnimationFrame(f)})(t0)})}
+/* ---------- apklausos ---------- */
+var client=null,ch=null,live=false,phones={},pollTimer=null,maxResp=0;
+function setupPoll(s){
+  clearInterval(pollTimer);var id=s.dataset.poll;if(!id)return;var P=TE.POLLS[id];
+  var h=$('.pqh',s);if(h)h.textContent=P.q;
+  var box=$('.pq',s);if(!box)return;
+  box.innerHTML='<div class="pmeta">Atsakė: <b class="cnt">0</b> · '+ROOM+'</div><div class="res"></div>';
+  render(s,id,[]);fetchRes(s,id);pollTimer=setInterval(function(){fetchRes(s,id)},2500);
+}
+function fetchRes(s,id){
+  if(!client)return;
+  client.rpc('te_tevai_suvestine',{p_room:ROOM,p_poll:id}).then(function(r){if(r&&r.data)render(s,id,r.data)});
+  if(TE.POLLS[id].follow&&s.dataset.poll===id){}
+}
+function render(s,id,rows){
+  var P=TE.POLLS[id],box=$('.pq .res',s);if(!box)return;var total=rows.reduce(function(a,r){return a+Number(r.n)},0);
+  $('.pq .cnt',s).textContent=total;if(total>maxResp){maxResp=total;countPhones()}
+  if(P.type==='choice'){var m={};rows.forEach(function(r){m[r.answer]=Number(r.n)});var mx=Math.max.apply(null,[1].concat(P.o.map(function(o){return m[o]||0})));
+    if(!box.firstChild||box.dataset.k!==id){box.dataset.k=id;box.innerHTML='<div class="bars">'+P.o.map(function(o){return '<div class="bar"><span>'+o+'</span><div class="t"><div class="f"></div></div><span class="n">0</span></div>'}).join('')+'</div>'}
+    $$('.bar',box).forEach(function(b,i){var v=m[P.o[i]]||0;b.querySelector('.f').style.width=(total?v/total*100:0)+'%';b.querySelector('.n').textContent=total?Math.round(v/total*100)+'%':'0';b.classList.toggle('top',v>0&&v===mx)})}
+  else if(P.type==='stars'){var sum=0;rows.forEach(function(r){var v=parseInt(r.answer,10);if(v>=1&&v<=5)sum+=v*Number(r.n)});var avg=total?sum/total:0;
+    box.innerHTML='<div class="stars">'+(total?avg.toFixed(1).replace('.',','):'–')+' ★</div><div class="bars">'+[5,4,3,2,1].map(function(v){var n=0;rows.forEach(function(r){if(r.answer===String(v))n=Number(r.n)});return '<div class="bar"><span>'+'★'.repeat(v)+'</span><div class="t"><div class="f" style="width:'+(total?n/total*100:0)+'%"></div></div><span class="n">'+n+'</span></div>'}).join('')+'</div>'}
+  else{box.innerHTML='<div class="words">'+rows.slice(0,40).map(function(r){return '<span>'+String(r.answer).slice(0,60).replace(/[<>&]/g,'')+(r.n>1?' ×'+r.n:'')+'</span>'}).join('')+'</div>'}
+}
+/* ---------- ryšys ---------- */
+function broadcast(){if(!ch||!live)return;var s=slides[cur];try{ch.send({type:'broadcast',event:'state',payload:{slide:cur,label:s.dataset.label||'',poll:s.dataset.poll||null,total:slides.length,last:s.dataset.poll==='p8'}})}catch(e){}}
+function connect(){
+  if(typeof supabase==='undefined'){$('#conn').textContent='● be interneto';return}
+  client=supabase.createClient(TE.SB_URL,TE.SB_KEY);
+  ch=client.channel(TE.CHANNEL+ROOM,{config:{broadcast:{self:false}}});
+  ch.on('broadcast',{event:'hello'},function(m){var c=(m.payload||{}).cid;if(c)phones[c]=Date.now();countPhones();broadcast()});
+  ch.on('broadcast',{event:'hi'},function(m){var c=(m.payload||{}).cid;if(c)phones[c]=Date.now();countPhones()});
+  ch.on('broadcast',{event:'ans'},function(m){var c=((m&&m.payload)||{}).cid;if(c){phones[c]=Date.now();countPhones()}var s=slides[cur];if(s.dataset.poll)fetchRes(s,s.dataset.poll)});
+  ch.on('broadcast',{event:'cmd'},function(m){var p=m.payload||{};if(p.a==='next')next();else if(p.a==='prev')prev();else if(p.a==='goto')show(+p.i);else if(p.a==='qa')startTimer();broadcast();try{ch.send({type:'broadcast',event:'deck',payload:{slide:cur,total:slides.length,label:slides[cur].dataset.label,notes:(($('.n',slides[cur])||{}).textContent||'').slice(0,600),labels:slides.map(function(s){return s.dataset.label})}})}catch(e){}});
+  ch.subscribe(function(st){live=st==='SUBSCRIBED';$('#conn').textContent=live?'● gyvai':'● '+st.toLowerCase();$('#conn').className=live?'live':'dead';if(live)broadcast()});
+}
+function countPhones(){var now=Date.now(),n=0;for(var c in phones)if(now-phones[c]<35000)n++;$('#ppl').textContent='📱 '+Math.max(n,maxResp)}
+setInterval(function(){countPhones();broadcast()},5000);
+/* ---------- laikrodžiai ---------- */
+var t0=Date.now();setInterval(function(){var s=Math.floor((Date.now()-t0)/1000);$('#clock').textContent=Math.floor(s/60)+':'+('0'+s%60).slice(-2)},1000);
+var qt=null;function startTimer(){clearInterval(qt);var end=Date.now()+600000;qt=setInterval(function(){var r=Math.max(0,Math.round((end-Date.now())/1000));$('#qtimer').textContent=Math.floor(r/60)+':'+('0'+r%60).slice(-2);if(!r)clearInterval(qt)},500)}
+/* ---------- video ---------- */
+function video(id){if(!id)return;$('#vframe').src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0';$('#vlink').href='https://www.youtube.com/watch?v='+id;$('#vid').style.display='flex'}
+$$('[data-yt]').forEach(function(b){b.onclick=function(){video(b.dataset.yt)}});
+function closeAll(){$('#vid').style.display='none';$('#vframe').src='';['#notes','#kpanel','#help'].forEach(function(s){$(s).style.display='none'})}
+function tog(s){var e=$(s);e.style.display=e.style.display==='block'?'none':'block'}
+$('#hbtn').onclick=function(){tog('#help')};
+/* ---------- klavišai ---------- */
+var xAt=0;
+document.addEventListener('keydown',function(e){
+  if(e.target.tagName==='INPUT')return;var k=e.key;
+  if(/^[0-9]$/.test(k)){typed+=k;return}
+  if(k==='Enter'&&typed){show(parseInt(typed,10)-1);typed='';return}
+  typed='';
+  if(k==='ArrowRight'||k===' '||k==='PageDown'){e.preventDefault();next()}
+  else if(k==='ArrowLeft'||k==='PageUp')prev();
+  else if(k==='Home')show(0);
+  else if(k==='n'||k==='N')tog('#notes');
+  else if(k==='k'||k==='K')tog('#kpanel');
+  else if(k==='?')tog('#help');
+  else if(k==='q'||k==='Q')$('#qrstrip').classList.toggle('on');
+  else if(k==='f'||k==='F'){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});else document.exitFullscreen()}
+  else if(k==='t'||k==='T')startTimer();
+  else if(k==='y'||k==='Y')video(slides[cur].dataset.video);
+  else if(k==='X'&&e.shiftKey){if(Date.now()-xAt<3000){ROOM=newRoom();ls('te-room',ROOM);phones={};maxResp=0;if(ch)client.removeChannel(ch);paintQR();connect();show(0);xAt=0}else{xAt=Date.now();$('#conn').textContent='Shift+X dar kartą = naujas kambarys'}}
+  else if(k==='Escape')closeAll();
+});
+/* ---------- neuronų fonas ---------- */
+(function(){var c=$('#net'),x=c.getContext('2d'),P=[];function rs(){c.width=innerWidth;c.height=innerHeight}rs();addEventListener('resize',rs);
+for(var i=0;i<46;i++)P.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25});
+(function f(){x.clearRect(0,0,c.width,c.height);P.forEach(function(p){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1});
+for(var i=0;i<P.length;i++)for(var j=i+1;j<P.length;j++){var d=Math.hypot(P[i].x-P[j].x,P[i].y-P[j].y);if(d<170){x.strokeStyle='rgba(217,4,41,'+(.14*(1-d/170))+')';x.beginPath();x.moveTo(P[i].x,P[i].y);x.lineTo(P[j].x,P[j].y);x.stroke()}}
+P.forEach(function(p){x.fillStyle='rgba(10,10,10,.18)';x.beginPath();x.arc(p.x,p.y,2,0,6.3);x.fill()});requestAnimationFrame(f)})()})();
+paintQR();connect();show(parseInt(q.get('s')||'1',10)-1);
+window.TEDECK={show:show,next:next,room:function(){return ROOM},cur:function(){return cur},n:slides.length};
+})();
+</script>
+</body>
+</html>
