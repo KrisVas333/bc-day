@@ -158,5 +158,21 @@
   "page": "https://commons.wikimedia.org/wiki/File:Jacob_de_Gheyn_(II)_-_Woman_and_Child_looking_at_a_Picture_Book_-_WGA08699.jpg",
   "author": "Jacob de Gheyn II",
   "license": "Public domain"
+ },
+ {
+  "file": "assets/photos/scene-v3-mazylis-plansete.jpg",
+  "scene": "v3-mazylis-plansete",
+  "title": "File:Kelly-sikkema-266805.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Kelly-sikkema-266805.jpg",
+  "author": "StockSnap",
+  "license": "CC0"
+ },
+ {
+  "file": "assets/photos/scene-v3-panele.jpg",
+  "scene": "v3-panele",
+  "title": "File:Panel discussion on stage - Wikimania 2026 - Paris by @JJxFile 0017 08.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Panel_discussion_on_stage_-_Wikimania_2026_-_Paris_by_@JJxFile_0017_08.jpg",
+  "author": "Jorge Jaramillo",
+  "license": "CC BY-SA 4.0"
  }
 ]

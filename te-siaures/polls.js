@@ -15,6 +15,8 @@ var TE = {
           o: ["4–6 m.", "7–9 m.", "10–12 m.", "13–17 m.", "18+ arba vaikų neturiu"] },
     p1: { q: "Tu kalbi. Žmogus priešais išsitraukia telefoną. Ką jauti?", type: "choice",
           o: ["Kad nesu svarbus", "Man tas pats", "Priklauso, kam jis naudoja", "Pats taip darau"] },
+    pk: { q: "Kiek kartų vakar paėmėte telefoną? (Ekrano laikas → Paėmimai)", type: "choice",
+          o: ["Iki 50", "50–100", "100–150", "Daugiau nei 150", "Nežinau, bet daug"] },
     p2: { q: "Kiek kartų per vakarienę jūsų šeimoje kas nors paima telefoną?", type: "choice",
           o: ["Nė karto", "1–2 kartus", "3–5 kartus", "Nesuskaičiuočiau", "Valgome atskirai"] },
     p9: { q: "Kur jums labiausiai kliūva nesveiki technologijų įpročiai?", type: "choice", follow: "p9t",

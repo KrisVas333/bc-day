@@ -25,7 +25,7 @@ function watch(page,errs){page.on('console',m=>{if(m.type()==='error'){const t=m
   await deck.setViewport({width:1920,height:1080});
   await deck.goto(BASE+'index.html?room='+ROOM,{waitUntil:'networkidle2'});
   ok('deck užsikrauna',await deck.evaluate(()=>!!window.TEDECK));
-  const n=await deck.evaluate(()=>TEDECK.n);ok('skaidrių 41',n===41,'yra '+n);
+  const n=await deck.evaluate(()=>TEDECK.n);ok('skaidrių 43 (41 + 2 priedai)',n===43,'yra '+n);
   ok('deck prisijungia prie Realtime',await until(()=>deck.evaluate(()=>document.querySelector('#conn').className==='live')));
   ok('QR nupieštas',await deck.evaluate(()=>!!document.querySelector('.slide.on .qr img, .slide.on .qr canvas')));
   /* visos skaidrės: telpa, nėra em dash */
@@ -43,7 +43,7 @@ function watch(page,errs){page.on('console',m=>{if(m.type()==='error'){const t=m
   }
   ok('visos skaidrės telpa 1920×1080',over.length===0,over.join(' | '));
   ok('skaidrėse nėra em dash',dash.length===0,dash.join(' | '));
-  ok('kalba ≤ 34 min. + klausimai, viso ≤ 43 min. (kalba '+Math.round(total/60)+' + klausimai '+Math.round(qaSec/60)+')',total<=34*60&&total+qaSec<=43*60);
+  ok('kalba ≤ 35 min. + klausimai, viso ≤ 43 min. (kalba '+Math.round(total/60)+' + klausimai '+Math.round(qaSec/60)+')',total<=35*60&&total+qaSec<=43*60);
   /* ---- telefonai ---- */
   const phones=[];const pErr=[];
   for(let i=0;i<PHONES;i++){const p=await browser.newPage();watch(p,pErr);await p.setViewport({width:390,height:844,isMobile:true});phones.push(p)}
@@ -58,13 +58,13 @@ function watch(page,errs){page.on('console',m=>{if(m.type()==='error'){const t=m
   ok('deck mato telefonus (📱 ≥ 10)',await until(()=>deck.evaluate(()=>parseInt(document.querySelector('#ppl').textContent.replace(/\D/g,''),10)>=10),15000));
   ok('stulpeliai užsipildė',await deck.evaluate(()=>[...document.querySelectorAll('.slide.on .bar .f')].some(f=>parseFloat(f.style.width)>0)));
   /* laisvas tekstas */
-  await deck.evaluate(i=>TEDECK.show(i),await idx('p7'));
-  ok('telefonas gavo teksto lauką',await until(()=>phones[0].evaluate(()=>!!document.querySelector('#tx'))));
-  await phones[0].evaluate(()=>{document.querySelector('#tx').value='Telefonas į namelį';document.querySelector('#sendT').click()});
-  ok('žodis ekrane',await until(()=>deck.evaluate(()=>/namelį/.test(document.querySelector('.slide.on .words').innerText)),12000));
+  await deck.evaluate(i=>TEDECK.show(i),await idx('pk'));
+  ok('telefonas gavo „paėmimų" klausimą',await until(()=>phones[0].evaluate(()=>document.querySelectorAll('button.o').length===5)));
+  await phones[0].evaluate(()=>document.querySelectorAll('button.o')[1].click());
+  ok('eksperimento atsakymas ekrane',await until(()=>deck.evaluate(()=>document.querySelector('.slide.on .cnt').textContent==='1'),12000));
   /* V2: problema + papildomas sakinys */
   await deck.evaluate(i=>TEDECK.show(i),await idx('p9'));
-  ok('telefonas gavo „kur kliūva"',await until(()=>phones[1].evaluate(()=>document.querySelectorAll('button.o').length===5)));
+  ok('telefonas gavo „kur kliūva"',await until(()=>phones[1].evaluate(()=>/kliūva/.test(document.body.innerText)&&document.querySelectorAll('button.o').length===5)));
   await phones[1].evaluate(()=>document.querySelectorAll('button.o')[3].click());
   ok('po pasirinkimo klausia „viena problema"',await until(()=>phones[1].evaluate(()=>/Viena problema/.test(document.body.innerText)&&!!document.querySelector('#tx'))));
   await sleep(6000);
@@ -86,7 +86,7 @@ function watch(page,errs){page.on('console',m=>{if(m.type()==='error'){const t=m
   /* ---- pultas ---- */
   const pult=await browser.newPage();const uErr=[];watch(pult,uErr);await pult.setViewport({width:390,height:844,isMobile:true});
   await pult.goto(BASE+'pultas.html?k='+ROOM,{waitUntil:'networkidle2'});
-  ok('pultas gauna ekrano būseną',await until(()=>pult.evaluate(()=>/\d+\/41/.test(document.querySelector('#lab').textContent)),15000));
+  ok('pultas gauna ekrano būseną',await until(()=>pult.evaluate(()=>/\d+\/43/.test(document.querySelector('#lab').textContent)),15000));
   const before=await deck.evaluate(()=>TEDECK.cur());await pult.click('#nx');
   ok('pultas TOLIAU perjungia skaidrę',await until(async()=>(await deck.evaluate(()=>TEDECK.cur()))===before+1,8000));
   /* ---- medžiaga ---- */
