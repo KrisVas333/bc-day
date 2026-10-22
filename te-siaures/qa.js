@@ -25,7 +25,7 @@ function watch(page,errs){page.on('console',m=>{if(m.type()==='error'){const t=m
   await deck.setViewport({width:1920,height:1080});
   await deck.goto(BASE+'index.html?room='+ROOM,{waitUntil:'networkidle2'});
   ok('deck užsikrauna',await deck.evaluate(()=>!!window.TEDECK));
-  const n=await deck.evaluate(()=>TEDECK.n);ok('skaidrių 43 (41 + 2 priedai)',n===43,'yra '+n);
+  const n=await deck.evaluate(()=>TEDECK.n);ok('skaidrių 46 (44 + 2 priedai)',n===46,'yra '+n);
   ok('deck prisijungia prie Realtime',await until(()=>deck.evaluate(()=>document.querySelector('#conn').className==='live')));
   ok('QR nupieštas',await deck.evaluate(()=>!!document.querySelector('.slide.on .qr img, .slide.on .qr canvas')));
   /* visos skaidrės: telpa, nėra em dash */
@@ -97,7 +97,7 @@ function watch(page,errs){page.on('console',m=>{if(m.type()==='error'){const t=m
   /* ---- pultas ---- */
   const pult=await browser.newPage();const uErr=[];watch(pult,uErr);await pult.setViewport({width:390,height:844,isMobile:true});
   await pult.goto(BASE+'pultas.html?k='+ROOM,{waitUntil:'networkidle2'});
-  ok('pultas gauna ekrano būseną',await until(()=>pult.evaluate(()=>/\d+\/43/.test(document.querySelector('#lab').textContent)),15000));
+  ok('pultas gauna ekrano būseną',await until(()=>pult.evaluate(()=>/\d+\/46/.test(document.querySelector('#lab').textContent)),15000));
   const before=await deck.evaluate(()=>TEDECK.cur());await pult.click('#nx');
   ok('pultas TOLIAU perjungia skaidrę',await until(async()=>(await deck.evaluate(()=>TEDECK.cur()))===before+1,8000));
   /* ---- medžiaga ---- */

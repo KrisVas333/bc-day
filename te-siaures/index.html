@@ -156,6 +156,7 @@ svg.chart .lab{font-size:26px;font-weight:800}
 .study .num{font-size:clamp(46px,5.4vw,96px)}
 .study p{font-size:clamp(17px,1.5vw,27px)}
 .study .s{font-size:clamp(12px,.95vw,16px);color:var(--mut);display:block;margin-top:.4vh}
+.cks{display:grid;grid-template-columns:repeat(4,1fr);gap:1vh .8vw;margin:1.5vh 0}.ck{text-align:left;font:600 clamp(14px,1.15vw,21px) Inter,sans-serif;line-height:1.25;padding:1.4vh .9vw;background:var(--bg2);border:1.5px solid var(--line);border-radius:var(--r);color:var(--ink);cursor:pointer}.ck b{color:var(--red);font-family:"JetBrains Mono",monospace;margin-right:.5em}.ck.on{background:var(--red);color:#fff;border-color:var(--red)}.ck.on b{color:#fff}#navb{position:fixed;bottom:1.4vh;right:1.2vw;z-index:30;display:flex;gap:.5vw}#navb button{font:800 22px "JetBrains Mono",monospace;width:56px;height:46px;border:1px solid var(--line);border-radius:var(--r);background:#fff;color:var(--ink);cursor:pointer;opacity:.8}#navb button:hover{opacity:1}#navb #nnext{background:var(--red);color:#fff;border-color:var(--red)}
 .signs{display:grid;grid-template-columns:repeat(5,1fr);gap:1vw}
 .signs div{background:var(--bg2);border:1px solid var(--line);border-top:5px solid var(--red);border-radius:var(--r);padding:2vh 1vw;font-size:clamp(16px,1.4vw,25px);font-weight:600;line-height:1.3}
 .signs b{display:block;font-family:"JetBrains Mono",monospace;color:var(--red);font-size:1.4em}
@@ -168,6 +169,7 @@ svg.chart .lab{font-size:26px;font-weight:800}
 <body>
 <canvas id="net"></canvas>
 <div id="bar"></div>
+<div id="navb"><button id="nprev" title="Atgal (←)">‹</button><button id="nnext" title="Toliau (→)">›</button></div>
 <div id="hud"><span id="conn" class="dead">● jungiamasi</span><span id="ppl">📱 0</span><span id="room">—</span><span id="clock">0:00</span><button id="vbtn" title="Kris balsas (V)">🔊</button><button id="mbtn" title="Mentoriui (M)">📘</button><button id="rbtn" title="Atstatyti duomenis (Shift+X)">↺ Atstatyti</button><button id="hbtn" title="Pagalba (?)">?</button></div>
 <div class="foot" id="foot">Kris Vas · Technologijų etiketas · v3</div>
 <div id="qrstrip" class="qrbox"><div class="qr" id="qrS"></div><div class="code" id="codeS"></div></div>
@@ -204,7 +206,7 @@ svg.chart .lab{font-size:26px;font-weight:800}
       <div class="kick">Su kuo dirbu</div>
       <div class="tools">
         <div class="tool"><img src="assets/photos/scene-t-lego.jpg" alt=""><i>LEGO Education robotai</i></div>
-        <div class="tool"><div class="ico">🐢</div><i>Robotai 3–4 metų vaikams</i></div>
+        <div class="tool"><img src="assets/photos/scene-t-matata.png" alt="Matata robotas" style="object-position:left center"><i>Matata robotai 3–5 m. vaikams</i></div>
         <div class="tool"><img src="assets/photos/scene-t-humanoidas.jpg" alt=""><i>Humanoidai robotai</i></div>
         <div class="tool"><img src="assets/photos/scene-t-vr.jpg" alt=""><i>VR ir XR</i></div>
         <div class="tool"><img src="assets/photos/scene-t-ai.jpg" alt=""><i>DI įrankiai</i></div>
@@ -438,7 +440,18 @@ svg.chart .lab{font-size:26px;font-weight:800}
 </section>
 
 <!-- ============ 18 5 ŽENKLAI ============ -->
-<section class="slide" data-sec="55" data-label="5 ženklai">
+<!-- ============ SAVITIKRA (nauja) ============ -->
+<section class="slide" data-sec="60" data-novo="1" data-label="Savitikra 12">
+  <div class="kick">Savitikra · suskaičiuokite mintyse</div>
+  <h2>Kiek iš šių atpažįstate savyje? <span id="ckn" style="color:var(--red)"></span></h2>
+  <div class="cks"><button class="ck"><b>1</b>Pirmas dalykas, kurį paliečiate ryte</button><button class="ck"><b>2</b>Paskutinis dalykas, kurį matote prieš miegą</button><button class="ck"><b>3</b>Nešatės net į tualetą</button><button class="ck"><b>4</b>Niekur jo nepaliekate, net kitame kambaryje</button><button class="ck"><b>5</b>Tikrinate be jokio pranešimo</button><button class="ck"><b>6</b>Jaučiate „vibraciją“, kurios nebuvo</button><button class="ck"><b>7</b>Nerimas, kai baterija senka ar telefonas pamirštas</button><button class="ck"><b>8</b>Pasiekiate per kiekvieną pauzę ar nuobodulį</button><button class="ck"><b>9</b>Telefonas guli ant stalo valgant</button><button class="ck"><b>10</b>Žiūrite į ekraną, kai kas nors kalba su jumis</button><button class="ck"><b>11</b>„Tik 5 min.“ virsta valanda</button><button class="ck"><b>12</b>Žiūrite prie vairo ar eidami per gatvę</button></div>
+  <p class="big step">0–3: sveikas įprotis · 4–7: verta susitarti · 8+: <b>laikas keisti, ne gėdintis.</b></p>
+  <div class="src">Pagal išmaniojo telefono priklausomybės skalę SAS-SV (Kwon ir kt., 2013) ir nomofobijos tyrimus. Ne diagnozė, o veidrodis. <span class="grade">B</span></div>
+  <div class="n">Paspauskite plyteles ekrane, kurias atpažįsta salė. Pradėkite nuo savęs: „aš turiu 6“.</div>
+  <div class="k"><h3>Papildomai</h3><ul><li>Fantominė vibracija: ją jaučia dauguma dažnų naudotojų.</li><li>Nomofobija = nerimas be telefono.</li><li>Vaikai kopijuoja ne žodžius, o įpročius.</li></ul></div>
+</section>
+
+<section class="slide" data-sec="55" data-optional="1" data-label="5 ženklai">
   <div class="kick">Ne laikas, o įprotis</div>
   <h2>5 ženklai, į kuriuos verta atkreipti dėmesį</h2>
   <div class="signs">
@@ -451,6 +464,23 @@ svg.chart .lab{font-size:26px;font-weight:800}
   <p class="big step">Tai ne diagnozė. Pastebėjote kelis? <b>Pasikalbėkite ir kreipkitės į mokyklos psichologą.</b></p>
   <div class="src">Pagal priklausomo naudojimo klausimynus, naudotus Xiao ir kt. 2025 (JAMA) <span class="grade">B</span></div>
   <div class="n">Tinka ir suaugusiems. Padėkok Rugilei.</div>
+</section>
+
+<!-- ============ MOKSLAS: EMOCINĖ SVEIKATA (nauja) ============ -->
+<section class="slide" data-sec="70" data-novo="1" data-label="Ką sako mokslas">
+  <div class="kick">Psichikos sveikatos diena · ką sako mokslas</div>
+  <h2>Kada tai priklausomybė ir ką ji daro emocinei sveikatai</h2>
+  <div class="grid3" style="margin-top:1.5vh">
+    <div class="card"><b>🩺 Ne valandos, o kontrolė</b><span>Oficiali diagnozė yra tik žaidimams (PSO, 2019): kontrolės praradimas, ekranas svarbiau už viską, tęsimas nepaisant žalos, ≥ 12 mėn. Telefonui mokslininkai sako „probleminis naudojimas“.</span></div>
+    <div class="card"><b>📊 Maždaug 1 iš 4</b><span>vaikų ir jaunuolių turi probleminio naudojimo požymių. Jiems apie 3 k. dažniau depresija, 3 k. nerimas, prastesnis miegas.</span></div>
+    <div class="card"><b>😔 Laimė ir nuotaika</b><span>Paaugliai, praleidžiantys 7+ val. per dieną, 2 k. dažniau turi depresijos ar nerimo diagnozę nei ~1 val. naudojantys.</span></div>
+    <div class="card"><b>🎯 Dėmesys ir atmintis</b><span>Vien telefonas ant stalo, net išjungtas, sumažina laisvą mąstymo „talpą“.</span></div>
+    <div class="card"><b>🗣 Kalba ir raida</b><span>Daugiau ekrano 2 m. = prastesni raidos rodikliai 3 m. Mažyliui kalbą augina pokalbis, ne ekranas.</span></div>
+    <div class="card"><b>🤝 Ryšys ir jausmai</b><span>Kai tėvų telefonas pertraukia bendravimą, vaikams dažniau pyktis, verksmas, elgesio sunkumai.</span></div>
+  </div>
+  <div class="src">PSO TLK-11 6C51 (2019) · Sohn ir kt. 2019, BMC Psychiatry (41 tyr.) <span class="grade">A</span> · Twenge &amp; Campbell 2018, Prev Med Rep <span class="grade">B</span> · Ward ir kt. 2017, JACR <span class="grade">B</span> · Madigan ir kt. 2019, JAMA Pediatr <span class="grade">B</span> · McDaniel &amp; Radesky 2018, Child Dev <span class="grade">B</span> · ⚠ ryšys, ne visada priežastis (Orben &amp; Przybylski 2019)</div>
+  <div class="n">Svarbiausia: problema ne minutės, o kas nukenčia. Miegas, nuotaika, draugai, pokalbis prie stalo. Ir tai galioja mums, suaugusiems.</div>
+  <div class="k"><h3>Papildomai</h3><ul><li>Sohn 2019: probleminis naudojimas ~23 %; depresija OR≈3, nerimas OR≈3, miegas OR≈2,6.</li><li>Kritikai: vidutinis efektas mažas, bet jautriems vaikams didelis.</li><li>PSO: iki 2 m. ekrano nerekomenduoja, 2–4 m. ≤ 1 val.</li></ul></div>
 </section>
 
 <!-- ============ 19 VAKARIENĖ ============ -->
@@ -470,6 +500,22 @@ svg.chart .lab{font-size:26px;font-weight:800}
     <div class="card"><b>❤ Patiktukai</b><span>Kiek mane mėgsta? Pažiūrėsiu dar kartą</span></div>
     <div class="card"><b>⏸ Nuobodulio nebėra</b><span>O jame gimsta idėjos ir pokalbiai</span></div>
   </div>
+</section>
+
+<!-- ============ ERAZMAS (grąžinta) ============ -->
+<section class="slide" data-sec="40" data-novo="1" data-label="Erazmas 1530">
+  <div class="grid2">
+    <div class="ph hero"><img src="assets/photos/scene-valgymas-kartu.jpg" alt=""></div>
+    <div class="col">
+      <div class="kick">1530 metai</div>
+      <h2>Pirmoji manierų knyga buvo skirta vaikams</h2>
+      <p>Erazmas Roterdamietis parašė knygelę vaikams apie elgesį prie stalo. Ji tapo bestseleriu visoje Europoje.</p>
+      <p class="step">Etiketas atsirado ne iš draudimų. Jis atsirado, kad <b>kartu būti būtų malonu ir saugu.</b></p>
+    </div>
+  </div>
+  <div class="src">Erasmus (1530), De civilitate morum puerilium · Elias, N. (1939), Civilizacijos procesas</div>
+  <div class="n">Prieš 500 metų manieros prie stalo buvo naujiena. Dabar mūsų eilė parašyti telefonų manieras.</div>
+  <div class="k"><h3>Papildomai</h3><ul><li>Sociologas N. Elias aprašė, kaip per šimtmečius tai, kas buvo normalu, tapo gėdinga.</li><li>Tas pats gali nutikti telefonams prie stalo.</li></ul></div>
 </section>
 
 <!-- ============ 21 MANIEROS ============ -->
@@ -780,6 +826,8 @@ svg.chart .lab{font-size:26px;font-weight:800}
 var $=function(s,r){return (r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
 var slides=$$('.slide'),cur=0,stepI=0,typed='';
+(function(){var v=0;slides.forEach(function(x){if(!x.dataset.novo){v++;x.dataset.vo=v}})})();
+function voN(){return slides[cur].dataset.vo||''}
 /* ---------- kambarys ---------- */
 var q=new URLSearchParams(location.search);
 function newRoom(){var a='ABCDEFGHJKLMNPRSTUVZ',s='';for(var i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
@@ -877,14 +925,14 @@ $('#rbtn').onclick=askReset;
 /* ---------- 📘 mentoriaus skydelis (M) ---------- */
 var VOS={};fetch('vo-scripts.json').then(function(r){return r.json()}).then(function(j){VOS=j}).catch(function(){});
 var MAT='<h3 style="margin-top:1.4vh">📎 Papildoma medžiaga</h3><ul><li>Medžiaga tėvams (QR): '+MED.replace(/^https?:\/\//,'')+'</li><li>Common Sense Media: programėlių amžius ir „ką tėvams reikia žinoti" (commonsensemedia.org)</li><li>Haidt\'o 4 normos: anxiousgeneration.com</li><li>A4 šeimos susitarimas: krisvas333.github.io/neuron-ar/te/vaikams/</li><li>Tėvų linija 8 800 900 12 · Vaikų linija 116 111</li><li>Šaltiniai: priedo skaidrė (Šaltiniai), įrodymų lygiai A/B/C</li></ul>';
-function mentor(){var s=slides[cur],n=$('.n',s),k=$('.k',s),v=VOS[String(cur+1)];
+function mentor(){var s=slides[cur],n=$('.n',s),k=$('.k',s),v=VOS[voN()];
   $('#kpanel').innerHTML='<h3>📘 Mentoriui · '+(cur+1)+'. '+(s.dataset.label||'')+'</h3>'+(v?'<p><b>Pagrindinė mintis:</b> '+v+'</p>':'')+(n?'<p><b>Ką sakyti / daryti:</b> '+n.innerHTML+'</p>':'')+(k?k.innerHTML:'')+MAT;
   var e=$('#kpanel');e.dataset.m=e.style.display==='block'&&e.dataset.m==='1'?'0':'1';e.style.display=e.dataset.m==='1'?'block':'none'}
 /* ---------- 🔊 Kris'o balsas (V) ---------- */
 var au=new Audio();au.preload='none';var auSlide=-1;
-function playVO(){if(auSlide===cur&&!au.paused){au.pause();return}auSlide=cur;au.src='assets/vo/'+String(cur+1).padStart(2,'0')+'.mp3';au.play().then(function(){$('#vbtn').textContent='⏸'}).catch(function(){$('#vbtn').textContent='🔇'})}
+function playVO(){if(auSlide===cur&&!au.paused){au.pause();return}auSlide=cur;if(!voN()){$('#vbtn').textContent='🔇';return}au.src='assets/vo/'+voN().padStart(2,'0')+'.mp3';au.play().then(function(){$('#vbtn').textContent='⏸'}).catch(function(){$('#vbtn').textContent='🔇'})}
 au.onended=au.onpause=function(){$('#vbtn').textContent='🔊'};
-$('#vbtn').onclick=playVO;$('#mbtn').onclick=mentor;
+$('#vbtn').onclick=playVO;$('#nprev').onclick=function(e){e.stopPropagation();prev()};$('#nnext').onclick=function(e){e.stopPropagation();next()};document.querySelectorAll('.ck').forEach(function(b){b.onclick=function(e){e.stopPropagation();b.classList.toggle('on');var n=document.querySelectorAll('.ck.on').length;document.getElementById('ckn').textContent=n?n+'/12':''}});$('#mbtn').onclick=mentor;
 /* ---------- klavišai ---------- */
 var xAt=0;
 document.addEventListener('keydown',function(e){
