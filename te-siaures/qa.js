@@ -25,25 +25,25 @@ function watch(page,errs){page.on('console',m=>{if(m.type()==='error'){const t=m
   await deck.setViewport({width:1920,height:1080});
   await deck.goto(BASE+'index.html?room='+ROOM,{waitUntil:'networkidle2'});
   ok('deck užsikrauna',await deck.evaluate(()=>!!window.TEDECK));
-  const n=await deck.evaluate(()=>TEDECK.n);ok('skaidrių 35',n===35,'yra '+n);
+  const n=await deck.evaluate(()=>TEDECK.n);ok('skaidrių 41',n===41,'yra '+n);
   ok('deck prisijungia prie Realtime',await until(()=>deck.evaluate(()=>document.querySelector('#conn').className==='live')));
   ok('QR nupieštas',await deck.evaluate(()=>!!document.querySelector('.slide.on .qr img, .slide.on .qr canvas')));
   /* visos skaidrės: telpa, nėra em dash */
-  const over=[],dash=[];let total=0;
+  const over=[],dash=[];let total=0,qaSec=0;
   for(let i=0;i<n;i++){
     await deck.evaluate(i=>TEDECK.show(i),i);await sleep(120);
     await deck.evaluate(()=>{document.querySelectorAll('.slide.on .step').forEach(e=>e.classList.add('show'))});
     const r=await deck.evaluate(()=>{const s=document.querySelector('.slide.on');const sec=+s.dataset.sec||0;
       const vis=[...s.children].filter(c=>!c.classList.contains('n')&&!c.classList.contains('k'));
       const bottom=Math.max(...vis.map(c=>c.getBoundingClientRect().bottom));const right=Math.max(...vis.map(c=>c.getBoundingClientRect().right));
-      const txt=vis.map(c=>c.innerText).join(' ');return {sec,label:s.dataset.label,bottom,right,dash:/—/.test(txt),app:s.dataset.appendix==='1'}});
+      const txt=vis.map(c=>c.innerText).join(' ');return {sec,label:s.dataset.label,bottom,right,dash:/—/.test(txt),app:s.dataset.appendix==='1',opt:s.dataset.optional==='1',qa:s.dataset.qa==='1'}});
     if(!r.app&&(r.bottom>1080+2||r.right>1920+2))over.push((i+1)+' '+r.label+' '+Math.round(r.bottom));
-    if(r.dash)dash.push((i+1)+' '+r.label);total+=r.sec;
+    if(r.dash)dash.push((i+1)+' '+r.label);if(r.qa)qaSec+=r.sec;else if(!r.opt)total+=r.sec;
     if(SHOTS)await deck.screenshot({path:path.join(shotDir,'s'+String(i+1).padStart(2,'0')+'.png')});
   }
   ok('visos skaidrės telpa 1920×1080',over.length===0,over.join(' | '));
   ok('skaidrėse nėra em dash',dash.length===0,dash.join(' | '));
-  const talk=total-600;ok('kalba 28–36 min. + 10 min. klausimų (planas '+Math.round(talk/60)+' min.)',talk>=28*60&&talk<=36*60);
+  ok('kalba ≤ 34 min. + klausimai, viso ≤ 43 min. (kalba '+Math.round(total/60)+' + klausimai '+Math.round(qaSec/60)+')',total<=34*60&&total+qaSec<=43*60);
   /* ---- telefonai ---- */
   const phones=[];const pErr=[];
   for(let i=0;i<PHONES;i++){const p=await browser.newPage();watch(p,pErr);await p.setViewport({width:390,height:844,isMobile:true});phones.push(p)}
@@ -62,6 +62,17 @@ function watch(page,errs){page.on('console',m=>{if(m.type()==='error'){const t=m
   ok('telefonas gavo teksto lauką',await until(()=>phones[0].evaluate(()=>!!document.querySelector('#tx'))));
   await phones[0].evaluate(()=>{document.querySelector('#tx').value='Telefonas į namelį';document.querySelector('#sendT').click()});
   ok('žodis ekrane',await until(()=>deck.evaluate(()=>/namelį/.test(document.querySelector('.slide.on .words').innerText)),12000));
+  /* V2: problema + papildomas sakinys */
+  await deck.evaluate(i=>TEDECK.show(i),await idx('p9'));
+  ok('telefonas gavo „kur kliūva"',await until(()=>phones[1].evaluate(()=>document.querySelectorAll('button.o').length===5)));
+  await phones[1].evaluate(()=>document.querySelectorAll('button.o')[3].click());
+  ok('po pasirinkimo klausia „viena problema"',await until(()=>phones[1].evaluate(()=>/Viena problema/.test(document.body.innerText)&&!!document.querySelector('#tx'))));
+  await sleep(6000);
+  ok('papildomas klausimas neišnyksta po ekrano pulso',await phones[1].evaluate(()=>!!document.querySelector('#tx')));
+  ok('dalinimasis dar nerodomas',await phones[1].evaluate(()=>getComputedStyle(document.querySelector('#share')).display==='none'));
+  await phones[1].evaluate(()=>{document.querySelector('#tx').value='Sporto salėje visi filmuoja save';document.querySelector('#sendT').click()});
+  ok('problemos sakinys ekrane',await until(()=>deck.evaluate(()=>/filmuoja/.test(document.querySelector('.slide.on .pq2').innerText)),12000));
+  ok('pasirinkimų stulpeliai problemoje',await until(()=>deck.evaluate(()=>document.querySelector('.slide.on .cnt').textContent==='1'),10000));
   /* žvaigždutės */
   await deck.evaluate(i=>TEDECK.show(i),await idx('p8'));
   ok('telefonai gavo įvertinimą',await until(async()=>(await Promise.all(phones.slice(0,5).map(p=>p.evaluate(()=>document.querySelectorAll('.stars button').length===5)))).every(Boolean)));
@@ -75,7 +86,7 @@ function watch(page,errs){page.on('console',m=>{if(m.type()==='error'){const t=m
   /* ---- pultas ---- */
   const pult=await browser.newPage();const uErr=[];watch(pult,uErr);await pult.setViewport({width:390,height:844,isMobile:true});
   await pult.goto(BASE+'pultas.html?k='+ROOM,{waitUntil:'networkidle2'});
-  ok('pultas gauna ekrano būseną',await until(()=>pult.evaluate(()=>/\d+\/35/.test(document.querySelector('#lab').textContent)),15000));
+  ok('pultas gauna ekrano būseną',await until(()=>pult.evaluate(()=>/\d+\/41/.test(document.querySelector('#lab').textContent)),15000));
   const before=await deck.evaluate(()=>TEDECK.cur());await pult.click('#nx');
   ok('pultas TOLIAU perjungia skaidrę',await until(async()=>(await deck.evaluate(()=>TEDECK.cur()))===before+1,8000));
   /* ---- medžiaga ---- */

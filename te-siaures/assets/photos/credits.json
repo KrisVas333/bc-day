@@ -110,5 +110,53 @@
   "page": "https://commons.wikimedia.org/wiki/File:Schwerin_and_Freudenberg_family_at_the_dinner_table_circa_1920.jpg",
   "author": "Hans Bernhard Schwerin",
   "license": "Public domain"
+ },
+ {
+  "file": "assets/photos/scene-t-lego.jpg",
+  "scene": "t-lego",
+  "title": "File:Lego Mindstorms EV3 Robot.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Lego_Mindstorms_EV3_Robot.jpg",
+  "author": "Javier Leiva",
+  "license": "CC BY-SA 4.0"
+ },
+ {
+  "file": "assets/photos/scene-t-humanoidas.jpg",
+  "scene": "t-humanoidas",
+  "title": "File:Unitree G1.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Unitree_G1.jpg",
+  "author": "Sayanesy",
+  "license": "CC0"
+ },
+ {
+  "file": "assets/photos/scene-t-vr.jpg",
+  "scene": "t-vr",
+  "title": "File:Visitor using a Meta Quest 3 VR headset at IPP Greifswald 2025.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Visitor_using_a_Meta_Quest_3_VR_headset_at_IPP_Greifswald_2025.jpg",
+  "author": "Siarhei Besarab",
+  "license": "CC BY-SA 4.0"
+ },
+ {
+  "file": "assets/photos/scene-t-neuro.jpg",
+  "scene": "t-neuro",
+  "title": "File:Neurosky Mindplay (7973437584).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Neurosky_Mindplay_(7973437584).jpg",
+  "author": "Digital Game Museum",
+  "license": "CC BY 2.0"
+ },
+ {
+  "file": "assets/photos/scene-t-ai.jpg",
+  "scene": "t-ai",
+  "title": "File:Artificial Neural Network with Chip.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Artificial_Neural_Network_with_Chip.jpg",
+  "author": "mikemacmarketing / photo on flickr",
+  "license": "CC BY 2.0"
+ },
+ {
+  "file": "assets/photos/scene-t-seima-knyga.jpg",
+  "scene": "t-seima-knyga",
+  "title": "File:Jacob de Gheyn (II) - Woman and Child looking at a Picture Book - WGA08699.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Jacob_de_Gheyn_(II)_-_Woman_and_Child_looking_at_a_Picture_Book_-_WGA08699.jpg",
+  "author": "Jacob de Gheyn II",
+  "license": "Public domain"
  }
 ]

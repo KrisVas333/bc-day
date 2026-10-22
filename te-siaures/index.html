@@ -131,64 +131,130 @@ svg.chart .lab{font-size:26px;font-weight:800}
 .bib li{font-size:clamp(12px,.92vw,16px);line-height:1.35;margin:0 0 .5vh 1.4em;max-width:none}
 .bib a{color:var(--ink)}
 .cols2{columns:2;column-gap:3vw}
+/* ---- V2 ---- */
+.hb{display:flex;flex-direction:column;gap:1.3vh;width:100%}
+.hb>div{display:grid;grid-template-columns:minmax(10ch,26%) 1fr 9ch;gap:1vw;align-items:center;font-size:clamp(16px,1.55vw,28px);font-weight:600}
+.hb i{display:block;height:4.6vh;background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;position:relative}
+.hb i:after{content:"";position:absolute;inset:0;width:0;background:var(--red);transition:width 1.6s cubic-bezier(.2,.8,.2,1)}
+.slide.on .hb i:after{width:var(--w)}
+.slide.on .hb>div:nth-child(2) i:after{transition-delay:.25s}.slide.on .hb>div:nth-child(3) i:after{transition-delay:.5s}.slide.on .hb>div:nth-child(4) i:after{transition-delay:.75s}
+.hb .ink i:after{background:var(--ink)}
+.hb b{font-family:"JetBrains Mono",monospace;text-align:right;color:var(--red)}
+.ages{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4vw}
+.age{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);padding:2vh 1.2vw;display:flex;flex-direction:column;gap:1vh}
+.age .badge{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:clamp(34px,3.6vw,64px);color:var(--red);line-height:1}
+.age h3{font-size:clamp(20px,1.8vw,32px)}
+.age p,.age li{font-size:clamp(14px,1.15vw,20px);line-height:1.35;color:var(--ink)}
+.age ul{margin-left:1.1em}
+.age .w{color:var(--mut);font-size:clamp(13px,1vw,18px)}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:1vw}
+.tool{position:relative;height:20vh;border-radius:var(--r);overflow:hidden;background:var(--bg2);border:1px solid var(--line)}
+.tool img{width:100%;height:100%;object-fit:cover}
+.tool i{position:absolute;left:0;right:0;bottom:0;padding:.7vh .7vw;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font-style:normal;font-weight:700;font-size:clamp(13px,1.1vw,20px)}
+.tool .ico{display:flex;align-items:center;justify-content:center;height:100%;font-size:clamp(50px,6vw,110px)}
+.study{display:grid;grid-template-columns:auto 1fr;gap:1.4vw;align-items:center;border-bottom:1px solid var(--line);padding:1.6vh 0}
+.study .num{font-size:clamp(46px,5.4vw,96px)}
+.study p{font-size:clamp(17px,1.5vw,27px)}
+.study .s{font-size:clamp(12px,.95vw,16px);color:var(--mut);display:block;margin-top:.4vh}
+.signs{display:grid;grid-template-columns:repeat(5,1fr);gap:1vw}
+.signs div{background:var(--bg2);border:1px solid var(--line);border-top:5px solid var(--red);border-radius:var(--r);padding:2vh 1vw;font-size:clamp(16px,1.4vw,25px);font-weight:600;line-height:1.3}
+.signs b{display:block;font-family:"JetBrains Mono",monospace;color:var(--red);font-size:1.4em}
+.help{display:grid;grid-template-columns:1fr 1fr;gap:2vw}
+.help div{border:2px solid var(--red);border-radius:var(--r);padding:3vh 2vw}
+.help b{display:block;font-family:"JetBrains Mono",monospace;font-size:clamp(34px,4vw,72px);color:var(--red);line-height:1.1}
+.pq2 .words{max-height:20vh}
 </style>
 </head>
 <body>
 <canvas id="net"></canvas>
 <div id="bar"></div>
 <div id="hud"><span id="conn" class="dead">● jungiamasi</span><span id="ppl">📱 0</span><span id="room">—</span><span id="clock">0:00</span><button id="hbtn" title="Pagalba (?)">?</button></div>
-<div class="foot" id="foot">Kris Vas · Technologijų etiketas</div>
+<div class="foot" id="foot">Kris Vas · Technologijų etiketas · v2</div>
 <div id="qrstrip" class="qrbox"><div class="qr" id="qrS"></div><div class="code" id="codeS"></div></div>
 
-<!-- ============ 1 PRADŽIA + prisijungimas ============ -->
-<section class="slide" data-sec="75" data-poll="p0" data-label="Prisijunkite">
-  <div class="poll">
+<!-- ============ 1 PRADŽIA: Kris + nuotrauka + prisijungimas ============ -->
+<section class="slide" data-sec="75" data-poll="p0" data-label="Pradžia">
+  <div class="grid2" style="grid-template-columns:1.1fr .9fr">
     <div class="col">
       <div class="kick">Šiaurės licėjus · Psichikos sveikatos diena</div>
-      <h1>Technologijų<br><span class="red">etiketas</span></h1>
-      <p class="big">Stalo manieros telefonams. Namuose, mokykloje, darbe ir lauke.</p>
-      <p class="mut">Kris Vas · 2026-10-22</p>
+      <h1>Geriausias žaidimas yra <span class="red">tikras gyvenimas.</span></h1>
+      <p class="big">Technologijų etiketas: stalo manieros telefonams.</p>
       <div class="pq"></div>
     </div>
-    <div class="qrbox"><div class="qr"></div><div class="code"></div><div class="url"></div><p class="mut" style="font-size:16px">Nuskenuokite telefonu. Jis taps jūsų pulteliu.</p></div>
+    <div class="row" style="gap:1.4vw;align-items:flex-end">
+      <div class="ph" style="width:19vw;height:56vh"><img src="assets/img/kris-aciu.jpg" alt="Kris Vas"></div>
+      <div class="qrbox" style="width:26vh"><div class="qr"></div><div class="code"></div><div class="url"></div><p class="mut" style="font-size:15px">Nuskenuokite. Telefonas taps jūsų pulteliu.</p></div>
+    </div>
   </div>
-  <div class="n">Pasisveikink. „Prašau išsitraukti telefoną. Taip, šiandien vienintelį kartą pats to prašau." Kol jungiasi, paklausk: kas jūs šiandien? Laukti, kol 📱 skaičius viršuje sustos. 90 s.</div>
-  <div class="k"><h3>Kodėl pradedam nuo telefono</h3><ul><li>Paradoksas sąmoningas: telefonas kaip įrankis su aiškiu tikslu. Tai ir yra etiketas.</li><li>Jei internetas neveikia: „Pakelkite rankas" vietoj balsavimo.</li></ul></div>
+  <div class="n">„Prašau išsitraukti telefoną. Šiandien vienintelį kartą pats to prašau: jis bus jūsų balsas." Kol jungiasi: kas jūs šiandien? Lauk, kol 📱 skaičius sustos. 75 s.</div>
+  <div class="k"><h3>Jei nėra interneto</h3><ul><li>Klausimus užduok balsu: „Pakelkite rankas".</li><li>Telefonas čia yra įrankis su aiškiu tikslu. Tai ir yra etiketas.</li></ul></div>
 </section>
 
-<!-- ============ 2 KABLIUKAS ============ -->
-<section class="slide" data-sec="60" data-label="Kabliukas">
+<!-- ============ 2 KAS AŠ ============ -->
+<section class="slide" data-sec="80" data-label="Kas aš">
+  <div class="grid2" style="grid-template-columns:.8fr 1.2fr;align-items:start">
+    <div class="col">
+      <div class="kick">Kas aš</div>
+      <h2>Kris Vas</h2>
+      <p style="font-size:clamp(17px,1.45vw,26px)"><b>13 metų kuriu būrelius vaikams.</b> Robotikos Akademijos ir ExoClass bendraįkūrėjas. Kuriu pamokas, žaidimus, testus ir įrankius tėvams.</p>
+      <p style="font-size:clamp(17px,1.45vw,26px)">Kasdien matau, kaip vaikai kuria su technologijomis. Ir kaip technologijos kartais kuria juos.</p>
+      <p class="disc">Atvirai: būreliai yra mano darbas. Šiandien nieko neparduodu. Visi duomenys čia apie bet kokius būrelius ir šeimas, ne apie mūsų.</p>
+    </div>
+    <div class="col">
+      <div class="kick">Su kuo dirbu</div>
+      <div class="tools">
+        <div class="tool"><img src="assets/photos/scene-t-lego.jpg" alt=""><i>LEGO Education robotai</i></div>
+        <div class="tool"><div class="ico">🐢</div><i>Robotai 3–4 metų vaikams</i></div>
+        <div class="tool"><img src="assets/photos/scene-t-humanoidas.jpg" alt=""><i>Humanoidai robotai</i></div>
+        <div class="tool"><img src="assets/photos/scene-t-vr.jpg" alt=""><i>VR ir XR</i></div>
+        <div class="tool"><img src="assets/photos/scene-t-ai.jpg" alt=""><i>DI įrankiai</i></div>
+        <div class="tool"><img src="assets/photos/scene-t-neuro.jpg" alt=""><i>Neurotechnologijos</i></div>
+      </div>
+      <p class="step big">Todėl ir kalbu: <b class="red">technologijas myliu. Bet joms reikia manierų.</b></p>
+    </div>
+  </div>
+  <div class="n">80 s. „Esu ne prieš technologijas. Esu tas, kuris jas atneša vaikams. Todėl matau ir kitą pusę." Jei nori: tavo disleksijos istorija viena eilute. Niekada „kaip tėvas".</div>
+</section>
+
+<!-- ============ 3 AMŽIUS ============ -->
+<section class="slide" data-sec="45" data-poll="pa" data-label="Vaikų amžius">
+  <div class="poll"><div class="col"><div class="kick">Klausimas 1</div><h2 class="pqh"></h2><div class="pq"></div></div>
+  <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
+  <div class="n">Pagal atsakymą žinosi, kurią amžiaus kortelę (22 skaidrė) akcentuoti.</div>
+</section>
+
+<!-- ============ 4 KABLIUKAS ============ -->
+<section class="slide" data-sec="45" data-label="Kabliukas">
   <div class="quote">Šiandien, kol kalbėsiu, kažkas išsitrauks telefoną.</div>
   <p class="big step">Aš nežinosiu: fotografuoji? Užsirašai? Ar jau esi kitur?</p>
   <p class="big step red"><b>Tada jaučiuosi, kad nesu svarbus.</b></p>
-  <div class="n">Lėtai. Pauzė po pirmos eilutės. „Man skauda labiausiai per pranešimus. Nenoriu spėlioti. O jūs?" → pereik prie klausimo.</div>
+  <div class="n">Lėtai. „Ir aš pats taip darau. Šiandien kalbu ir sau."</div>
 </section>
 
-<!-- ============ 3 KLAUSIMAS 1 ============ -->
-<section class="slide" data-sec="75" data-poll="p1" data-label="Ką jauti?">
-  <div class="poll"><div class="col"><div class="kick">Klausimas 1</div><h2 class="pqh"></h2><div class="pq"></div></div>
+<!-- ============ 5 KLAUSIMAS ============ -->
+<section class="slide" data-sec="60" data-poll="p1" data-label="Ką jauti?">
+  <div class="poll"><div class="col"><div class="kick">Klausimas 2</div><h2 class="pqh"></h2><div class="pq"></div></div>
   <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
-  <div class="n">Perskaityk atsakymus garsiai. Jei daug „priklauso, kam naudoja": „Būtent. Problema ne telefone. Problema, kad aš nežinau, kam."</div>
+  <div class="n">Jei daug „priklauso, kam naudoja": „Būtent. Problema ne telefone. Problema, kad aš nežinau, kam."</div>
 </section>
 
-<!-- ============ 4 KAS AŠ ============ -->
-<section class="slide" data-sec="60" data-label="Kas aš">
-  <div class="grid2">
-    <div class="ph hero"><img src="assets/img/kris-portretas.jpg" alt="Kris Vas"></div>
-    <div class="col">
-      <div class="kick">Kodėl kalbu aš</div>
-      <h2>Kris Vas</h2>
-      <p>13 metų kuriu būrelius vaikams. Tikiu knygomis, tikromis patirtimis, galerijomis, muziejais, knygynais ir bibliotekomis.</p>
-      <p class="red"><b>Ne mokslininkas. Žmogus, kuris kasdien mato šią problemą ir nori ją spręsti.</b></p>
-      <p class="disc">Atvirai: esu Robotikos Akademijos bendraįkūrėjas. Mūsų būreliuose telefonų nėra. Šiandien kalbu ne apie būrelius, o apie mus visus.</p>
-    </div>
+<!-- ============ 6 TAI JAU VEIKIA ============ -->
+<section class="slide" data-sec="80" data-label="Tai jau veikia">
+  <div class="kick">Pradėkim nuo gerų žinių</div>
+  <h2>Tai jau veikia</h2>
+  <div class="grid3">
+    <div class="stat"><div class="num" data-count="3" data-of="4">0</div><p>🇳🇱 Nyderlandų mokyklų po telefonų taisyklės klasėse sako: vaikai geriau susikaupia. Du trečdaliai: geresnis klimatas. <span class="grade">B</span></p></div>
+    <div class="stat"><div class="num" data-count="100000" data-sep="1" style="font-size:clamp(44px,5.2vw,96px);white-space:nowrap">0</div><p>🇬🇧 tėvų per pusmetį pasirašė susitarimą: išmanusis tik nuo ~14 m. Kartu su kitais klasės tėvais. <span class="grade">B</span></p></div>
+    <div class="stat"><div class="num">4</div><p>Haidt'o normos: išmanusis ne anksčiau ~14 m. · socialiniai tinklai nuo 16 · mokykla be telefonų · daugiau laisvo žaidimo <span class="grade">B</span></p></div>
   </div>
-  <div class="n">Trumpai, 60 s. Interesų konfliktą pasakyk garsiai, ne tik ekrane. Niekada nesakyk „kaip tėvas".</div>
+  <p class="big step">Raktas: <b>ne vienas tėvas prieš visą klasę, o kelios šeimos kartu.</b></p>
+  <div class="src">Nyderlandų vyriausybės užsakytas tyrimas, 317 mokyklų, 2025 (mokyklų vertinimai) · Smartphone Free Childhood (organizacijos duomenys) · Haidt 2024</div>
+  <div class="n">„Draudimas veikia geriausiai, kai jį palaiko visi. Nyderlandai: ne įstatymas, o susitarimas." Smartphone Free Childhood: susitarimas su kitais klasės tėvais, kad vaikas nebūtų vienintelis be telefono.</div>
 </section>
 
-<!-- ============ 5 KUR BEPAŽIŪRĖTUM ============ -->
-<section class="slide" data-sec="90" data-label="Kur bepažiūrėtum">
-  <div class="kick">Kur bepažiūrėtum</div>
+<!-- ============ 7 KUR BEPAŽIŪRĖTUM ============ -->
+<section class="slide" data-sec="50" data-label="Kur bepažiūrėtum">
+  <div class="kick">Bet kur bepažiūrėtum</div>
   <div class="wall">
     <div class="ph wide"><img src="assets/photos/scene-vaikai-telefonai.jpg" alt=""><i>Kartu prie stalo. Kiekvienas atskirai.</i></div>
     <div class="ph"><img src="assets/photos/scene-restoranas.jpg" alt=""><i>Restoranas</i></div>
@@ -198,50 +264,47 @@ svg.chart .lab{font-size:26px;font-weight:800}
     <div class="ph"><img src="assets/photos/scene-gatve.jpg" alt=""><i>Gatvė</i></div>
     <div class="ph"><img src="assets/photos/scene-sporto-sale.jpg" alt=""><i>Sporto salė</i></div>
   </div>
-  <div class="n">Pasakok scenas iš savo patirties: kiemas, kur vaikai nebežaidžia kartu; pertrauka mokykloje be telefonų taisyklės: niekas nekalba, nežaidžia, nesimoko vieni iš kitų; restoranas: vaikui ausinės ir planšetė su YouTube Shorts, jokio stalo žaidimo, jokios įdomios temos; eilė, kur vietoj pokalbio su nepažįstamu išsitraukiam telefoną. 100 s.</div>
-  <div class="k"><h3>Papildomai</h3><ul><li>Radesky ir kt. 2014 (Pediatrics): greito maisto restoranuose 40 iš 55 suaugusiųjų valgant naudojo įrenginius. Stebėjimas, 1 miestas. <span class="grade">B-</span></li></ul></div>
+  <div class="n">Be kaltinimų: „Visi taip darom, aš irgi." Scenos: kiemas be žaidimų; pertrauka be telefonų taisyklės; restoranas su planšete ir ausinėmis; eilė, kur vietoj pokalbio išsitraukiam telefoną; panelinė diskusija, kur pranešėjas tikrina žinutes.</div>
 </section>
 
-<!-- ============ 6 PIRMIAUSIA SUAUGĘ ============ -->
-<section class="slide" data-sec="80" data-label="Pirmiausia suaugę">
+<!-- ============ 8 PIRMIAUSIA SUAUGĘ ============ -->
+<section class="slide" data-sec="55" data-label="Pirmiausia suaugę">
   <div class="kick">Ne tik vaikai. Pirmiausia mes.</div>
   <div class="grid3">
-    <div class="stat"><div class="num" data-count="46">0<small>%</small></div><p>paauglių sako: kai jie kalba, tėtis ar mama bent kartais būna užsiėmę telefonu <span class="grade">B</span></p></div>
+    <div class="stat"><div class="num" data-count="46">0<small>%</small></div><p>paauglių: kai jie kalba, tėtis ar mama bent kartais užsiėmę telefonu <span class="grade">B</span></p></div>
     <div class="stat"><div class="num" data-count="47">0<small>%</small></div><p>tėvų patys sako: telefone praleidžia per daug laiko <span class="grade">B</span></p></div>
-    <div class="stat"><div class="num" data-count="40" data-of="55">0</div><p>iš 55 suaugusiųjų restorane valgydami naudojo įrenginį <span class="grade">B-</span></p></div>
+    <div class="stat"><div class="num" data-count="40" data-of="55">0</div><p>suaugusiųjų restorane valgydami naudojo įrenginį <span class="grade">B-</span></p></div>
   </div>
-  <p class="big step">Darbe nuobodu? Telefonas. Kažkas išsitraukė? <b>Išsitraukiam ir mes.</b> Vaikai kopijuoja ne žodžius, o mus.</p>
+  <p class="big step">Vaikai kopijuoja ne žodžius, o mus.</p>
   <div class="src">Pew Research Center 2024 (JAV, 1 453 paauglių ir tėvų poros) · Radesky ir kt. 2014, Pediatrics</div>
-  <div class="n">„Kai matom blogą pavyzdį, kartojam. Ir tai keliauja per visas kartas." Pasakyk ir apie panelines diskusijas: aukšto lygio žmonės diskusijos viduryje išsitraukia telefoną. Neturim standarto, kad telefonas turi savo vietą ir laiką.</div>
-  <div class="k"><h3>Atsargiai</h3><ul><li>Pew duomenys: JAV, savęs vertinimas, ne priežastis.</li><li>„Veidrodiniai neuronai" kaip paaiškinimas yra populiarus, bet moksle ginčytinas. Sakyk „kopijuojam", ne „veidrodiniai neuronai įrodo".</li><li>Lietuvos tėvų elgesio su telefonu tyrimo neradom. Sakyk tai atvirai, jei klaus.</li></ul></div>
+  <div class="k"><h3>Atsargiai</h3><ul><li>JAV, savęs vertinimas, ne priežastis.</li><li>Sakyk „kopijuojam", ne „veidrodiniai neuronai įrodo".</li></ul></div>
 </section>
 
-<!-- ============ 7 2010 ============ -->
-<section class="slide" data-sec="65" data-label="2010">
+<!-- ============ 9 2010 ============ -->
+<section class="slide" data-sec="45" data-label="2010">
   <div class="kick">Kas nutiko per 15 metų</div>
   <h2>2010 metai viską pakeitė</h2>
   <div class="tl">
     <div><b>2010 IV</b><p>iPad. Planšetė vaikų rankose.</p></div>
-    <div><b>2010 VI</b><p>iPhone 4 su priekine kamera. Asmenukių era.</p></div>
+    <div><b>2010 VI</b><p>iPhone 4 su priekine kamera.</p></div>
     <div><b>2010 X</b><p>Instagram. Gyvenimas kaip vitrina.</p></div>
-    <div><b>2010–2015</b><p>„Didysis perjungimas": vaikystė persikelia į telefoną.</p></div>
+    <div><b>2010–2015</b><p>Vaikystė persikelia į telefoną.</p></div>
   </div>
-  <div class="src">Haidt, J. (2024). The Anxious Generation, 1 dalis.</div>
-  <div class="n">Haidt'o terminas: „The Great Rewiring". Iki 2010 telefonas buvo skambinti. Po 2015 dauguma paauglių turi išmanųjį su socialiniais tinklais ir priekine kamera.</div>
+  <div class="src">Haidt, J. (2024). The Anxious Generation, 1 dalis („The Great Rewiring").</div>
 </section>
 
-<!-- ============ 8 VAIKYSTĖ ============ -->
-<section class="slide" data-sec="65" data-label="Dvi vaikystės">
+<!-- ============ 10 DVI VAIKYSTĖS (pasirenkama) ============ -->
+<section class="slide" data-sec="40" data-optional="1" data-label="Dvi vaikystės">
   <div class="split">
     <div><img src="assets/photos/scene-zaidimas-lauke.jpg" alt=""><span class="lbl">Žaidimais grįsta vaikystė</span></div>
     <div class="ph gray" style="border-radius:0"><img src="assets/photos/scene-vaikai-telefonai.jpg" alt=""><span class="lbl r">Telefonu grįsta vaikystė</span></div>
   </div>
-  <div class="src">Haidt, J. (2024). The Anxious Generation: „play-based childhood → phone-based childhood".</div>
-  <div class="n">Haidt'o mintis: per daug saugom realiame pasaulyje (nevaliojam vieni į kiemą), per mažai saugom virtualiame. Kiemas, laisvas žaidimas, rizika ir draugai pakeisti ekranu.</div>
+  <div class="src">Haidt, J. (2024): „play-based childhood → phone-based childhood".</div>
+  <div class="n">Pasirenkama. Haidt: realiame pasaulyje saugom per daug, virtualiame per mažai.</div>
 </section>
 
-<!-- ============ 9 GRAFIKAS ============ -->
-<section class="slide" data-sec="70" data-label="Depresija">
+<!-- ============ 11 GRAFIKAS ============ -->
+<section class="slide" data-sec="55" data-label="Depresija">
   <div class="kick">JAV paaugliai 12–17 m., sunkus depresijos epizodas per metus</div>
   <svg class="chart" viewBox="0 0 1200 520">
     <line x1="80" y1="460" x2="1160" y2="460" stroke="#ccc" stroke-width="2"/>
@@ -258,115 +321,187 @@ svg.chart .lab{font-size:26px;font-weight:800}
     <text class="lab" x="90" y="330" fill="#D90429">mergaitės ~12 %</text>
     <text class="lab" x="90" y="435" fill="#0A0A0A">berniukai ~4,5 %</text>
   </svg>
-  <div class="src">2021: NIMH / NSDUH (A). 2011 ir tarpiniai taškai: apytiksliai pagal Haidt (2024) grafiką, ne tikslūs metiniai duomenys.</div>
-  <div class="n">Pasakyk: „Per 10 metų mergaičių beveik 2,5 karto daugiau." Linija tarp taškų iliustracinė. Jei klaus: tai JAV duomenys. Lietuvoje panašaus ilgalaikio grafiko neradau.</div>
-  <div class="k"><h3>Faktai</h3><ul><li>NIMH (NSDUH 2021): 29,2 % mergaičių, 11,5 % berniukų 12–17 m. <span class="grade A">A</span></li><li>2011 m. ~12 % ir ~4,5 %: pagal Haidt (2024) grafiką. <span class="grade">B</span> ⚠️ tikslinti</li></ul></div>
+  <div class="src">2021: NIMH / NSDUH (A). 2011 ir tarpiniai taškai apytiksliai pagal Haidt (2024) grafiką.</div>
+  <div class="n">„Per 10 metų mergaičių beveik 2,5 karto daugiau." Tai JAV. Lietuvos ilgalaikio grafiko neradau, sakyk atvirai.</div>
+  <div class="k"><h3>Haidt'o 4 žalos</h3><ul><li>Vienatvė: mažiau laiko akis į akį</li><li>Miegas: telefonas lovoje</li><li>Dėmesys: pranešimai skaido mintis</li><li>Priklausomybė: programėlės kurtos grąžinti mus atgal</li></ul></div>
 </section>
 
-<!-- ============ 10 SKAIČIAI ============ -->
-<section class="slide" data-sec="70" data-label="Skaičiai">
-  <div class="kick">15 metų skaičiais</div>
-  <div class="grid3">
-    <div class="stat"><div class="num" data-count="95">0<small>%</small></div><p>JAV paauglių turi išmanųjį telefoną (2014–15 m.: 73 %) <span class="grade A">A</span></p></div>
-    <div class="stat"><div class="num" data-count="46">0<small>%</small></div><p>paauglių internete „beveik visą laiką" (2014–15 m.: 24 %) <span class="grade A">A</span></p></div>
-    <div class="stat"><div class="num" data-count="188" data-pre="+">0<small>%</small></div><p>savęs žalojimo atvejų skubios pagalbos skyriuose, mergaitės 10–14 m., 2010–2020 <span class="grade">B</span></p></div>
+<!-- ============ 12 EKRANO LAIKAS ============ -->
+<section class="slide" data-sec="55" data-label="Ekrano laikas">
+  <div class="kick">Kiek laiko vaikai praleidžia ekranuose per dieną (be pamokų)</div>
+  <h2>Ekrano laikas</h2>
+  <div class="hb">
+    <div><span>Iki 8 m.</span><i style="--w:31%"></i><b>~2,5 val.</b></div>
+    <div><span>8–12 m.</span><i style="--w:56%"></i><b>4,5+ val.</b></div>
+    <div><span>13–18 m.</span><i style="--w:81%"></i><b>6,5+ val.</b></div>
+    <div class="ink"><span>Suaugusiojo darbo diena</span><i style="--w:100%;filter:grayscale(1)"></i><b style="color:var(--ink)">8 val.</b></div>
   </div>
-  <p class="big step">Laikas su draugais gyvai: <b class="red">beveik perpus mažiau</b> per dešimtmetį.</p>
-  <div class="src">Pew Research Center 2015 ir 2024 · Haidt 2024 pagal CDC duomenis · Haidt 2024 pagal JAV laiko naudojimo tyrimą (ATUS, 15–24 m.)</div>
-  <div class="k"><h3>Atsargiai</h3><ul><li>+188 % ir „perpus mažiau su draugais" cituojami iš Haidt knygos, pirminiai CDC ir ATUS duomenys neatidaryti. <span class="grade">B</span></li><li>Visi skaičiai iš JAV.</li></ul></div>
+  <p class="step big">Paauglys ekranuose vien pramogoms praleidžia <b class="red">didžiąją darbo dienos dalį.</b></p>
+  <div class="src">Common Sense Media, tyrimai apie vaikų medijų naudojimą (JAV) · iki 8 m.: Common Sense 2025, cituota per antrinius šaltinius ⚠️</div>
+  <div class="n">Svarbu: tai vidurkiai JAV, be mokyklos ir namų darbų. „Svarbu ne tik kiek, bet ir kaip." Pereik prie programėlių.</div>
+  <div class="k"><h3>Atsargiai</h3><ul><li>Iki 8 m. skaičius paimtas iš antrinių šaltinių, originalo neatidarėm. <span class="grade C">C</span></li></ul></div>
 </section>
 
-<!-- ============ 11 4 ŽALOS ============ -->
-<section class="slide" data-sec="60" data-label="4 žalos">
-  <div class="kick">Haidt: 4 pagrindinės žalos</div>
-  <div class="grid4">
-    <div class="card"><b>01 Vienatvė</b><span>Mažiau laiko akis į akį</span></div>
-    <div class="card"><b>02 Miegas</b><span>Telefonas lovoje, miego mažiau</span></div>
-    <div class="card"><b>03 Dėmesys</b><span>Pranešimai skaido mintis</span></div>
-    <div class="card"><b>04 Priklausomybė</b><span>Programėlės kurtos grąžinti mus atgal</span></div>
+<!-- ============ 13 PROGRAMĖLĖS ============ -->
+<section class="slide" data-sec="45" data-label="Mėgstamiausios programėlės">
+  <div class="kick">Kur paaugliai praleidžia laiką (13–17 m.)</div>
+  <h2>Mėgstamiausios programėlės</h2>
+  <div class="hb">
+    <div><span>▶ YouTube</span><i style="--w:90%"></i><b>~90 %</b></div>
+    <div><span>♪ TikTok</span><i style="--w:63%"></i><b>63 %</b></div>
+    <div><span>◎ Instagram</span><i style="--w:61%"></i><b>61 %</b></div>
+    <div><span>👻 Snapchat</span><i style="--w:55%"></i><b>55 %</b></div>
   </div>
-  <div class="src">Haidt, J. (2024). The Anxious Generation, 2 dalis.</div>
-  <div class="n">Neskaityk visų, parodyk ir pasakyk vieną: „Iš šitų keturių aš labiausiai matau trečią."</div>
+  <p class="step">Jaunesni: <b>YouTube Shorts, Roblox, Minecraft, Brawl Stars.</b> Ar žinote, ką jūsų vaikas žaidžia ir su kuo kalbasi?</p>
+  <div class="src">Pew Research Center 2025, „10 facts about teens and social media" (JAV, 13–17 m.) <span class="grade A">A</span></div>
 </section>
 
-<!-- ============ 12 KRITIKA ============ -->
-<section class="slide" data-sec="50" data-label="Ką sako kritikai">
+<!-- ============ 14 COMMON SENSE MEDIA ============ -->
+<section class="slide" data-sec="90" data-label="Common Sense ratings">
+  <div class="kick">Common Sense Media: nepriklausomi vertinimai tėvams</div>
+  <h2>Nuo kokio amžiaus?</h2>
+  <div class="ages">
+    <div class="age"><div class="badge">8+</div><h3>Minecraft</h3><p>Kūrybiškas, moko planuoti ir statyti.</p><p class="w">Atsargiai: atviri serveriai ir pokalbiai su nepažįstamais.</p></div>
+    <div class="age"><div class="badge">13+</div><h3>YouTube ir Shorts</h3><p>Daug naudingo, bet „vis dar vienas" be pabaigos.</p><p class="w">Atsargiai: automatinis paleidimas, reklamos, netinkamas turinys. Mažiems: YouTube Kids.</p></div>
+    <div class="age"><div class="badge">13+</div><h3>Roblox</h3><p>Milijonai žaidimų, kuriuos kuria kiti žaidėjai.</p><p class="w">Atsargiai: pokalbiai su nepažįstamais, pirkimai už Robux. Jaunesniems tik su apribojimais ir tėvų akimis.</p></div>
+    <div class="age"><div class="badge">15+</div><h3>TikTok</h3><p>Kūryba ir humoras.</p><p class="w">Atsargiai: algoritmas, pavojingi „iššūkiai", privatumas, sunku sustoti.</p></div>
+  </div>
+  <p class="step big">Tai ne draudimas. <b>Tai amžiaus orientyras.</b> Kaip filmuose N-13.</p>
+  <div class="src">commonsensemedia.org: Minecraft, YouTube, Roblox, TikTok apžvalgos (2025–2026) · pavojai pagal tų pačių apžvalgų „ką tėvams reikia žinoti" <span class="grade">B</span></div>
+  <div class="n">Pasiūlyk: „Šį savaitgalį 15 min. pažaiskite su vaiku jo žaidimą. Paprašykite, kad jis jus išmokytų." Neįvardyk programėlių „blogomis": sakyk „kur reikia tėvų akių".</div>
+  <div class="k"><h3>Ką rasti commonsensemedia.org</h3><ul><li>Kiekvienai programėlei: amžius, „ką tėvams reikia žinoti", tėvų ir vaikų atsiliepimai.</li><li>Roblox: platforma 13+, jaunesniems „gali tikti" su įjungtais apribojimais ir tėvų dėmesiu.</li><li>Brawl Stars apžvalgos nepatikrinome, todėl skaidrėje jos nėra.</li></ul></div>
+</section>
+
+<!-- ============ 15 3 NAUJAUSI TYRIMAI ============ -->
+<section class="slide" data-sec="90" data-label="3 nauji tyrimai">
+  <div class="kick">3 naujausi tyrimai, kurie keičia klausimą</div>
+  <div class="study"><div class="num">2×</div><p><b>Svarbu ne kiek, o kaip.</b> Vaikams, kurių priklausomas telefono ar socialinių tinklų naudojimas augo, savižudiško elgesio rizika buvo ~2 kartus didesnė. Bendras ekrano laikas 10 m. amžiaus rizikos neprognozavo. <span class="grade">B</span><span class="s">Xiao ir kt. 2025, JAMA · 4 285 vaikai, JAV, 4 metai · stebėjimas, ne įrodyta priežastis</span></p></div>
+  <div class="study step"><div class="num">−7</div><p><b>Mažiems ekranas atima žodžius.</b> 3 metų vaikui kiekviena ekrano minutė ≈ 7 mažiau suaugusiojo žodžių ir 5 mažiau vaiko garsų tą dieną. <span class="grade">B</span><span class="s">Brushe ir kt. 2024, JAMA Pediatrics · 220 šeimų, Australija</span></p></div>
+  <div class="study step"><div class="num">≠</div><p><b>Vien draudimas neišsprendžia.</b> 30 JK mokyklų: griežtos telefonų taisyklės mokykloje nebuvo susijusios su geresne savijauta. Daugiau asmeninio naudojimo buvo susiję su blogesne. <span class="grade">B</span><span class="s">Goodyear ir kt. 2025, SMART Schools, Lancet Regional Health Europe · 1 227 mokiniai</span></p></div>
+  <div class="n">Pagrindinė mintis: „Ne laikmatis, o įprotis. Ne draudimas, o susitarimas namuose." Visi trys yra stebėjimai: rodo ryšį, ne priežastį.</div>
+</section>
+
+<!-- ============ 16 KNYGA VS EKRANAS ============ -->
+<section class="slide" data-sec="55" data-label="Knyga ar ekranas">
+  <div class="grid2">
+    <div class="ph hero"><img src="assets/photos/scene-t-seima-knyga.jpg" alt=""></div>
+    <div class="col">
+      <div class="kick">Mokytis iš knygos ar iš ekrano?</div>
+      <h2>Popierius laimi, <span class="red">ypač kai skaitote kartu</span></h2>
+      <p>39 tyrimai, 1 812 vaikų nuo 1 iki 8 m.: ta pati istorija ekrane suprantama prasčiau. Skaitymas kartu su suaugusiu iš popieriaus veikė geriau nei skaitmeninės knygos „priedai".</p>
+      <p class="step">Vyresniems ir suaugusiems: supratimas iš popieriaus geresnis, ypač ilgesnių tekstų ir skubant. <span class="grade A">A</span></p>
+    </div>
+  </div>
+  <div class="src">Furenes, Kucirkova ir Bus 2021, Review of Educational Research (metaanalizė) <span class="grade A">A</span> · Delgado ir kt. 2018, Educational Research Review (metaanalizė) <span class="grade A">A</span></div>
+  <div class="n">Sąžiningai: skaitmeninės knygos su istorijai pritaikytais priedais kartais buvo geresnės. Problema ne ekranas pats savaime, o blaškymas ir tai, kad skaito vienas.</div>
+</section>
+
+<!-- ============ 17 5 ŽENKLAI ============ -->
+<section class="slide" data-sec="60" data-label="5 ženklai">
+  <div class="kick">Ne laikas, o įprotis</div>
+  <h2>5 ženklai, į kuriuos verta atkreipti dėmesį</h2>
+  <div class="signs">
+    <div><b>1</b>Nori sustoti, bet negali</div>
+    <div><b>2</b>Pyksta ar nerimauja, kai negali naudotis</div>
+    <div><b>3</b>Ekranas, kad pabėgtų nuo jausmų</div>
+    <div><b>4</b>Kenčia miegas, pamokos, draugai</div>
+    <div><b>5</b>Vis daugiau, nei planavo</div>
+  </div>
+  <p class="big step">Tai ne diagnozė. Pastebėjote kelis? <b>Pasikalbėkite. Ir kreipkitės į mokyklos psichologą.</b></p>
+  <div class="src">Pagal priklausomo naudojimo klausimynus, kuriuos naudojo Xiao ir kt. 2025 (JAMA) <span class="grade">B</span></div>
+  <div class="n">Psichikos sveikatos diena: čia gera vieta padėkoti Rugilei ir priminti, kad mokykloje yra psichologė. Ženklai tinka ir suaugusiems.</div>
+</section>
+
+<!-- ============ 18 KRITIKA ============ -->
+<section class="slide" data-sec="35" data-label="Ką sako kritikai">
   <div class="kick">Sąžiningai</div>
   <h2>Ne visi mokslininkai sutinka</h2>
-  <p>Kritikai (C. Odgers, A. Orben, A. Przybylski) sako: ryšys tarp ekranų ir paauglių psichikos yra <b>silpnas ir ginčijamas</b>, o priežastis neįrodyta.</p>
-  <p class="big red step"><b>Bet etiketui nereikia įrodymų.</b> Mes nelaukiam tyrimų, kad nustotume rūgti prie stalo.</p>
-  <div class="src">Odgers, C. (2024), Nature knygos apžvalga · Orben ir Przybylski darbai · Haidt atsako afterbabel.com</div>
-  <div class="n">Mokytojų salėje tai sustiprina pasitikėjimą. 50 s. Pasakyk: „Aš nesiginčiju, ar telefonas sukelia depresiją. Aš sakau: mums reikia susitarimų, kaip elgiamės vieni su kitais."</div>
+  <p>Kritikai (C. Odgers, A. Orben, A. Przybylski): ryšys tarp ekranų ir paauglių psichikos <b>silpnas ir ginčijamas</b>, priežastis neįrodyta.</p>
+  <p class="big red step"><b>Bet etiketui įrodymų nereikia.</b> Mes nelaukiam tyrimų, kad nustotume rūgti prie stalo.</p>
+  <div class="src">Odgers, C. (2024), Nature · Orben ir Przybylski (2019), Nature Human Behaviour</div>
 </section>
 
-<!-- ============ 13 KLAUSIMAS 2 ============ -->
-<section class="slide" data-sec="70" data-poll="p2" data-label="Vakarienė">
-  <div class="poll"><div class="col"><div class="kick">Klausimas 2</div><h2 class="pqh"></h2><div class="pq"></div></div>
+<!-- ============ 19 KLAUSIMAS VAKARIENĖ ============ -->
+<section class="slide" data-sec="55" data-poll="p2" data-label="Vakarienė">
+  <div class="poll"><div class="col"><div class="kick">Klausimas 3</div><h2 class="pqh"></h2><div class="pq"></div></div>
   <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
-  <div class="n">Sąžiningai, be gėdos. Pakomentuok tik daugumą.</div>
+  <div class="n">Be gėdos. Pakomentuok tik daugumą.</div>
 </section>
 
-<!-- ============ 14 SUKURTA UŽKABINTI ============ -->
-<section class="slide" data-sec="65" data-label="Sukurta užkabinti">
+<!-- ============ 20 SUKURTA UŽKABINTI ============ -->
+<section class="slide" data-sec="45" data-label="Sukurta užkabinti">
   <div class="kick">Tai ne silpna valia. Tai dizainas.</div>
   <div class="grid3">
-    <div class="card"><b>∞ Begalinis sraigtas</b><span>Nėra pabaigos, nėra kur sustoti</span></div>
+    <div class="card"><b>∞ Begalinis srautas</b><span>Nėra pabaigos, nėra kur sustoti</span></div>
     <div class="card"><b>🔔 Pranešimai ir garsai</b><span>Kažkas kitas sprendžia, kada pažiūrėsi</span></div>
     <div class="card"><b>▶ Trumpi video</b><span>Shorts, TikTok, Reels: vienas po kito</span></div>
     <div class="card"><b>🎮 „Nemokami" žaidimai</b><span>Dėžutės, serijos, kasdieniai prizai</span></div>
     <div class="card"><b>❤ Patiktukai</b><span>Kiek mane mėgsta? Pažiūrėsiu dar kartą</span></div>
-    <div class="card"><b>⏸ Nuobodulio nebėra</b><span>O nuobodulyje gimsta idėjos ir pokalbiai</span></div>
+    <div class="card"><b>⏸ Nuobodulio nebėra</b><span>O jame gimsta idėjos ir pokalbiai</span></div>
   </div>
-  <div class="n">„Praradom nuobodulį ir pagarbą šalia esančiam žmogui." Nesakyk „priklausomybė" kaip diagnozė; sakyk „sukurta, kad grįžtume".</div>
+  <div class="n">„Todėl kaltinti vaiko valią neteisinga. Reikia susitarimų, kurie padeda valiai."</div>
 </section>
 
-<!-- ============ 15 DRAUDIMAS ============ -->
-<section class="slide" data-sec="60" data-label="Draudimas">
-  <div class="kick">Ar užtenka uždrausti?</div>
-  <h2>Draudimas vienas <span class="red">neišsprendžia</span></h2>
-  <p>JK, 30 mokyklų, 1 227 mokiniai: griežtos telefonų taisyklės mokykloje <b>nebuvo susijusios</b> su geresne savijauta ar miegu. Daugiau asmeninio naudojimo buvo susiję su blogesne.</p>
-  <p class="big step">Telefonas grįžta namo, į autobusą, į kiemą. <b>Reikia ne draudimo, o susitarimo. Ir pavyzdžio.</b></p>
-  <div class="src">Goodyear ir kt. (2025), SMART Schools, Lancet Regional Health Europe. Skerspjūvio tyrimas: ryšys, ne priežastis. <span class="grade">B</span></div>
-  <div class="n">„Joks draudimas vienas nieko neišsprendė." Bet nesakyk, kad draudimai blogi: mokykla be telefonų pertraukose yra gerai, tik to neužtenka.</div>
+<!-- ============ 21 KĄ DARYTI VIETOJ ============ -->
+<section class="slide" data-sec="80" data-label="Ką daryti vietoj">
+  <div class="kick">Sprendimai, kurie veikia</div>
+  <h2>Ką daryti vietoj ekrano</h2>
+  <div class="grid3">
+    <div class="card"><b>📚 Knygos kartu</b><span>Skaitymas su suaugusiu iš popieriaus: geresnis supratimas.</span><span class="grade A">A</span></div>
+    <div class="card"><b>🎲 Stalo žaidimai</b><span>~1 val. skaičių žaidimo per 2 sav. pagerino ikimokyklinukų skaičiavimą.</span><span class="grade">B</span></div>
+    <div class="card"><b>🤸 Būreliai</b><span>28 712 septintokų: lankantys būrelius jautėsi geriau, ypač kai ekranų mažiau nei 2 val.</span><span class="grade">B</span></div>
+    <div class="card"><b>😐 Nuobodulys</b><span>Po nuobodžios užduoties žmonės sugalvojo daugiau idėjų.</span><span class="grade C">C</span></div>
+    <div class="card"><b>🌳 Laisvas žaidimas</b><span>Kiemas, rizika, draugai be suaugusiųjų scenarijaus.</span><span class="grade">B</span></div>
+    <div class="card"><b>🍽 Vakarienė kartu</b><span>Valgymo ir miego laikas be ekranų: pediatrų rekomendacija.</span><span class="grade">B</span></div>
+  </div>
+  <div class="src">Furenes 2021 · Siegler ir Ramani 2008 · Oberle ir kt. 2020, Preventive Medicine · Mann ir Cadman 2014 · Haidt 2024 · AAP Family Media Plan</div>
+  <div class="n">Atvirai: „Būreliai yra mano darbas, bet tyrimas apie bet kokius būrelius." Plius: galerijos, muziejai, knygynai, bibliotekos. Kokybiškas šeimos laikas ir nuobodulis kaip dovana, ne bausmė.</div>
 </section>
 
-<!-- ============ 16 KLAUSIMAS 3 ============ -->
-<section class="slide" data-sec="60" data-poll="p3" data-label="Draudimas?">
-  <div class="poll"><div class="col"><div class="kick">Klausimas 3</div><h2 class="pqh"></h2><div class="pq"></div></div>
-  <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
+<!-- ============ 22 PAGAL AMŽIŲ ============ -->
+<section class="slide" data-sec="90" data-label="Pagal amžių">
+  <div class="kick">Ką daryti jūsų šeimoje</div>
+  <h2>Pagal vaiko amžių</h2>
+  <div class="ages">
+    <div class="age"><div class="badge">4–6</div><ul><li>Ekranas kartu, ne vietoj jūsų</li><li>Savo planšetės nėra</li><li>Knyga prieš miegą</li><li>Restorane: sąsiuvinis ir pieštukai</li></ul></div>
+    <div class="age"><div class="badge">7–9</div><ul><li>Vienas šeimos įrenginys bendroje erdvėje</li><li>Minecraft (8+) kartu</li><li>Pirma laikmatis, tada žaidimas</li><li>Būrelis ir kiemas</li></ul></div>
+    <div class="age"><div class="badge">10–12</div><ul><li>Išmanusis: palaukite (Haidt: ~14 m.) arba paprastas telefonas</li><li>Socialinių tinklų nėra</li><li>Susitarkite su kitais klasės tėvais</li></ul></div>
+    <div class="age"><div class="badge">13–17</div><ul><li>Telefonas miega ne miegamajame</li><li>Pranešimai išjungti, pilkas ekranas</li><li>Stebėkite 5 ženklus</li><li>Kalbėkitės, ne sekite</li></ul></div>
+  </div>
+  <div class="src">Pagal Haidt 2024 normas, AAP rekomendacijas ir Common Sense amžiaus vertinimus · rekomendacijos, ne įstatymas <span class="grade">B</span></div>
+  <div class="n">Akcentuok kortelę, kurioje daugiausia balsų iš 3 skaidrės. Paaugliai jau su telefonu: „Ne atimti, o susitarti. Ir pradėti nuo savęs."</div>
 </section>
 
-<!-- ============ 17 STALO ETIKETAS ============ -->
-<section class="slide" data-sec="60" data-label="Kodėl atsirado etiketas">
+<!-- ============ 23 STALO ETIKETAS ============ -->
+<section class="slide" data-sec="45" data-label="Kodėl atsirado etiketas">
   <div class="grid2">
     <div class="ph hero"><img src="assets/photos/scene-valgymas-kartu.jpg" alt=""></div>
     <div class="col">
       <div class="kick">1530 metai</div>
       <h2>Kodėl atsirado stalo etiketas?</h2>
       <p>Erazmas Roterdamietis parašė knygelę vaikams apie elgesį prie stalo. Ji tapo bestseleriu visoje Europoje.</p>
-      <p class="step">Etiketas atsirado ne iš draudimų. Jis atsirado, kad <b>kartu būti būtų malonu ir saugu.</b></p>
+      <p class="step">Etiketas atsirado ne iš draudimų. Jis atsirado, kad <b>kartu būti būtų malonu.</b></p>
     </div>
   </div>
   <div class="src">Erasmus (1530), De civilitate morum puerilium · Elias, N. (1939), Civilizacijos procesas</div>
-  <div class="k"><h3>Papildomai</h3><ul><li>Sociologas N. Elias aprašė, kaip per šimtmečius manieros tapo savaime suprantamos: tai, kas buvo normalu, tapo gėdinga.</li><li>Tas pats gali nutikti telefonams prie stalo.</li></ul></div>
 </section>
 
-<!-- ============ 18 MANIEROS ============ -->
-<section class="slide" data-sec="70" data-label="Stalo → technologijų">
+<!-- ============ 24 MANIEROS ============ -->
+<section class="slide" data-sec="55" data-label="Stalo → technologijų">
   <div class="kick">Tai jau mokam</div>
   <h2>Stalo etiketas → Technologijų etiketas</h2>
   <div class="manners">
-    <div>Negazuojam ir nerūgstam prie stalo</div><div class="ar">→</div><div>Nescrollinam, kai kitas kalba</div>
+    <div>Negazuojam ir nerūgstam prie stalo</div><div class="ar">→</div><div>Neslenkam ekrano, kai kitas kalba</div>
     <div class="step">Sakom „prašau" ir „ačiū"</div><div class="ar step">→</div><div class="step">Sakom: „Atsiprašau, užsirašysiu"</div>
     <div class="step">Žiūrim į akis</div><div class="ar step">→</div><div class="step">Veidas prieš ekraną</div>
     <div class="step">Esam mandagūs</div><div class="ar step">→</div><div class="step">Telefonas turi savo vietą ir laiką</div>
   </div>
-  <div class="n">Juokinga dalis: „Juk niekas prie stalo negazuoja. Niekas nedraudžia, bet niekas ir nedaro. Taip bus ir su telefonais."</div>
+  <div class="n">„Niekas nedraudžia rūgti prie stalo. Bet niekas ir nerūgsta. Taip bus ir su telefonais."</div>
 </section>
 
-<!-- ============ 19 10 TAISYKLIŲ ============ -->
-<section class="slide" data-sec="90" data-label="10 taisyklių">
-  <div class="kick">Technologijų etiketas · v1</div>
+<!-- ============ 25 10 TAISYKLIŲ ============ -->
+<section class="slide" data-sec="60" data-label="10 taisyklių">
+  <div class="kick">Technologijų etiketas</div>
   <h2>10 taisyklių</h2>
   <div class="rules">
     <div><b>01</b>Veidas prieš telefoną</div><div><b>06</b>Pirma laikmatis</div>
@@ -375,104 +510,101 @@ svg.chart .lab{font-size:26px;font-weight:800}
     <div><b>04</b>Klausk prieš fotografuodamas</div><div><b>09</b>Telefonai miega ne miegamajame</div>
     <div><b>05</b>Skambutis palauks</div><div><b>10</b>Pasakyk, kai padėjo DI</div>
   </div>
-  <div class="n">Neskaityk visų. Išsirink 3, kurias pats laikai, ir papasakok kaip. Visos su šaltiniais yra medžiagoje per QR pabaigoje.</div>
+  <div class="n">Neskaityk visų. Išsirink 3, kurias pats laikai. Visos su šaltiniais yra medžiagoje per QR.</div>
 </section>
 
-<!-- ============ 20 PATARIMAI ============ -->
-<section class="slide" data-sec="100" data-label="Patarimai">
+<!-- ============ 26 PATARIMAI ============ -->
+<section class="slide" data-sec="65" data-label="Patarimai">
   <div class="kick">Kaip pradėti šį vakarą</div>
   <div class="grid3">
     <div class="card"><b>🩶 Pilkas ekranas</b><span>Spalvos traukia. Mažuose tyrimuose −20…−50 min. per dieną.</span><span class="grade">B</span></div>
-    <div class="card"><b>🏠 Telefono namelis</b><span>Dėžutė prie durų. Kai kartu, telefonai ten.</span><span class="grade">B-</span></div>
+    <div class="card"><b>🏠 Telefono namelis</b><span>Dėžutė prie durų. Kai kartu, telefonai ten. Suaugę pirmi.</span><span class="grade">B-</span></div>
     <div class="card"><b>🔕 Be pranešimų ir garsų</b><span>Tu sprendi, kada žiūri.</span><span class="grade">B</span></div>
     <div class="card"><b>🎯 Tikslingai</b><span>Prieš paimdamas: „Kam? Kodėl dabar?"</span><span class="grade">B</span></div>
-    <div class="card"><b>🎮 Žaidžiam kartu</b><span>Naujos technologijos: kartu ir dalinamės, ką išmokom.</span><span class="grade">B-</span></div>
-    <div class="card"><b>📓 Popierius</b><span>Knyga vietoj sraigto. Sąsiuvinis. Padėkos raštelis.</span><span class="grade">B</span></div>
+    <div class="card"><b>🎮 Žaidžiam kartu</b><span>Naujos technologijos kartu, dalinamės, ką išmokom.</span><span class="grade">B-</span></div>
+    <div class="card"><b>📓 Popierius</b><span>Knyga vietoj srauto. Sąsiuvinis. Padėkos raštelis.</span><span class="grade A">A</span></div>
   </div>
-  <p class="step big">Išsitrauki telefoną prie žmogaus? <b class="red">Pasakyk kam:</b> „užsirašysiu", „nufotografuosiu", „parodysiu".</p>
-  <div class="src">Pilkas ekranas: Holte ir Ferraro 2020; Dekker ir Baumgartner 2024; Price 2018; Haidt ir Price 2025 (The Amazing Generation, p. 92) · Pranešimai: Kushlev ir kt. 2016 · Popierius: Delgado ir kt. 2018</div>
-  <div class="n">Pilkas ekranas: pasakyk savo patirtį, bet NE „30 %" kaip faktą (tai tavo n=1). Telefono namelis: parodyk fizinę dėžutę, jei turi. „Padaryk priklausomybę mažiau patrauklią."</div>
-  <div class="k"><h3>Įrodymų lygis</h3><ul><li>Pilkas ekranas: maži tyrimai su jaunais suaugusiais; atrakinimų skaičius nesikeitė; vaikų tyrimų beveik nėra. <span class="grade">B</span></li><li>Pranešimai: Kushlev, Proulx, Dunn 2016 (CHI): įjungti pranešimai → daugiau neatidumo. <span class="grade">B</span></li><li>Skaitymas iš popieriaus: Delgado ir kt. 2018 metaanalizė, supratimas geresnis iš popieriaus. <span class="grade A">A</span></li><li>Užrašai ranka: Mueller ir Oppenheimer 2014, bet replikacijos (Morehead 2019) nevienareikšmės. <span class="grade C">C</span></li></ul></div>
+  <p class="step big">Išsitrauki telefoną prie žmogaus? <b class="red">Pasakyk kam:</b> „užsirašysiu", „nufotografuosiu".</p>
+  <div class="src">Pilkas ekranas: Holte ir Ferraro 2020; Dekker ir Baumgartner 2024; Haidt ir Price 2025 · Pranešimai: Kushlev ir kt. 2016 · Popierius: Delgado 2018</div>
+  <div class="n">Pilkas ekranas: savo patirtis, bet NE „30 %" kaip faktas. Parodyk fizinį telefono namelį, jei turi.</div>
 </section>
 
-<!-- ============ 21 DI ============ -->
-<section class="slide" data-sec="60" data-label="DI">
+<!-- ============ 27 DI ============ -->
+<section class="slide" data-sec="45" data-label="DI">
   <div class="kick">Naujos technologijos</div>
   <h2>Telefonas pasiima dėmesį.<br><span class="red">DI gali pasiimti mąstymą.</span></h2>
   <p class="step">Kai kuri su DI, pasakyk: <b>„padėjo DI"</b>. DI kaip mokymosi treneris, ne vietoj tavęs.</p>
-  <p class="step">DI parašytą tekstą jauti iš karto. Jame nėra skonio. Ir nėra tavęs.</p>
-  <div class="src">Kosmyna ir kt. (2025), „Your Brain on ChatGPT", MIT Media Lab, nerecenzuotas preprintas, 54 dalyviai. <span class="grade C">C</span></div>
-  <div class="n">MIT tyrimą minėk atsargiai: „ankstyvas, mažas tyrimas rodo, kad rašant su DI mažiau įsimenam savo tekstą". Ne „DI gadina smegenis".</div>
+  <div class="src">Kosmyna ir kt. (2025), „Your Brain on ChatGPT", nerecenzuotas preprintas, 54 suaugę <span class="grade C">C</span> · Bastani ir kt. (2025), PNAS: kai DI duoda atsakymus, mokymasis prastėja <span class="grade">B</span></div>
+  <div class="n">„Ankstyvi tyrimai rodo: kai DI galvoja už mus, mažiau išmokstam." Ne „DI gadina smegenis".</div>
 </section>
 
-<!-- ============ 22 GRĮŽKIM ============ -->
-<section class="slide" data-sec="50" data-label="Tikras gyvenimas">
-  <div class="kick">Grįžkim į tikrą gyvenimą</div>
-  <div class="wall">
-    <div class="ph wide"><img src="assets/photos/scene-zaidimas-lauke.jpg" alt=""><i>Kiemas</i></div>
-    <div class="ph"><img src="assets/photos/scene-stalo-zaidimas.jpg" alt=""><i>Stalo žaidimai</i></div>
-    <div class="ph"><img src="assets/photos/scene-sasiuvinis.jpg" alt=""><i>Sąsiuvinis</i></div>
-    <div class="ph wide"><img src="assets/photos/scene-valgymas-kartu.jpg" alt=""><i>Vakarienė kartu</i></div>
-    <div class="ph wide"><img src="assets/photos/scene-knyga.jpg" alt=""><i>Knyga</i></div>
-  </div>
-  <div class="n">„Šimtai koncertų video, kurių niekada nežiūrėsim. Maisto nuotraukos. Sraigtas iš nuobodulio. Tai švaisto mūsų gyvenimą." Pasiūlyk: nešiokimės daugiau knygų nei telefonų. Galerijos, muziejai, knygynai, bibliotekos.</div>
-</section>
-
-<!-- ============ 23 KLAUSIMAS 4 ============ -->
-<section class="slide" data-sec="70" data-poll="p4" data-label="Kurią taisyklę?">
-  <div class="poll"><div class="col"><div class="kick">Klausimas 4</div><h2 class="pqh"></h2><div class="pq"></div></div>
+<!-- ============ 28 PROBLEMA ============ -->
+<section class="slide" data-sec="90" data-poll="p9" data-poll2="p9t" data-label="Jūsų problema">
+  <div class="poll"><div class="col"><div class="kick">Klausimas 4 · padėkite man</div><h2 class="pqh"></h2><div class="pq"></div>
+    <div class="pq2"><div class="pmeta">Jūsų žodžiai:</div><div class="res"></div></div></div>
   <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
+  <div class="n">„Telefone po šio klausimo bus laukelis: viena problema vienu sakiniu. Namuose, darbe, sporto salėje, koncerte. Anonimiškai. Iš jūsų atsakymų kursiu geresnius įrankius ir būrelius." Perskaityk 2–3 garsiai.</div>
 </section>
 
-<!-- ============ 24 KLAUSIMAS 5 ============ -->
-<section class="slide" data-sec="60" data-poll="p5" data-label="Kur sunkiausia?">
-  <div class="poll"><div class="col"><div class="kick">Klausimas 5</div><h2 class="pqh"></h2><div class="pq"></div></div>
+<!-- ============ 29 ŠEIMOS SUSITARIMAS ============ -->
+<section class="slide" data-sec="75" data-poll="p4" data-label="Šeimos susitarimas">
+  <div class="poll"><div class="col"><div class="kick">Šeimos susitarimas: 3 taisyklės, viena tėvams</div><h2 class="pqh"></h2><div class="pq"></div></div>
   <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
-  <div class="n">Kur sunkiausia, ten ir pradėkim. Paklausk vieno žmogaus balsu: „Kodėl?"</div>
+  <div class="n">„Šį vakarą prie vakarienės išsirinkite 3 taisykles kaip šeima. Viena turi būti tėvams. A4 susitarimą rasite medžiagoje per QR."</div>
 </section>
 
-<!-- ============ 25 5 % ============ -->
-<section class="slide" data-sec="80" data-label="Mažuma keičia normas">
+<!-- ============ 30 5 % ============ -->
+<section class="slide" data-sec="60" data-label="Mažuma keičia normas">
   <div class="kick">Kiek žmonių reikia, kad norma pasikeistų?</div>
   <div class="grid3">
     <div class="stat"><div class="num" data-count="25">0<small>%</small></div><p>Eksperimente įsipareigojusi mažuma (~25 %) apvertė grupės normą <span class="grade A">A</span></p></div>
-    <div class="stat"><div class="num" data-count="3.5" data-dec="1">0<small>%</small></div><p>Istorinis pastebėjimas: taikūs judėjimai, kuriuose aktyviai dalyvavo 3,5 % gyventojų, dažniausiai laimėjo <span class="grade">B</span></p></div>
+    <div class="stat"><div class="num" data-count="3.5" data-dec="1">0<small>%</small></div><p>Taikūs judėjimai, kuriuose aktyviai dalyvavo 3,5 % gyventojų, dažniausiai laimėjo <span class="grade">B</span></p></div>
     <div class="stat"><div class="num">5<small>%</small></div><p><b>Mūsų tikslas:</b> pirmieji tėvai, vaikai ir mokytojai, kurie tiki, laikosi ir saugo šį standartą</p></div>
   </div>
   <p class="big step"><b>Aukšti standartai. Didelė šiluma.</b> Ne bausmės, o pavyzdys.</p>
-  <div class="src">Centola ir kt. (2018), Science 360 · Chenoweth ir Stephan (2011), Why Civil Resistance Works · 5 % yra Kris'o tikslas, ne tyrimo skaičius.</div>
-  <div class="n">Svarbu sąžiningai: „5 % nėra mokslinis skaičius. Tai mano tikslas: pradėti nuo mažumos, kuri tiki." Šiluma: nesigėdinam, neperšam, rodom.</div>
+  <div class="src">Centola ir kt. (2018), Science 360 · Chenoweth ir Stephan (2011) · 5 % yra Kris'o tikslas, ne tyrimo skaičius.</div>
 </section>
 
-<!-- ============ 26 KLAUSIMAS 6 ============ -->
-<section class="slide" data-sec="60" data-poll="p6" data-label="Pirmieji 5 %">
+<!-- ============ 31 KLAUSIMAS 5 % ============ -->
+<section class="slide" data-sec="40" data-poll="p6" data-label="Pirmieji 5 %">
   <div class="poll"><div class="col"><div class="kick">Klausimas 6</div><h2 class="pqh"></h2><div class="pq"></div></div>
   <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
 </section>
 
-<!-- ============ 27 KLAUSIMAS KARTAI ============ -->
-<section class="slide" data-sec="40" data-optional="1" data-label="Prisiminimai">
+<!-- ============ 32 PRISIMINIMAI (pasirenkama) ============ -->
+<section class="slide" data-sec="35" data-optional="1" data-label="Prisiminimai">
   <div class="quote">Ar Z ir Alfa karta bus pirmosios, kurios turės daugiau prisiminimų iš Roblox, Minecraft ir Brawl Stars nei iš tikro gyvenimo?</div>
   <p class="big step red"><b>Negalim pakeisti kartos, jei nepakeisim savęs.</b></p>
-  <div class="n">Tai klausimas, ne faktas: tyrimo, kuris tai matuotų, neradom. „Mane šita mintis sugniuždė. Noriu tai pakeisti." Pasirenkama skaidrė (praleidžiama →, jei vėluoji).</div>
+  <div class="n">Tai klausimas, ne faktas: tyrimo neradom. Pasirenkama.</div>
 </section>
 
-<!-- ============ 28 PRIESAIKA ============ -->
-<section class="slide" data-sec="50" data-label="Priesaika">
+<!-- ============ 33 PRIESAIKA ============ -->
+<section class="slide" data-sec="45" data-label="Priesaika">
   <div class="kick">Sakom kartu</div>
   <div class="pledge"><span>Kai esu su tavimi,</span><span>visas mano dėmesys tavo,</span><span class="red">nes tu svarbus.</span></div>
   <p class="big step">Aš pasirinkau būti čia. Telefonas šią žinią padaro neaiškią.</p>
-  <div class="n">Paprašyk visų atsistoti, jei drąsu. Sakom kartu, garsiai, vieną kartą. Filmavimui: geras kadras.</div>
+  <div class="n">Paprašyk atsistoti, jei drąsu. Sakom kartu, vieną kartą. Filmavimui: be vaikų veidų.</div>
 </section>
 
-<!-- ============ 29 KLAUSIMAS 7 ============ -->
-<section class="slide" data-sec="60" data-poll="p7" data-label="Ką pakeisi?">
+<!-- ============ 34 KĄ PAKEISI ============ -->
+<section class="slide" data-sec="50" data-poll="p7" data-label="Ką pakeisi?">
   <div class="poll"><div class="col"><div class="kick">Klausimas 7</div><h2 class="pqh"></h2><div class="pq"></div></div>
   <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
-  <div class="n">Perskaityk 3–4 atsakymus garsiai. Žodžiai rodomi tik iki 60 ženklų.</div>
 </section>
 
-<!-- ============ 30 VIDEO (pasirenkama) ============ -->
+<!-- ============ 35 PAGALBA ============ -->
+<section class="slide" data-sec="25" data-label="Pagalba">
+  <div class="kick">Psichikos sveikatos diena · jei sunku</div>
+  <h2>Nebūkite vieni</h2>
+  <div class="help">
+    <div><b>8 800 900 12</b><p><b>Tėvų linija.</b> Nemokamai, atsako psichologai. tevulinija.lt</p></div>
+    <div><b>116 111</b><p><b>Vaikų linija.</b> Vaikams ir paaugliams, nemokamai.</p></div>
+  </div>
+  <p class="step">Ir mokykloje: <b>psichologė Rugilė.</b></p>
+  <div class="src">Paramos vaikams centras (Tėvų linija) · Vaikų linija. Darbo valandas tikrinkite svetainėse.</div>
+</section>
+
+<!-- ============ 36 VIDEO (pasirenkama) ============ -->
 <section class="slide" data-sec="0" data-optional="1" data-label="Video" data-video="DH9L7vJ03DE">
   <div class="kick">Pasirenkama · jei liko laiko</div>
   <h2>Pasiklausykim pačių autorių</h2>
@@ -482,28 +614,27 @@ svg.chart .lab{font-size:26px;font-weight:800}
     <button class="vbtn" data-yt="Y74Y7hAqD1A">▶ Catherine Price · CBS</button>
   </div>
   <p class="mut">Y paleidžia pirmą. Visi trys yra medžiagoje per QR.</p>
-  <div class="n">Video angliškai. Rodyk tik 60–90 s, jei liko laiko. Interneto nėra? Praleisk.</div>
 </section>
 
-<!-- ============ 31 KLAUSIMAI ============ -->
-<section class="slide" data-sec="600" data-label="Klausimai">
+<!-- ============ 37 KLAUSIMAI ============ -->
+<section class="slide" data-sec="480" data-qa="1" data-label="Klausimai">
   <div class="row" style="justify-content:space-between">
-    <div class="col"><div class="kick">Jūsų klausimai</div><h1>Klauskite.</h1><p class="mut">T: laikmatis 10 min.</p></div>
-    <div class="timer" id="qtimer">10:00</div>
+    <div class="col"><div class="kick">Jūsų klausimai</div><h1>Klauskite.</h1><p class="mut">T: laikmatis 8 min.</p></div>
+    <div class="timer" id="qtimer">8:00</div>
   </div>
-  <div class="n">10 min. Jei tylu, pradėk pats: „Dažniausias klausimas, kurį gaunu: nuo kokio amžiaus telefonas?" Haidt: ne iki ~14 m. (išmanusis), socialiniai tinklai ne iki 16. Tai jo norma, ne įstatymas.</div>
-  <div class="k"><h3>Haidt'o 4 normos</h3><ul><li>Jokio išmaniojo iki ~14 m. (iki gimnazijos)</li><li>Jokių socialinių tinklų iki 16</li><li>Mokyklos be telefonų</li><li>Daugiau laisvo žaidimo ir savarankiškumo</li></ul></div>
+  <div class="n">8 min. Jei tylu: „Dažniausias klausimas: nuo kokio amžiaus telefonas?" → 22 skaidrė (pagal amžių).</div>
+  <div class="k"><h3>Greiti atsakymai</h3><ul><li>Nuo kada išmanusis? Haidt: ~14 m., kartu su kitais klasės tėvais.</li><li>Jau turi? Ne atimti, o susitarti: naktį telefonas ne miegamajame.</li><li>Žaidimai? Žaiskite kartu 15 min., sužinokite kas ir su kuo.</li><li>Kada nerimauti? 5 ženklai (17 skaidrė) + mokyklos psichologė.</li></ul></div>
 </section>
 
-<!-- ============ 32 ĮVERTINIMAS ============ -->
-<section class="slide" data-sec="60" data-poll="p8" data-label="Įvertinimas">
+<!-- ============ 38 ĮVERTINIMAS ============ -->
+<section class="slide" data-sec="50" data-poll="p8" data-label="Įvertinimas">
   <div class="poll"><div class="col"><div class="kick">Paskutinis klausimas</div><h2 class="pqh"></h2><div class="pq"></div></div>
   <div class="qrbox"><div class="qr"></div><div class="code"></div></div></div>
-  <div class="n">„Būkite atviri. Taip aš tobulėju." Telefonuose po to atsiras mygtukas „Pasidalink su kitais tėvais".</div>
+  <div class="n">„Būkite atviri. Taip aš tobulėju." Po to telefonuose atsiras „Pasidalink su kitais tėvais".</div>
 </section>
 
-<!-- ============ 33 AČIŪ ============ -->
-<section class="slide" data-sec="30" data-label="Ačiū">
+<!-- ============ 39 AČIŪ ============ -->
+<section class="slide" data-sec="25" data-label="Ačiū">
   <div class="grid2">
     <div class="col">
       <div class="kick">Ačiū, kad buvote čia</div>
@@ -512,7 +643,7 @@ svg.chart .lab{font-size:26px;font-weight:800}
       <p class="mono" style="font-size:clamp(16px,1.4vw,24px)">Kris Vas · IG @kristijonas.vas · TikTok @krisvas369 · LinkedIn</p>
     </div>
     <div class="row" style="gap:2vw">
-      <div class="ph" style="width:22vw;height:52vh"><img src="assets/img/kris-aciu.jpg" alt="Kris Vas"></div>
+      <div class="ph" style="width:20vw;height:50vh"><img src="assets/img/kris-klase.jpg" alt="Kris Vas klasėje"></div>
       <div class="qrbox" style="width:24vh"><div class="qr" id="qrM"></div><p style="font-size:16px"><b>Medžiaga sau ir kitiems</b></p></div>
     </div>
   </div>
@@ -520,28 +651,32 @@ svg.chart .lab{font-size:26px;font-weight:800}
 
 <!-- ============ PRIEDAS: ŠALTINIAI ============ -->
 <section class="slide" data-sec="0" data-label="Šaltiniai" data-appendix="1">
-  <div class="kick">Šaltiniai · įrodymų lygis A stiprus · B vidutinis · C silpnas</div>
+  <div class="kick">Šaltiniai · A stiprus · B vidutinis · C silpnas</div>
   <ol class="bib cols2">
-    <li>Haidt, J. (2024). <i>The Anxious Generation</i>. Penguin Press. <a href="https://www.anxiousgeneration.com">anxiousgeneration.com</a> (ginčijama, žr. 9)</li>
-    <li>Haidt, J., Price, C. (2025). <i>The Amazing Generation</i>, p. 92 (pilkas ekranas).</li>
-    <li>NIMH. Major Depression statistics (NSDUH 2021). <a href="https://www.nimh.nih.gov/health/statistics/major-depression">nimh.nih.gov</a> A</li>
+    <li>Haidt, J. (2024). <i>The Anxious Generation</i>. <a href="https://www.anxiousgeneration.com">anxiousgeneration.com</a> (ginčijama, žr. 12)</li>
+    <li>Haidt, J., Price, C. (2025). <i>The Amazing Generation</i>, p. 92.</li>
+    <li>NIMH. Major Depression (NSDUH 2021). <a href="https://www.nimh.nih.gov/health/statistics/major-depression">nimh.nih.gov</a> A</li>
+    <li>Pew Research Center (2025-07-10). 10 facts about teens and social media. <a href="https://www.pewresearch.org/short-reads/2025/07/10/10-facts-about-teens-and-social-media/">pewresearch.org</a> A</li>
     <li>Pew Research Center (2024-12-12). Teens, Social Media and Technology 2024. <a href="https://www.pewresearch.org/internet/2024/12/12/teens-social-media-and-technology-2024/">pewresearch.org</a> A</li>
-    <li>Pew Research Center (2015-04-09). Teens, Social Media &amp; Technology Overview 2015. <a href="https://www.pewresearch.org/internet/2015/04/09/teens-social-media-technology-2015/">pewresearch.org</a> A</li>
-    <li>Pew Research Center (2024-03-11). How Teens and Parents Approach Screen Time. <a href="https://www.pewresearch.org/internet/2024/03/11/how-teens-and-parents-approach-screen-time/">pewresearch.org</a> B</li>
-    <li>Radesky, J. ir kt. (2014). Patterns of mobile device use by caregivers and children during meals. <i>Pediatrics</i>. <a href="https://pubmed.ncbi.nlm.nih.gov/24616357/">pubmed</a> B-</li>
+    <li>Pew Research Center (2024-03-11). How Teens and Parents Approach Screen Time. B</li>
+    <li>Common Sense Media. Minecraft, YouTube, Roblox, TikTok apžvalgos; Tweens, Teens, and Screens. <a href="https://www.commonsensemedia.org">commonsensemedia.org</a> B</li>
+    <li>Xiao, Y. ir kt. (2025). Addictive Screen Use Trajectories and Suicidal Behaviors. <i>JAMA</i>. <a href="https://doi.org/10.1001/jama.2025.7829">doi</a> B</li>
+    <li>Brushe, M. ir kt. (2024). Screen Time and Parent-Child Talk. <i>JAMA Pediatrics</i> 178(4). B</li>
     <li>Goodyear, V. ir kt. (2025). SMART Schools. <i>Lancet Regional Health Europe</i>. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11850730/">pmc</a> B</li>
-    <li>Odgers, C. (2024). Knygos apžvalga, <i>Nature</i>; Orben, A., Przybylski, A. (2019). <i>Nature Human Behaviour</i>. <a href="https://doi.org/10.1038/s41562-018-0506-1">doi</a></li>
-    <li>Centola, D. ir kt. (2018). Experimental evidence for tipping points in social convention. <i>Science</i> 360. <a href="https://doi.org/10.1126/science.aas8827">doi</a> A</li>
-    <li>Chenoweth, E., Stephan, M. (2011). <i>Why Civil Resistance Works</i>. Columbia UP. B</li>
-    <li>Erasmus (1530). <i>De civilitate morum puerilium</i>. · Elias, N. (1939). <i>Über den Prozess der Zivilisation</i>.</li>
-    <li>Price, C. (2018). <i>How to Break Up with Your Phone</i>. Ten Speed Press.</li>
-    <li>Holte, A., Ferraro, F. (2020). <i>Social Science Journal</i>; Dekker, C., Baumgartner, S. (2024). <i>Mobile Media &amp; Communication</i>. B</li>
-    <li>Kushlev, K., Proulx, J., Dunn, E. (2016). „Silence your phones". <i>CHI '16</i>. B</li>
-    <li>Delgado, P. ir kt. (2018). Don't throw away your printed books. <i>Educational Research Review</i> 25. A</li>
-    <li>Mueller, P., Oppenheimer, D. (2014). <i>Psychological Science</i>; Morehead, K. ir kt. (2019) replikacija. C</li>
-    <li>Kosmyna, N. ir kt. (2025). Your Brain on ChatGPT. arXiv preprintas. C</li>
-    <li>Przybylski &amp; Weinstein (2013); Ward ir kt. (2017) „Brain Drain": replikacijos nepavyko. C, į pranešimą neįtraukta.</li>
-    <li>Video: TED „How Screens Stole Childhood" (J. Haidt) · Simon Sinek „How Cell Phones Impact Our Relationships" · CBS Mornings (C. Price).</li>
+    <li>Furenes, M., Kucirkova, N., Bus, A. (2021). Paper versus screen. <i>Review of Educational Research</i>. <a href="https://doi.org/10.3102/0034654321998074">doi</a> A</li>
+    <li>Delgado, P. ir kt. (2018). <i>Educational Research Review</i> 25. A</li>
+    <li>Siegler, R., Ramani, G. (2008). <i>Developmental Science</i> 11(5). B</li>
+    <li>Mann, S., Cadman, R. (2014). <i>Creativity Research Journal</i> 26(2). C</li>
+    <li>Oberle, E. ir kt. (2020). Screen time and extracurricular activities… <i>Preventive Medicine</i> 141, 106291 (28 712 septintokų). B</li>
+    <li>Nyderlandų vyriausybės užsakytas mokyklų tyrimas (2025, 317 mokyklų), Reuters/BBC. B</li>
+    <li>Smartphone Free Childhood: 100 000 Parent Pacts. <a href="https://www.smartphonefreechildhood.org">smartphonefreechildhood.org</a></li>
+    <li>Radesky, J. ir kt. (2014). <i>Pediatrics</i>. B-</li>
+    <li>Centola, D. ir kt. (2018). <i>Science</i> 360. A · Chenoweth, E., Stephan, M. (2011). B</li>
+    <li>Erasmus (1530) · Elias, N. (1939).</li>
+    <li>Holte, Ferraro (2020); Dekker, Baumgartner (2024): pilkas ekranas. B · Kushlev ir kt. (2016). B</li>
+    <li>Kosmyna, N. ir kt. (2025), arXiv. C · Bastani, H. ir kt. (2025), PNAS. B</li>
+    <li>Odgers, C. (2024), Nature · Orben, A., Przybylski, A. (2019), Nature Human Behaviour.</li>
+    <li>Tėvų linija tevulinija.lt · Vaikų linija 116 111.</li>
   </ol>
 </section>
 
@@ -564,7 +699,7 @@ svg.chart .lab{font-size:26px;font-weight:800}
     <tr><td>K</td><td>papildomi faktai ir įrodymų lygiai</td></tr>
     <tr><td>Q</td><td>QR kampe visose skaidrėse</td></tr>
     <tr><td>F</td><td>pilnas ekranas</td></tr>
-    <tr><td>T</td><td>klausimų laikmatis (10 min.)</td></tr>
+    <tr><td>T</td><td>klausimų laikmatis (8 min.)</td></tr>
     <tr><td>Y</td><td>video (video skaidrėje)</td></tr>
     <tr><td>Shift+X ×2</td><td>naujas kambarys: visi rezultatai nuo nulio (repeticijai)</td></tr>
     <tr><td>Esc</td><td>uždaro langus</td></tr>
@@ -616,7 +751,7 @@ function prev(){if(stepI>0){steps(slides[cur])[--stepI].classList.remove('show')
 /* ---------- skaitikliai ---------- */
 function counters(s){$$('[data-count]',s).forEach(function(el){
   var to=parseFloat(el.dataset.count),dec=+(el.dataset.dec||0),pre=el.dataset.pre||'',suf=el.querySelector('small')?el.querySelector('small').outerHTML:'',of=el.dataset.of,t0=performance.now();
-  (function f(t){var p=Math.min(1,(t-t0)/1400),e=1-Math.pow(1-p,3),v=(to*e).toFixed(dec).replace('.',',');
+  (function f(t){var p=Math.min(1,(t-t0)/1400),e=1-Math.pow(1-p,3),v=(to*e).toFixed(dec).replace('.',',');if(el.dataset.sep)v=v.replace(/\B(?=(\d{3})+(?!\d))/g,' ');
     el.innerHTML=pre+v+(of?'<small> / '+of+'</small>':suf);if(p<1&&s.classList.contains('on'))requestAnimationFrame(f)})(t0)})}
 /* ---------- apklausos ---------- */
 var client=null,ch=null,live=false,phones={},pollTimer=null,maxResp=0;
@@ -630,7 +765,8 @@ function setupPoll(s){
 function fetchRes(s,id){
   if(!client)return;
   client.rpc('te_tevai_suvestine',{p_room:ROOM,p_poll:id}).then(function(r){if(r&&r.data)render(s,id,r.data)});
-  if(TE.POLLS[id].follow&&s.dataset.poll===id){}
+  var id2=s.dataset.poll2,b2=$('.pq2 .res',s);
+  if(id2&&b2)client.rpc('te_tevai_suvestine',{p_room:ROOM,p_poll:id2}).then(function(r){if(r&&r.data)b2.innerHTML='<div class="words">'+r.data.slice(0,30).map(function(x){return '<span>'+String(x.answer).slice(0,140).replace(/[<>&]/g,'')+'</span>'}).join('')+'</div>'});
 }
 function render(s,id,rows){
   var P=TE.POLLS[id],box=$('.pq .res',s);if(!box)return;var total=rows.reduce(function(a,r){return a+Number(r.n)},0);
@@ -658,7 +794,7 @@ function countPhones(){var now=Date.now(),n=0;for(var c in phones)if(now-phones[
 setInterval(function(){countPhones();broadcast()},5000);
 /* ---------- laikrodžiai ---------- */
 var t0=Date.now();setInterval(function(){var s=Math.floor((Date.now()-t0)/1000);$('#clock').textContent=Math.floor(s/60)+':'+('0'+s%60).slice(-2)},1000);
-var qt=null;function startTimer(){clearInterval(qt);var end=Date.now()+600000;qt=setInterval(function(){var r=Math.max(0,Math.round((end-Date.now())/1000));$('#qtimer').textContent=Math.floor(r/60)+':'+('0'+r%60).slice(-2);if(!r)clearInterval(qt)},500)}
+var qt=null;function startTimer(){clearInterval(qt);var end=Date.now()+480000;qt=setInterval(function(){var r=Math.max(0,Math.round((end-Date.now())/1000));$('#qtimer').textContent=Math.floor(r/60)+':'+('0'+r%60).slice(-2);if(!r)clearInterval(qt)},500)}
 /* ---------- video ---------- */
 function video(id){if(!id)return;$('#vframe').src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&rel=0';$('#vlink').href='https://www.youtube.com/watch?v='+id;$('#vid').style.display='flex'}
 $$('[data-yt]').forEach(function(b){b.onclick=function(){video(b.dataset.yt)}});

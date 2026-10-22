@@ -83,7 +83,7 @@ function render(id){
   if(P.type==='text'){$('#sendT').onclick=function(){var v=$('#tx').value.trim();if(v)submit(id,v.slice(0,P.max||60))};if($('#skip'))$('#skip').onclick=function(e){e.preventDefault();sent[id]='';ls('te-sent-'+ROOM,JSON.stringify(sent));thanks(id)}}
 }
 function thanks(id){
-  var P=TE.POLLS[id];var isLast=id==='p8'||id==='p8t';
+  var P=TE.POLLS[id];var isLast=id===TE.SHARE_AFTER||TE.POLLS[TE.SHARE_AFTER].follow===id;
   $('#main').innerHTML='<div class="done">✅ Ačiū! Atsakymas ekrane.<br><span class="wait">Žiūrėkite į ekraną, ten jau matosi rezultatai.</span></div>';
   if(isLast)showShare();
 }
@@ -93,7 +93,7 @@ function submit(id,answer){
   var row={room:ROOM,poll_id:id,answer:String(answer).slice(0,200),anon_id:CID.slice(0,64)};
   var tries=0;(function ins(){if(!client){if(++tries<6)setTimeout(ins,1500);return}
     client.from('te_tevai_atsakymai').insert(row).then(function(r){if(r&&r.error&&++tries<4)setTimeout(ins,1500);else if(ch&&ok){try{ch.send({type:'broadcast',event:'ans',payload:{cid:CID,poll:id}})}catch(e){}}})})();
-  var P=TE.POLLS[id];if(P&&P.follow){render(P.follow);showShare();return}
+  var P=TE.POLLS[id];if(P&&P.follow){render(P.follow);if(id===TE.SHARE_AFTER)showShare();return}
   thanks(id);
 }
 function connect(){
@@ -102,7 +102,8 @@ function connect(){
   ch=client.channel(TE.CHANNEL+ROOM,{config:{broadcast:{self:false}}});
   ch.on('broadcast',{event:'state'},function(m){lastSeen=Date.now();conn('● prisijungta','ok');var p=m.payload||{};var id=p.poll||null;
     if(Date.now()-lastHi>8000){lastHi=Date.now();try{ch.send({type:'broadcast',event:'hi',payload:{cid:CID}})}catch(e){}}
-    if(id!==curPoll&&!(curPoll&&TE.POLLS[curPoll]&&TE.POLLS[curPoll].hidden&&id==='p8'))render(id);if(p.last&&sent.p8!==undefined)showShare()});
+    var onFollow=curPoll&&id&&TE.POLLS[id]&&TE.POLLS[id].follow===curPoll;
+    if(id!==curPoll&&!onFollow)render(id);if(p.last&&sent[TE.SHARE_AFTER]!==undefined)showShare()});
   ch.subscribe(function(s){ok=s==='SUBSCRIBED';if(ok){conn('● laukiam ekrano','ok');try{ch.send({type:'broadcast',event:'hello',payload:{cid:CID}})}catch(e){}}else conn('● '+s.toLowerCase(),'bad')});
 }
 setInterval(function(){if(ch&&ok){try{ch.send({type:'broadcast',event:'hi',payload:{cid:CID}})}catch(e){}}if(lastSeen&&Date.now()-lastSeen>20000)conn('● ekranas nematomas','bad')},10000);
