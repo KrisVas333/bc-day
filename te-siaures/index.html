@@ -168,7 +168,7 @@ svg.chart .lab{font-size:26px;font-weight:800}
 <body>
 <canvas id="net"></canvas>
 <div id="bar"></div>
-<div id="hud"><span id="conn" class="dead">● jungiamasi</span><span id="ppl">📱 0</span><span id="room">—</span><span id="clock">0:00</span><button id="hbtn" title="Pagalba (?)">?</button></div>
+<div id="hud"><span id="conn" class="dead">● jungiamasi</span><span id="ppl">📱 0</span><span id="room">—</span><span id="clock">0:00</span><button id="vbtn" title="Kris balsas (V)">🔊</button><button id="mbtn" title="Mentoriui (M)">📘</button><button id="rbtn" title="Atstatyti duomenis (Shift+X)">↺ Atstatyti</button><button id="hbtn" title="Pagalba (?)">?</button></div>
 <div class="foot" id="foot">Kris Vas · Technologijų etiketas · v3</div>
 <div id="qrstrip" class="qrbox"><div class="qr" id="qrS"></div><div class="code" id="codeS"></div></div>
 
@@ -765,7 +765,7 @@ svg.chart .lab{font-size:26px;font-weight:800}
     <tr><td>F</td><td>pilnas ekranas</td></tr>
     <tr><td>T</td><td>klausimų laikmatis (7 min.)</td></tr>
     <tr><td>Y</td><td>video (video skaidrėje)</td></tr>
-    <tr><td>Shift+X ×2</td><td>naujas kambarys: visi rezultatai nuo nulio (repeticijai)</td></tr>
+    <tr><td>↺ Atstatyti / Shift+X ×2</td><td>išvalo visus atsakymus, telefonai lieka prisijungę</td></tr><tr><td>M</td><td>📘 mentoriaus skydelis: pagrindinė mintis, ką sakyti, faktai, papildoma medžiaga</td></tr><tr><td>V</td><td>🔊 Kris balsas šiai skaidrei (dar kartą = pauzė)</td></tr>
     <tr><td>Esc</td><td>uždaro langus</td></tr>
   </table>
   <p style="margin-top:1.4vh">Tavo pultas telefone: <b id="pultUrl"></b></p>
@@ -784,6 +784,8 @@ var slides=$$('.slide'),cur=0,stepI=0,typed='';
 var q=new URLSearchParams(location.search);
 function newRoom(){var a='ABCDEFGHJKLMNPRSTUVZ',s='';for(var i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
 var ROOM=(q.get('room')||ls('te-room')||newRoom()).toUpperCase();ls('te-room',ROOM);
+/* duomenų epocha: ↺ Atstatyti = nauja epocha, tas pats kambarys (telefonai lieka prisijungę) */
+var EPOCH=ls('te-epoch-'+ROOM)||'0';function DBR(){return EPOCH==='0'?ROOM:ROOM+'_'+EPOCH}
 var BASE=location.protocol==='file:'||/localhost|127\.0\.0\.1/.test(location.hostname)?TE.BASE:location.href.replace(/[^\/]*$/,'');
 var JOIN=BASE+'join.html?k='+ROOM, PULT=BASE+'pultas.html?k='+ROOM, MED=BASE+'medziaga.html?src=te-siaures-qr';
 function qr(el,text){if(!el)return;el.innerHTML='';try{new QRCode(el,{text:text,width:512,height:512,correctLevel:QRCode.CorrectLevel.M})}catch(e){el.textContent=text}}
@@ -806,7 +808,9 @@ function show(i,keepStep){
   cur=i;stepI=0;steps(slides[i]).forEach(function(e){e.classList.remove('show')});
   $('#bar').style.width=((i+1)/slides.length*100)+'%';
   $('#notes').innerHTML='<b>'+(i+1)+'/'+slides.length+' · '+(slides[i].dataset.label||'')+'</b> · ~'+Math.round((slides[i].dataset.sec||0)/6)/10+' min.<br>'+(($('.n',slides[i])||{}).innerHTML||'');
-  var k=$('.k',slides[i]);$('#kpanel').innerHTML=k?k.innerHTML:'<p class="mut">Šiai skaidrei papildomų faktų nėra.</p>';
+  var k=$('.k',slides[i]),kp=$('#kpanel');kp.innerHTML=k?k.innerHTML:'<p class="mut">Šiai skaidrei papildomų faktų nėra.</p>';
+  if(kp.dataset.m==='1'&&kp.style.display==='block'){kp.dataset.m='0';mentor()}
+  if(typeof au!=='undefined'&&au)au.pause();
   counters(slides[i]);setupPoll(slides[i]);broadcast();ls('te-slide',String(i));
 }
 function next(){var st=steps(slides[cur]);if(stepI<st.length){st[stepI++].classList.add('show');return}
@@ -828,9 +832,9 @@ function setupPoll(s){
 }
 function fetchRes(s,id){
   if(!client)return;
-  client.rpc('te_tevai_suvestine',{p_room:ROOM,p_poll:id}).then(function(r){if(r&&r.data)render(s,id,r.data)});
+  client.rpc('te_tevai_suvestine',{p_room:DBR(),p_poll:id}).then(function(r){if(r&&r.data)render(s,id,r.data)});
   var id2=s.dataset.poll2,b2=$('.pq2 .res',s);
-  if(id2&&b2)client.rpc('te_tevai_suvestine',{p_room:ROOM,p_poll:id2}).then(function(r){if(r&&r.data)b2.innerHTML='<div class="words">'+r.data.slice(0,30).map(function(x){return '<span>'+String(x.answer).slice(0,140).replace(/[<>&]/g,'')+'</span>'}).join('')+'</div>'});
+  if(id2&&b2)client.rpc('te_tevai_suvestine',{p_room:DBR(),p_poll:id2}).then(function(r){if(r&&r.data)b2.innerHTML='<div class="words">'+r.data.slice(0,30).map(function(x){return '<span>'+String(x.answer).slice(0,140).replace(/[<>&]/g,'')+'</span>'}).join('')+'</div>'});
 }
 function render(s,id,rows){
   var P=TE.POLLS[id],box=$('.pq .res',s);if(!box)return;var total=rows.reduce(function(a,r){return a+Number(r.n)},0);
@@ -843,7 +847,7 @@ function render(s,id,rows){
   else{box.innerHTML='<div class="words">'+rows.slice(0,40).map(function(r){return '<span>'+String(r.answer).slice(0,60).replace(/[<>&]/g,'')+(r.n>1?' ×'+r.n:'')+'</span>'}).join('')+'</div>'}
 }
 /* ---------- ryšys ---------- */
-function broadcast(){if(!ch||!live)return;var s=slides[cur];try{ch.send({type:'broadcast',event:'state',payload:{slide:cur,label:s.dataset.label||'',poll:s.dataset.poll||null,total:slides.length,last:s.dataset.poll==='p8'}})}catch(e){}}
+function broadcast(){if(!ch||!live)return;var s=slides[cur];try{ch.send({type:'broadcast',event:'state',payload:{slide:cur,label:s.dataset.label||'',poll:s.dataset.poll||null,total:slides.length,last:s.dataset.poll==="p8",epoch:EPOCH}})}catch(e){}}
 function connect(){
   if(typeof supabase==='undefined'){$('#conn').textContent='● be interneto';return}
   client=supabase.createClient(TE.SB_URL,TE.SB_KEY);
@@ -851,7 +855,7 @@ function connect(){
   ch.on('broadcast',{event:'hello'},function(m){var c=(m.payload||{}).cid;if(c)phones[c]=Date.now();countPhones();broadcast()});
   ch.on('broadcast',{event:'hi'},function(m){var c=(m.payload||{}).cid;if(c)phones[c]=Date.now();countPhones()});
   ch.on('broadcast',{event:'ans'},function(m){var c=((m&&m.payload)||{}).cid;if(c){phones[c]=Date.now();countPhones()}var s=slides[cur];if(s.dataset.poll)fetchRes(s,s.dataset.poll)});
-  ch.on('broadcast',{event:'cmd'},function(m){var p=m.payload||{};if(p.a==='next')next();else if(p.a==='prev')prev();else if(p.a==='goto')show(+p.i);else if(p.a==='qa')startTimer();broadcast();try{ch.send({type:'broadcast',event:'deck',payload:{slide:cur,total:slides.length,label:slides[cur].dataset.label,notes:(($('.n',slides[cur])||{}).textContent||'').slice(0,600),labels:slides.map(function(s){return s.dataset.label})}})}catch(e){}});
+  ch.on('broadcast',{event:'cmd'},function(m){var p=m.payload||{};if(p.a==='next')next();else if(p.a==='prev')prev();else if(p.a==='goto')show(+p.i);else if(p.a==='qa')startTimer();else if(p.a==='reset')resetData();else if(p.a==='vo')playVO();broadcast();try{ch.send({type:'broadcast',event:'deck',payload:{slide:cur,total:slides.length,label:slides[cur].dataset.label,notes:(($('.n',slides[cur])||{}).textContent||'').slice(0,600),labels:slides.map(function(s){return s.dataset.label})}})}catch(e){}});
   ch.subscribe(function(st){live=st==='SUBSCRIBED';$('#conn').textContent=live?'● gyvai':'● '+st.toLowerCase();$('#conn').className=live?'live':'dead';if(live)broadcast()});
 }
 function countPhones(){var now=Date.now(),n=0;for(var c in phones)if(now-phones[c]<35000)n++;$('#ppl').textContent='📱 '+Math.max(n,maxResp)}
@@ -865,6 +869,22 @@ $$('[data-yt]').forEach(function(b){b.onclick=function(){video(b.dataset.yt)}});
 function closeAll(){$('#vid').style.display='none';$('#vframe').src='';['#notes','#kpanel','#help'].forEach(function(s){$(s).style.display='none'})}
 function tog(s){var e=$(s);e.style.display=e.style.display==='block'?'none':'block'}
 $('#hbtn').onclick=function(){tog('#help')};
+/* ---------- ↺ atstatyti duomenis (2 paspaudimai per 3 s, be naršyklės langų) ---------- */
+function resetData(){EPOCH=Date.now().toString(36);ls('te-epoch-'+ROOM,EPOCH);phones={};maxResp=0;countPhones();setupPoll(slides[cur]);broadcast();
+  $('#rbtn').textContent='✅ Išvalyta';setTimeout(function(){$('#rbtn').textContent='↺ Atstatyti'},2500)}
+var rAt=0;function askReset(){if(Date.now()-rAt<3000){rAt=0;resetData()}else{rAt=Date.now();$('#rbtn').textContent='Tikrai? Spausk dar kartą';setTimeout(function(){if(rAt&&Date.now()-rAt>=2900){rAt=0;$('#rbtn').textContent='↺ Atstatyti'}},3000)}}
+$('#rbtn').onclick=askReset;
+/* ---------- 📘 mentoriaus skydelis (M) ---------- */
+var VOS={};fetch('vo-scripts.json').then(function(r){return r.json()}).then(function(j){VOS=j}).catch(function(){});
+var MAT='<h3 style="margin-top:1.4vh">📎 Papildoma medžiaga</h3><ul><li>Medžiaga tėvams (QR): '+MED.replace(/^https?:\/\//,'')+'</li><li>Common Sense Media: programėlių amžius ir „ką tėvams reikia žinoti" (commonsensemedia.org)</li><li>Haidt\'o 4 normos: anxiousgeneration.com</li><li>A4 šeimos susitarimas: krisvas333.github.io/neuron-ar/te/vaikams/</li><li>Tėvų linija 8 800 900 12 · Vaikų linija 116 111</li><li>Šaltiniai: priedo skaidrė (Šaltiniai), įrodymų lygiai A/B/C</li></ul>';
+function mentor(){var s=slides[cur],n=$('.n',s),k=$('.k',s),v=VOS[String(cur+1)];
+  $('#kpanel').innerHTML='<h3>📘 Mentoriui · '+(cur+1)+'. '+(s.dataset.label||'')+'</h3>'+(v?'<p><b>Pagrindinė mintis:</b> '+v+'</p>':'')+(n?'<p><b>Ką sakyti / daryti:</b> '+n.innerHTML+'</p>':'')+(k?k.innerHTML:'')+MAT;
+  var e=$('#kpanel');e.dataset.m=e.style.display==='block'&&e.dataset.m==='1'?'0':'1';e.style.display=e.dataset.m==='1'?'block':'none'}
+/* ---------- 🔊 Kris'o balsas (V) ---------- */
+var au=new Audio();au.preload='none';var auSlide=-1;
+function playVO(){if(auSlide===cur&&!au.paused){au.pause();return}auSlide=cur;au.src='assets/vo/'+String(cur+1).padStart(2,'0')+'.mp3';au.play().then(function(){$('#vbtn').textContent='⏸'}).catch(function(){$('#vbtn').textContent='🔇'})}
+au.onended=au.onpause=function(){$('#vbtn').textContent='🔊'};
+$('#vbtn').onclick=playVO;$('#mbtn').onclick=mentor;
 /* ---------- klavišai ---------- */
 var xAt=0;
 document.addEventListener('keydown',function(e){
@@ -876,13 +896,15 @@ document.addEventListener('keydown',function(e){
   else if(k==='ArrowLeft'||k==='PageUp')prev();
   else if(k==='Home')show(0);
   else if(k==='n'||k==='N')tog('#notes');
-  else if(k==='k'||k==='K')tog('#kpanel');
+  else if(k==='k'||k==='K'){var kp=$('#kpanel'),kk=$('.k',slides[cur]);if(kp.dataset.m==='1'){kp.dataset.m='0';kp.innerHTML=kk?kk.innerHTML:'<p class="mut">Šiai skaidrei papildomų faktų nėra.</p>';kp.style.display='block'}else tog('#kpanel')}
   else if(k==='?')tog('#help');
   else if(k==='q'||k==='Q')$('#qrstrip').classList.toggle('on');
   else if(k==='f'||k==='F'){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});else document.exitFullscreen()}
   else if(k==='t'||k==='T')startTimer();
   else if(k==='y'||k==='Y')video(slides[cur].dataset.video);
-  else if(k==='X'&&e.shiftKey){if(Date.now()-xAt<3000){ROOM=newRoom();ls('te-room',ROOM);phones={};maxResp=0;if(ch)client.removeChannel(ch);paintQR();connect();show(0);xAt=0}else{xAt=Date.now();$('#conn').textContent='Shift+X dar kartą = naujas kambarys'}}
+  else if(k==='X'&&e.shiftKey)askReset();
+  else if(k==='m'||k==='M')mentor();
+  else if(k==='v'||k==='V')playVO();
   else if(k==='Escape')closeAll();
 });
 /* ---------- neuronų fonas ---------- */
@@ -892,7 +914,7 @@ for(var i=0;i<46;i++)P.push({x:Math.random()*innerWidth,y:Math.random()*innerHei
 for(var i=0;i<P.length;i++)for(var j=i+1;j<P.length;j++){var d=Math.hypot(P[i].x-P[j].x,P[i].y-P[j].y);if(d<170){x.strokeStyle='rgba(217,4,41,'+(.14*(1-d/170))+')';x.beginPath();x.moveTo(P[i].x,P[i].y);x.lineTo(P[j].x,P[j].y);x.stroke()}}
 P.forEach(function(p){x.fillStyle='rgba(10,10,10,.18)';x.beginPath();x.arc(p.x,p.y,2,0,6.3);x.fill()});requestAnimationFrame(f)})()})();
 paintQR();connect();show(parseInt(q.get('s')||'1',10)-1);
-window.TEDECK={show:show,next:next,room:function(){return ROOM},cur:function(){return cur},n:slides.length};
+window.TEDECK={show:show,next:next,room:function(){return ROOM},cur:function(){return cur},n:slides.length,reset:resetData,mentor:mentor};
 })();
 </script>
 </body>

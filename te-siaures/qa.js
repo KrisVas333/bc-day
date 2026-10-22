@@ -83,6 +83,17 @@ function watch(page,errs){page.on('console',m=>{if(m.type()==='error'){const t=m
   const ph=await phones[0].evaluate(()=>({w:document.documentElement.scrollWidth,btn:Math.min(...[...document.querySelectorAll('button')].filter(b=>b.offsetParent).map(b=>b.getBoundingClientRect().height))}));
   ok('telefonas be horizontalaus scroll',ph.w<=390,'plotis '+ph.w);ok('mygtukai ≥ 44 px',ph.btn>=44,'min '+ph.btn);
   if(SHOTS)await phones[0].screenshot({path:path.join(shotDir,'phone-share.png')});
+  /* ↺ atstatymas: rezultatai nuo nulio, telefonai lieka ir vėl gauna klausimą */
+  await deck.evaluate(()=>TEDECK.reset());
+  ok('↺ ekranas po atstatymo rodo 0',await until(()=>deck.evaluate(()=>document.querySelector('.slide.on .cnt').textContent==='0'),8000));
+  ok('↺ telefonas vėl gauna įvertinimą (be perskenavimo)',await until(()=>phones[2].evaluate(()=>document.querySelectorAll('.stars button').length===5),15000));
+  await phones[2].evaluate(()=>{document.querySelectorAll('.stars button')[4].click();document.querySelector('#sendS').click()});
+  ok('↺ naujas atsakymas skaičiuojamas iš naujo (1)',await until(()=>deck.evaluate(()=>document.querySelector('.slide.on .cnt').textContent==='1'),12000));
+  /* 📘 M ir 🔊 V */
+  await deck.evaluate(()=>{TEDECK.show(2);TEDECK.mentor()});
+  ok('📘 M rodo mentoriaus skydelį su medžiaga',await deck.evaluate(()=>{const k=document.querySelector('#kpanel');return k.style.display==='block'&&/Mentoriui/.test(k.innerText)&&/Papildoma medžiaga/.test(k.innerText)}));
+  const vo=await deck.evaluate(async()=>{const r=await fetch('assets/vo/02.mp3');return r.status});
+  ok('🔊 balso failas skaidrei 2 yra',vo===200,'status '+vo);
   /* ---- pultas ---- */
   const pult=await browser.newPage();const uErr=[];watch(pult,uErr);await pult.setViewport({width:390,height:844,isMobile:true});
   await pult.goto(BASE+'pultas.html?k='+ROOM,{waitUntil:'networkidle2'});

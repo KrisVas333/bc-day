@@ -61,7 +61,8 @@ function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorag
 var q=new URLSearchParams(location.search),ROOM=(q.get('k')||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,12);
 $('#rm').textContent=ROOM||'?';
 var CID=ls('te-cid')||(Math.random().toString(36).slice(2)+Date.now().toString(36));ls('te-cid',CID);
-var sent={};try{sent=JSON.parse(ls('te-sent-'+ROOM)||'{}')}catch(e){}
+var EP='0';function RK(){return EP==='0'?ROOM:ROOM+'_'+EP}
+var sent={};try{sent=JSON.parse(ls('te-sent-'+RK())||'{}')}catch(e){}
 var client=null,ch=null,ok=false,curPoll=undefined,lastSeen=0,lastHi=0,sharedShown=false;
 var SHARE=TE.BASE+'medziaga.html?src=te-siaures-share';
 function conn(t,c){$('#st').textContent=t;$('#st').className=c}
@@ -80,17 +81,17 @@ function render(id){
   m.innerHTML=h;
   if(P.type==='choice')Array.prototype.forEach.call(m.querySelectorAll('button.o'),function(b){b.onclick=function(){b.classList.add('sel');submit(id,P.o[+b.dataset.i])}});
   if(P.type==='stars'){var pick=0;Array.prototype.forEach.call(m.querySelectorAll('.stars button'),function(b){b.onclick=function(){pick=+b.dataset.v;Array.prototype.forEach.call(m.querySelectorAll('.stars button'),function(x){x.classList.toggle('on',+x.dataset.v<=pick)});$('#sendS').disabled=false}});$('#sendS').onclick=function(){if(pick)submit(id,String(pick))}}
-  if(P.type==='text'){$('#sendT').onclick=function(){var v=$('#tx').value.trim();if(v)submit(id,v.slice(0,P.max||60))};if($('#skip'))$('#skip').onclick=function(e){e.preventDefault();sent[id]='';ls('te-sent-'+ROOM,JSON.stringify(sent));thanks(id)}}
+  if(P.type==='text'){$('#sendT').onclick=function(){var v=$('#tx').value.trim();if(v)submit(id,v.slice(0,P.max||60))};if($('#skip'))$('#skip').onclick=function(e){e.preventDefault();sent[id]='';ls('te-sent-'+RK(),JSON.stringify(sent));thanks(id)}}
 }
 function thanks(id){
   var P=TE.POLLS[id];var isLast=id===TE.SHARE_AFTER||TE.POLLS[TE.SHARE_AFTER].follow===id;
   $('#main').innerHTML='<div class="done">✅ Ačiū! Atsakymas ekrane.<br><span class="wait">Žiūrėkite į ekraną, ten jau matosi rezultatai.</span></div>';
   if(isLast)showShare();
 }
-function showShare(){if(sharedShown)return;sharedShown=true;$('#share').style.display='block';ls('te-share-'+ROOM,'1')}
+function showShare(){if(sharedShown)return;sharedShown=true;$('#share').style.display='block';ls('te-share-'+RK(),'1')}
 function submit(id,answer){
-  sent[id]=answer;ls('te-sent-'+ROOM,JSON.stringify(sent));
-  var row={room:ROOM,poll_id:id,answer:String(answer).slice(0,200),anon_id:CID.slice(0,64)};
+  sent[id]=answer;ls('te-sent-'+RK(),JSON.stringify(sent));
+  var row={room:RK(),poll_id:id,answer:String(answer).slice(0,200),anon_id:CID.slice(0,64)};
   var tries=0;(function ins(){if(!client){if(++tries<6)setTimeout(ins,1500);return}
     client.from('te_tevai_atsakymai').insert(row).then(function(r){if(r&&r.error&&++tries<4)setTimeout(ins,1500);else if(ch&&ok){try{ch.send({type:'broadcast',event:'ans',payload:{cid:CID,poll:id}})}catch(e){}}})})();
   var P=TE.POLLS[id];if(P&&P.follow){render(P.follow);if(id===TE.SHARE_AFTER)showShare();return}
@@ -101,6 +102,7 @@ function connect(){
   client=supabase.createClient(TE.SB_URL,TE.SB_KEY);
   ch=client.channel(TE.CHANNEL+ROOM,{config:{broadcast:{self:false}}});
   ch.on('broadcast',{event:'state'},function(m){lastSeen=Date.now();conn('● prisijungta','ok');var p=m.payload||{};var id=p.poll||null;
+    if(p.epoch!==undefined&&String(p.epoch)!==EP){EP=String(p.epoch);try{sent=JSON.parse(ls('te-sent-'+RK())||'{}')}catch(e){sent={}}curPoll=undefined;sharedShown=false;$('#share').style.display=ls('te-share-'+RK())?'block':'none'}
     if(Date.now()-lastHi>8000){lastHi=Date.now();try{ch.send({type:'broadcast',event:'hi',payload:{cid:CID}})}catch(e){}}
     var onFollow=curPoll&&id&&TE.POLLS[id]&&TE.POLLS[id].follow===curPoll;
     if(id!==curPoll&&!onFollow)render(id);if(p.last&&sent[TE.SHARE_AFTER]!==undefined)showShare()});
@@ -109,7 +111,7 @@ function connect(){
 setInterval(function(){if(ch&&ok){try{ch.send({type:'broadcast',event:'hi',payload:{cid:CID}})}catch(e){}}if(lastSeen&&Date.now()-lastSeen>20000)conn('● ekranas nematomas','bad')},10000);
 $('#shareBtn').onclick=function(){var d={title:'Technologijų etiketas',text:'Stalo manieros telefonams. Pažiūrėk, mums patiko:',url:SHARE};
   if(navigator.share)navigator.share(d).catch(function(){});else{try{navigator.clipboard.writeText(SHARE);$('#shareBtn').textContent='✅ Nuoroda nukopijuota'}catch(e){$('#shareBtn').textContent=SHARE}}};
-if(ls('te-share-'+ROOM))showShare();
+if(ls('te-share-'+RK()))showShare();
 connect();
 })();
 </script>

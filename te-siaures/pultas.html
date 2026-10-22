@@ -26,7 +26,8 @@ select{width:100%;padding:12px;font:600 16px Inter,sans-serif;border:1px solid v
 <div id="lab">—</div>
 <div id="notes">Užrašai pasirodys, kai ekranas atsilieps.</div>
 <div class="nav"><button id="pv">←</button><button id="nx" class="nx">TOLIAU →</button></div>
-<div class="row"><button id="qa">⏱ Klausimų laikmatis</button><button id="ping">↻ Atnaujinti</button></div>
+<div class="row"><button id="vo">🔊 Balsas</button><button id="qa">⏱ Laikmatis</button><button id="ping">↻ Ryšys</button></div>
+<div class="row"><button id="rs" style="color:#D90429;border-color:#D90429">↺ Atstatyti atsakymus</button></div>
 <select id="go"><option>Šokti į skaidrę…</option></select>
 <script src="polls.js"></script>
 <script src="assets/lib/supabase.js"></script>
@@ -41,7 +42,7 @@ ch.on('broadcast',{event:'deck'},function(m){var p=m.payload||{};$('#lab').textC
   if(!filled&&p.labels){filled=true;$('#go').innerHTML='<option>Šokti į skaidrę…</option>'+p.labels.map(function(l,i){return '<option value="'+i+'">'+(i+1)+'. '+l+'</option>'}).join('')}});
 ch.on('broadcast',{event:'state'},function(m){var p=m.payload||{};$('#lab').textContent=(p.slide+1)+'/'+p.total+' · '+(p.label||'')});
 ch.subscribe(function(s){ok=s==='SUBSCRIBED';$('#st').textContent=ok?'● prisijungta':'● '+s.toLowerCase();$('#st').className=ok?'ok':'bad';if(ok)cmd('ping')});
-$('#nx').onclick=function(){cmd('next')};$('#pv').onclick=function(){cmd('prev')};$('#qa').onclick=function(){cmd('qa')};$('#ping').onclick=function(){cmd('ping')};
+$('#nx').onclick=function(){cmd('next')};$('#vo').onclick=function(){cmd('vo')};var rAt=0;$('#rs').onclick=function(){if(Date.now()-rAt<3000){rAt=0;cmd('reset');this.textContent='✅ Išvalyta';var b=this;setTimeout(function(){b.textContent='↺ Atstatyti atsakymus'},2500)}else{rAt=Date.now();this.textContent='Tikrai? Spausk dar kartą'}};$('#pv').onclick=function(){cmd('prev')};$('#qa').onclick=function(){cmd('qa')};$('#ping').onclick=function(){cmd('ping')};
 $('#go').onchange=function(){var v=parseInt(this.value,10);if(!isNaN(v))cmd('goto',v);this.selectedIndex=0};
 })();
 </script>
