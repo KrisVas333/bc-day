@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Antrosios smegenys · kaip tai veikia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--soft:#F7F7F5;--ink:#0A0A0A;--mut:#5b5b5b;--red:#D90429;--line:#e4e4e0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.45}
+section{min-height:100vh;scroll-snap-align:start;padding:5vh 6vw;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+section:nth-child(even){background:var(--soft)}
+.k{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:clamp(12px,1.1vw,16px);letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:1.6vh}
+h1,h2{font-family:"JetBrains Mono",ui-monospace,monospace;font-weight:800;letter-spacing:-.02em;line-height:1.08}
+h1{font-size:clamp(34px,5.6vw,84px)}
+h2{font-size:clamp(26px,3.6vw,54px);margin-bottom:3.5vh;max-width:22ch}
+h2 b,h1 b{color:var(--red)}
+p.lead{font-size:clamp(17px,1.7vw,26px);color:var(--mut);max-width:44ch;margin-top:2vh}
+.grid{display:grid;gap:1.6vw}
+.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--bg);border:2px solid var(--ink);border-radius:4px;padding:2.2vh 1.6vw;font-size:clamp(15px,1.35vw,21px)}
+.card h3{font-family:"JetBrains Mono",monospace;font-size:clamp(17px,1.6vw,25px);margin-bottom:1vh}
+.card.hot{border-color:var(--red);box-shadow:8px 8px 0 var(--red)}
+.card small{display:block;color:var(--mut);margin-top:1vh;font-size:.82em}
+.tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.72em;border:1.5px solid var(--red);color:var(--red);border-radius:4px;padding:1px 7px;margin-left:6px}
+.flow{display:flex;flex-wrap:wrap;gap:.8vw;align-items:stretch;margin-bottom:3vh}
+.step{flex:1 1 130px;border:2px solid var(--ink);border-radius:4px;padding:1.6vh 1vw;background:var(--bg);font-size:clamp(14px,1.2vw,19px);opacity:0;transform:translateY(18px);transition:.5s}
+.step b{display:block;font-family:"JetBrains Mono",monospace;color:var(--red);font-size:1.1em}
+.on .step{opacity:1;transform:none}
+.on .step:nth-child(2){transition-delay:.12s}.on .step:nth-child(3){transition-delay:.24s}.on .step:nth-child(4){transition-delay:.36s}.on .step:nth-child(5){transition-delay:.48s}.on .step:nth-child(6){transition-delay:.6s}
+pre{font-family:"JetBrains Mono",monospace;font-size:clamp(14px,1.3vw,21px);line-height:1.6;background:var(--ink);color:#fff;border-radius:4px;padding:2.4vh 1.8vw}
+pre i{color:#ff6b81;font-style:normal}pre u{color:#9a9a9a;text-decoration:none}
+ol.q{list-style:none;counter-reset:q;display:grid;grid-template-columns:repeat(2,1fr);gap:1.4vh 2vw}
+ol.q li{counter-increment:q;font-size:clamp(16px,1.6vw,25px);padding-left:2.6em;position:relative;font-weight:600}
+ol.q li:before{content:counter(q);position:absolute;left:0;top:-.1em;font-family:"JetBrains Mono",monospace;font-weight:800;color:#fff;background:var(--red);width:1.9em;height:1.9em;border-radius:4px;display:grid;place-items:center}
+ol.q li span{display:block;font-weight:400;color:var(--mut);font-size:.78em}
+.num{font-family:"JetBrains Mono",monospace;font-weight:800;font-size:clamp(40px,5vw,78px);color:var(--red);line-height:1}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+.over{position:relative;z-index:2;max-width:52vw;background:rgba(255,255,255,.86);padding:2vh 1.5vw;border-radius:4px}
+.stats{display:flex;gap:2.4vw;margin-top:3vh;flex-wrap:wrap}
+.stats div{font-size:clamp(13px,1.1vw,17px);color:var(--mut)}
+.stats b{display:block;font-family:"JetBrains Mono",monospace;font-size:clamp(24px,2.6vw,40px);color:var(--ink)}
+.nav{position:fixed;right:18px;bottom:14px;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--mut);z-index:9}
+.foot{font-size:clamp(11px,.9vw,14px);color:var(--mut);margin-top:2.5vh}
+@media(max-width:800px){.g3,.g2,ol.q{grid-template-columns:1fr}.over{max-width:100%}}
+</style>
+</head>
+<body>
+
+<section id="s1">
+  <canvas id="graph"></canvas>
+  <div class="over">
+    <div class="k">Kris Vasiliauskas · gyvas pavyzdys</div>
+    <h1>Mano <b>antrosios smegenys</b></h1>
+    <p class="lead">Vienas aplankas su paprastais tekstiniais failais. Kiekvienas taškas yra užrašas. Kiekviena linija yra ryšys, kurį DI gali perskaityti.</p>
+    <div class="stats">
+      <div><b>241</b>projektas</div>
+      <div><b>675</b>tyrimų užrašai</div>
+      <div><b>87</b>žmonės</div>
+      <div><b>333</b>turinio failai</div>
+      <div><b>86</b>įgūdžiai agentui</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="k">1 · Aplankų struktūra</div>
+  <h2>Žinios <b>juda</b>, ne guli.</h2>
+  <div class="flow">
+    <div class="step"><b>Užfiksuoju</b>nuoroda, mintis, pokalbis</div>
+    <div class="step"><b>Surūšiuoju</b>pagal temą</div>
+    <div class="step"><b>Ištiriu</b>santrauka iš šaltinių</div>
+    <div class="step"><b>Nukreipiu</b>kuriam projektui tai padeda</div>
+    <div class="step"><b>Padarau</b>pamoka, žaidimas, laiškas</div>
+    <div class="step"><b>Užrašau</b>kas pavyko, kas ne</div>
+  </div>
+  <div class="grid g2">
+<pre><u># mano aplankas</u>
+wiki/
+  <i>inbox.md</i>      <u>viskas krenta čia</u>
+  <i>projects/</i>     <u>vienas failas vienam darbui</u>
+  <i>people/</i>       <u>su kuo dirbu</u>
+  <i>research/</i>     <u>ką perskaičiau ir supratau</u>
+  <i>log.md</i>        <u>kas pasikeitė</u></pre>
+<pre><u># mokytojo aplankas, 5 minutės</u>
+antros-smegenys/
+  <i>klases.md</i>     <u>ką dėstau, kokio lygio</u>
+  <i>temos/</i>        <u>viena tema, vienas failas</u>
+  <i>pamokos/</i>      <u>planai, kas veikė</u>
+  <i>idejos.md</i>     <u>viskas krenta čia</u>
+  <i>taisykles.md</i>  <u>ko DI negalima</u></pre>
+  </div>
+</section>
+
+<section>
+  <div class="k">2 · Personalizavimas</div>
+  <h2>6 klausimai, į kuriuos atsakius DI tampa <b>jūsų</b>.</h2>
+  <ol class="q">
+    <li>Ką dėstau ir kam?<span>dalykas, klasės, grupės dydis</span></li>
+    <li>Ko mokiniai turi išmokti?<span>tikslai, Bendrosios programos</span></li>
+    <li>Ką jie jau moka ir kur stringa?<span>be vardų: „trečdalis painioja…"</span></li>
+    <li>Kaip aš mokau?<span>mano stilius, pavyzdžiai, tonas</span></li>
+    <li>Kas jau veikė ir kas ne?<span>praėjusių pamokų užrašai</span></li>
+    <li>Ko DI daryti negalima?<span>ribos, patikra, paskutinis žodis mano</span></li>
+  </ol>
+  <p class="foot">Atsakymai gyvena failuose. DI juos perskaito kiekvieną kartą, todėl nebereikia pradėti nuo nulio.</p>
+</section>
+
+<section>
+  <div class="k">3 · Trys architektūros</div>
+  <h2>Tas pats modelis. <b>Trys skirtingi</b> rezultatai.</h2>
+  <div class="grid g3">
+    <div class="card"><h3>LLM pokalbis</h3>Klausimas → atsakymas.<br>Nieko apie jus nežino. Kitą žingsnį darote patys.<small>„Sugalvok 5 klausimus apie dvejetainę sistemą."</small></div>
+    <div class="card"><h3>DI agentas</h3>Tikslas → planas → įrankiai → patikra → kartoja.<br>Daro, bet jūsų klasės nepažįsta.<small>„Paruošk temą: testas, žaidimas, laiškas tėvams."</small></div>
+    <div class="card hot"><h3>Antrosios smegenys</h3>Agentas + <b>jūsų atmintis</b>.<br>Žino klases, tikslus, kas veikė. Rezultatas pritaikytas jums.<small>„Paruošk rytojaus pamoką 7b." Ir viskas.</small></div>
+  </div>
+  <p class="foot">Variklį galima keisti (ChatGPT, Gemini, Claude). Atmintis lieka jūsų.</p>
+</section>
+
+<section>
+  <div class="k">4 · Saugumas ir kontekstas</div>
+  <h2>Failai lieka <b>jūsų kompiuteryje</b>.</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Kas saugu</h3>Aplankas yra pas jus, ne svetimoje platformoje. Paprastas tekstas: atsidarys ir po 20 metų. DI mato tik tai, ką jam parodote.</div>
+    <div class="card hot"><h3>Raudona linija</h3>Ką DI perskaito, tą apdoroja modelio tiekėjas. Todėl aplanke <b>nėra</b> mokinių vardų, pažymių, sveikatos duomenų.</div>
+    <div class="card"><h3>Kodėl supranta geriau</h3>Užrašai susieti nuorodomis. DI mato ne vieną failą, o kas su kuo susiję: tema ↔ klasė ↔ praėjusi pamoka.</div>
+    <div class="card"><h3>Ką rodo grafas</h3>Didelis taškas = daug ryšių = svarbi tema. Vienišas taškas = pamiršta mintis. Matau, kur mano žinios tankios ir kur tuščia.</div>
+  </div>
+</section>
+
+<section>
+  <div class="k">5 · Ką sako tyrimai</div>
+  <h2>Nauda yra. <b>Su sąlyga.</b></h2>
+  <div class="grid g3">
+    <div class="card"><div class="num">−31 %</div>pamokų planavimo laiko su DI. 259 mokytojai, kokybė nenukrito.<small>EEF / NFER, 2024 <span class="tag">A</span></small></div>
+    <div class="card hot"><div class="num">−17 %</div>egzamine be DI, kai mokiniai treniravosi su DI be ribų. Versija „tik užuominos" žalos išvengė.<small>Bastani ir kt., PNAS 2025 <span class="tag">B</span></small></div>
+    <div class="card"><div class="num">↑</div>Prisiminti pačiam veikia stipriau nei perskaityti dar kartą. DI turi klausti, ne atsakyti.<small>Roediger ir Karpicke, 2006 <span class="tag">A</span></small></div>
+  </div>
+  <p class="foot">Išvada mokyklai: DI mokytojui taupo laiką. DI mokiniui padeda tik tada, kai klausia ir laukia.</p>
+</section>
+
+<section>
+  <div class="k">6 · Tikri pavyzdžiai</div>
+  <h2>Ką aš su tuo <b>jau padariau</b>.</h2>
+  <div style="display:grid;grid-template-columns:2.2fr 2.2fr 1fr;gap:1.2vw;margin-bottom:2.4vh;align-items:start">
+    <figure style="border:2px solid var(--ink);border-radius:4px;overflow:hidden;background:#fff"><img src="shot-zemelapis.png" style="width:100%;height:30vh;object-fit:cover;object-position:top;display:block"><figcaption style="font:600 14px Inter;padding:6px 10px">Vaiko žemėlapis · 2 129 temos, 2 747 ryšiai</figcaption></figure>
+    <figure style="border:2px solid var(--ink);border-radius:4px;overflow:hidden;background:#fff"><img src="shot-deck.png" style="width:100%;height:30vh;object-fit:cover;display:block"><figcaption style="font:600 14px Inter;padding:6px 10px">Šis pristatymas · paruošė agentas, peržiūrėjau aš</figcaption></figure>
+    <figure style="border:2px solid var(--red);border-radius:4px;overflow:hidden;background:#fff"><img src="shot-phone.png" style="width:100%;height:30vh;object-fit:cover;object-position:top;display:block"><figcaption style="font:600 14px Inter;padding:6px 10px">Jūsų telefonas</figcaption></figure>
+  </div>
+  <div class="grid g3">
+    <div class="card hot"><h3>Šis pristatymas</h3>Tomo laiškas → mūsų 54 min. pokalbio įrašas → mano užrašai → agentas paruošė → aš peržiūrėjau ir taisiau.</div>
+    <div class="card"><h3>Info Gynėjai</h3>Informacinio raštingumo pamokos 1–2 klasėms. Kas savaitę nuo rugsėjo, kuriamos ir taisomos su DI.</div>
+    <div class="card"><h3>Vaiko žemėlapis</h3>Įrankis tėvams ir vaikams. Tas pats, kurį Tomas pamatė prieš pakviesdamas.</div>
+    <div class="card"><h3>Pamokos ir žaidimai</h3>Interaktyvūs mokymai su telefonais, QR ir balsavimu. Kaip šiandien.</div>
+    <div class="card"><h3>Robotikos Akademijos turinys</h3>Vaizdo įrašai, įrašai, laiškai tėvams. Agentas ruošia, žmogus tvirtina ir siunčia.</div>
+    <div class="card"><h3>Ryto santrauka</h3>Kas rytą: 3 svarbiausi darbai, kas vėluoja, kam pažadėjau atsakyti.</div>
+  </div>
+  <p class="foot">Pirma galvoja žmogus. Paskui DI. Tada vėl žmogus. · ⚗️ Sukurta su DI, gali klysti. Kris yra Robotikos Akademijos bendraįkūrėjas ir Info Gynėjų autorius.</p>
+</section>
+
+<section>
+  <div class="k">Susisiekime</div>
+  <h2>Pakvieskite mane į <b>savo mokyklą</b>.</h2>
+  <p class="lead" style="margin:0 0 3vh">Info Gynėjų pamokos mokiniams. Mokymai mokytojams apie DI ir antrąsias smegenis.</p>
+  <div class="grid g3">
+    <a class="card hot" href="mailto:kristijonas.vasiliauskas@gmail.com?subject=Kvietimas%20%C4%AF%20mokykl%C4%85" style="color:inherit;text-decoration:none"><h3>✉️ El. paštas</h3>kristijonas.vasiliauskas@gmail.com<small>Parašykite: mokykla, klasės, tema.</small></a>
+    <a class="card" href="https://krisvas.lt/?src=it-mokytojai-1110" style="color:inherit;text-decoration:none"><h3>🌐 krisvas.lt</h3>Įrankiai, testai, žemėlapis.<small>Viskas nemokama.</small></a>
+    <a class="card" href="https://www.linkedin.com/in/kristijonasvasiliauskas/" style="color:inherit;text-decoration:none"><h3>LinkedIn</h3>Kristijonas Vasiliauskas<small>Mokytojams ir vadovams.</small></a>
+    <a class="card" href="https://www.instagram.com/kristijonas.vas/" style="color:inherit;text-decoration:none"><h3>Instagram</h3>@kristijonas.vas</a>
+    <a class="card" href="https://www.youtube.com/@KristijonasVasiliauskas" style="color:inherit;text-decoration:none"><h3>YouTube</h3>@KristijonasVasiliauskas</a>
+    <a class="card" href="https://www.tiktok.com/@krisvas369" style="color:inherit;text-decoration:none"><h3>TikTok</h3>@krisvas369</a>
+  </div>
+  <p class="foot">Mano interesai: Info Gynėjai yra mano programa, Robotikos Akademija ir ExoClass yra mano verslai. Viską iš šio puslapio galite daryti patys nemokamai.</p>
+</section>
+
+<div class="nav">↓ / tarpas · <span id="pg">1</span>/8</div>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+
+<script>
+// keyboard + reveal
+const secs=[...document.querySelectorAll('section')];let cur=0;
+function go(i){cur=Math.max(0,Math.min(secs.length-1,i));secs[cur].scrollIntoView();}
+addEventListener('keydown',e=>{
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+  if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+});
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');cur=secs.indexOf(e.target);document.getElementById('pg').textContent=cur+1}}),{threshold:.55}).observe&&secs.forEach(s=>{
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){s.classList.add('on');cur=secs.indexOf(s);document.getElementById('pg').textContent=cur+1}}),{threshold:.55}).observe(s)});
+
+// graph
+const c=document.getElementById('graph'),x=c.getContext('2d');let W,H,D=devicePixelRatio||1;
+function size(){W=c.clientWidth;H=c.clientHeight;c.width=W*D;c.height=H*D;x.setTransform(D,0,0,D,0,0)}
+size();addEventListener('resize',size);
+const hubs=[['Projektai',241],['Tyrimai',675],['Žmonės',87],['Turinys',333],['Pamokos',60],['Įmonės',47],['Žurnalas',30],['Strategija',40]];
+const N=[],E=[];
+hubs.forEach((h,i)=>{const a=i/hubs.length*Math.PI*2;
+  N.push({x:.72+Math.cos(a)*.17,y:.5+Math.sin(a)*.3,vx:0,vy:0,r:9+Math.sqrt(h[1])/1.6,l:h[0],hub:1});});
+hubs.forEach((h,i)=>{const n=Math.min(26,6+Math.round(h[1]/28));
+  for(let j=0;j<n;j++){const p=N[i];N.push({x:p.x+(Math.random()-.5)*.22,y:p.y+(Math.random()-.5)*.32,vx:0,vy:0,r:2+Math.random()*2.5});
+    E.push([i,N.length-1]);if(Math.random()<.22)E.push([N.length-1,Math.floor(Math.random()*hubs.length)])}});
+for(let i=0;i<hubs.length;i++)E.push([i,(i+1)%hubs.length],[i,(i+3)%hubs.length]);
+let t=0;
+function tick(){t+=.006;x.clearRect(0,0,W,H);
+  N.forEach((n,i)=>{n.px=(n.x+Math.sin(t*1.3+i)*.006)*W;n.py=(n.y+Math.cos(t+i*1.7)*.008)*H});
+  x.lineWidth=1;E.forEach(([a,b],i)=>{const A=N[a],B=N[b];const pulse=(Math.sin(t*4+i*.7)+1)/2;
+    x.strokeStyle=(A.hub&&B.hub)?'rgba(217,4,41,'+(.25+pulse*.45)+')':'rgba(10,10,10,.13)';
+    x.beginPath();x.moveTo(A.px,A.py);x.lineTo(B.px,B.py);x.stroke()});
+  N.forEach(n=>{x.beginPath();x.arc(n.px,n.py,n.r,0,7);x.fillStyle=n.hub?'#D90429':'#0A0A0A';x.fill();
+    if(n.hub){x.font='800 15px "JetBrains Mono",monospace';x.fillStyle='#0A0A0A';x.fillText(n.l,n.px+n.r+6,n.py+5)}});
+  requestAnimationFrame(tick)}
+tick();
+</script>
+</body>
+</html>
