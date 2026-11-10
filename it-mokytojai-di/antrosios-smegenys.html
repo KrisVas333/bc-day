@@ -106,7 +106,11 @@ antros-smegenys/
     <li>Kas jau veikė ir kas ne?<span>praėjusių pamokų užrašai</span></li>
     <li>Ko DI daryti negalima?<span>ribos, patikra, paskutinis žodis mano</span></li>
   </ol>
-  <p class="foot">Atsakymai gyvena failuose. DI juos perskaito kiekvieną kartą, todėl nebereikia pradėti nuo nulio.</p>
+  <div style="margin-top:3vh;display:flex;gap:1.2vw;align-items:stretch;flex-wrap:wrap">
+    <pre id="pr" style="flex:1 1 420px;white-space:pre-wrap;font-size:clamp(13px,1.05vw,17px)">Esu mokytojas. Užduok man šiuos 6 klausimus po vieną ir palauk atsakymo: ką dėstau ir kam; ko mokiniai turi išmokti; ką jie jau moka ir kur stringa (be vardų); kaip aš mokau; kas jau veikė ir kas ne; ko tau daryti negalima. Iš atsakymų parašyk failą klases.md, kurį galėsiu įkelti į kiekvieną naują pokalbį.</pre>
+    <button id="cp" type="button" style="font:800 clamp(15px,1.3vw,20px) 'JetBrains Mono',monospace;background:var(--red);color:#fff;border:0;border-radius:4px;padding:0 1.6vw;cursor:pointer;min-height:56px">Kopijuoti užklausą</button>
+  </div>
+  <p class="foot">Įklijuokite į ChatGPT, Gemini arba Claude šį vakarą: 10 minučių. Atsakymai gyvena failuose. DI juos perskaito kiekvieną kartą, todėl nebereikia pradėti nuo nulio.</p>
 </section>
 
 <section>
@@ -183,7 +187,9 @@ antros-smegenys/
 // keyboard + reveal
 const secs=[...document.querySelectorAll('section')];let cur=0;
 function go(i){cur=Math.max(0,Math.min(secs.length-1,i));secs[cur].scrollIntoView();}
+document.getElementById('cp').onclick=function(){var t=document.getElementById('pr').textContent,b=this;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='Nukopijuota ✓'},function(){var r=document.createRange();r.selectNodeContents(document.getElementById('pr'));getSelection().removeAllRanges();getSelection().addRange(r);b.textContent='Pažymėta: Ctrl+C'})};
 addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&parent!==window){parent.postMessage('kv-close','*');return}
   if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
   if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
 });

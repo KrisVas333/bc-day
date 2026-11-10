@@ -672,7 +672,8 @@ h2{font-size:66px;line-height:1.1}
   <div class="card hot" data-step="1"><div class="n">Šis pristatymas</div><p>Mano 7 klausimai → agentai surinko medžiagą ir šaltinius → <b>aš peržiūrėjau</b>.</p></div>
   <div class="card" data-step="2"><div class="n">Taisyklė</div><p><b>Be mokinių vardų ir duomenų.</b> Agentas mato tik tą aplanką, kurį jam atidarau.</p></div>
  </div>
- <aside class="notes"><b>15:41 · 11-14 MIN.</b> <b>KĄ SAKYTI</b> Mano antrosios smegenys yra paprasti tekstiniai failai: užrašai, projektai, žmonės. Prie jų dirba keli agentai. Pavyzdys iš šios savaitės: susitikimas Zoom'e įrašomas (visi žino ir sutinka), stenograma atsiranda per minutes, agentas ištraukia temas, klausimus ir užduotis, parašo laiško ar skaidrių juodraštį. Aš peržiūriu, pataisau ir siunčiu. Ir šis pristatymas gimė taip: mano septyni klausimai, agentai surinko medžiagą ir šaltinius, aš peržiūrėjau. Svarbu: tai nėra pririšta prie vieno modelio. Failai lieka mano, o modelį galiu pakeisti rytoj.<br><b>⚠️ KRIS</b> „Aš peržiūrėjau" tiesa tik po tavo ryto peržiūros. Jei nespėjai, praleisk antrą kortelę žodžiu.<br><b>PAVOJUS</b> Jei paklaus: „Didžiausia mano klaida buvo tobulinti sistemą vietoj darbo. Todėl dabar: laikmatis 10 min." (bus 6 klausime).<br><b>20 MIN.</b> 2 min.: be 3 kortelės.<br><b>TILTAS</b> O dabar jūsų klasė: kaip tai naudoti ugdymui.</aside>
+  <button type="button" id="kvOpen" onclick="kvOv(1)" style="margin-top:18px;font:800 20px 'JetBrains Mono',monospace;background:#D90429;color:#fff;border:0;border-radius:4px;padding:14px 22px;cursor:pointer">▶ Parodyti, kaip tai atrodo (8 ekranai)</button>
+<aside class="notes"><b>15:41 · 11-14 MIN.</b> <b>KĄ SAKYTI</b> Mano antrosios smegenys yra paprasti tekstiniai failai: užrašai, projektai, žmonės. Prie jų dirba keli agentai. Pavyzdys iš šios savaitės: susitikimas Zoom'e įrašomas (visi žino ir sutinka), stenograma atsiranda per minutes, agentas ištraukia temas, klausimus ir užduotis, parašo laiško ar skaidrių juodraštį. Aš peržiūriu, pataisau ir siunčiu. Ir šis pristatymas gimė taip: mano septyni klausimai, agentai surinko medžiagą ir šaltinius, aš peržiūrėjau. Svarbu: tai nėra pririšta prie vieno modelio. Failai lieka mano, o modelį galiu pakeisti rytoj.<br><b>⚠️ KRIS</b> „Aš peržiūrėjau" tiesa tik po tavo ryto peržiūros. Jei nespėjai, praleisk antrą kortelę žodžiu.<br><b>PAVOJUS</b> Jei paklaus: „Didžiausia mano klaida buvo tobulinti sistemą vietoj darbo. Todėl dabar: laikmatis 10 min." (bus 6 klausime).<br><b>20 MIN.</b> 2 min.: be 3 kortelės.<br><b>TILTAS</b> O dabar jūsų klasė: kaip tai naudoti ugdymui.</aside>
 </section>
 
 <!-- 10 · 15 min -->
@@ -1280,6 +1281,13 @@ loadLib('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js',fu
 resetTimerView();
 (function(){var s=null;try{s=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}if(s&&typeof s.slide==='number'&&s.slide<=LAST){st.slide=s.slide;st.step=0;}render();})();
 window.__deck={st:st,goTo:goTo,next:next,prev:prev,slides:slides,NOTES:NOTES,PULT:PULT,LIVE:LIVE,ACTS:ACTS,NW:NW,QR:QR,BRK:BRK,ANIM:ANIM,RESET:RESET,MENTOR_UI:MENTOR_UI,T:T,START:function(){return START;},toggleTimer:toggleTimer,ROOM:ROOM,playVo:playVo,VO:VO};
+</script>
+
+<div id="kvOv" style="display:none;position:fixed;inset:0;z-index:99999;background:#fff"><iframe id="kvFr" title="Antrosios smegenys" style="width:100%;height:100%;border:0"></iframe><button type="button" onclick="kvOv(0)" style="position:fixed;top:12px;right:14px;z-index:100000;font:800 15px 'JetBrains Mono',monospace;background:#0A0A0A;color:#fff;border:0;border-radius:4px;padding:10px 14px;cursor:pointer">✕ Grįžti (Esc)</button></div>
+<script>
+function kvOv(on){var o=document.getElementById('kvOv'),f=document.getElementById('kvFr');if(on){if(!f.getAttribute('src'))f.src='antrosios-smegenys.html';o.style.display='block';setTimeout(function(){try{f.contentWindow.focus()}catch(e){}},150)}else{o.style.display='none';window.focus()}}
+addEventListener('keydown',function(e){var o=document.getElementById('kvOv');if(o&&o.style.display==='block'){e.stopImmediatePropagation();if(e.key==='Escape')kvOv(0)}},true);
+addEventListener('message',function(e){if(e.data==='kv-close')kvOv(0)});
 </script>
 </body>
 </html>
