@@ -24,7 +24,7 @@
     '<input class="hp" type="text" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">'+
     '<label class="c w"><input type="checkbox" name="dirb"><span>Noriu praktinių dirbtuvių: susikurti savo antrąsias smegenis</span></label>'+
     '<label class="c"><input type="checkbox" name="ok" required><span>Sutinku gauti Kris Vas laiškus apie DI mokytojams. Galiu atsisakyti bet kada.</span></label>'+
-    '<p class="pv" style="font-size:15px">Duomenis tvarko Kristijonas Vasiliauskas (krisvas.lt), tik šiai medžiagai ir kvietimui į dirbtuves. Norite ištrinti? Atsakykite į bet kurį mūsų laišką.</p>'+
+    '<p class="pv" style="font-size:15px">Duomenis tvarko Kristijonas Vasiliauskas (krisvas.lt), tik šiai medžiagai, kvietimui į dirbtuves ir retoms naujienoms apie DI mokytojams. Norite ištrinti? Atsakykite į bet kurį mūsų laišką.</p>'+
     '<button type="submit" data-track="medziaga_email">Siųsti</button><div class="msg" aria-live="polite"></div></form>';
   var f=box.querySelector('form'), msg=box.querySelector('.msg'), btn=f.querySelector('button');
   function say(t,c){msg.textContent=t;msg.className='msg '+(c||'');}
