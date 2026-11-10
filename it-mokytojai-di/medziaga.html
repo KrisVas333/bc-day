@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
 <!-- Mokytojo puslapis po KŠIC Zoom paskaitos. ☀️ LIGHT, telefonas pirmiausia. Užklausos iš acts.js (tas pats bankas kaip telefono kambaryje).
      El. paštas → ml-form.js → Supabase mokytojai_el_pastai (mokymai = it-mokytojai-di, src = ?src arba it-mokytojai-1110, +dirbtuves jei pažymėta).
+     ⭐ Įvertinimas + klausimas → ivertinimas.js → Supabase scorecard (project = it-mokytojai-di, role = vartotojas, anonimiška, anon tik INSERT; comment = „💬 atsiliepimas" / „❓ klausimas").
      kv-track data-mode="full": Clarity tik po „Leisti". -->
 <style>
 :root{--ground:#FFFFFF;--surface:#F7F7F5;--ink:#0A0A0A;--muted:#595959;--line:#E5E2DE;--accent:#D90429;--ok:#1a7f37;
@@ -57,6 +58,11 @@ pre{font-family:var(--mono);font-size:15px;line-height:1.5;white-space:pre-wrap;
 .note{background:var(--surface);border-left:4px solid var(--accent);padding:12px 14px;border-radius:var(--r);font-size:16px;color:#333;margin:20px 0}
 .coi{border:2px solid var(--accent);border-radius:var(--r);padding:12px 14px;font-size:16px;margin:14px 0}
 .coi b{color:var(--accent);font-family:var(--mono)}
+.po h2{margin-top:18px}
+.po ul{list-style:none;display:grid;gap:2px}
+.po li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);font-size:17px;line-height:1.45}
+.po li>span:first-child{flex:none;width:26px;font-size:20px;line-height:1.2}
+#ivertinkite{margin:22px 0 8px;scroll-margin-top:16px}
 .src{font-size:15px;color:var(--muted)}
 .refs p{font-size:16px;margin:0 0 10px}
 .refs .g{font-family:var(--mono);font-weight:800;color:var(--accent);margin-right:4px}
@@ -67,6 +73,22 @@ footer{font-size:14px;color:var(--muted);margin-top:28px;border-top:1px solid va
 <div class="kick">KŠIC · Zoom · 2026-11-10</div>
 <h1>DI mokytojams · medžiaga</h1>
 <p class="lead">Kris Vas paskaita IT mokytojams: 7 klausimai apie DI, užklausos, kainos ir šaltiniai. Nemokama, galima dalintis.</p>
+
+<div class="po" id="po-mokymu">
+<h2>Ačiū, kad buvote! Viskas, ką žadėjau</h2>
+<ul>
+ <li><span>⭐</span><span><a href="#ivertinkite" data-track="po_ivertinti">Įvertinkite ir užduokite klausimą</a> (1 min.)</span></li>
+ <li><span>📼</span><span>Mokymų įrašas: siunčia KŠIC (Tomas Stasiukaitis)</span></li>
+ <li><span>🧠</span><span><a href="antrosios-smegenys.html?src=medziaga" data-track="po_smegenys">Antrosios smegenys</a>: 6 klausimai, į kuriuos atsakius DI tampa jūsų padėjėju, 6 informatikos sritys, mano kontaktai</span></li>
+ <li><span>🗺️</span><span><a href="https://krisvas333.github.io/vaiko-zemelapis/?src=it-mokytojai" data-track="po_zemelapis">Viskas, ko išmoksta Lietuvos vaikas</a>: mokymosi žemėlapis, naudokite laisvai</span></li>
+ <li><span>🧩</span><span>3 pamokos, sukurtos gyvai (10 kl. Excel, 7 kl. garso prigimtis, gyvenimo tiesos): ⏳ įkelsiu čia netrukus</span></li>
+ <li><span>📝</span><span><a href="#bank">Užklausos</a>, kurias galite kopijuoti, ir kainos: žemiau</span></li>
+ <li><span>🧭</span><span><a href="https://krisvas333.github.io/neuron-ar/te/?src=it-mokytojai" data-track="po_te">Technologijų etiketas</a>: mano sukurtas nemokamas testas tėvams</span></li>
+ <li><span>🏫</span><span>Dirbtuvės jūsų mokykloje: kristijonas.vasiliauskas@gmail.com arba <a href="https://krisvas.lt/?src=it-mokytojai-1110" data-track="po_krisvas">krisvas.lt</a></span></li>
+</ul>
+</div>
+
+<div id="ivertinkite"></div>
 
 <div id="ml-signup"></div>
 
@@ -188,6 +210,7 @@ footer{font-size:14px;color:var(--muted);margin-top:28px;border-top:1px solid va
 })();
 </script>
 <script src="ml-form.js" defer></script>
+<script src="ivertinimas.js" defer></script>
 <script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
 </body>
 </html>
