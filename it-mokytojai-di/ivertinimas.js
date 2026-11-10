@@ -45,7 +45,7 @@
     '<div class="q"><label for="iv-fb">💬 Kas buvo naudingiausia? Ko trūko?</label></div><textarea id="iv-fb" maxlength="450"></textarea>'+
     '<div class="q"><label for="iv-q">❓ Jūsų klausimas man</label></div><textarea id="iv-q" maxlength="450" placeholder="Pvz. kaip pradėti, jei mokykla leidžia tik Copilot?"></textarea>'+
     '<input class="hp" type="text" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">'+
-    '<p class="pv">Anonimiška: be vardų, el. paštų ir slapukų. Nerašykite mokinių ar kolegų vardų. Norite asmeninio atsakymo? Palikite el. paštą formoje žemiau.</p>'+
+    '<p class="pv">Anonimiška: be vardų, el. paštų ir slapukų. Nerašykite mokinių ar kolegų vardų. Norite asmeninio atsakymo? Rašykite kristijonas.vasiliauskas@gmail.com.</p>'+
     '<button type="submit" class="send" disabled data-track="medziaga_ivertinimas">Siųsti</button><div class="msg" aria-live="polite"></div></form>';
   box.innerHTML=h;
 
