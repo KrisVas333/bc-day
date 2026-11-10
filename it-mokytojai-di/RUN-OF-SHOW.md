@@ -37,7 +37,7 @@
 | 9 | Antrosios smegenys | 11 | 15:41 | |
 | 10 | 3 lygiai | 14 | 15:44 | L1 / L2 / L3 |
 | 11 | 4 · 5 darbai šią savaitę | 15 | 15:45 | užklausų bankas |
-| 12 | Info Gynėjai | 18 | 15:48 | |
+| 12 | Info-Gynėjai | 18 | 15:48 | |
 | 13 | Rask DI klaidą | 19 | 15:49 | 1-5, 60 s |
 | 14 | 5 · Nauda | 21 | 15:51 | |
 | 15 | Prisiminkite | 24 | 15:54 | viktorina, 30 s |
@@ -49,7 +49,7 @@
 
 ## Minutės · 20 min. kelias
 
-Atidarykite su `&trukme=20`. Praleidžiamos 5 skaidrės: **Kas jūs? · Spėkite · 3 lygiai · Info Gynėjai · Prisiminkite** (rodyklė jas praleidžia, skaičius + Enter vis tiek atidaro).
+Atidarykite su `&trukme=20`. Praleidžiamos 5 skaidrės: **Kas jūs? · Spėkite · 3 lygiai · Info-Gynėjai · Prisiminkite** (rodyklė jas praleidžia, skaičius + Enter vis tiek atidaro).
 
 | Skaidrė | Min. | Laikas |
 |---|---|---|
@@ -86,6 +86,8 @@ Visa medžiaga, 11 užklausų ir šaltiniai: https://krisvas333.github.io/bc-day
 
 ## Zoom pokalbio atsarginis scenarijus (kiekviena klausimo skaidrė)
 
+Prieš pradžią paprašyk Tomo sekti Zoom pokalbį ir garsiai perskaityti 2-3 atsakymus kiekvienoje klausimo skaidrėje.
+
 | Skaidrė | Ekrane parašyta | Ką sakote |
 |---|---|---|
 | Prisijunkite | „Be telefono? Atsakykite Zoom pokalbyje." | „Telefonas nebūtinas. Pokalbis veikia lygiai taip pat." |
@@ -117,10 +119,10 @@ Pokalbio skaičius galite įvesti rankiniu būdu: klavišas **M**.
 - ⚠️ Galimas dublis: deck `it-mokytojai-antros-smegenys` (2026-11-09). Kuris rodomas?
 - ⚠️ **Be push QR ir nuorodos rodo 404.** Reikia GO.
 - ⚠️ Supabase Free: ~200 vienu metu prijungtų telefonų. Virš to veikia atsarginis sąrašas (testuota tik su 320 REST atsakymų, ne su 300 tikrų telefonų).
-- ⚠️ Patvirtinkite sakinius: „Nė vienas šių DI įrankių man nemoka." ir „Pokalbis su Tomu spalio 16 d. → 7 klausimai → agentai surinko medžiagą" (Antrosios smegenys skaidrė).
-- ⚠️ Info Gynėjai skaidrės formuluotė (pilotas mokykloms) laukia Kris'o žodžio.
+- ⚠️ Patvirtinkite sakinius: „Nė vienas šių DI įrankių man nemoka." ir „Mano 7 klausimai → agentai surinko medžiagą ir šaltinius → aš peržiūrėjau" (Antrosios smegenys skaidrė; tiesa tik po ryto peržiūros).
+- ⚠️ Info-Gynėjai skaidrės formuluotė (pilotas mokykloms) laukia Kris'o žodžio.
 - ⚠️ Dirbtuvių noras keliauja `src` lauke (`it-mokytojai-1110+dirbtuves`), nes lentelėje nėra stulpelio. Naujo stulpelio nekūrėm.
-- ⚠️ Laiškas automatiškai nesiunčiamas. Forma žada „per kelias dienas": kas nors turi išsiųsti rankiniu būdu per MailerLite.
+- ⚠️ Laiškas automatiškai nesiunčiamas. Forma laiško laiku nežada: „Visa medžiaga jau šiame puslapyje. Jei pažymėjote dirbtuves, parašysime, kai bus data."
 - ⚠️ 11 užklausų neišbandytos gyvai su ChatGPT/Claude/Gemini.
 - ⚠️ Kaina: Copilot ir Gemini amžius ir Copilot kaina skaidrėje „tikrinkite su administratoriumi" / „pagal šalį", nes `facts.md` eilutės turi ⚠️ (šaltinis 2025-10, LT skaičius netikrintas).
 - ⚠️ ES DI akto data 2027-12-02 iš advokatų kontoros santraukos; EUR-Lex neatidarytas.

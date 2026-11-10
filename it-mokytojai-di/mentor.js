@@ -10,21 +10,20 @@ var MENTOR={
 
  "Kas jūs?":{f:[
   {t:"Atsakymai be vardų. Ekrane matosi tik suma.",s:"",g:""},
-  {t:"Mokytojų mokymai veikia geriau, kai prisiriša prie konkretaus dalyko turinio. Todėl klausiame, ką dėstote.",s:"Desimone 2009; Darling-Hammond ir kt. 2017",g:"A"},
+  {t:"Mokytojų mokymai veikia geriau, kai prisiriša prie konkretaus dalyko turinio. Todėl klausiame, ką dėstote.",s:"Desimone 2009 (A); Darling-Hammond ir kt. 2017 (B)",g:"A"},
   {t:"Vienas klausimas (DI raštingumo pulsas) įrašomas anonimiškai į bendrą Lietuvos mokytojų suvestinę.",s:"",g:""}],
  e:[{t:"Mokyklos DI taisyklės",d:"Jei daug „Nežinau“ apie mokyklos DI taisykles, tai pirma IT mokytojo užduotis: paklausti direktoriaus ir pasiūlyti juodraštį.",p:"Esu informatikos mokytoja(-as). Parašyk 1 puslapio mokyklos DI naudojimo taisyklių juodraštį: kada galima, kada ne, ką daryti su vaikų duomenimis. Pažymėk vietas, kurias turi patvirtinti direktorius."}]},
 
  "Kas aš":{f:[
   {t:"Kristijonas Vasiliauskas yra Robotikos Akademijos bendrasavininkas ir kūrybos direktorius.",s:"",g:""},
-  {t:"Robotikos Akademija: 12 000+ vaikų per metus.",s:"RA kanoniniai skaičiai",g:""},
-  {t:"Dirba su ExoClass. Info Gynėjai yra jo informacinio raštingumo programa.",s:"",g:""},
+  {t:"Yra vienas iš ExoClass kūrėjų. Info-Gynėjai yra jo informacinio raštingumo programa.",s:"",g:""},
   {t:"Šiandien nieko neparduoda; įrankiai minimi kaip pavyzdžiai.",s:"",g:""}],
  e:[{t:"Disleksija ir DI",d:"DI padeda Kris'ui rašyti ir struktūruoti mintis. Mokiniams su disleksija tas pats: diktavimas, teksto skaitymas balsu, trumpesnės versijos.",p:""}]},
 
  "7 klausimai":{f:[
-  {t:"Septyni klausimai paimti iš spalio 16 d. pokalbio su KŠIC: DI, LLM, agentas, ugdymas, nauda, rizikos, kaina.",s:"",g:""},
+  {t:"Septyni klausimai: DI, LLM, agentas, ugdymas, nauda, rizikos, kaina. Renginio organizatorius Tomas Stasiukaitis; pažymėjimus išduoda Kauno ŠIC.",s:"",g:""},
   {t:"Trys rezultatai įvertinami telefone prieš ir po. Taip matome, ar paskaita ką nors pakeitė.",s:"",g:""},
-  {t:"Efektyvūs mokytojų mokymai turi aiškų tikslą, aktyvų mokymąsi ir grįžtamąjį ryšį.",s:"Darling-Hammond ir kt. 2017",g:"A"}],
+  {t:"Efektyvūs mokytojų mokymai turi aiškų tikslą, aktyvų mokymąsi ir grįžtamąjį ryšį.",s:"Darling-Hammond ir kt. 2017",g:"B"}],
  e:[{t:"Pamokos tikslas vaiko kalba",d:"Pamokos pradžioje: „Po pamokos galėsite…“ ir trys punktai. Pabaigoje mokiniai patys įsivertina 1-5.",p:"Tema: [TEMA], [N] kl. Parašyk 3 pamokos tikslus vaiko kalba, pradedant „Po pamokos galėsiu…“. Kiekvienam: kaip mokinys parodys, kad pavyko."}]},
 
  "Spėkite":{f:[
@@ -55,7 +54,7 @@ var MENTOR={
   {t:"Kris'o antrosios smegenys yra paprasti tekstiniai failai (Markdown) ir keli agentai prie jų.",s:"",g:""},
   {t:"Failai nepririšti prie vieno modelio: modelį galima pakeisti, užrašai lieka jūsų.",s:"",g:""},
   {t:"Susitikimai įrašomi tik visiems žinant ir sutinkant. Mokinių vardų ir duomenų ten nėra.",s:"",g:""},
-  {t:"Šio pristatymo turinys surinktas iš spalio 16 d. pokalbio užrašų; faktus ir šaltinius tikrino agentas, peržiūrėjo Kris.",s:"",g:""}],
+  {t:"Šis pristatymas: Kris'o 7 klausimai, medžiagą ir šaltinius surinko agentai, peržiūrėjo Kris.",s:"",g:""}],
  e:[{t:"Pradžia per 10 min.",d:"Vienas aplankas, 5 failai: pamokos, idėjos, susitikimai, užduotys, ko išmokau. Kas penktadienį 10 min. atnaujinimas.",p:"Padėk man susikurti „antrųjų smegenų“ aplanką iš paprastų tekstinių failų. Pasiūlyk 5 failus ir kiekvienam 3 eilučių šabloną. Vaikų duomenų ten nebus."}]},
 
  "3 lygiai":{f:[
@@ -72,8 +71,8 @@ var MENTOR={
  e:[{t:"5-6 kl. Scratch",d:"Ta pati užduotis 3 lygiais: A su paruoštais blokais, B standartinė, C su papildoma sąlyga.",p:"Tema: ciklai Scratch, 5 kl. Sukurk tą pačią užduotį 3 lygiais: A su paruoštų blokų sąrašu, B standartinė, C su papildoma sąlyga. Prie kiekvienos: dažniausia klaida."},
   {t:"11 kl. Python",d:"Interaktyvus testas apie sąrašus vienu HTML failu, rodomas ekrane visai klasei.",p:""}]},
 
- "Info Gynėjai":{f:[
-  {t:"Info Gynėjai yra Kris'o informacinio raštingumo programa (pilotas Šiaurės licėjuje).",s:"",g:""},
+ "Info-Gynėjai":{f:[
+  {t:"Info-Gynėjai yra Kris'o informacinio raštingumo programa (pilotas Šiaurės licėjuje).",s:"",g:""},
   {t:"Simuliacijos kuriamos su DI, tikrinamos žmonių. Žinutė skaidrėje sugalvota, adresas neegzistuoja.",s:"",g:""},
   {t:"Sukčiavimo požymiai: skubinimas, keistas adresas, per geras pasiūlymas, prašymas slaptažodžio ar kodo.",s:"",g:""}],
  e:[{t:"7-8 kl. pamoka",d:"Mokiniai gauna 6 žinutes ir pažymi įtartinas vietas, po to aptariate. Paskui patys sukuria vieną „sukčiaus“ žinutę kitai grupei.",p:"Sukurk vieno HTML failo simuliaciją 7 kl.: 6 telefono žinutės, 2 iš jų sukčių. Mokinys paspaudžia įtartinas vietas. Naudok tik sugalvotus vardus ir adresus su .example."}]},
@@ -126,7 +125,7 @@ var MENTOR={
 
  "Šaltiniai (priedas)":{f:[
   {t:"A: recenzuotas tyrimas ar teisės aktas. B: oficialus puslapis, didelė apklausa, darbo dokumentas. C: spauda, preprint.",s:"",g:""},
-  {t:"Mokymų dizainas remiasi efektyvių mokytojų mokymų požymiais.",s:"Darling-Hammond ir kt. 2017; Desimone 2009",g:"A"},
+  {t:"Mokymų dizainas remiasi efektyvių mokytojų mokymų požymiais.",s:"Desimone 2009 (A); Darling-Hammond ir kt. 2017 (B)",g:"A"},
   {t:"Kosmyna ir kt. 2025 (n = 54) yra preprint: įdomu, bet išvadų nedaryti.",s:"arXiv:2506.08872",g:"C"}],
  e:[{t:"Mokiniams",d:"Šaltinių lygius A/B/C galima naudoti ir klasėje, kai mokiniai vertina DI pateiktus šaltinius.",p:""}]}
 };

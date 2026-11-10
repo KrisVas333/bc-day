@@ -6,7 +6,7 @@ var PROMPT_L1='Esu [N] kl. informatikos mokytoja(-as). BUP siekinys: [ĮKLIJUOKI
 var OUTC=['① Vienu sakiniu paaiškinti, kas yra DI, LLM ir agentas','② Šią savaitę padaryti vieną darbą su DI savo pamokai ir jį patikrinti','③ Įvertinti riziką ir kainą: ką galima įkelti, kiek kainuoja'];
 var OUTC_SHORT=['DI, LLM, agentas','Vienas darbas su DI','Rizika ir kaina'];
 function outcParts(){return OUTC.map(function(t,i){return {k:'o'+(i+1),type:'scale',n:5,q:t+'. Ar galite tai dabar? (1 = dar ne, 5 = lengvai)'};});}
-var FQ='DI sugeneravo 5 teiginius 7 kl. informatikos testui\n1. 1 baitas = 8 bitai.\n2. Dvejetainis skaičius 1010 dešimtainėje sistemoje yra 10.\n3. „https" adreso pradžioje reiškia, kad ryšys tarp naršyklės ir svetainės šifruojamas.\n4. RAM atmintis išsaugo duomenis ir išjungus kompiuterį.\n5. Python kalboje print("Labas") ekrane parodo žodį Labas.';
+var FQ='Tarkime, DI sugeneravo 5 teiginius 7 kl. informatikos testui\n1. 1 baitas = 8 bitai.\n2. Dvejetainis skaičius 1010 dešimtainėje sistemoje yra 10.\n3. „https" adreso pradžioje reiškia, kad ryšys tarp naršyklės ir svetainės šifruojamas.\n4. RAM atmintis išsaugo duomenis ir išjungus kompiuterį.\n5. Python kalboje print("Labas") ekrane parodo žodį Labas.';
 var ACTS={
  kas:{title:'Kas šiandien Zoom\'e?',parts:[
   {k:'d',type:'multi',max:3,q:'Ką dėstote? (iki 3)',opts:['Informatika, IT','Matematika','Gamtos m., STEAM','Pradinis ugdymas','Kitas dalykas']},
@@ -24,10 +24,10 @@ var ACTS={
  lygis:{title:'Jūsų lygis',parts:[
   {k:'l',type:'choice',q:'Kuriame laiptelyje esate šiandien?',opts:['L1 · Pradedu: viena užklausa, 5 min.','L2 · Kuriu: testai, žaidimai, simuliacijos','L3 · Automatizuoju: agentai, antrosios smegenys']}]},
  klaida:{title:'Rask DI klaidą',quiz:true,parts:[
-  {k:'fq',type:'info',q:'DI sugeneravo 5 teiginius testui. Viename yra faktinė klaida.',text:FQ},
+  {k:'fq',type:'info',q:'Tarkime, DI sugeneravo 5 teiginius testui. Viename yra faktinė klaida.',text:FQ},
   {k:'kl',type:'choice',q:'Kuriame teiginyje klaida?',opts:['1 teiginys','2 teiginys','3 teiginys','4 teiginys','5 teiginys'],sendNow:true,
    okMsg:'✅ Radote! RAM yra laikina atmintis: išjungus kompiuterį duomenys dingsta. Tikrinti yra svarbiausias įgūdis.',
-   badMsg:'Klaida 4 teiginyje: RAM yra laikina atmintis, išjungus kompiuterį duomenys dingsta (išlieka diske). DI tai pasakė užtikrintai.'}]},
+   badMsg:'Klaida 4 teiginyje: RAM yra laikina atmintis, išjungus kompiuterį duomenys dingsta (išlieka diske). Klaidą įdėjome patys: DI tokias rašo užtikrintai.'}]},
  recall:{title:'Prisiminkite',quiz:true,parts:[
   {k:'a',type:'choice',q:'Kodėl DI kartais užtikrintai sako netiesą?',opts:['A · Jis tyčia meluoja','B · Jis spėja tikėtiniausius žodžius ir pats faktų netikrina','C · Internete per mažai informacijos','D · Taip būna tik nemokamoje versijoje']}]},
  next:{title:'Jūsų kitas žingsnis',next:true,parts:[

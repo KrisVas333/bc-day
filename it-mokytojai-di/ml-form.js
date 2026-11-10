@@ -24,6 +24,7 @@
     '<input class="hp" type="text" name="web" tabindex="-1" autocomplete="off" aria-hidden="true">'+
     '<label class="c w"><input type="checkbox" name="dirb"><span>Noriu praktinių dirbtuvių: susikurti savo antrąsias smegenis</span></label>'+
     '<label class="c"><input type="checkbox" name="ok" required><span>Sutinku gauti Kris Vas laiškus apie DI mokytojams. Galiu atsisakyti bet kada.</span></label>'+
+    '<p class="pv" style="font-size:15px">Duomenis tvarko Kristijonas Vasiliauskas (krisvas.lt), tik šiai medžiagai ir kvietimui į dirbtuves. Norite ištrinti? Atsakykite į bet kurį mūsų laišką.</p>'+
     '<button type="submit" data-track="medziaga_email">Siųsti</button><div class="msg" aria-live="polite"></div></form>';
   var f=box.querySelector('form'), msg=box.querySelector('.msg'), btn=f.querySelector('button');
   function say(t,c){msg.textContent=t;msg.className='msg '+(c||'');}
@@ -39,7 +40,7 @@
     fetch(URL,{method:'POST',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
       body:JSON.stringify({el_pastas:em,sutikimas:true,mokymai:'it-mokytojai-di',src:src})})
     .then(function(r){
-      if(r.ok||r.status===409){f.reset();btn.disabled=false;say('Ačiū! Įrašyta. Laišką su medžiaga atsiųsime per kelias dienas. Viskas jau yra ir šiame puslapyje.','ok');}
+      if(r.ok||r.status===409){f.reset();btn.disabled=false;say('Ačiū! Visa medžiaga jau šiame puslapyje. Jei pažymėjote dirbtuves, parašysime, kai bus data.','ok');}
       else{btn.disabled=false;say('Nepavyko. Pabandykite dar kartą.','err');}
     },function(){btn.disabled=false;say('Nėra ryšio. Pabandykite dar kartą.','err');});
   });
