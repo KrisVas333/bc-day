@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DI mokytojams · medžiaga</title>
+<meta name="description" content="Kris Vas paskaitos IT mokytojams (KŠIC, Zoom, 2026-11-10) medžiaga: skaidrės, 11 užklausų, kainos, rizikos ir šaltiniai. Nemokama, galima dalintis.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+<!-- Mokytojo puslapis po KŠIC Zoom paskaitos. ☀️ LIGHT, telefonas pirmiausia. Užklausos iš acts.js (tas pats bankas kaip telefono kambaryje).
+     El. paštas → ml-form.js → Supabase mokytojai_el_pastai (mokymai = it-mokytojai-di, src = ?src arba it-mokytojai-1110, +dirbtuves jei pažymėta).
+     kv-track data-mode="full": Clarity tik po „Leisti". -->
+<style>
+:root{--ground:#FFFFFF;--surface:#F7F7F5;--ink:#0A0A0A;--muted:#595959;--line:#E5E2DE;--accent:#D90429;--ok:#1a7f37;
+ --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;--body:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--r:4px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.6;letter-spacing:.01em;padding:24px 16px calc(48px + env(safe-area-inset-bottom,0px));max-width:620px;margin:0 auto;overflow-x:hidden}
+a{color:var(--accent);font-weight:600;word-break:break-word}
+.kick{font-family:var(--mono);font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:800}
+h1{font-family:var(--mono);font-size:28px;line-height:1.15;font-weight:800;margin:6px 0 10px}
+h2{font-family:var(--mono);font-size:21px;line-height:1.25;font-weight:800;margin:34px 0 12px;padding-top:14px;border-top:2px solid var(--ink)}
+h3{font-family:var(--mono);font-size:18px;font-weight:800;margin:0 0 4px}
+p{margin:0 0 12px}
+.lead{color:var(--muted)}
+.btns{display:grid;gap:12px;margin:18px 0}
+.btn{display:flex;align-items:center;gap:12px;min-height:60px;padding:14px 16px;border:2px solid var(--ink);border-radius:var(--r);background:var(--ground);color:var(--ink);text-decoration:none;font-weight:700;font-size:18px;font-family:var(--body);cursor:pointer;text-align:left;width:100%}
+.btn.main{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn small{display:block;font-weight:400;font-size:15px;opacity:.9}
+.btn span.i{font-size:24px;flex:none}
+#ml-signup{margin:8px 0 4px}
+#shared{font-size:16px;color:var(--accent);font-weight:700;min-height:1.4em;margin-top:-4px}
+.g7{display:grid;gap:10px}
+.g7 .c{border:2px solid var(--ink);border-radius:var(--r);padding:12px 14px;background:var(--surface)}
+.g7 .c b.n{font-family:var(--mono);color:var(--accent);margin-right:6px}
+.g7 .c p{margin:4px 0 0;font-size:17px}
+.g7 .c .k{color:var(--muted);font-size:16px}
+.steps{list-style:none;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+.steps li:before{content:counter(s);font-family:var(--mono);font-weight:800;color:var(--accent);font-size:20px;width:22px;flex:none}
+.lv{display:inline-block;font-family:var(--mono);font-size:14px;font-weight:800;padding:1px 8px;border-radius:var(--r);border:2px solid var(--ink);margin-right:6px;vertical-align:middle;background:#fff}
+.lv.l2{background:var(--ink);color:#fff}.lv.l3{background:var(--accent);border-color:var(--accent);color:#fff}
+details{border:2px solid var(--ink);border-radius:var(--r);margin:10px 0;background:#fff}
+summary{min-height:52px;display:flex;align-items:center;gap:6px;padding:8px 12px;font-weight:700;font-size:18px;cursor:pointer;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";margin-left:auto;font-family:var(--mono);font-weight:800;color:var(--accent);font-size:22px}
+details[open]>summary:after{content:"−"}
+.pc{border-top:1px solid var(--line);padding:12px}
+.pc b{display:block;margin-bottom:6px}
+pre{font-family:var(--mono);font-size:15px;line-height:1.5;white-space:pre-wrap;word-break:break-word;background:var(--ink);color:#fff;border-radius:var(--r);padding:12px}
+.copy{min-height:48px;margin-top:8px;font-family:var(--mono);font-size:16px;font-weight:800;padding:10px 14px;border:2px solid var(--ink);border-radius:var(--r);background:#fff;color:var(--ink);cursor:pointer}
+.cost{display:grid;gap:10px}
+.cost .c{border:2px solid var(--ink);border-radius:var(--r);padding:12px 14px}
+.cost .c p{margin:2px 0;font-size:17px}
+.light{display:grid;gap:8px}
+.light div{border:2px solid var(--ink);border-radius:var(--r);padding:10px 14px;font-size:17px}
+.note{background:var(--surface);border-left:4px solid var(--accent);padding:12px 14px;border-radius:var(--r);font-size:16px;color:#333;margin:20px 0}
+.coi{border:2px solid var(--accent);border-radius:var(--r);padding:12px 14px;font-size:16px;margin:14px 0}
+.coi b{color:var(--accent);font-family:var(--mono)}
+.src{font-size:15px;color:var(--muted)}
+.refs p{font-size:16px;margin:0 0 10px}
+.refs .g{font-family:var(--mono);font-weight:800;color:var(--accent);margin-right:4px}
+footer{font-size:14px;color:var(--muted);margin-top:28px;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="kick">KŠIC · Zoom · 2026-11-10</div>
+<h1>DI mokytojams · medžiaga</h1>
+<p class="lead">Kris Vas paskaita IT mokytojams: 7 klausimai apie DI, užklausos, kainos ir šaltiniai. Nemokama, galima dalintis.</p>
+
+<div id="ml-signup"></div>
+
+<div class="btns">
+ <a class="btn main" href="index.html?src=medziaga" data-track="medziaga_deck"><span class="i">🖥️</span><span>Atidaryti skaidres<small>Rodyklės → ← · K = papildomi faktai ir pavyzdžiai</small></span></a>
+ <button class="btn" id="share" type="button" data-track="medziaga_share"><span class="i">🔗</span><span>Dalintis su kolega<small>Nusiųskite šią nuorodą</small></span></button>
+</div>
+<div id="shared" aria-live="polite"></div>
+
+<h2>7 atsakymai vienu sakiniu</h2>
+<div class="g7">
+ <div class="c"><h3><b class="n">1</b>Kas yra DI?</h3><p>Programa, kuri taisykles randa pati iš pavyzdžių, o ne gauna jas parašytas.</p><p class="k">Kaip vaikas, kuris pamatė 1 000 šunų ir dabar atpažįsta šunį.</p></div>
+ <div class="c"><h3><b class="n">2</b>Kas yra LLM?</h3><p>Didelis kalbos modelis spėja, kokia teksto dalis tikėtiniausiai eis toliau. Todėl kalba sklandžiai ir gali užtikrintai klysti.</p><p class="k">Kaip telefono klaviatūra, kuri siūlo kitą žodį, tik daug didesnė.</p></div>
+ <div class="c"><h3><b class="n">3</b>Kas yra agentas?</h3><p>Pokalbių robotas atsako, agentas daro: gauna tikslą, susiplanuoja žingsnius, naudoja įrankius ir praneša rezultatą.</p><p class="k">Kaip praktikantas su raktais. Kokius raktus duoti, sprendžiate jūs.</p></div>
+ <div class="c"><h3><b class="n">4</b>Kaip naudoti ugdymui?</h3><p>Užduotis iš BUP siekinio, ta pati užduotis 3 lygiais, interaktyvus testas, grįžtamasis ryšys pagal rubriką, simuliacija. Užklausos žemiau.</p></div>
+ <div class="c"><h3><b class="n">5</b>Kokia nauda?</h3><p>Sutaupytas laikas ir geresnis mokymasis, kai DI klausia ir veda užuominomis, o šalia yra mokytojas.</p></div>
+ <div class="c"><h3><b class="n">6</b>Kokios rizikos?</h3><p>Užtikrintos klaidos, darbas už mokinį, vaikų duomenys, amžiaus ribos ir begalinis sistemos tobulinimas.</p></div>
+ <div class="c"><h3><b class="n">7</b>Kiek kainuoja?</h3><p>Pradėti galima nemokamai. Mokamas asmeninis planas nuo maždaug 17-20 $ per mėnesį. Svarbiausia kaina yra jūsų laikas: 10 min. per dieną.</p></div>
+</div>
+
+<h2>Pradėkite nuo 10 minučių</h2>
+<ol class="steps">
+ <li>Laikmatis 10 min.</li>
+ <li>Viena užklausa iš žemiau esančio sąrašo.</li>
+ <li>Išspręskite ir patikrinkite patys, tada panaudokite pamokoje.</li>
+ <li>Užsirašykite, kas suveikė. Laikmatis baigėsi: uždarote.</li>
+</ol>
+
+<h2>Užklausos (kopijuokite)</h2>
+<p class="src">[N] = klasė · [ĮKLIJUOKITE] = siekinys iš emokykla.lt arba tema savais žodžiais. Vaikų vardų ir duomenų į DI nededame.</p>
+<div id="bank"></div>
+
+<h2>Kiek kainuoja (abėcėlės tvarka, ne reitingas)</h2>
+<div class="cost">
+ <div class="c"><h3>ChatGPT</h3><p>Yra nemokamas planas. Mokamų planų kaina rodoma pagal šalį: <a href="https://chatgpt.com/pricing" rel="noopener">chatgpt.com/pricing</a>.</p><p>„ChatGPT for Teachers" skirtas JAV mokytojams, Lietuvoje neprieinamas. Edu planas skirtas universitetams.</p></div>
+ <div class="c"><h3>Claude</h3><p>Yra nemokamas planas. Pro: 17 $/mėn. metinis arba 20 $ mėnesinis. Naudotojai 18+.</p></div>
+ <div class="c"><h3>Gemini + NotebookLM</h3><p>Nemokamai visose Google Workspace for Education versijose. Amžius: Google nurodo „13 arba jūsų šalies riba“; mokyklos paskyroje įjungia administratorius.</p></div>
+ <div class="c"><h3>Microsoft Copilot</h3><p>Copilot Chat per mokyklos Microsoft 365 paskyrą (A1/A3/A5). Kainą ir amžiaus sąlygas tikrinkite oficialiame Microsoft Education puslapyje.</p></div>
+</div>
+<p class="src" style="margin-top:8px">Kainos JAV doleriais, be PVM, tikrinta 2026-11-10 oficialiuose puslapiuose. Kainos keičiasi: prieš mokėdami pasitikrinkite.</p>
+<div class="coi"><b>INTERESAI ·</b> Kristijonas Vasiliauskas yra Robotikos Akademijos bendrasavininkas ir kūrybos direktorius, dirba su ExoClass, Info Gynėjai yra jo programa. Įrankiai paminėti kaip pavyzdžiai, ne reitingas. Nė vienas šių DI įrankių jam nemoka.</div>
+
+<h2>Duomenų šviesoforas</h2>
+<div class="light">
+ <div>🟢 <b>Galima:</b> bendra medžiaga, temos, BUP siekiniai, jūsų pačių tekstai.</div>
+ <div>🟡 <b>Atsargiai:</b> nuasmeninti mokinių darbai (be vardo, be detalių, iš kurių atpažintumėte).</div>
+ <div>🔴 <b>Niekada:</b> vardai, pažymiai, sveikata, nuotraukos, kontaktai.</div>
+</div>
+<p style="margin-top:12px">Pažymį visada deda mokytojas. Pagal ES DI aktą švietimas (priėmimas, vertinimas, egzaminų stebėsena) yra didelės rizikos sritis; prievolės taikomos nuo 2027-12-02.</p>
+
+<h2>Šaltiniai</h2>
+<p class="src">A recenzuotas tyrimas ar teisės aktas · B oficialus puslapis, didelė apklausa, darbo dokumentas · C spauda, preprint</p>
+<div class="refs">
+ <p><span class="g">A</span> ES DI aktas, 3 str. (DI apibrėžimas): <a href="https://artificialintelligenceact.eu/article/3/" rel="noopener">artificialintelligenceact.eu/article/3</a></p>
+ <p><span class="g">A</span> ES DI aktas, III priedas, 3 p. (švietimas): <a href="https://artificialintelligenceact.eu/annex/3/" rel="noopener">artificialintelligenceact.eu/annex/3</a></p>
+ <p><span class="g">B</span> Reglamentas (ES) 2026/1744 (Digital Omnibus), III priedo prievolės nuo 2027-12-02: <a href="https://www.garrigues.com/en_GB/garrigues-digital/ai-digital-omnibus-regulation-has-been-published-redefining-deadlines-and" rel="noopener">Garrigues santrauka</a></p>
+ <p><span class="g">B</span> Google Machine Learning Crash Course, LLM: <a href="https://developers.google.com/machine-learning/crash-course/llm" rel="noopener">developers.google.com/machine-learning/crash-course/llm</a></p>
+ <p><span class="g">B</span> Anthropic (2024-12-19), Building effective agents: <a href="https://www.anthropic.com/engineering/building-effective-agents" rel="noopener">anthropic.com/engineering/building-effective-agents</a></p>
+ <p><span class="g">B</span> Gallup ir Walton Family Foundation (2025-06-25): 5,9 val./sav. sutaupo kas savaitę DI naudojantys mokytojai (JAV, n = 2 232, jų pačių vertinimas): <a href="https://news.gallup.com/poll/691967/teachers-using-ai-tools-save-hours-week.aspx" rel="noopener">news.gallup.com</a></p>
+ <p><span class="g">B</span> Bastani ir kt. (2025), PNAS 122(26) e2422633122: su užuominomis pratybose +127 %, egzamine nuostolio nėra; su atsakymais egzamine −17 %. Skaičiai per <a href="https://knowledge.wharton.upenn.edu/article/without-guardrails-generative-ai-can-harm-education" rel="noopener">Wharton santrauką</a> · <a href="https://doi.org/10.1073/pnas.2422633122" rel="noopener">DOI</a></p>
+ <p><span class="g">A</span> Kestin ir kt. (2025), Scientific Reports 15:17458: specialiai sukurtas DI tutorius, daugiau nei 2× prieaugis (Harvardas, fizika, n = 194): <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12179260/" rel="noopener">PMC12179260</a></p>
+ <p><span class="g">B</span> Pasaulio bankas (2025), Nigerija: DI tutorius po pamokų, apie 0,3 SD (darbo dokumentas): <a href="https://blogs.worldbank.org/en/education/From-chalkboards-to-chatbots-Transforming-learning-in-Nigeria" rel="noopener">blogs.worldbank.org</a></p>
+ <p><span class="g">C</span> Kosmyna ir kt. (2025), Your Brain on ChatGPT, preprint, n = 54: <a href="https://arxiv.org/abs/2506.08872" rel="noopener">arXiv:2506.08872</a></p>
+ <p><span class="g">A</span> BDAR 8 str. (vaiko sutikimas): <a href="https://gdpr-text.com/lt/read/article-8/" rel="noopener">gdpr-text.com/lt/read/article-8</a></p>
+ <p><span class="g">B</span> Kainos ir amžius: <a href="https://claude.com/pricing" rel="noopener">claude.com/pricing</a> · <a href="https://www.anthropic.com/legal/consumer-terms" rel="noopener">Anthropic sąlygos</a> · <a href="https://knowledge.workspace.google.com/admin/getting-started/editions/quickstart-guide-to-gemini-and-notebooklm-for-education" rel="noopener">Google Workspace for Education gidas</a> · <a href="https://support.google.com/gemini/answer/13278668" rel="noopener">Gemini amžius</a> · <a href="https://www.microsoft.com/en-us/education/products/copilot-in-education" rel="noopener">Microsoft Copilot in Education</a> · <a href="https://openai.com/index/chatgpt-for-teachers/" rel="noopener">ChatGPT for Teachers</a> (tikrinta 2026-11-10)</p>
+ <p><span class="g">B</span> Lietuvoje: „DI naudojimo bendrojo ugdymo mokyklose gairės" (rekomendacinės): <a href="https://emokykla.lt/upload/media/public/Gair%C4%97s/Mokykla_DI_amziuje_bukletas_01-16.pdf" rel="noopener">emokykla.lt PDF</a></p>
+ <p><span class="g">A</span> Darling-Hammond L., Hyler M. E., Gardner M. (2017). Effective Teacher Professional Development. Learning Policy Institute. · Desimone L. M. (2009). Educational Researcher 38(3). Mokymų dizaino pagrindas.</p>
+</div>
+
+<div class="note">⚗️ <b>Eksperimentinis prototipas.</b> Šį puslapį sukūriau su dirbtiniu intelektu. Jis gali klysti, suklastoti detalę arba rodyti pasenusius duomenis, todėl naudokite jį kaip pokalbio pradžią, ne kaip galutinę tiesą. Svarbius dalykus pasitikrinkite oficialiuose šaltiniuose. Nemokama ir kuriama atvirai. Radote klaidą ar netikslumą? Parašykite, taisau greitai: <a href="https://krisvas.lt" rel="noopener">krisvas.lt</a><br>Kristijonas Vasiliauskas</div>
+
+<footer>© Kris Vas 2026 · galima naudoti ir dalintis mokymo tikslais, nurodant autorių (CC BY-NC 4.0) · krisvas.lt</footer>
+
+<script src="acts.js"></script>
+<script>
+(function(){
+ function copyText(t,btn){function done(){btn.textContent='✅ Nukopijuota';setTimeout(function(){btn.textContent='Kopijuoti';},1600);try{if(window.bt)window.bt('medziaga_copy',{});}catch(e){}}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fb);}else fb();
+  function fb(){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){btn.textContent='Pažymėkite ir kopijuokite';}document.body.removeChild(ta);}}
+ var B=document.getElementById('bank'),L={l1:'Pradedu · nemokamai, 5 min.',l2:'Kuriu · 20 min.',l3:'Automatizuoju · kas savaitę'};
+ if(window.BANK)['l1','l2','l3'].forEach(function(lv){var d=document.createElement('details');if(lv==='l1')d.open=true;
+  d.innerHTML='<summary><span class="lv '+lv+'">'+lv.toUpperCase()+'</span>'+L[lv]+'</summary>';
+  BANK.filter(function(x){return x[0]===lv;}).forEach(function(x){var c=document.createElement('div');c.className='pc';var b=document.createElement('b');b.textContent=x[1];var p=document.createElement('pre');p.textContent=x[2];
+   var btn=document.createElement('button');btn.className='copy';btn.type='button';btn.textContent='Kopijuoti';btn.onclick=function(){copyText(x[2],btn);};c.appendChild(b);c.appendChild(p);c.appendChild(btn);d.appendChild(c);});
+  B.appendChild(d);});
+ var s=document.getElementById('share'),o=document.getElementById('shared');
+ var url='https://krisvas333.github.io/bc-day/it-mokytojai-di/medziaga.html?src=dalintis';
+ s.addEventListener('click',function(){
+  if(navigator.share){navigator.share({title:'DI mokytojams · medžiaga',text:'Nemokama medžiaga apie DI mokytojams: užklausos, kainos, šaltiniai.',url:url}).catch(function(){});return;}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){o.textContent='Nuoroda nukopijuota.';},function(){o.textContent=url;});}
+  else o.textContent=url;
+ });
+})();
+</script>
+<script src="ml-form.js" defer></script>
+<script src="https://krisvas333.github.io/neuron-ar/kv/kv-track.js" data-mode="full" defer></script>
+</body>
+</html>
