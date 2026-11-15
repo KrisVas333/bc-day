@@ -360,3 +360,26 @@ var RD_SURVEY = {
   room: ['Tėvai, kurie mini draugus, visi rekomenduoja. Tėvai, kuriems trūko informacijos, vertina žemiau (NPS +64).', 'Parents who mention friends all recommend. Parents who lacked information score lower (NPS +64).'],
   foot: ['Šaltinis: „Stovyklų tėvų apklausa 2025 m.“, 741 atsakymas, suskaičiuota 2026-11-16 (A). Atvirų atsakymų dalys = raktažodžių skaičiavimas, apytiksliai ⚠️. 2026 m. vasaros tėvų apklausos nerasta ❓ (2026 m. turim tik mentorių formas: 510, vid. 8,99). Kitur minėtas NPS +86,4 skiriasi nuo šio perskaičiavimo ⚠️.', 'Source: "Camp parent survey 2025", 741 answers, counted 2026-11-16 (A). Open-answer shares = a keyword count, approximate ⚠️. No summer 2026 parent survey found ❓ (for 2026 we only have mentor forms: 510, mean 8.99). The NPS +86.4 quoted elsewhere differs from this recount ⚠️.']
 };
+
+/* v9: dronai kaip galimas priedas (modelis ir kaina ❓) */
+RD_X.dog = { risk: ['Idėja, ne bestseleris. R1 valdo tik mentorius už 2 m linijos. Dronai: tik viduje arba su tinkleliu; lauke galioja dronų taisyklės ❓ teisininkas; modelis ir kaina ❓.', 'An idea, not a bestseller: all RA dogs in one place, one session. Only the mentor drives R1 behind a 2 m line. Drones: indoors or netted; outdoor rules ❓ lawyer; model, price ❓.'] };
+
+/* v10 (Kris 2026-11-16): paruoštos Matata pamokos. Šaltinis: wiki/research/matata-teaching-materials-2026-11.md (PDF atidaryti 11-15; skaičiai A, valandos B ⚠️) */
+var LD = { ac: 'https://jjrorwxhlpoolo5m.ldycdn.com/11.+MatataStudio+Activity+Cards+for+VinciBot-Sample-aidlrBpiKnllqSRnliinmplkp.pdf?dp=', m1: 'https://iirorwxhlpoolo5m.ldycdn.com/12.VinciBot+Teacher+Manual++Book120240702-Sample-aidloBpiKnllqSRnljijrokko.pdf?dp=', m2: 'https://rrrorwxhlpoolo5m.ldycdn.com/13.VinciBot+Teacher+Manual+Book+220240702-Sample-aidlqBpiKnllqSRnlkimlrpkq.pdf?dp=', bm: 'https://jjrorwxhlpoolo5m.ldycdn.com/14.VinciBot+Building+Teacher+Manual-Sample-aidloBpiKnllqSRnlkiinopkq.pdf?dp=', av: 'https://iirorwxhlpoolo5m.ldycdn.com/15.Activity+Cards+for+AI+Vision+Kit-Sample-aidllBpiKnllqSRnlkijnpkkq.pdf?dp=', tb: 'https://rrrorwxhlpoolo5m.ldycdn.com/10.+MatataStudio+Activity+Cards+for+Tale-Bot+Pro-Sample-aidloBpiKnllqSRnliiimmkkq.pdf?dp=', lp: 'https://www.matatastudio.com/lesson-plan.html', hub: 'https://www.matatastudio.com/teaching-materials.html' };
+var RD_LESS = {
+  cup: { t: ['Pamokos jau parašytos (anglų k.):', 'Lessons already written (in English):'], l: [{ u: LD.m1, n: ['18 pamokų ≈ 18 val. ⚠️ kodas', '18 lessons ≈ 18 h ⚠️ coding'] }, { u: LD.bm, n: ['12 pamokų ≈ 9 val. ⚠️ konstravimas', '12 lessons ≈ 9 h ⚠️ building'] }, { u: LD.ac, n: ['75 veiklų kortelės', '75 activity cards'] }] },
+  vai: { t: ['Pamokos jau parašytos (anglų k.):', 'Lessons already written (in English):'], l: [{ u: LD.m2, n: ['5 DI pamokos + 2 veiklos, trukmė ❓', '5 AI lessons + 2 activities, length ❓'] }, { u: LD.av, n: ['AI Vision: 40 kortelių', 'AI Vision: 40 cards'] }] },
+  tale: { t: ['Medžiagos mažiau nei VinciBot (anglų k.):', 'Less material than for VinciBot (in English):'], l: [{ u: LD.tb, n: ['pavyzdyje 6 veiklos, po 1–2 pamokos; visas kiekis ❓', '6 activities in the sample, 1–2 lessons each; full count ❓'] }, { u: LD.lp, n: ['pamokų planai: 3 PDF ⚠️', 'lesson plans: 3 PDFs ⚠️'] }] }
+};
+var RD_LESS_ALL = {
+  h: ['Programą sukurti lengva: pamokos jau parašytos, mums lieka išversti ir pritaikyti', 'Building the programme is easy: the lessons are written, we translate and adapt'],
+  rows: [
+    [LD.m1, ['<b>VinciBot, 1 vadovas:</b> 18 pamokų po 60 min. ≈ 18 val. ⚠️ · kodas ir robotika', '<b>VinciBot, manual 1:</b> 18 lessons of 60 min ≈ 18 h ⚠️ · coding and robotics']],
+    [LD.m2, ['<b>VinciBot, 2 vadovas:</b> 5 pamokos + 2 veiklos · DI: kalba, gestai, objektai · trukmė ❓', '<b>VinciBot, manual 2:</b> 5 lessons + 2 activities · AI: speech, gestures, objects · length ❓']],
+    [LD.bm, ['<b>Konstravimas (Creator Kit):</b> 12 pamokų po 45 min. ≈ 9 val. ⚠️', '<b>Building (Creator Kit):</b> 12 lessons of 45 min ≈ 9 h ⚠️']],
+    [LD.ac, ['<b>Veiklų kortelės:</b> 75 veiklos, 5 etapai A–E · AI Vision: 40 kortelių', '<b>Activity cards:</b> 75 activities, 5 stages A–E · AI Vision: 40 cards']],
+    [LD.tb, ['<b>Tale-Bot Pro:</b> pavyzdyje 6 veiklos po 1–2 pamokas; mokytojo vadovo nerasta ❓', '<b>Tale-Bot Pro:</b> 6 activities in the sample, 1–2 lessons each; no teacher manual found ❓']]
+  ],
+  sum: ['<b>VinciBot iš viso: 35 pamokos ≈ 27+ val. ⚠️ + 75 kortelės.</b> 5 dienų stovyklai reikia ~15–20 val.', '<b>VinciBot total: 35 lessons ≈ 27+ h ⚠️ + 75 cards.</b> A 5-day camp needs ~15–20 h.'],
+  note: ['Nemokamai atsisiunčiami tik pavyzdžiai; pilni rinkiniai per atstovą (Baltic Orbis) ❓ ar jau turim. Viskas anglų k., lietuviškai nėra; versti galim kaip oficialūs atstovai (Kris 11-15).', 'Only samples download for free; full sets come via the distributor (Baltic Orbis) ❓ do we already have them. All in English, nothing in Lithuanian; we may translate as official representatives (Kris 11-15).']
+};

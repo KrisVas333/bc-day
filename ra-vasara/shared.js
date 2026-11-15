@@ -566,3 +566,10 @@ var RV_GEAR = [
     if (c.id === 'teen') c.gear = ['Jokios naujos įrangos. Praktikoje po 2 praktikantus prie vieno mentoriaus', 'No new equipment. In practice 2 trainees per mentor'];
   });
 })();
+
+/* v8 (Kris 2026-11-16): galimas priedas šunų ir R1 stovyklai: dronai */
+(function () {
+  RV_CONCEPTS.forEach(function (c) {
+    if (c.id === 'dog') c.acts[1] = ['Paieškos misija lauke. Galimas priedas: maži dronai ieško iš oro', 'Outdoor search mission. Possible add-on: small drones search from the air'];
+  });
+})();
