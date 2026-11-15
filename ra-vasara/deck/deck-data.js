@@ -289,3 +289,32 @@ RD_LINKS.detox = [{ u: 'https://krisvas333.github.io/neuron-ar/te/apie/', n: ['T
 /* v5.1: mentorių akademija 16–20 m. */
 RD_X.teen = { risk: ['Mažina mentorių sąnaudas, bet praktikantas neskaičiuojamas į mentorių santykį. Nuo 18 m. reikia teistumo patikros; socialinės valandos tik moksleiviams; darbo teisė ❓ teisininkas.', 'It lowers mentor cost, but a trainee is not counted in the mentor ratio. From 18 a background check is needed; social hours apply to school pupils only; labour law ❓ lawyer.'] };
 RD_CMP.teen = ['Camp Invention: paaugliai moka $210 už lyderystės praktiką. Sudbury (Kanada) $215 už 4 sav. (ten 13–16 m., pas mus 16–20 m.). LT sąraše nėra.', 'Camp Invention: teens pay $210 for a leadership internship. Sudbury (Canada) $215 for 4 weeks (age 13–16 there, 16–20 here). None on our LT list.'];
+
+/* v6 (Kris 2026-11-16): Baltic Orbis išankstinė sąskaita BOISF3508, 2026-11-14 (A, mūsų dokumentas); PVM 21 % perskaičiuota */
+var RD_PL = [
+  { i: 'media/talebot-1.jpg', n: ['Tale-Bot Pro (3+)', 'Tale-Bot Pro (3+)'], a: '€123,14', b: '€149,00', eu: ['€81–135 ⚠️', '€81–135 ⚠️'], us: '$99,99' },
+  { i: 'media/talebot-2.jpg', n: ['Tale-Bot Pro papildymas (Activity Box)', 'Tale-Bot Pro add-on (Activity Box)'], a: '€40,50', b: '€49,01', eu: ['❓', '❓'], us: '❓' },
+  { i: 'media/vincibot-1.jpg', n: ['VinciBot (8+)', 'VinciBot (8+)'], a: '€150,00', b: '€181,50', eu: ['€86 be PVM (DE B2B)', '€86 ex VAT (DE B2B)'], us: '$99,99' },
+  { i: 'media/ai-vision-1.jpg', n: ['DI plėtinys (AI Vision Kit)', 'AI Vision Kit'], a: '€62,81', b: '€76,00', eu: ['€45,90 be PVM', '€45.90 ex VAT'], us: '$49,99' },
+  { i: 'media/creator-kit-2.jpg', n: ['Išradėjo rinkinys (Inventor Kit)', 'Inventor Kit'], a: '€62,81', b: '€76,00', eu: ['€55,66 be PVM', '€55.66 ex VAT'], us: '$49,99' },
+  { i: 'media/creator-kit-1.jpg', n: ['Kūrėjo rinkinys (Creator Kit)', 'Creator Kit'], a: '€61,16', b: '€74,00', eu: ['€55,66 be PVM', '€55.66 ex VAT'], us: '$49,99' },
+  { i: 'media/vincibot-2.jpg', n: ['MatataController valdiklis', 'MatataController'], a: '€62,81', b: '€76,00', eu: ['❓', '❓'], us: '❓' },
+  { i: '', n: ['Klasės rinkiniai (6 vnt.)', 'Classroom sets (6 units)'], a: '❓', b: '❓', eu: ['Tale €699 (PT) · Vinci €413,80 be PVM ⚠️', 'Tale €699 (PT) · Vinci €413.80 ex VAT ⚠️'], us: '$649,99 · $549,99' }
+];
+var RD_PL_NOTE = ['Kainos RA už 1 vnt.: Baltic Orbis išankstinė sąskaita 2026-11-14 (A). Klasės rinkinių ir kainų už 100 / 1 000 vnt. sąskaitoje nėra ❓.', 'RA prices per unit: the Baltic Orbis pro forma invoice of 2026-11-14 (A). Classroom sets and prices for 100 / 1,000 units are not on the invoice ❓.'];
+var RD_PL_FLAG = ['<b>⚠️ Ką rodo sąskaita:</b> Tale-Bot Pro su PVM = €149, tiek pat kiek LT mažmena. VinciBot €181,50 su PVM, o svetainėje €159. Perpardavėjo nuolaidos šioje sąskaitoje nematyti: ją reikia gauti raštu iki 12-01 ❓.', '<b>⚠️ What the invoice shows:</b> Tale-Bot Pro incl VAT = €149, the same as LT retail. VinciBot €181.50 incl VAT, while the site says €159. No reseller discount is visible on this invoice: get it in writing by 12-01 ❓.'];
+var RD_OTHER = [
+  { i: '', t: ['<b>Šuo, pigi:</b> Petoi Bittle X ~$279 (JAV), 10+. ES kaina ❓', '<b>Dog, cheaper:</b> Petoi Bittle X ~$279 (US), 10+. EU price ❓'], u: 'https://www.petoi.com', l: 'petoi.com' },
+  { i: '', t: ['<b>Šuo, vidutinė:</b> XGO-Mini2 €1 151', '<b>Dog, mid:</b> XGO-Mini2 €1,151'], u: 'https://www.xgorobot.com', l: 'xgorobot.com' },
+  { i: 'img/dogs1.jpg', t: ['<b>Šuo, brangi:</b> Unitree Go2 Air €2 699', '<b>Dog, premium:</b> Unitree Go2 Air €2,699'], u: 'https://www.unitree.com/go2', l: 'unitree.com/go2' },
+  { i: 'img/c-humanoid.jpg', t: ['<b>Humanoidas R1:</b> Air $4 900, R1 $5 900. RA jau turi', '<b>R1 humanoid:</b> Air $4,900, R1 $5,900. RA owns one'], u: 'https://www.unitree.com/R1', l: 'unitree.com/R1' },
+  { i: 'img/c-duck.jpg', t: ['<b>Antis Microduck:</b> $399, surinkta', '<b>Microduck:</b> $399, assembled'], u: 'https://www.youtube.com/watch?v=reiTh7K4KSc', l: 'video' },
+  { i: 'img/c-reachy.jpg', t: ['<b>Reachy Mini:</b> Lite $399, belaidis $499, ~90 d.', '<b>Reachy Mini:</b> Lite $399, Wireless $499, ~90 days'], u: 'https://pollen-robotics.com/reachy-mini/', l: 'pollen-robotics.com' },
+  { i: '', t: ['<b>Open Duck Mini:</b> dalys < $400 ⚠️, rinkinio nėra', '<b>Open Duck Mini:</b> parts < $400 ⚠️, no kit'], u: 'https://github.com/apirrone/Open_Duck_Mini', l: 'github' }
+];
+var RD_MERCH6 = [
+  { n: ['Marškinėliai', 'T-shirt'], p: '€15–18' }, { n: ['Džemperis', 'Hoodie'], p: '€29–35' },
+  { n: ['Gertuvė · pietų dėžutė', 'Bottle · lunch box'], p: '€12–15 · €9–12' }, { n: ['Kuprinė · kepurė', 'Backpack · cap'], p: '€25–35 · €10–12' },
+  { n: ['Lipdukai, ženkliukai, kortelės', 'Stickers, pins, cards'], p: '€2–9' }, { n: ['Pliušiniai žaislai', 'Plush toys'], p: '€15–22' }
+];
+var RD_MERCH6_NOTE = ['DI vizualizacija, ne tikras produktas. Dar: išradėjo žurnalas €6–9, pieštukai €3–6, spalvinimo knyga €5–8. Kainos 🅰️; savikaina ~pusė ⚠️; kiek tėvų perka: ❓.', 'AI mock-up, not a real product. Also: an inventor\'s journal €6–9, pencils €3–6, a colouring book €5–8. Prices 🅰️; unit cost ~half ⚠️; how many parents buy: ❓.'];
