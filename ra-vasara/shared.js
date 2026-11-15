@@ -573,3 +573,18 @@ var RV_GEAR = [
     if (c.id === 'dog') c.acts[1] = ['Paieškos misija lauke. Galimas priedas: maži dronai ieško iš oro', 'Outdoor search mission. Possible add-on: small drones search from the air'];
   });
 })();
+
+/* v9 (Kris 2026-11-16): 17-ta koncepcija: Info Gynėjų stovykla (saugus internetas + kompiuterio pagrindai) */
+(function () {
+  var cyber = { id: 'cyber', em: '🛡️', img: 'img/c-cyber.jpg', fit: '#FFFFFF',
+    n: ['Info Gynėjų stovykla: saugus internetas ir kompiuterio pagrindai', 'Info Defenders camp: online safety and computer basics'],
+    one: ['Vaikas išmoksta saugiai naudotis kompiuteriu, internetu, soc. tinklais ir DI. 5 dienos = 5 Gynėjo ženkleliai.', 'The child learns to use a computer, the internet, social media and AI safely. 5 days = 5 Defender badges.'],
+    age: ['6–8 m. ir 9–12 m.', 'Age 6–8 and 9–12'], grp: ['14 vaikų', '14 kids'], ratio: ['1 : 7', '1 : 7'],
+    prices: [['149', ['mokyklos kompiuteriai, 16 vaikų', 'school PCs, 16 kids']], ['189', ['14 vaikų, 2 mentoriai', '14 kids, 2 mentors']], ['239', ['+ tėvų vakaras ir 4 sav. online klubas', '+ a parents\' evening and a 4-week online club']]],
+    acts: [['Kompiuteris, failai, slaptažodžiai ir paskyros', 'The computer, files, passwords and accounts'], ['Pokalbiai, slapyvardžiai, nepažįstami žmonės', 'Chats, nicknames, strangers'], ['Soc. tinklai, botai, melagienos ir DI: kada tikrinti', 'Social media, bots, fake news and AI: when to check'], ['Penktadienį: Gynėjo pažymėjimas ir šeimos interneto susitarimas', 'Friday: a Defender certificate and a family internet agreement']],
+    day: [['9:00', ['Gynėjų ratas + dienos ženklelis', 'Defenders circle + badge of the day']], ['9:30', ['Pamoka su istorija ir personažais', 'A lesson with a story and characters']], ['11:00', ['Lauke: žaidimai be ekranų', 'Outdoors: games without screens']], ['12:00', ['Pietūs', 'Lunch']], ['13:00', ['Žaidimas kompiuteriu: bandau pats', 'A computer game: I try it myself']], ['14:30', ['Kuriu savo taisyklę šeimai', 'I write my own rule for the family']], ['16:00', ['Gynėjų patikrinimas + 3 emoji', 'Defenders check + 3 emoji']]],
+    gear: ['Tik kompiuteriai, jokių robotų: pigiausia įranga', 'Computers only, no robots: the cheapest equipment'], test: ['3 dienų versija per atostogas vienoje mokykloje, 14 vaikų', 'A 3-day version in the school holidays at one school, 14 kids'] };
+  var out = [];
+  RV_CONCEPTS.forEach(function (c) { out.push(c); if (c.id === 'detox') out.push(cyber); });
+  RV_CONCEPTS = out;
+})();

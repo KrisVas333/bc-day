@@ -172,8 +172,8 @@ var RD_QA = [
     a: ['Maržos pagal koncepciją dar nėra ❓. Tik masinė: €179 × 75 vaikai ≈ 45 % įnašo 🤖 ant prielaidų.', 'No margin per concept yet ❓. Only the mass camp: €179 × 75 kids ≈ 45 % contribution 🤖, on assumptions.'] },
   { q: ['Ar tai gerina pelningumą, ne tik pajamas?', 'Does this improve profit, not only revenue?'],
     a: ['€676,5K yra pajamos. P&L pagal temą ir miestą neturim ❓: tai pirmas patikrinimas iki 12-01.', '€676.5K is revenue. We have no P&L by theme and city ❓: that is the first check by 12-01.'] },
-  { q: ['Sutarėm: inovacija = kaina ir formatas. Kodėl 16 temų?', 'We agreed: innovation = price and format. Why 16 themes?'],
-    a: ['Tą sprendimą atitinka masinės koncepcijos, kitos yra eksperimentai. Prašom išrinkti 3–4 iš 16.', 'The mass concepts fit that decision, the rest are experiments. We ask you to pick 3–4 of the 16.'] },
+  { q: ['Sutarėm: inovacija = kaina ir formatas. Kodėl 17 temų?', 'We agreed: innovation = price and format. Why 17 themes?'],
+    a: ['Tą sprendimą atitinka masinės koncepcijos, kitos yra eksperimentai. Prašom išrinkti 3–4 iš 17.', 'The mass concepts fit that decision, the rest are experiments. We ask you to pick 3–4 of the 17.'] },
   { q: ['Kas tiekia robotus ir už kiek?', 'Who supplies the robots and at what price?'],
     a: ['Baltic Orbis, oficialus Matata atstovas. RA perka perpardavėjo kaina; kainoraštis raštu iki 12-01 ❓.', 'Baltic Orbis, the official Matata representative. RA buys at the reseller price; written list by 12-01 ❓.'] },
   { q: ['Kur telpa 50–100 vaikų ir kiek reikia mentorių?', 'Where do 50–100 kids fit and how many mentors do we need?'],
@@ -345,7 +345,7 @@ var RV_PANEL = [
 var RV_PANEL_NOTE = ['Sintetinis DI spėjimas iš 20 išgalvotų tėvų personų. Ne apklausa. Vaikų balas be vaikų duomenų.', 'A synthetic AI estimate from 20 fictional parent personas. Not a survey. Kids score has no child data.'];
 var RV_PANEL_SIDE = [
   ['<b>Vaikai ir tėvai traukia į skirtingas puses.</b> Žaidėjų ir e. sporto stovyklos: vaikai 9, tėvai 3–4. Tech Detox ir 5 įgūdžiai: tėvai 7–8, vaikai 5. Laimi tos, kur abu ≥ 7.', '<b>Kids and parents pull in different directions.</b> Gamer and e-sports camps: kids 9, parents 3–4. Tech Detox and 5 skills: parents 7–8, kids 5. The winners are where both are ≥ 7.'],
-  ['<b>Kainos lubos.</b> 8 iš 16 koncepcijų kainuoja ≥ €229. Tiek gali tik 4 iš 20 personų.', '<b>A price ceiling.</b> 8 of 16 concepts cost ≥ €229. Only 4 of 20 personas can pay that.'],
+  ['<b>Kainos lubos.</b> 8 iš 16 vertintų koncepcijų kainuoja ≥ €229. Tiek gali tik 4 iš 20 personų.', '<b>A price ceiling.</b> 8 of the 16 scored concepts cost ≥ €229. Only 4 of 20 personas can pay that.'],
   ['<b>Kliūtys kartojasi:</b> amžius, paskyros, savi įrenginiai ir vaikų video.', '<b>The same barriers repeat:</b> age, accounts, own devices and kids on video.']
 ];
 var RV_PANEL_COI = ['Kris yra RA bendraįkūrėjas. Pasitikėjimas žemas arba vidutinis: tai hipotezės testui, ne įrodymas.', 'Kris is an RA co-founder. Confidence is low or medium: these are hypotheses to test, not evidence.'];
@@ -383,3 +383,14 @@ var RD_LESS_ALL = {
   sum: ['<b>VinciBot iš viso: 35 pamokos ≈ 27+ val. ⚠️ + 75 kortelės.</b> 5 dienų stovyklai reikia ~15–20 val.', '<b>VinciBot total: 35 lessons ≈ 27+ h ⚠️ + 75 cards.</b> A 5-day camp needs ~15–20 h.'],
   note: ['Nemokamai atsisiunčiami tik pavyzdžiai; pilni rinkiniai per atstovą (Baltic Orbis) ❓ ar jau turim. Viskas anglų k., lietuviškai nėra; versti galim kaip oficialūs atstovai (Kris 11-15).', 'Only samples download for free; full sets come via the distributor (Baltic Orbis) ❓ do we already have them. All in English, nothing in Lithuanian; we may translate as official representatives (Kris 11-15).']
 };
+
+/* v11 (Kris 2026-11-16): Minecraft Education pamokos · logotipų paveikslai · Info Gynėjų stovykla */
+RD_LESS.mc = { t: ['Pamokos (anglų k., licencija ❓):', 'Lessons (English, licence ❓):'], l: [
+  { u: 'https://education.minecraft.net/en-us/resources/computer-science/coding-fundamentals', n: ['18 pamokų blokais', '18 block-coding lessons'] },
+  { u: 'https://education.minecraft.net/en-us/resources/computer-science/ai-foundations', n: ['DI ir agentai: 11–17 ⚠️', 'AI and agents: 11–17 ⚠️'] },
+  { u: 'https://education.minecraft.net/en-us/resources/computer-science/python-101', n: ['Python: 10 pamokų, 11+ m.', 'Python: 10 lessons, age 11+'] }] };
+var RD_LOGO_NOTE = ['Logotipai priklauso jų savininkams; RA nėra partneris', 'Logos belong to their owners; RA is not a partner'];
+var RD_IMG = { roblox: { img: 'img/c-roblox.jpg', fit: '#0b1020', tag: RD_LOGO_NOTE }, gamer: { img: 'img/c-gamer-yt.jpg', fit: '#0b1020', tag: RD_LOGO_NOTE }, esport: { img: 'img/c-esport.jpg', fit: '#0b1020', tag: RD_LOGO_NOTE } };
+RD_X.cyber = { risk: ['⚖️ Kris yra ir Info Gynėjų autorius. Info Gynėjai yra BrainClub Jr produktas: kieno vardu parduodam ❓. Turinys 9–12 m. dar nesukurtas.', '⚖️ Kris is also the author of Info Gynėjai. It is a BrainClub Jr product: under whose name do we sell ❓. Content for ages 9–12 is not built yet.'] };
+RD_CMP.cyber = ['Mūsų pačių: Info Gynėjų pamokos vyksta nuo 2026-09-10 Šiaurės licėjuje, 6–8 m. 8 pamokos su žaidimais jau veikia (A). Papildo Tech Detox: ten įpročiai be ekrano, čia įgūdžiai prie kompiuterio.', 'Our own: Info Gynėjai lessons have run since 2026-09-10 at Šiaurės licėjus, ages 6–8. 8 lessons with games are live (A). Pairs with Tech Detox: habits off screen there, skills at the computer here.'];
+RD_LINKS.cyber = [{ u: 'https://infogynejai.lt', n: ['infogynejai.lt', 'infogynejai.lt'] }];
