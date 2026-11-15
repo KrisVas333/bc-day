@@ -125,8 +125,9 @@ function press(sel,attr,val){document.querySelectorAll(sel).forEach(function(b){
 var ch=null,ok=false,tm=null;
 function push(){save();clearTimeout(tm);tm=setTimeout(function(){if(ch&&ok){try{ch.send({type:'broadcast',event:'full',payload:ME});}catch(e){}}},350);}
 function onState(p){
-  if(p.epoch&&ME.epoch&&p.epoch!==ME.epoch){ME.c={};ME.ups=[];ME.gear={};ME.sc=0;ME.scm='';ME.q='';ME.qs=[];ME.epoch=p.epoch;save();render();}
-  if(p.epoch&&!ME.epoch){ME.epoch=p.epoch;save();}
+  /* epocha tik didėja: keli ekranai kambaryje nebegali vienas kito trinti (2026-11-16) */
+  var pe=+p.epoch||0,me=+ME.epoch||0;
+  if(pe>me){if(me){ME.c={};ME.ups=[];ME.gear={};ME.sc=0;ME.scm='';ME.q='';ME.qs=[];}ME.epoch=pe;save();if(me)render();}
   var id=p.slide||'';var tgt=document.getElementById('c-'+id);
   if(id!==NOW){NOW=id;document.querySelectorAll('.card.now').forEach(function(x){x.classList.remove('now');});if(tgt){tgt.classList.add('now');var j=$('jump');var nm=tgt.querySelector('h2');j.textContent='📍 '+T(['Dabar ekrane','On screen now'])+': '+(nm?nm.textContent.slice(0,28):'');j.hidden=false;}else{$('jump').hidden=true;}}
   push();
@@ -136,7 +137,7 @@ function connect(){
   try{var cl=supabase.createClient(RV_SB_URL,RV_SB_KEY);
     ch=cl.channel(RV_CHANNEL,{config:{broadcast:{self:false}}});
     ch.on('broadcast',{event:'state'},function(m){$('conn').textContent='🟢 '+T(['Prisijungta prie ekrano','Connected to the screen']);onState((m&&m.payload)||{});});
-    ch.on('broadcast',{event:'reset'},function(m){var e=((m&&m.payload)||{}).epoch;ME.c={};ME.ups=[];ME.gear={};ME.sc=0;ME.scm='';ME.q='';ME.qs=[];ME.epoch=e||0;save();render();});
+    ch.on('broadcast',{event:'reset'},function(m){var e=+((m&&m.payload)||{}).epoch||0;if(e<=(+ME.epoch||0))return;ME.c={};ME.ups=[];ME.gear={};ME.sc=0;ME.scm='';ME.q='';ME.qs=[];ME.epoch=e;save();render();});
     ch.subscribe(function(st){ok=(st==='SUBSCRIBED');$('conn').textContent=ok?'🟡 '+T(['Laukiam vedėjo ekrano…','Waiting for the presenter\'s screen…']):'⚪ …';if(ok)push();});
   }catch(e){$('conn').textContent='🔴';}
 }

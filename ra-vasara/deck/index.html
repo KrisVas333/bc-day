@@ -498,10 +498,11 @@ function exportAll(){
 }
 var resetArm=0;
 function resetAll(){var n=Date.now();if(n-resetArm>3000){resetArm=n;flash(T(['Tikrai išvalyti visus balsus? Spausk ↺ arba Shift+X dar kartą per 3 s','Really clear all votes? Press ↺ or Shift+X again within 3 s']));return;}
-  ST={epoch:Date.now(),people:{},manual:{}};save();send('reset',{epoch:ST.epoch});CUR=0;render();flash(T(['Išvalyta','Cleared']));}
+  ST={epoch:Math.max(Date.now(),(+ST.epoch||0)+1),people:{},manual:{}};save();send('reset',{epoch:ST.epoch});CUR=0;render();flash(T(['Išvalyta','Cleared']));}
 
 /* ---------- live room (Supabase Realtime broadcast, nothing stored on a server) ---------- */
 var ch=null,ok=false;
+function adoptEpoch(e){ST={epoch:e,people:{},manual:{}};save();softRender();}
 function send(ev,pl){if(!ch||!ok)return;try{ch.send({type:'broadcast',event:ev,payload:pl});}catch(e){}}
 function sendState(){var s=SLIDES[CUR]||{};send('state',{slide:s.id,epoch:ST.epoch});}
 function connect(){
@@ -509,8 +510,11 @@ function connect(){
   try{
     var cl=supabase.createClient(RV_SB_URL,RV_SB_KEY);
     ch=cl.channel(RV_CHANNEL,{config:{broadcast:{self:false}}});
-    ch.on('broadcast',{event:'full'},function(m){var p=m&&m.payload;if(!p||!p.cid||p.epoch!==ST.epoch&&p.epoch)return;
+    ch.on('broadcast',{event:'full'},function(m){var p=m&&m.payload;if(!p||!p.cid)return;var pe=+p.epoch||0;if(pe>ST.epoch)adoptEpoch(pe);else if(pe&&pe<ST.epoch)return;
       ST.people[String(p.cid).slice(0,40)]={name:String(p.name||'').slice(0,30),c:p.c||{},ups:(p.ups||[]).slice(0,3),gear:p.gear||{},sc:p.sc||0,scm:String(p.scm||'').slice(0,400),q:String(p.q||'').slice(0,300),qs:Array.isArray(p.qs)?p.qs.slice(0,10).map(function(q){return {i:String((q&&q.i)||'').slice(0,24),t:String((q&&q.t)||'').slice(0,200)};}):null};save();softRender();});
+    /* kitas ekranas tame pačiame kambaryje: perimam didesnę epochą, nesipešam */
+    ch.on('broadcast',{event:'state'},function(m){var e=+((m&&m.payload)||{}).epoch||0;if(e>ST.epoch)adoptEpoch(e);});
+    ch.on('broadcast',{event:'reset'},function(m){var e=+((m&&m.payload)||{}).epoch||0;if(e>ST.epoch)adoptEpoch(e);});
     ch.subscribe(function(st){ok=(st==='SUBSCRIBED');$('conn').textContent=ok?'🟢 '+RV_ROOM+' · '+T(['gyvai','live']):'🟡 …';if(ok)sendState();});
     setInterval(sendState,4000);
   }catch(e){$('conn').textContent='🔴';}
