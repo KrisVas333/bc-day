@@ -172,8 +172,8 @@ var RD_QA = [
     a: ['Maržos pagal koncepciją dar nėra ❓. Tik masinė: €179 × 75 vaikai ≈ 45 % įnašo 🤖 ant prielaidų.', 'No margin per concept yet ❓. Only the mass camp: €179 × 75 kids ≈ 45 % contribution 🤖, on assumptions.'] },
   { q: ['Ar tai gerina pelningumą, ne tik pajamas?', 'Does this improve profit, not only revenue?'],
     a: ['€676,5K yra pajamos. P&L pagal temą ir miestą neturim ❓: tai pirmas patikrinimas iki 12-01.', '€676.5K is revenue. We have no P&L by theme and city ❓: that is the first check by 12-01.'] },
-  { q: ['Sutarėm: inovacija = kaina ir formatas. Kodėl 14 temų?', 'We agreed: innovation = price and format. Why 14 themes?'],
-    a: ['Tą sprendimą atitinka masinės koncepcijos, kitos yra eksperimentai. Prašom išrinkti 3–4, ne tvirtinti 14.', 'The mass concepts fit that decision, the rest are experiments. We ask you to pick 3–4, not approve 14.'] },
+  { q: ['Sutarėm: inovacija = kaina ir formatas. Kodėl 16 temų?', 'We agreed: innovation = price and format. Why 16 themes?'],
+    a: ['Tą sprendimą atitinka masinės koncepcijos, kitos yra eksperimentai. Prašom išrinkti 3–4 iš 16.', 'The mass concepts fit that decision, the rest are experiments. We ask you to pick 3–4 of the 16.'] },
   { q: ['Kas tiekia robotus ir už kiek?', 'Who supplies the robots and at what price?'],
     a: ['Baltic Orbis, oficialus Matata atstovas. RA perka perpardavėjo kaina; kainoraštis raštu iki 12-01 ❓.', 'Baltic Orbis, the official Matata representative. RA buys at the reseller price; written list by 12-01 ❓.'] },
   { q: ['Kur telpa 50–100 vaikų ir kiek reikia mentorių?', 'Where do 50–100 kids fit and how many mentors do we need?'],
@@ -318,3 +318,34 @@ var RD_MERCH6 = [
   { n: ['Lipdukai, ženkliukai, kortelės', 'Stickers, pins, cards'], p: '€2–9' }, { n: ['Pliušiniai žaislai', 'Plush toys'], p: '€15–22' }
 ];
 var RD_MERCH6_NOTE = ['DI vizualizacija, ne tikras produktas. Dar: išradėjo žurnalas €6–9, pieštukai €3–6, spalvinimo knyga €5–8. Kainos 🅰️; savikaina ~pusė ⚠️; kiek tėvų perka: ❓.', 'AI mock-up, not a real product. Also: an inventor\'s journal €6–9, pencils €3–6, a colouring book €5–8. Prices 🅰️; unit cost ~half ⚠️; how many parents buy: ❓.'];
+
+/* v6.1 (antro kritiko pataisos) */
+RD_X.esport = { risk: ['Amžius ⚠️: Wild Rift PEGI 12, Riot ir Supercell paskyros nuo 13 m. Todėl žaidžiama tik RA paskyromis, kurias valdo mentorius, su rašytiniu tėvų sutikimu; 12+ ir 13+ žaidimai tik to amžiaus vaikams ❓ teisininkas. Karjeros nežadam.', 'Age ⚠️: Wild Rift is PEGI 12, Riot and Supercell accounts are 13+. So play runs only on RA accounts run by the mentor, with written parent consent; 12+ and 13+ games only for kids of that age ❓ lawyer. We promise no career.'] };
+RD_X.teen = { risk: ['Praktikantas neskaičiuojamas į mentorių santykį. Nuo 18 m. reikia teistumo patikros; socialinės valandos tik moksleiviams; darbo teisė ❓ teisininkas. Nauda RA: būsimi mentoriai ir mažesnės sezono sąnaudos.', 'A trainee is not counted in the mentor ratio. From 18 a background check is needed; social hours apply to school pupils only; labour law ❓ lawyer. RA benefit: future mentors and lower season cost.'] };
+
+/* v7: sintetinė DI panelė (kitos sesijos drop-in 2026-11-16). Rodoma tik PO balsavimo. */
+var RV_PANEL = [
+  { id: 'tale',    fit: 9, par: 8, kid: 8, buy: '9/20', conf: 'mid', note: ['Be ekranų ir 1:5. Kliūtis: pusdienis dirbantiems tėvams netinka', 'Screen-free and 1:5. Barrier: a half day does not work for working parents'] },
+  { id: 'lego',    fit: 8, par: 8, kid: 8, buy: '9/20', conf: 'mid', note: ['Kaladėlės tėvams patikimos. Klausimas: kiek valandų prie planšetės', 'Parents trust bricks. Question: how many hours on the tablet'] },
+  { id: 'cup',     fit: 8, par: 8, kid: 8, buy: '8/20', conf: 'mid', note: ['€199 kaip dabar regionuose. Baimė: 75 vaikai, 1 mentorius 15-ai', '€199 matches today\'s regions. Fear: 75 kids, 1 mentor per 15'] },
+  { id: 'mc',      fit: 7, par: 7, kid: 9, buy: '7/20', conf: 'mid', note: ['Vaikai prašys patys. Tėvai: „jis ir namie sėdi Minecrafte“', 'Kids will ask for it. Parents: "he already sits in Minecraft at home"'] },
+  { id: 'creator', fit: 8, par: 6, kid: 8, buy: '4/20', conf: 'low', note: ['Prie €199 pirktų daugiau. Baimė: vaiko veidas internete', 'More would buy at €199. Fear: the child\'s face online'] },
+  { id: 'detox',   fit: 7, par: 8, kid: 5, buy: '9/20', conf: 'mid', note: ['Tėvai už, vaikai ne: „detox“ skamba kaip bausmė', 'Parents say yes, kids no: "detox" sounds like a punishment'] },
+  { id: 'life',    fit: 7, par: 7, kid: 5, buy: '7/20', conf: 'mid', note: ['Kaina gera, pažadas neaiškus. 1:15 šešiamečiams per plonas', 'Good price, vague promise. 1:15 is too thin for six-year-olds'] },
+  { id: 'vai',     fit: 7, par: 5, kid: 7, buy: '3/20', conf: 'low', note: ['€269 virš regionų kainos. Klausimas: kur lieka veido nuotraukos', '€269 is above regional prices. Question: where do face photos stay'] },
+  { id: 'dog',     fit: 7, par: 4, kid: 8, buy: '2/20', conf: 'low', note: ['Vaikams magnetas. €299 paaugliui, kuris gali būti vienas namie', 'A magnet for kids. €299 for a teen who can stay home alone'] },
+  { id: 'gamer',   fit: 6, par: 4, kid: 9, buy: '2/20', conf: 'low', note: ['Vaikai 9, tėvai 4: „žaisti jis gali ir namie nemokamai“', 'Kids 9, parents 4: "he can play at home for free"'] },
+  { id: 'xr',      fit: 6, par: 4, kid: 8, buy: '2/20', conf: 'low', note: ['Meta paskyros tik nuo 10 m. Tėvai: akys ir €299', 'Meta accounts start at age 10. Parents: eyes and €299'] },
+  { id: 'comp',    fit: 8, par: 3, kid: 7, buy: '1/20', conf: 'low', note: ['Niša: tinka tik jau statantiems robotus. €329 per daug', 'A niche: fits only kids who already build robots. €329 is too much'] },
+  { id: 'roblox',  fit: 4, par: 5, kid: 8, buy: '4/20', conf: 'mid', note: ['Studio 7-mečiui per sunki. Reikia savo kompiuterio', 'Studio is too hard at age 7. Needs the child\'s own computer'] },
+  { id: 'esport',  fit: 5, par: 3, kid: 9, buy: '2/20', conf: 'low', note: ['Vaikai 9, tėvai 3. 5 žaidimų amžiaus taisyklės nepatikrintos', 'Kids 9, parents 3. Age rules for the 5 games are unverified'] },
+  { id: 'teen',    fit: 6, par: 5, kid: 5, buy: '4/20', conf: 'low', note: ['Tėvai: „mokėti, kad mano šešiolikmetis jums padėtų dirbti?“', 'Parents: "pay so that my sixteen-year-old helps you work?"'] },
+  { id: 'duck',    fit: 6, par: 3, kid: 7, buy: '1/20', conf: 'low', note: ['€349 ir robotas lieka RA. Tikras kursas: 3 val./d., 6 vaikai', '€349 and the robot stays with RA. Real course: 3 h/day, 6 kids'] }
+];
+var RV_PANEL_NOTE = ['Sintetinis DI spėjimas iš 20 išgalvotų tėvų personų. Ne apklausa. Vaikų balas be vaikų duomenų.', 'A synthetic AI estimate from 20 fictional parent personas. Not a survey. Kids score has no child data.'];
+var RV_PANEL_SIDE = [
+  ['<b>Vaikai ir tėvai traukia į skirtingas puses.</b> Žaidėjų ir e. sporto stovyklos: vaikai 9, tėvai 3–4. Tech Detox ir 5 įgūdžiai: tėvai 7–8, vaikai 5. Laimi tos, kur abu ≥ 7.', '<b>Kids and parents pull in different directions.</b> Gamer and e-sports camps: kids 9, parents 3–4. Tech Detox and 5 skills: parents 7–8, kids 5. The winners are where both are ≥ 7.'],
+  ['<b>Kainos lubos.</b> 8 iš 16 koncepcijų kainuoja ≥ €229. Tiek gali tik 4 iš 20 personų.', '<b>A price ceiling.</b> 8 of 16 concepts cost ≥ €229. Only 4 of 20 personas can pay that.'],
+  ['<b>Kliūtys kartojasi:</b> amžius, paskyros, savi įrenginiai ir vaikų video.', '<b>The same barriers repeat:</b> age, accounts, own devices and kids on video.']
+];
+var RV_PANEL_COI = ['Kris yra RA bendraįkūrėjas. Pasitikėjimas žemas arba vidutinis: tai hipotezės testui, ne įrodymas.', 'Kris is an RA co-founder. Confidence is low or medium: these are hypotheses to test, not evidence.'];

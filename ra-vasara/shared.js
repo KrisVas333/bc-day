@@ -557,3 +557,12 @@ var RV_GEAR = [
     c.test = ['6 praktikantai vienoje stovykloje 2027 birželį', '6 trainees in one camp in June 2027'];
   });
 })();
+
+/* v6 (antro kritiko pataisos 2026-11-16) */
+(function () {
+  RV_CONCEPTS.forEach(function (c) {
+    if (c.id === 'gamer') c.day = [['9:00', ['Kūrėjų ratas + dienos video tema', 'Makers circle + video topic of the day']], ['9:30', ['Žaidžiu ir įrašau savo žaidimą', 'I play and record my gameplay']], ['11:00', ['Sportas lauke', 'Outdoor sport']], ['12:00', ['Pietūs', 'Lunch']], ['13:00', ['Komentuoju ir montuoju video', 'I narrate and edit the video']], ['14:30', ['Viršelis, pavadinimas, kanalo ženklas', 'Thumbnail, title, channel logo']], ['16:00', ['Premjera uždarame RA KidsTube + 3 emoji', 'Premiere on the closed RA KidsTube + 3 emoji']]];
+    if (c.id === 'esport') c.gear = ['Kompiuterių klasė + planšetės; RA paskyros, kurias valdo mentorius', 'A computer room + tablets; RA accounts run by the mentor'];
+    if (c.id === 'teen') c.gear = ['Jokios naujos įrangos. Praktikoje po 2 praktikantus prie vieno mentoriaus', 'No new equipment. In practice 2 trainees per mentor'];
+  });
+})();
