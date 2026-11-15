@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>RA Vasara 2027 · balsavimas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Syne:wght@700;800&display=swap">
+<style>
+/* Phone voting page: one column of concept cards, RA tokens, big touch targets. Internal team tool, noindex. */
+:root{--bg:#F3F6FD;--card:#FFFFFF;--ink:#152039;--muted:#4F5B72;--line:#DCE3F2;--acc:#4862DD;--acc-ink:#FFFFFF;--yel:#FEC404;--yel-ink:#152039;--good:#0B7A4B;
+  --grad:linear-gradient(100deg,#5058DA 0%,#3F6FE0 60%,#2C82E4 100%);--head:'Syne','Poppins',sans-serif;--body:'Poppins',system-ui,sans-serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0E1730;--card:#16213F;--ink:#EEF2FF;--muted:#A7B2CC;--line:#2A3658;--acc:#8FA3FF;--acc-ink:#0E1730;--good:#4ADE9A;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0E1730;--card:#16213F;--ink:#EEF2FF;--muted:#A7B2CC;--line:#2A3658;--acc:#8FA3FF;--acc-ink:#0E1730;--good:#4ADE9A;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.45}
+header{background:var(--grad);color:#fff;padding:14px max(16px,env(safe-area-inset-right,0px)) 14px max(16px,env(safe-area-inset-left,0px));position:sticky;top:0;z-index:5}
+header .row{display:flex;align-items:center;gap:8px;max-width:640px;margin:0 auto}
+header h1{font-family:var(--head);font-size:21px;margin:0;flex:1;line-height:1.15}
+header button{font:inherit;font-weight:600;font-size:14px;background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:20px;padding:7px 12px;min-height:36px}
+#conn{font-size:13px;font-weight:600;opacity:.95;max-width:640px;margin:4px auto 0}
+main{max-width:640px;margin:0 auto;padding-block:14px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;min-width:0}
+.card.now{border:3px solid var(--yel)}
+h2{font-family:var(--head);font-size:20px;margin:0 0 4px;line-height:1.2}
+h3{font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:14px 0 6px}
+p{margin:0 0 8px}
+.meta{font-size:14px;color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opts.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+button.o{font:inherit;font-weight:600;font-size:15px;line-height:1.2;min-height:52px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:16px;padding:8px 6px;cursor:pointer}
+button.o b{display:block;font-family:var(--head);font-size:17px}
+button.o small{display:block;font-weight:400;font-size:12px;color:var(--muted);line-height:1.2}
+button.o[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+button.o[aria-pressed="true"] small{color:var(--acc-ink)}
+button.o:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--yel);outline-offset:2px}
+textarea,input[type=text]{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:8px}
+textarea{min-height:60px;resize:vertical}
+.up{display:flex;gap:10px;align-items:center;text-align:left;width:100%}
+.up .e{font-size:26px}
+.stars{display:flex;gap:6px}
+.stars button{flex:1;min-height:46px;font-size:22px;border:2px solid var(--line);background:var(--card);border-radius:12px;color:var(--muted)}
+.stars button[aria-pressed="true"]{background:var(--yel);border-color:var(--yel);color:var(--yel-ink)}
+.score{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.score button{min-height:46px;font:inherit;font-weight:700;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px}
+.score button[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.done{font-size:13px;color:var(--good);font-weight:600;min-height:18px}
+.note{font-size:13px;color:var(--muted)}
+#jump{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--yel);color:var(--yel-ink);font:inherit;font-weight:700;border:0;border-radius:30px;padding:12px 20px;box-shadow:0 6px 20px rgba(0,0,0,.25);z-index:6}
+
+/* v4: motion + less text at once */
+html{scroll-behavior:smooth}
+#prog{max-width:640px;margin:8px auto 0;height:8px;border-radius:8px;background:rgba(255,255,255,.25);overflow:hidden}
+#prog i{display:block;height:100%;width:0;background:var(--yel);border-radius:8px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+#progt{font-size:12px;font-weight:600;opacity:.95;max-width:640px;margin:3px auto 0}
+.card{transition:border-color .3s,box-shadow .3s,transform .3s}
+.card.rv{opacity:0;transform:translateY(18px)}
+.card.rv.in{opacity:1;transform:none;transition:opacity .5s ease,transform .5s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s}
+.card.now{box-shadow:0 0 0 6px rgba(254,196,4,.22);animation:glow 1.8s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 0 12px rgba(254,196,4,.08)}}
+.card.voted h2::after{content:' ✓';color:var(--good)}
+button.o,.stars button,.score button{transition:transform .15s ease,background .2s,border-color .2s,color .2s}
+button.o:active,.stars button:active,.score button:active{transform:scale(.94)}
+button[aria-pressed="true"].pop{animation:pop .35s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:scale(.9)}60%{transform:scale(1.07)}100%{transform:scale(1)}}
+.one{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card.open .one{display:block}
+.more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.8,.2,1)}
+.more>div{overflow:hidden;min-height:0}
+.card.open .more{grid-template-rows:1fr}
+.hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+.card.open .hint{display:none}
+#jump{transition:opacity .3s,transform .3s}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}.card.rv{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><div class="row"><h1 id="ttl"></h1><button id="bLang" type="button">EN</button></div><div id="conn">⚪ …</div><div id="prog"><i></i></div><div id="progt"></div></header>
+<main id="main"></main>
+<button id="jump" type="button" hidden></button>
+<script src="shared.js"></script>
+<script>
+(function(){
+'use strict';
+var LANG='lt',LS='ravasara-phone-v1';
+var ME={cid:'',name:'',epoch:0,c:{},ups:[],gear:{},sc:0,scm:'',q:''};
+try{var s=JSON.parse(localStorage.getItem(LS)||'null');if(s&&s.cid)ME=s;}catch(e){}
+try{var l=localStorage.getItem('ravasara-lang');if(l)LANG=l;}catch(e){}
+if(!ME.cid)ME.cid='p'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+var NOW='';
+function save(){try{localStorage.setItem(LS,JSON.stringify(ME));}catch(e){}}
+function T(p){return LANG==='en'?p[1]:p[0];}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function $(i){return document.getElementById(i);}
+function C(id){if(!ME.c[id])ME.c[id]={v:'',p:'',m:''};return ME.c[id];}
+function G(id){if(!ME.gear[id])ME.gear[id]={r:0,m:''};return ME.gear[id];}
+
+function render(){
+  $('ttl').textContent=T(['RA Vasara 2027 · balsuok','RA Summer 2027 · vote']);
+  $('bLang').textContent=LANG==='lt'?'EN':'LT';document.documentElement.lang=LANG;
+  var h='<div class="card"><p>'+T(['Balsuok už kiekvieną koncepciją, pasirink kainą ir parašyk, ką keistum. Viskas išsisaugo iškart.','Vote on each concept, pick a price and write what you would change. Everything saves instantly.'])+'</p><label for="nm" class="meta">'+T(['Tavo vardas (matys tik vedėjas)','Your first name (only the presenter sees it)'])+'</label><input type="text" id="nm" maxlength="30" autocomplete="given-name" value="'+esc(ME.name)+'"></div>';
+  RV_CONCEPTS.forEach(function(c,i){var st=C(c.id);
+    var op=!!(st.v||st.p||st.m);h+='<section class="card rv'+(NOW===c.id?' now':'')+(op?' open':'')+(st.v?' voted':'')+'" id="c-'+c.id+'"><h2>'+c.em+' '+(i+1)+'. '+T(c.n)+'</h2><p class="meta">'+T(c.age)+' · 👥 '+T(c.grp)+' · 🧑‍🏫 '+T(c.ratio)+'</p><p class="one">'+T(c.one)+'</p>'+
+     '<h3>'+T(['Tavo verdiktas','Your verdict'])+'</h3><div class="opts three">'+RV_VERDICTS.map(function(v){return '<button type="button" class="o" data-c="'+c.id+'" data-v="'+v.k+'" aria-pressed="'+(st.v===v.k)+'">'+v.em+'<small>'+T(v.t)+'</small></button>';}).join('')+'</div>'+
+     '<p class="hint">'+T(['Pasirink verdiktą: atsidarys kaina ir komentaras.','Pick a verdict: price and comment will open.'])+'</p><div class="more"><div><h3>'+T(['Kuri kaina už 5 dienas?','Which price for 5 days?'])+'</h3><div class="opts three">'+c.prices.map(function(p,j){var k=RV_TIERS[j].k;return '<button type="button" class="o" data-c="'+c.id+'" data-p="'+k+'" aria-pressed="'+(st.p===k)+'"><b>€'+p[0]+'</b><small>'+T(p[1])+'</small></button>';}).join('')+'</div>'+
+     '<label for="m-'+c.id+'" class="meta" style="display:block;margin-top:10px">'+T(['Ką keistum? Kas neveiks?','What would you change? What will not work?'])+'</label><textarea id="m-'+c.id+'" data-cm="'+c.id+'" maxlength="300">'+esc(st.m)+'</textarea></div></div></section>';
+  });
+  h+='<section class="card'+(NOW==='ups'?' now':'')+'" id="c-ups"><h2>➕ '+T(['Papildomi pardavimai: rinkis 3','Upsells: pick 3'])+'</h2><div class="opts">'+RV_UPSELLS.map(function(u){return '<button type="button" class="o" data-u="'+u.id+'" aria-pressed="'+(ME.ups.indexOf(u.id)>=0)+'"><span class="up"><span class="e">'+u.em+'</span><span>'+T(u.n)+' · '+T(u.p)+'<small>'+T(u.d)+'</small></span></span></button>';}).join('')+'</div><p class="done" id="upd"></p></section>';
+  h+='<section class="card'+(NOW==='gear'?' now':'')+'" id="c-gear"><h2>🧰 '+T(['Įranga: ar vaikams patiks?','Equipment: will kids love it?'])+'</h2><p class="meta">'+T(['Vertink tik tai, ką pats išbandei.','Rate only what you tried yourself.'])+'</p>'+RV_GEAR.map(function(g){var st=G(g.id);return '<h3>'+T(g.n)+'</h3><div class="stars">'+[1,2,3,4,5].map(function(n){return '<button type="button" data-g="'+g.id+'" data-r="'+n+'" aria-pressed="'+(st.r===n)+'" aria-label="'+n+'">'+n+'</button>';}).join('')+'</div><input type="text" id="gm-'+g.id+'" data-gm="'+g.id+'" maxlength="200" placeholder="'+T(['Vienas sakinys','One sentence'])+'" value="'+esc(st.m)+'">';}).join('')+'</section>';
+  h+='<section class="card" id="c-score"><h2>'+T(['Ar ši sesija buvo naudinga?','Was this session useful?'])+'</h2><p class="meta">'+T(['1 = laiko švaistymas · 10 = labai padėjo apsispręsti','1 = waste of time · 10 = helped a lot to decide'])+'</p><div class="score">'+[1,2,3,4,5,6,7,8,9,10].map(function(n){return '<button type="button" data-sc="'+n+'" aria-pressed="'+(ME.sc===n)+'">'+n+'</button>';}).join('')+'</div><label for="scm" class="meta" style="display:block;margin-top:10px">'+T(['Ko trūko? Ką kitąkart daryti kitaip?','What was missing? What to do differently next time?'])+'</label><textarea id="scm" maxlength="400">'+esc(ME.scm)+'</textarea></section>';
+  h+='<section class="card" id="c-q"><h2>🙋 '+T(['Klausimas ar komentaras komandai','A question or comment for the team'])+'</h2><p class="meta">'+T(['Atsiras ekrane skaidrėse „Rezultatai“ ir „Ačiū“.','It appears on screen on the "Results" and "Thank you" slides.'])+'</p><textarea id="qq" maxlength="300">'+esc(ME.q||'')+'</textarea></section>';
+  h+='<p class="note">'+T(['Vidinis RA komandos įrankis. Kainos yra siūlymai diskusijai, ne sprendimai. Atsakymai keliauja tiesiai į vedėjo ekraną ir serveryje nesaugomi.','Internal RA team tool. Prices are proposals for discussion, not decisions. Answers go straight to the presenter\'s screen and are not stored on a server.'])+'</p>';
+  $('main').innerHTML=h;
+}
+function press(sel,attr,val){document.querySelectorAll(sel).forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute(attr)===String(val)));});}
+
+/* ---------- live ---------- */
+var ch=null,ok=false,tm=null;
+function push(){save();clearTimeout(tm);tm=setTimeout(function(){if(ch&&ok){try{ch.send({type:'broadcast',event:'full',payload:ME});}catch(e){}}},350);}
+function onState(p){
+  if(p.epoch&&ME.epoch&&p.epoch!==ME.epoch){ME.c={};ME.ups=[];ME.gear={};ME.sc=0;ME.scm='';ME.q='';ME.epoch=p.epoch;save();render();}
+  if(p.epoch&&!ME.epoch){ME.epoch=p.epoch;save();}
+  var id=p.slide||'';var tgt=document.getElementById('c-'+id);
+  if(id!==NOW){NOW=id;document.querySelectorAll('.card.now').forEach(function(x){x.classList.remove('now');});if(tgt){tgt.classList.add('now');var j=$('jump');var nm=tgt.querySelector('h2');j.textContent='📍 '+T(['Dabar ekrane','On screen now'])+': '+(nm?nm.textContent.slice(0,28):'');j.hidden=false;}else{$('jump').hidden=true;}}
+  push();
+}
+function connect(){
+  if(typeof supabase==='undefined'||!supabase.createClient){$('conn').textContent='🔴 '+T(['Nėra ryšio. Atsakymai išsaugoti telefone, parodyk vedėjui.','No connection. Answers are saved on the phone, show them to the presenter.']);return;}
+  try{var cl=supabase.createClient(RV_SB_URL,RV_SB_KEY);
+    ch=cl.channel(RV_CHANNEL,{config:{broadcast:{self:false}}});
+    ch.on('broadcast',{event:'state'},function(m){$('conn').textContent='🟢 '+T(['Prisijungta prie ekrano','Connected to the screen']);onState((m&&m.payload)||{});});
+    ch.on('broadcast',{event:'reset'},function(m){var e=((m&&m.payload)||{}).epoch;ME.c={};ME.ups=[];ME.gear={};ME.sc=0;ME.scm='';ME.q='';ME.epoch=e||0;save();render();});
+    ch.subscribe(function(st){ok=(st==='SUBSCRIBED');$('conn').textContent=ok?'🟡 '+T(['Laukiam vedėjo ekrano…','Waiting for the presenter\'s screen…']):'⚪ …';if(ok)push();});
+  }catch(e){$('conn').textContent='🔴';}
+}
+
+/* ---------- events ---------- */
+$('main').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  if(b.hasAttribute('data-v')){var c=C(b.getAttribute('data-c'));var v=b.getAttribute('data-v');c.v=(c.v===v?'':v);var sec=b.closest('.card');if(sec){if(c.v)sec.classList.add('open');sec.classList.toggle('voted',!!c.v);}press('button[data-c="'+b.getAttribute('data-c')+'"][data-v]','data-v',c.v);}
+  else if(b.hasAttribute('data-p')){var c2=C(b.getAttribute('data-c'));var p=b.getAttribute('data-p');c2.p=(c2.p===p?'':p);press('button[data-c="'+b.getAttribute('data-c')+'"][data-p]','data-p',c2.p);}
+  else if(b.hasAttribute('data-u')){var u=b.getAttribute('data-u'),i=ME.ups.indexOf(u);if(i>=0)ME.ups.splice(i,1);else if(ME.ups.length<3)ME.ups.push(u);else{$('upd').textContent=T(['Jau pasirinkai 3. Nuimk vieną, kad pakeistum.','You already picked 3. Remove one to change.']);return;}
+    document.querySelectorAll('button[data-u]').forEach(function(x){x.setAttribute('aria-pressed',String(ME.ups.indexOf(x.getAttribute('data-u'))>=0));});$('upd').textContent=ME.ups.length+' / 3';}
+  else if(b.hasAttribute('data-g')){var g=G(b.getAttribute('data-g'));var r=+b.getAttribute('data-r');g.r=(g.r===r?0:r);press('button[data-g="'+b.getAttribute('data-g')+'"]','data-r',g.r);}
+  else if(b.hasAttribute('data-sc')){var n=+b.getAttribute('data-sc');ME.sc=(ME.sc===n?0:n);press('button[data-sc]','data-sc',ME.sc);}
+  else return;
+  if(b.getAttribute('aria-pressed')==='true'){b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');}
+  prog();push();
+});
+$('main').addEventListener('input',function(e){var t=e.target;
+  if(t.id==='nm')ME.name=t.value;else if(t.id==='scm')ME.scm=t.value;else if(t.id==='qq')ME.q=t.value;
+  else if(t.hasAttribute('data-cm'))C(t.getAttribute('data-cm')).m=t.value;
+  else if(t.hasAttribute('data-gm'))G(t.getAttribute('data-gm')).m=t.value;else return;push();});
+$('bLang').onclick=function(){LANG=LANG==='lt'?'en':'lt';try{localStorage.setItem('ravasara-lang',LANG);}catch(e){}render();};
+$('jump').onclick=function(){var t=document.getElementById('c-'+NOW);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});$('jump').hidden=true;};
+function prog(){var n=RV_CONCEPTS.length,d=RV_CONCEPTS.filter(function(c){return ME.c[c.id]&&ME.c[c.id].v;}).length;var i=document.querySelector('#prog i');if(i)i.style.width=(n?d/n*100:0)+'%';$('progt').textContent=d+' / '+n+' '+T(['koncepcijų įvertinta','concepts rated'])+(d===n&&n?' 🎉':'');}
+var io=null;function reveal(){var cs=document.querySelectorAll('.card.rv');if(!('IntersectionObserver' in window)){cs.forEach(function(x){x.classList.add('in');});return;}if(io)io.disconnect();io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{rootMargin:'0px 0px -6% 0px'});cs.forEach(function(x){io.observe(x);});setTimeout(function(){cs.forEach(function(x){var r=x.getBoundingClientRect();if(r.top<innerHeight)x.classList.add('in');});},600);}
+var _render=render;render=function(){_render();prog();reveal();};
+render();
+var s2=document.createElement('script');s2.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js';s2.onload=connect;s2.onerror=connect;document.head.appendChild(s2);
+})();
+</script>
+</body>
+</html>
