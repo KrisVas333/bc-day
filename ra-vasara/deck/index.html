@@ -208,17 +208,17 @@ li.pi{list-style:none;position:relative;padding-left:42px;margin-left:-24px;marg
   <div id="exp" hidden><b id="expT"></b><textarea id="expA" readonly></textarea><div><button id="expC" type="button">Copy</button> <button id="expX" type="button">✕</button></div></div>
 </div></div>
 
-<script src="shared.js"></script>
-<script src="deck-data.js"></script>
+<script src="shared.js?v=14"></script>
+<script src="deck-data.js?v=14"></script>
 <script>
 (function(){
 'use strict';
 var LANG='lt', CUR=0, SLIDES=[], MANUAL_ON=false;
-var LS='ravasara-deck-v1';
+var LS='ravasara-deck-v2'+(RV_ROOM!=='RA27'?'-'+RV_ROOM:'');
 var ST={epoch:1, people:{}, manual:{}};
 try{var s=JSON.parse(localStorage.getItem(LS)||'null');if(s&&s.people)ST=s;}catch(e){}
 try{var l=localStorage.getItem('ravasara-lang');if(l)LANG=l;}catch(e){}
-function save(){try{localStorage.setItem(LS,JSON.stringify(ST));}catch(e){}}
+function save(){try{var o=JSON.parse(localStorage.getItem(LS)||'null');if(o&&(+o.epoch||0)>(+ST.epoch||0))return;/* kitas skirtukas jau naujesnėje epochoje: neperrašom */localStorage.setItem(LS,JSON.stringify(ST));}catch(e){}}
 function T(p){return LANG==='en'?p[1]:p[0];}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function $(i){return document.getElementById(i);}

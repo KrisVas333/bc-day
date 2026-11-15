@@ -2,10 +2,13 @@
    Kiekvienas tekstas: [LT, EN]. Kainos = 🅰️ siūlymai diskusijai, ne sprendimai. v2 2026-11-15.
    Šis failas keliauja ir į viešą telefono puslapį: jokių vidinių pajamų, maržų ar tiekėjo sąlygų čia. */
 var RV_ROOM = 'RA27';
+/* ?room=QA → atskiras kambarys testams, kad testai niekada neliestų RA27 */
+try { var rvq = (new URLSearchParams(location.search).get('room') || '').replace(/[^A-Za-z0-9]/g, '').slice(0, 12); if (rvq) RV_ROOM = rvq; } catch (e) {}
 var RV_CHANNEL = 'ravasara-' + RV_ROOM + '-v2'; /* v2 (2026-11-16): seno kodo skirtukai lieka sename kanale ir nebegali trinti balsų */
 var RV_SB_URL = 'https://iiekmeylpppczicrsxho.supabase.co';
 var RV_SB_KEY = 'sb_publishable_iJC59f30YJm7hU4OwZsLDQ_9FN-ygzF';
 var RV_JOIN_URL = 'https://krisvas333.github.io/bc-day/ra-vasara/';
+if (RV_ROOM !== 'RA27') RV_JOIN_URL += '?room=' + RV_ROOM;
 
 var RV_VERDICTS = [
   { k: 'go',   em: '❤️', t: ['Darom 2027', 'Do it in 2027'] },

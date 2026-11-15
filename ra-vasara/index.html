@@ -83,11 +83,11 @@ button[aria-pressed="true"].pop{animation:pop .35s cubic-bezier(.2,1.6,.4,1)}
 <main id="main"></main>
 <button id="jump" type="button" hidden></button>
 <button id="qfab" type="button" aria-label="Klausimas">🙋</button>
-<script src="shared.js"></script>
+<script src="shared.js?v=14"></script>
 <script>
 (function(){
 'use strict';
-var LANG='lt',LS='ravasara-phone-v1';
+var LANG='lt',LS='ravasara-phone-v2'+(RV_ROOM!=='RA27'?'-'+RV_ROOM:'');
 var ME={cid:'',name:'',epoch:0,c:{},ups:[],gear:{},sc:0,scm:'',q:''};
 try{var s=JSON.parse(localStorage.getItem(LS)||'null');if(s&&s.cid)ME=s;}catch(e){}
 if(!Array.isArray(ME.qs))ME.qs=[];
@@ -95,7 +95,7 @@ function qlist(){return ME.qs.map(function(q){return '<div class="qsent">✓ '+e
 try{var l=localStorage.getItem('ravasara-lang');if(l)LANG=l;}catch(e){}
 if(!ME.cid)ME.cid='p'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
 var NOW='';
-function save(){try{localStorage.setItem(LS,JSON.stringify(ME));}catch(e){}}
+function save(){try{var o=JSON.parse(localStorage.getItem(LS)||'null');if(o&&(+o.epoch||0)>(+ME.epoch||0))return;/* kitas skirtukas jau naujesnėje epochoje: neperrašom */localStorage.setItem(LS,JSON.stringify(ME));}catch(e){}}
 function T(p){return LANG==='en'?p[1]:p[0];}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function $(i){return document.getElementById(i);}
