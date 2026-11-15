@@ -531,3 +531,29 @@ var RV_GEAR = [
   RV_CONCEPTS.forEach(function (c) { out.push(c); if (c.id === 'mc') out.push(roblox); if (c.id === 'gamer') out.push(esport); });
   RV_CONCEPTS = out;
 })();
+
+/* v5 (Kris 2026-11-16 01:2x): Tech Detox = mokom technologijų etiketo */
+(function () {
+  RV_CONCEPTS.forEach(function (c) { if (c.id !== 'detox') return;
+    c.img = 'img/c-te.jpg'; c.fit = '#FFFFFF';
+    c.one = ['Mokom technologijų etiketo: kaip elgtis su telefonu, kad tikras gyvenimas būtų įdomesnis už ekraną. Tarp to vaikai išbando 7 būrelius.', 'We teach technology etiquette: how to behave with a phone so that real life beats the screen. In between kids try 7 clubs.'];
+    c.acts = [
+      ['Technologijų etiketas: 10 taisyklių, vaikai parašo savo', 'Technology etiquette: 10 rules, kids write their own'],
+      ['10 didžiausių telefono problemų ir kaip jas išspręsti', 'The 10 biggest phone problems and how to fix them'],
+      ['Kaip įveikti įprotį nuolat tikrinti telefoną ir ekraną', 'How to beat the habit of checking the phone and screen'],
+      ['Tikras gyvenimas įdomesnis: 7 būreliai, o penktadienį vaikai moko tėvus', 'Real life is more fun: 7 clubs, and on Friday kids teach parents']
+    ];
+  });
+})();
+
+/* v5.1 (Kris 01:3x): mentorių akademija = praktika 16–20 m.; trumpesnės etiketo veiklos */
+(function () {
+  RV_CONCEPTS.forEach(function (c) {
+    if (c.id === 'detox') { c.acts[2] = ['Kaip įveikti įprotį nuolat tikrinti ekraną', 'How to beat the habit of checking the screen']; c.acts[3] = ['Tikras gyvenimas įdomesnis: 7 būreliai', 'Real life is more fun: 7 clubs']; c.acts[0] = ['Technologijų etiketas: 10 taisyklių', 'Technology etiquette: 10 rules']; c.one = ['Mokom technologijų etiketo: kaip elgtis su telefonu, kad tikras gyvenimas būtų įdomesnis už ekraną. Vaikai išbando 7 būrelius.', 'We teach technology etiquette: how to behave with a phone so that real life beats the screen. Kids try 7 clubs.']; }
+    if (c.id !== 'teen') return;
+    c.one = ['Praktika 16–20 m. jaunuoliams: 2 dienas mokosi vesti, 3 dienas padeda tikram mentoriui masinėje stovykloje.', 'Work practice for ages 16–20: 2 days learning to lead, then 3 days helping a real mentor in a mass camp.'];
+    c.age = ['16–20 m.', 'Age 16–20']; c.grp = ['12 praktikantų', '12 trainees'];
+    c.acts[3] = ['Praktikantas gauna socialines valandas ir tikrą darbo patirtį, RA augina būsimus mentorius', 'The trainee earns social hours and real work experience, RA grows future mentors'];
+    c.test = ['6 praktikantai vienoje stovykloje 2027 birželį', '6 trainees in one camp in June 2027'];
+  });
+})();

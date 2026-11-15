@@ -93,7 +93,7 @@ var RD_GAPS = [
   { f: ['Paauglių akademija', 'Teen academy'], w: ['iD Tech universitete: 2 sav. nuo $1 229 ⚠️', 'iD Tech on campus: 2 weeks from $1,229 ⚠️'], ra: ['2 sav. 13–18 m. universitete: varžybų robotai, DI, kūrėjai', '2 weeks for age 13–18 on a campus: competition robots, AI, creators'] },
   { f: ['Robotas keliauja namo', 'The robot goes home'], w: ['Lavner: $1 039/sav. su robotu', 'Lavner: $1,039/week with the robot'], ra: ['Mūsų stiprybė: robotą perkam pigiau nei kiti', 'Our strength: we buy the robot cheaper than others'] },
   { f: ['Foto ir video paketas', 'Photo and video pack'], w: ['Miniyowe (Kanada) $100; kitur $25', 'Miniyowe (Canada) $100; elsewhere $25'], ra: ['Atsiminimų paketas 12–19 €', 'The memory pack €12–19'] },
-  { f: ['Mokama paauglių praktika', 'Paid teen internship'], w: ['Camp Invention $210; Camp Computer $1 395 / 2 sav.', 'Camp Invention $210; Camp Computer $1,395 / 2 weeks'], ra: ['Jaunųjų mentorių akademija 99–199 €', 'The Junior Mentor Academy €99–199'] },
+  { f: ['Mokama jaunimo praktika', 'Paid youth internship'], w: ['Camp Invention $210; Camp Computer $1 395 / 2 sav.', 'Camp Invention $210; Camp Computer $1,395 / 2 weeks'], ra: ['Jaunųjų mentorių akademija 99–199 €', 'The Junior Mentor Academy €99–199'] },
   { f: ['Pusdienis × 2', 'Half day × 2'], w: ['Code Ninjas: pusdienis $250, du kartu $450', 'Code Ninjas: half day $250, two together $450'], ra: ['Rytas viena tema, popietė kita: dvi stovyklos per dieną', 'One theme in the morning, another after lunch: two camps a day'] },
   { f: ['Atributikos rinkinys', 'Merch kit'], w: ['Camp Beaumont (JK) £35: marškinėliai, kuprinė, kepurė, gertuvė', 'Camp Beaumont (UK) £35: T-shirt, backpack, cap, bottle'], ra: ['RA rinkiniai 19–59 €', 'RA bundles €19–59'] },
   { f: ['Licencija ar franšizė', 'Licence or franchise'], w: ['Code Ninjas: mokestis ~$45 000 ⚠️, 308 centrai', 'Code Ninjas: fee ~$45,000 ⚠️, 308 centres'], ra: ['Mūsų stovyklos turinys kitiems būreliams per ExoClass', 'Our camp curriculum licensed to other clubs through ExoClass'] }
@@ -148,7 +148,7 @@ var RD_MERCH_AGE = [
   ['<b>4–6 m.:</b> pliušinis, spalvinimo knyga, lipdukai', '<b>Age 4–6:</b> plush, colouring book, stickers'],
   ['<b>7–9 m.:</b> gertuvė, kepurė, kortelės, žurnalas', '<b>Age 7–9:</b> bottle, cap, cards, journal'],
   ['<b>10–12 m.:</b> marškinėliai, kuprinė, žurnalas', '<b>Age 10–12:</b> T-shirt, backpack, journal'],
-  ['<b>13–16 m.:</b> džemperis, be vaikiškų piešinių', '<b>Age 13–16:</b> hoodie, no childish artwork'],
+  ['<b>13 m. ir vyresni:</b> džemperis, be vaikiškų piešinių', '<b>Age 13 and up:</b> hoodie, no childish artwork'],
   ['<b>Starto rinkinys €19:</b> marškinėliai + gertuvė', '<b>Starter kit €19:</b> T-shirt + bottle'],
   ['<b>Stovyklautojo rinkinys €35:</b> + kepurė + maišelis + žurnalas', '<b>Camper kit €35:</b> + cap + bag + journal'],
   ['<b>Pilnas rinkinys €59:</b> + kuprinė + pliušinis ar džemperis', '<b>Full kit €59:</b> + backpack + plush or hoodie'],
@@ -281,3 +281,11 @@ RD_X.esport = { risk: ['Amžius ⚠️: Wild Rift PEGI 12, Riot ir Supercell pas
 RD_CMP.roblox = ['iD Tech „Roblox“ kursai nuo $949/sav. ⚠️ (A, bazinė kaina). LT: Roblox kūrimo stovyklos 1–4 kl. konkurentų sąraše neradom.', 'iD Tech "Roblox" courses from $949/week ⚠️ (A, base price). LT: no Roblox-making camp for grades 1–4 found in the competitor list.'];
 RD_CMP.esport = ['Seton Hall e. sporto stovykla $600/sav. (iš ankstesnio tyrimo). LT konkurentų sąraše e. sporto dienos stovyklos nėra.', 'Seton Hall esports camp $600/week (from earlier research). No esports day camp in the LT competitor list.'];
 RD_PIC.alpha = RD_PIC.alpha;
+
+/* v5: Technologijų etiketas Tech Detox skaidrėje */
+RD_X.detox = { risk: ['Tėvų susidomėjimas: technologijų etiketo testą užpildė 123 tėvai (mūsų duomenys). „Priklausomybė“ čia reiškia įpročius, ne diagnozę. Partnerių būrelių atranka atvira visiems.', 'Parent interest: 123 parents filled the technology etiquette test (our own data). "Addiction" here means habits, no diagnosis. Partner club selection is open to all.'] };
+RD_LINKS.detox = [{ u: 'https://krisvas333.github.io/neuron-ar/te/apie/', n: ['Technologijų etiketas', 'Technology etiquette'] }, { u: 'https://krisvas333.github.io/neuron-ar/te/vaikams/', n: ['Vaikams 7–12 m.', 'For kids 7–12'] }];
+
+/* v5.1: mentorių akademija 16–20 m. */
+RD_X.teen = { risk: ['Mažina mentorių sąnaudas, bet praktikantas neskaičiuojamas į mentorių santykį. Nuo 18 m. reikia teistumo patikros; socialinės valandos tik moksleiviams; darbo teisė ❓ teisininkas.', 'It lowers mentor cost, but a trainee is not counted in the mentor ratio. From 18 a background check is needed; social hours apply to school pupils only; labour law ❓ lawyer.'] };
+RD_CMP.teen = ['Camp Invention: paaugliai moka $210 už lyderystės praktiką. Sudbury (Kanada) $215 už 4 sav. (ten 13–16 m., pas mus 16–20 m.). LT sąraše nėra.', 'Camp Invention: teens pay $210 for a leadership internship. Sudbury (Canada) $215 for 4 weeks (age 13–16 there, 16–20 here). None on our LT list.'];
