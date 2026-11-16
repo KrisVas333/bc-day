@@ -130,7 +130,8 @@ function onState(p){
   if(pe>me){if(me){ME.c={};ME.ups=[];ME.gear={};ME.sc=0;ME.scm='';ME.q='';ME.qs=[];}ME.epoch=pe;save();if(me)render();}
   var id=p.slide||'';var tgt=document.getElementById('c-'+id);
   if(id!==NOW){NOW=id;document.querySelectorAll('.card.now').forEach(function(x){x.classList.remove('now');});if(tgt){tgt.classList.add('now');var j=$('jump');var nm=tgt.querySelector('h2');j.textContent='📍 '+T(['Dabar ekrane','On screen now'])+': '+(nm?nm.textContent.slice(0,28):'');j.hidden=false;}else{$('jump').hidden=true;}}
-  push();
+  /* answer the screen's 4 s heartbeat only on first contact, on a new epoch, or every 30 s: 15 phones must not make the deck rebuild 4x per second */
+  var t=Date.now();if(pe>me||!onState.t||t-onState.t>30000){onState.t=t;push();}
 }
 function connect(){
   if(typeof supabase==='undefined'||!supabase.createClient){$('conn').textContent='🔴 '+T(['Nėra ryšio. Atsakymai išsaugoti telefone, parodyk vedėjui.','No connection. Answers are saved on the phone, show them to the presenter.']);return;}

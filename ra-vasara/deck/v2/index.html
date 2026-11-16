@@ -183,7 +183,7 @@ li.pi{list-style:none;position:relative;padding-left:42px;margin-left:-24px;marg
 .tile b,.tile .a{padding-right:6px}.tile .s{padding-right:100px}
 .pk p.lead{font-size:23px}.pk li{font-size:20px;margin-bottom:6px}
 @media (prefers-reduced-motion: reduce){.bar i u,.up i u{transition:none}}
-details.tg{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 14px;font-size:16px;line-height:1.35;flex:none}details.tg summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none}details.tg summary::before{content:"\25B8  "}details.tg[open] summary::before{content:"\25BE  "}.media .tag,a.lk,.lks,.less{display:none!important}.cs .lead{font-size:26px!important}.cs li{font-size:21px!important}
+details.tg[open]{max-height:230px;overflow:auto}details.tg{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 14px;font-size:16px;line-height:1.35;flex:none}details.tg summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none}details.tg summary::before{content:"\25B8  "}details.tg[open] summary::before{content:"\25BE  "}.media .tag,a.lk,.lks,.less{display:none!important}.cs .lead{font-size:26px!important}.cs li{font-size:21px!important}
 </style>
 </head>
 <body>
@@ -467,8 +467,14 @@ function build(){
 function render(){
   SLIDES=build().filter(function(s){return ['world','map','alpha','idtech','ccprice','ccgaps','creatorwhy','gaps','packs','gear','prices','panel','src'].indexOf(s.id)<0;});
   var box=$('slides'),h='';
+  /* remember open folds + scroll of the visible slide: a phone vote rebuilds the DOM and must not close them */
+  var keepI=-1,keepOpen=[],keepScroll=[];
+  var old=box.querySelector('.slide.on');
+  if(old){keepI=+old.getAttribute('data-i');old.querySelectorAll('details').forEach(function(d,n){if(d.open)keepOpen.push(n);});old.querySelectorAll('.body,.col,.card,details').forEach(function(el,n){if(el.scrollTop)keepScroll.push([n,el.scrollTop]);});var ov=old.querySelector('video');var keepT=ov?ov.currentTime:0;}
   SLIDES.forEach(function(s,i){h+='<section class="slide '+(s.cls||'')+(i===CUR?' on':'')+'" data-i="'+i+'"'+(s.style?' style="'+s.style+'"':'')+'>'+s.html+'</section>';});
   box.innerHTML=h;
+  if(keepI===CUR){var now=box.querySelector('.slide.on');if(now){var ds=now.querySelectorAll('details');keepOpen.forEach(function(n){if(ds[n])ds[n].open=true;});var sc=now.querySelectorAll('.body,.col,.card,details');keepScroll.forEach(function(p){if(sc[p[0]])sc[p[0]].scrollTop=p[1];});var nv=now.querySelector('video');if(nv&&keepT){try{nv.currentTime=keepT;}catch(e){}}}}
+  try{sessionStorage.setItem('ravasara-v2-cur',String(CUR));}catch(e){}
   box.querySelectorAll('video').forEach(function(v){v.addEventListener('error',function(){var im=document.createElement('img');im.src=v.getAttribute('data-fallback');var t=v.parentNode.querySelector('.tag');if(t)t.remove();v.parentNode.replaceChild(im,v);});});
   $('pos').textContent=(CUR+1)+' / '+SLIDES.length;
   $('bLang').textContent=LANG==='lt'?'EN':'LT';
@@ -560,6 +566,7 @@ $('slides').addEventListener('click',function(e){
 document.addEventListener('pause',function(){if(playing){playing=false;render();}},true);
 document.addEventListener('ended',function(){if(playing){playing=false;render();}},true);
 window.addEventListener('resize',fit);
+try{CUR=+sessionStorage.getItem('ravasara-v2-cur')||0;}catch(e){}
 fit();render();
 lib('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js',function(){qr();lib('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js',connect);});
 })();
