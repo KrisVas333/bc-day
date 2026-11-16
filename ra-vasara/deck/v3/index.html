@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="lt">
+<head><base href="../">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>RA Vasara 2027 · V3</title>
+<link rel="icon" href="img/ra-logo-color.svg">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap">
+<style>
+/* Layout: fixed 1600x900 stage scaled to the window; RA site tokens (violet + yellow + navy, Syne + Poppins, pill buttons, 20px cards). */
+:root{
+  --bg:#F3F6FD; --card:#FFFFFF; --ink:#152039; --muted:#4F5B72; --line:#DCE3F2;
+  --acc:#4862DD; --acc-ink:#FFFFFF; --yel:#FEC404; --yel-ink:#152039; --cyan:#06A1EE;
+  --good:#0B7A4B; --warn:#7A4B00; --warn-bg:#FFF4D1; --bad:#B3261E;
+  --grad:linear-gradient(100deg,#5058DA 0%,#3F6FE0 60%,#2C82E4 100%);
+  --head:'Syne','Poppins',sans-serif; --body:'Poppins',system-ui,sans-serif;
+  --r:20px; --pill:30px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1730; --card:#16213F; --ink:#EEF2FF; --muted:#A7B2CC; --line:#2A3658;
+    --acc:#8FA3FF; --acc-ink:#0E1730; --good:#4ADE9A; --warn:#FFD667; --warn-bg:#2A2210; --bad:#FF8A80;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1730; --card:#16213F; --ink:#EEF2FF; --muted:#A7B2CC; --line:#2A3658;
+  --acc:#8FA3FF; --acc-ink:#0E1730; --good:#4ADE9A; --warn:#FFD667; --warn-bg:#2A2210; --bad:#FF8A80;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{background:#0A1024;color:var(--ink);font-family:var(--body);overflow:hidden}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{width:1600px;height:900px;flex:none;transform-origin:center center;background:var(--bg);position:relative;overflow:hidden;border-radius:6px}
+.slide{position:absolute;inset:0;display:none;flex-direction:column}
+.slide.on{display:flex}
+.top{background:var(--grad);color:#fff;padding:22px 44px 20px;display:flex;align-items:center;gap:20px;flex:none}
+.top h1{font-family:var(--head);font-weight:800;font-size:44px;line-height:1.1;margin:0;flex:1;text-wrap:balance}
+.top .kick{font-size:17px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.9;display:block;margin-bottom:4px}
+.top .em{font-size:54px;line-height:1}
+.top img.logo{height:44px;opacity:.95}
+.body{flex:1;padding:24px 44px 58px;display:grid;gap:22px;min-height:0}
+.c3{grid-template-columns:1.05fr 1fr .9fr}
+.c2{grid-template-columns:1.15fr 1fr}
+.c1{grid-template-columns:1fr}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;min-width:0;min-height:0;overflow:hidden}
+.card h3{font-family:var(--head);font-size:21px;margin:0 0 10px;color:var(--acc);letter-spacing:.02em}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0;min-height:0}
+p,li,td,th{font-size:22px;line-height:1.38}
+p{margin:0 0 10px}
+ul{margin:0;padding-left:24px} li{margin-bottom:7px}
+li::marker{color:var(--yel)}
+.lead{font-size:26px;font-weight:500;line-height:1.35}
+.small{font-size:17px;color:var(--muted);line-height:1.35}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--yel);color:var(--yel-ink);border-radius:var(--pill);padding:5px 15px;font-size:18px;font-weight:600;white-space:nowrap}
+.chip.b{background:transparent;border:2px solid var(--acc);color:var(--acc)}
+.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.price{border:2px solid var(--line);border-radius:16px;padding:10px 12px;text-align:center;position:relative}
+.price b{font-family:var(--head);font-size:36px;display:block;line-height:1.1}
+.price .lab{font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--acc)}
+.price .w{font-size:15px;color:var(--muted);line-height:1.25;display:block;margin-top:3px}
+.price .n{position:absolute;top:-11px;right:-8px;background:var(--acc);color:var(--acc-ink);border-radius:20px;min-width:28px;padding:1px 8px;font-size:15px;font-weight:700}
+.day{display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
+.day span{font-size:19px;line-height:1.3}
+.day .t{font-weight:700;color:var(--acc);font-variant-numeric:tabular-nums}
+.media{border-radius:var(--r);overflow:hidden;background:#000;position:relative;flex:1;min-height:0}
+.media img,.media video{width:100%;height:100%;object-fit:cover;display:block}
+.media .tag{position:absolute;left:10px;bottom:10px;background:rgba(21,32,57,.82);color:#fff;font-size:16px;padding:3px 10px;border-radius:20px}
+.vote{display:flex;flex-direction:column;gap:7px}
+.bar{display:grid;grid-template-columns:150px 1fr 40px;align-items:center;gap:10px;font-size:18px;font-weight:600;cursor:default}
+.bar i{display:block;height:20px;border-radius:10px;background:var(--line);position:relative;overflow:hidden}
+.bar i u{position:absolute;inset:0 auto 0 0;background:var(--acc);border-radius:10px;transition:width .4s}
+.bar.go i u{background:var(--good)} .bar.no i u{background:var(--muted)}
+.bar b{text-align:right;font-variant-numeric:tabular-nums}
+body.manual .bar,body.manual .price{cursor:pointer}
+.cm{font-size:16px;line-height:1.3;border-left:4px solid var(--yel);padding:2px 0 2px 10px;margin-top:6px;color:var(--ink)}
+.cm small{color:var(--muted)}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);font-size:18px;line-height:1.3;vertical-align:top}
+th{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+.flag{background:var(--warn-bg);color:var(--warn);border-radius:14px;padding:12px 16px;font-size:19px;line-height:1.35}
+.big{font-family:var(--head);font-weight:800;font-size:44px;white-space:nowrap;line-height:1;color:var(--acc)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.stat .l{font-size:17px;color:var(--muted);line-height:1.25;margin-top:4px}
+.grid10{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;height:100%}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:6px;cursor:pointer;min-height:0}
+.tile .e{font-size:40px;line-height:1}
+.tile b{font-family:var(--head);font-size:21px;line-height:1.15}
+.tile .a{font-size:16px;color:var(--muted)}
+.tile .s{margin-top:auto;font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.step .e{font-size:38px} .step b{font-family:var(--head);font-size:23px;display:block;margin:4px 0}
+.step .pr{font-family:var(--head);font-size:24px;color:var(--acc);font-weight:800;display:block;margin:6px 0}
+.step p{font-size:18px;margin:0}
+.ups{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 22px}
+.up{display:grid;grid-template-columns:44px 1fr 150px 34px;gap:10px;align-items:center;font-size:19px;line-height:1.25}
+.up .e{font-size:30px}.up small{display:block;font-size:15px;color:var(--muted)}
+.up i{display:block;height:16px;border-radius:8px;background:var(--line);position:relative;overflow:hidden}
+.up i u{position:absolute;inset:0 auto 0 0;background:var(--acc);border-radius:8px;transition:width .4s}
+.cover{background:#152039 right center/auto 100% no-repeat;justify-content:flex-end}
+.cover .pan{width:880px;padding:50px 20px 50px 56px;color:#fff;display:flex;flex-direction:column;gap:22px;align-items:flex-start}
+.cover .pan>div:first-child{flex:none!important}
+.cover .qr{display:flex;gap:16px;align-items:center;text-align:left}
+.cover h1{font-family:var(--head);font-weight:800;font-size:70px;line-height:1.02;margin:0 0 12px;text-wrap:balance}
+.cover p{font-size:24px;margin:0;max-width:800px}
+.qr{background:#fff;border-radius:18px;padding:14px;color:#152039;text-align:center;flex:none}
+.qr .q{width:200px;height:200px;display:flex;align-items:center;justify-content:center}
+.qr b{display:block;font-size:17px;margin-top:6px}
+.qr small{font-size:16px;display:block;max-width:210px;word-break:break-all}
+#hud{position:absolute;left:0;right:0;bottom:0;height:44px;display:flex;align-items:center;gap:8px;padding:0 16px;background:rgba(21,32,57,.92);color:#fff;font-size:15px;z-index:5}
+#hud button{font:inherit;font-weight:600;background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:20px;padding:5px 13px;cursor:pointer}
+#hud button:hover,#hud button:focus-visible{background:var(--yel);color:#152039;outline:none}
+#hud .sp{flex:1}
+#conn{font-weight:700}
+#msg{position:absolute;left:50%;top:70px;transform:translateX(-50%);background:var(--yel);color:#152039;font-weight:700;font-size:20px;padding:10px 22px;border-radius:30px;z-index:9}
+#over{position:absolute;inset:0;background:var(--bg);z-index:8;padding:30px;overflow:auto;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-content:start}
+#over button{font:inherit;font-size:17px;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:12px;cursor:pointer}
+#over button.cur{border-color:var(--acc);border-width:3px}
+#exp{position:absolute;inset:60px 120px;background:var(--card);border:2px solid var(--acc);border-radius:var(--r);z-index:9;padding:20px;display:flex;flex-direction:column;gap:10px}
+#exp textarea{flex:1;font:14px/1.4 ui-monospace,Menlo,monospace;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px}
+#exp button{font:inherit;font-weight:700;background:var(--yel);color:#152039;border:0;border-radius:30px;padding:10px 22px;cursor:pointer;align-self:flex-start}
+.wall{columns:3;column-gap:18px}
+.wall .cm{break-inside:avoid;font-size:17px;margin:0 0 10px}
+.rank{display:grid;grid-template-columns:34px 1fr 300px 150px;gap:10px;align-items:center;font-size:21px;padding:5px 0;border-bottom:1px solid var(--line)}
+.rank i{display:flex;height:22px;border-radius:11px;overflow:hidden;background:var(--line)}
+.rank i u{display:block;height:100%}.rank .g{background:var(--good)}.rank .t{background:var(--acc)}.rank .n{background:var(--muted)}
+.gearrow{display:grid;grid-template-columns:1fr 220px 70px;gap:12px;align-items:center;font-size:22px;padding:8px 0;border-bottom:1px solid var(--line)}
+.stars{color:var(--yel);font-size:26px;letter-spacing:2px}
+.cs .lead{font-size:22px;margin-bottom:8px}.cs li{font-size:19px;margin-bottom:4px;line-height:1.3}.cs .card{padding:16px 20px}.cs .small{font-size:16px}
+.tight td,.tight th{padding:5px 10px;font-size:17px}
+.rank{font-size:15.5px;padding:1px 0;line-height:1.15;grid-template-columns:28px 1fr 170px 170px}.rank i{height:16px}.rank .small{white-space:nowrap;font-size:14px}
+.grid10{grid-auto-rows:1fr;grid-template-columns:repeat(6,1fr);gap:9px}
+.grid10 .tile .th{width:58px;height:58px;right:6px;bottom:6px}.grid10 .tile .s{padding-right:0}.grid10 .tile{padding:9px 10px}.grid10 .tile b{font-size:16.5px!important;line-height:1.15}.grid10 .tile .e{font-size:26px!important}.grid10 .tile .a,.grid10 .tile .s{font-size:13.5px!important}
+table.tight2.pmap td,table.tight2.pmap th{padding:2px 9px;font-size:15px;line-height:1.15}.pmap+p,.pmap~.small{margin-top:4px;font-size:14px}
+.tile{position:relative;padding:12px 14px;gap:4px}
+.tile .e{font-size:34px}.tile b{font-size:19px}.tile .a{font-size:15px}.tile .s{font-size:15px}
+.tile .st{position:absolute;top:10px;right:10px;background:var(--yel);color:var(--yel-ink);border-radius:20px;font-size:13px;font-weight:700;padding:2px 9px}
+.tile.grp{background:var(--grad);color:#fff;border:0;cursor:default;justify-content:center}
+.tile.grp b{font-size:22px}.tile.grp .a{color:#fff;opacity:.9}
+.chip.s{background:var(--ink);color:var(--bg)}
+.cmp{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--yel);border-radius:14px;padding:9px 13px;font-size:15.5px;line-height:1.3;flex:none}
+.cmp b{color:var(--acc)}
+.homeup{margin-top:9px;background:var(--warn-bg);color:var(--warn);border-radius:12px;padding:6px 11px;font-size:15.5px;line-height:1.3;font-weight:500}
+.media.fit img{object-fit:contain}
+.demo{display:grid;gap:10px}
+.demo a{display:grid;grid-template-columns:54px 1fr auto;gap:12px;align-items:center;text-decoration:none;background:var(--grad);color:#fff;border-radius:18px;padding:11px 18px;font-size:21px;font-weight:600;line-height:1.2}
+.demo a small{display:block;font-size:15px;font-weight:400;opacity:.92}
+.demo a .k{font-family:var(--head);font-size:30px;background:var(--yel);color:var(--yel-ink);border-radius:12px;width:46px;height:46px;display:flex;align-items:center;justify-content:center}
+.demo a .go{font-size:26px}
+.demo a:hover,.demo a:focus-visible{outline:4px solid var(--yel);outline-offset:2px}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.mi{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:9px 11px;font-size:16.5px;line-height:1.25}
+.mi .e{font-size:28px;display:block}.mi b{display:block;font-size:17.5px}.mi span{color:var(--acc);font-weight:700}
+.qa{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}
+.qa div{font-size:16.5px;line-height:1.3;border-left:4px solid var(--yel);padding:1px 0 1px 10px}
+.qa b{display:block}
+.qa span{color:var(--muted)}
+.tight2 td,.tight2 th{padding:4px 9px;font-size:16px;line-height:1.25}
+.ups{gap:14px 26px}.up{font-size:19px;grid-template-columns:44px 1fr 130px 30px}.up small{font-size:15px}.up .e{font-size:30px}
+.big3 td,.big3 th{padding:7px 12px;font-size:17.5px;line-height:1.28}.big3 th{font-size:15px}
+.qw{max-height:400px;overflow-y:auto;margin-top:14px;padding-right:8px;display:flex;flex-direction:column;gap:10px}.qc{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.14);border-radius:14px;padding:10px 12px 10px 16px;color:#fff;border-left:5px solid transparent}.qc.k{border-left-color:#4ade80;background:rgba(74,222,128,.16)}.qc .qt{flex:1;font-size:21px;line-height:1.3;overflow-wrap:anywhere}.qc small{opacity:.8;font-size:16px}.qc .tk{color:#4ade80;font-size:16px}.qb{flex:none;width:52px;height:52px;border-radius:50%;border:2px solid rgba(255,255,255,.5);background:transparent;color:#fff;font-size:24px;font-weight:800;cursor:pointer}.qb.y:hover,.qc.k .qb.y{background:#4ade80;color:#0b1020;border-color:#4ade80}.qb.n:hover{background:#f87171;color:#0b1020;border-color:#f87171}.qb:focus-visible{outline:3px solid #fff;outline-offset:2px}.qe{font-size:22px;opacity:.9;margin:0}
+.less{margin-top:8px;padding-top:6px;border-top:1px solid rgba(127,127,127,.3);font-size:18px;line-height:1.3}.less a.lk{font-size:16px;padding:2px 11px;margin:5px 4px 0 0}.lsn{padding:10px 16px}.lsn h3{margin-bottom:4px}.lsn p{margin:0;font-size:14.5px;line-height:1.25}.lsn .small{font-size:12px}.orb.orb{gap:5px}.orb.orb img,.orb.orb .noi{width:52px;height:40px}.orb.orb p{font-size:14.5px}
+.body.sv{display:grid;grid-template-columns:230px 1.1fr 1.25fr;grid-template-rows:1fr auto auto;gap:14px}.svt{display:flex;flex-direction:column;gap:10px}.svt .card{flex:1;padding:8px 14px;display:flex;flex-direction:column;justify-content:center}.svt b{font-size:38px;line-height:1;color:var(--acc)}.svt span{font-weight:700;font-size:18px}.svt i{font-style:normal;font-size:13px;opacity:.8;line-height:1.15}.svb{display:grid;grid-template-columns:1fr 130px 62px;gap:8px;align-items:center;font-size:15.5px;line-height:1.15;margin-bottom:7px}.svb .b{height:12px;border-radius:6px;background:rgba(127,127,127,.22);overflow:hidden}.svb .b i{display:block;height:100%;background:var(--acc);border-radius:6px}.svb .v{text-align:right;font-weight:700}.svf{grid-column:1/-1;font-size:15.5px;line-height:1.3}.svn{grid-column:1/-1;margin:0;font-size:12.5px}
+table.tight2.pnl{width:100%}table.tight2.pnl td,table.tight2.pnl th{padding:2px 6px;font-size:15px;line-height:1.15}.pp{display:inline-block;min-width:34px;padding:1px 0;border-radius:999px;text-align:center;font-weight:800;color:#0b1020}.pp.g{background:#4ade80}.pp.a{background:#fbbf24}.pp.r{background:#f87171}
+table.tight2.pl{width:100%;table-layout:auto}table.tight2.pl td,table.tight2.pl th{padding:5px 5px;font-size:15.5px;line-height:1.15}.pl img{width:54px;height:40px;object-fit:cover;border-radius:6px;display:block;background:#fff}
+.orb{display:flex;flex-direction:column;gap:11px}.orb>div{display:flex;gap:10px;align-items:center}.orb img,.orb .noi{width:62px;height:48px;object-fit:cover;border-radius:8px;flex:none;background:var(--bg);display:grid;place-items:center;font-size:24px}.orb p{margin:0;font-size:16.5px;line-height:1.2}.orb a.lk{font-size:12.5px;padding:0 9px;margin-top:2px}
+.mg6{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mg6>div{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:7px;font-size:15px;line-height:1.2}.mg6 img{width:100%;height:150px;object-fit:cover;border-radius:10px;display:block;margin-bottom:4px}.mg6 b{display:block;font-size:15.5px}.mg6 span{color:var(--acc);font-weight:700}
+.a3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0}.a3 div{background:#fff;border-radius:14px;padding:8px;text-align:center;color:#152039;font-weight:700;font-size:15px;line-height:1.2}.a3 img{width:100%;height:120px;object-fit:contain;display:block;margin-bottom:4px}
+a.lk{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;border-radius:20px;padding:2px 12px;font-weight:700;font-size:15px;margin:2px 4px 2px 0;white-space:nowrap}
+.lks{margin-top:6px}
+.step .si{width:100%;height:104px;object-fit:cover;border-radius:12px;display:block;margin-bottom:6px;background:#fff}
+li.pi{list-style:none;position:relative;padding-left:42px;margin-left:-24px;margin-bottom:9px}li.pi .pe{position:absolute;left:0;top:-3px;font-size:27px}
+.pe2{font-size:22px;margin-right:4px}
+.mi .av{display:block;width:46px;height:60px;float:right;margin-left:6px;border-radius:10px;background:#fff url(img/cast.jpg) no-repeat;background-size:700% 200%}
+.w7 td{font-size:15px;padding:2px 7px;line-height:1.18}
+.tile .th{position:absolute;right:10px;bottom:10px;width:92px;height:92px;border-radius:16px;object-fit:cover;border:2px solid var(--line)}
+.tile b,.tile .a{padding-right:6px}.tile .s{padding-right:100px}
+.pk p.lead{font-size:23px}.pk li{font-size:20px;margin-bottom:6px}
+@media (prefers-reduced-motion: reduce){.bar i u,.up i u{transition:none}}
+details.tg[open]{max-height:230px;overflow:auto}details.tg{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 14px;font-size:16px;line-height:1.35;flex:none}details.tg summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none}details.tg summary::before{content:"\25B8  "}details.tg[open] summary::before{content:"\25BE  "}.media .tag,a.lk,.lks,.less{display:none!important}.cs .lead{font-size:26px!important}.cs li{font-size:21px!important}
+/* ---------- V3 (2026-11-17): team view ---------- */
+.v3t{width:100%}.v3t td,.v3t th{padding:2px 6px;font-size:14px;line-height:1.18;vertical-align:middle}.v3t th{font-size:11.5px;letter-spacing:.04em}
+.v3t tr.sel td{background:rgba(254,196,4,.22)}.v3t tr[data-v3pick]{cursor:pointer}
+.v3t input,.v3t select,.v3f input,.v3f select{font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:2px 7px;width:100%;min-width:0;height:26px}
+.v3t input:focus,.v3t select:focus,.v3f input:focus,.v3f select:focus{outline:3px solid var(--yel);outline-offset:1px}
+.v3t input::placeholder,.v3f input::placeholder{color:var(--bad);opacity:.8}
+.v3f{display:grid;grid-template-columns:1fr 112px;gap:4px 10px;align-items:center;font-size:15px;line-height:1.15}
+.v3f label{min-width:0}.v3f .src{grid-column:1/-1;font-size:11.5px;color:var(--muted);margin:-3px 0 3px;line-height:1.15}
+.v3f .hd{grid-column:1/-1;font-weight:700;color:var(--acc);font-size:14px;margin-top:6px;text-transform:uppercase;letter-spacing:.05em}
+.v3f select{grid-column:1/-1;height:32px;font-size:15px}
+.tiers{grid-column:1/-1;display:flex;gap:6px}.tiers button{flex:1;font:inherit;font-size:14px;font-weight:700;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:20px;padding:4px 6px;cursor:pointer}.tiers button.on{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.res{display:flex;flex-direction:column;gap:2px}.rrow{display:flex;justify-content:space-between;gap:10px;font-size:15.5px;line-height:1.25;border-bottom:1px dashed var(--line);padding:2px 0}.rrow b{font-variant-numeric:tabular-nums;white-space:nowrap}.rrow.miss{color:var(--bad)}.rrow.tot{font-weight:800;border-bottom:0}
+.pct{font-family:var(--head);font-weight:800;font-size:58px;line-height:1;margin-top:8px}
+.pct.g-q{font-size:34px;margin-top:4px}.mh3{font-size:17px!important;margin-bottom:6px!important}.rrow{font-size:15px;padding:1px 0}
+.g-good{color:var(--good)}.g-mid{color:var(--warn)}.g-bad{color:var(--bad)}.g-q{color:var(--muted)}
+.q3{font-weight:800;color:var(--bad)}
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:12px}.sg{display:flex;flex-direction:column;gap:10px}.sg h4{margin:0;font-family:var(--head);font-size:19px;color:var(--acc)}
+.slot{border:2px solid var(--line);border-radius:16px;padding:10px 14px;font-size:17px;line-height:1.25;background:var(--bg)}.slot b{display:block;font-size:19px}.slot small{display:block;font-size:14px;color:var(--muted)}
+.slot.free{border:3px dashed var(--acc)}.slot.free.won{border-style:solid;background:rgba(72,98,221,.10)}
+.slot .k{display:inline-block;background:var(--yel);color:var(--yel-ink);border-radius:20px;font-size:12.5px;font-weight:800;padding:1px 9px;margin-bottom:3px}
+.pace{display:flex;align-items:flex-end;gap:12px;height:300px;position:relative;border-bottom:2px solid var(--ink);margin:30px 0 8px;padding:0 6px}
+.pace .bw{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.pace .bb{width:100%;background:var(--acc);border-radius:8px 8px 0 0;position:relative;flex:none}.pace .bw.over .bb{background:var(--good)}
+.pace .bv{position:absolute;left:0;right:0;top:-24px;text-align:center;font-weight:800;font-size:17px;font-variant-numeric:tabular-nums;white-space:nowrap}.pace .bw.over .bv{top:6px;color:#0b1020}
+.pace .tl{position:absolute;left:0;right:0;border-top:3px dashed var(--bad);z-index:2}.pace .tl span{position:absolute;left:0;top:-26px;font-size:14px;font-weight:700;color:var(--bad);background:var(--card);padding:0 4px}
+.pmon{display:flex;gap:12px;padding:0 6px}.pmon div{flex:1;text-align:center;font-size:15px;font-weight:700}.pmon small{display:block;margin-top:3px}
+.pmon .eb{display:inline-block;background:var(--yel);color:var(--yel-ink);border-radius:20px;padding:0 8px;font-size:13px;font-weight:800}
+a.lk3{color:var(--acc);font-weight:700;text-decoration:underline;font-size:13px;white-space:nowrap}
+.pinbox{grid-column:1/-1;display:flex;gap:18px;align-items:center;background:var(--card);border:3px solid var(--yel);border-radius:14px;padding:10px 16px;font-size:17px;line-height:1.35}
+.pinbox b.pin{font-family:var(--head);font-size:40px;letter-spacing:.12em;color:var(--acc)}.pinbox #qrR{background:#fff;padding:6px;border-radius:8px;flex:none}
+.cs.qam li{font-size:16.5px!important;margin-bottom:2px!important;line-height:1.22!important}.cs.qam h3{margin-bottom:4px}
+.v3t.ops td{padding:1px 6px;font-size:13.5px}.v3t.ops input{height:24px;font-size:13.5px}
+.ask td{font-size:25px;padding:16px 14px;line-height:1.3}.ask th{font-size:15px}.ask td.who{font-weight:800;white-space:nowrap;color:var(--acc)}.ask td.by{white-space:nowrap;color:var(--muted);font-weight:700}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+  <div id="slides"></div>
+  <div id="hud">
+    <span id="conn">⚪ …</span>
+    <span id="cnt"></span>
+    <span class="sp"></span>
+    <span id="pos"></span>
+    <button id="bPrev" type="button">←</button><button id="bNext" type="button">→</button>
+    <button id="bDemo" type="button" title="D">🎮 Demo</button>
+    <button id="bGrid" type="button" title="G">▦</button>
+    <button id="bLang" type="button" title="L">EN</button>
+    <button id="bTheme" type="button" title="T">◐</button>
+    <button id="bManual" type="button" title="M">✋ M</button>
+    <button id="bExp" type="button" title="E">⬇ E</button>
+    <button id="bReset" type="button" title="Išvalyti visus balsus · Clear all votes (Shift+X)">↺</button>
+    <button id="bFull" type="button" title="F">⛶</button>
+  </div>
+  <div id="msg" hidden></div>
+  <div id="over" hidden></div>
+  <div id="exp" hidden><b id="expT"></b><textarea id="expA" readonly></textarea><div><button id="expC" type="button">Copy</button> <button id="expX" type="button">✕</button></div></div>
+</div></div>
+
+<script src="shared.js?v=14"></script>
+<script src="deck-data.js?v=14"></script>
+<script>
+(function(){
+'use strict';
+var LANG='lt', CUR=0, SLIDES=[], MANUAL_ON=false;
+function coi(){return '<p class="small" style="margin:6px 0 0;padding:5px 10px;font-size:14px;line-height:1.25;border-left:4px solid var(--yel);background:rgba(254,196,4,.14);border-radius:6px"><b>⚖️ '+T(['Interesų konfliktas','Conflict of interest'])+':</b> '+T(['Baltic Orbis = susijusi šalis (Kris\'o tėvo įmonė). Pirkimo Kris netvirtina; reikia antro, nepriklausomo pasiūlymo.','Baltic Orbis is a related party (Kris\'s father\'s company). Kris does not approve the purchase. A second, independent supplier quote is needed before buying.'])+'</p>';}
+var LS='ravasara-deck-v2'+(RV_ROOM!=='RA27'?'-'+RV_ROOM:'');
+var ST={epoch:1, people:{}, manual:{}};
+try{var s=JSON.parse(localStorage.getItem(LS)||'null');if(s&&s.people)ST=s;}catch(e){}
+try{var l=localStorage.getItem('ravasara-lang');if(l)LANG=l;}catch(e){}
+function save(){try{var o=JSON.parse(localStorage.getItem(LS)||'null');if(o&&(+o.epoch||0)>(+ST.epoch||0))return;/* kitas skirtukas jau naujesnėje epochoje: neperrašom */localStorage.setItem(LS,JSON.stringify(ST));}catch(e){}}
+function T(p){return LANG==='en'?p[1]:p[0];}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function $(i){return document.getElementById(i);}
+
+/* ================= V3 (2026-11-17): komandos vaizdas: CEO · operacijos · procesai · turinys · marketingas =================
+   Balsai ir kambarys bendri su V2 (LS, RV_CHANNEL). V3 įvestys: atskiras raktas LS3. Skaičiai tik iš V2 / deck-data / wiki 05 §1–5 ir 10-20 susitikimo. */
+var LS3='ravasara-deck-v3'+(RV_ROOM!=='RA27'?'-'+RV_ROOM:'');
+var V3={sel:'marza',tier:1,cost:{},cc:{},ops:{},tests:{},content:{}};
+try{var s3=JSON.parse(localStorage.getItem(LS3)||'null');if(s3&&typeof s3==='object'){for(var k3 in V3)if(s3[k3]!=null)V3[k3]=s3[k3];}}catch(e){}
+function save3(){try{localStorage.setItem(LS3,JSON.stringify(V3));}catch(e){}}
+var PIN='';try{PIN=localStorage.getItem('ravasara-v3-pin')||'';}catch(e){}
+if(!/^\d{4}$/.test(PIN)){PIN=String(1000+Math.floor(Math.random()*9000));try{localStorage.setItem('ravasara-v3-pin',PIN);}catch(e){}}
+function v3byId(id){for(var i=0;i<RV_CONCEPTS.length;i++)if(RV_CONCEPTS[i].id===id)return RV_CONCEPTS[i];return null;}
+function nf(n,d){d=d||0;var neg=n<0;var s=Math.abs(+n).toFixed(d);var p=s.split('.');p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,LANG==='en'?',':' ');return (neg?'−':'')+p.join(LANG==='en'?'.':',');}
+function nfIn(n){return n==null?'':String(n).replace('.',LANG==='en'?'.':',');}
+function num(v){if(v==null)return null;var s=String(v).trim().replace(/\s/g,'').replace(',','.');if(s==='')return null;var n=+s;return isFinite(n)?n:null;}
+function kidsDef(c,j){var m=/(\d+)\s+vaik(ų|ai)/.exec(c.prices[j][1][0]);if(m)return +m[1];var g=/(\d+)/.exec(c.grp[0]);return g?+g[1]:null;}
+function ratioK(c){var m=/:\s*(\d+)/.exec(c.ratio[0]);return m?+m[1]:null;}
+function helperOf(c,j){return /padėjėj|jaunieji|treneri/.test(c.ratio[0]+' '+(j==null?'':c.prices[j][1][0]));}
+function kprDef(c){var t=c.prices[1][1][0];var m=/(\d+)\s+vaikams/.exec(t);if(m)return +m[1];if(/\bvaikui\b/.test(t))return 1;return null;}
+function ageR(c){var s=c.age[0];var m=/\(([^)]*)\)/.exec(s);if(m)s=m[1];var n=(s.match(/\d+/g)||[]).map(Number);return n.length?[Math.min.apply(null,n),Math.max.apply(null,n)]:null;}
+function g3(path){var p=path.split('.'),o=V3;for(var i=0;i<p.length;i++){if(o==null||typeof o!=='object')return undefined;o=o[p[i]];}return o;}
+function set3(path,val){var p=path.split('.'),o=V3;for(var i=0;i<p.length-1;i++){if(!o[p[i]]||typeof o[p[i]]!=='object')o[p[i]]={};o=o[p[i]];}o[p[p.length-1]]=String(val).slice(0,120);save3();}
+function cname(c){return c.em+' '+T(c.n).split(':')[0];}
+/* sąnaudų numatytosios reikšmės TIK iš KPI lentelės „Marža“ skirtuko (05 §5); kita = tuščia ❓ */
+var CST=[
+ {k:'mw',t:['Mentoriaus alga €/sav. vienam','Mentor pay €/week each'],d:325.7,s:['📊 Marža skaičiuoklė: 2 mentoriai = €651,40/sav.','📊 Margin calculator: 2 mentors = €651.40/week']},
+ {k:'food',t:['Maistas €/vaikui/d.','Food €/child/day'],d:10,s:['📊 Marža skaičiuoklė','📊 Margin calculator']},
+ {k:'venue',t:['Patalpos €/d.','Venue €/day'],d:9,s:['📊 Marža skaičiuoklė','📊 Margin calculator']},
+ {k:'other',t:['Kitos išlaidos €/sav.','Other costs €/week'],d:100,s:['📊 Marža skaičiuoklė','📊 Margin calculator']},
+ {k:'kuras',t:['„Kuras viso“ €/sav.','"Kuras viso" €/week'],d:1114.55,s:['📊 Marža skaičiuoklės eilutė; kas į ją įeina, neaišku ⚠️. Taikoma tik pavyzdžiui; koncepcijoms = ❓, kol neįrašysi pats','📊 Margin calculator row; what it covers is unclear ⚠️. Used only for the example; for concepts = ❓ until you type it yourself']},
+ {k:'help',t:['Padėjėjas €/sav.','Helper €/week'],d:null,s:['❓ Marža lentelėje nėra','❓ not in the Margin tab']}
+];
+function costVal(k){var v=g3('cost.'+k);if(v===undefined){for(var i=0;i<CST.length;i++)if(CST[i].k===k)return CST[i].d;}return num(v);}
+function money(cid,j){
+  var c=cid==='marza'?null:v3byId(cid);if(cid!=='marza'&&!c){c=RV_CONCEPTS[0];cid=c.id;}
+  var key=cid+'~'+(c?j:0),kv=g3('cc.'+key+'.kids'),mv=g3('cc.'+key+'.ment');
+  var price=c?+c.prices[j][0]:199,kidsD=c?kidsDef(c,j):17,K=c?ratioK(c):null;
+  var kids=kv===undefined?kidsD:num(kv);
+  var mentD=c?(K&&kids?Math.ceil(kids/K):null):2,ment=mv===undefined?mentD:num(mv);
+  var L=[],miss=[];
+  function add(lab,v){if(v==null||!isFinite(v))miss.push(T(lab));else L.push([T(lab),v]);}
+  var mw=costVal('mw'),food=costVal('food'),ven=costVal('venue');
+  add(['Mentoriai','Mentors'],ment!=null&&mw!=null?ment*mw:null);
+  add(['Maistas','Food'],food!=null&&kids!=null?food*kids*5:null);
+  add(['Patalpos','Venue'],ven!=null?ven*5:null);
+  add(['Kitos išlaidos','Other costs'],costVal('other'));
+  add(['„Kuras viso“ ⚠️','"Kuras viso" ⚠️'],(c&&g3('cost.kuras')===undefined)?null:costVal('kuras'));
+  var hlp=c?helperOf(c,j):false;if(hlp)add(['Padėjėjas','Helper'],costVal('help'));
+  if(c){add(['Įranga, robotų amortizacija','Equipment, robot amortisation'],num(g3('cc.'+cid+'.eq')));add(['Medžiagos','Materials'],num(g3('cc.'+cid+'.mat')));}
+  var rev=kids!=null?price*kids:null;if(rev==null)miss.unshift(T(['vaikų skaičius','number of kids']));
+  var cost=L.reduce(function(a,x){return a+x[1];},0),con=rev!=null?rev-cost:null,pct=rev?con/rev*100:null;
+  return {c:c,cid:cid,key:key,j:j,price:price,kids:kids,kidsD:kidsD,ment:ment,mentD:mentD,K:K,hlp:hlp,L:L,miss:miss,rev:rev,cost:cost,con:con,pct:pct};
+}
+function scale(p){return p>50?['g-good',T(['gera','good']),'g']:p>=40?['g-mid',T(['vidutiniška','average']),'a']:['g-bad',T(['prasta','poor']),'r'];}
+function mresHTML(){var m=money(V3.sel,V3.tier),h='<div class="res">';
+  h+='<div class="rrow tot"><span>'+T(['Pajamos','Revenue'])+' = €'+nf(m.price)+' × '+(m.kids==null?'❓':m.kids)+' '+T(['vaikų','kids'])+'</span><b>'+(m.rev==null?'❓':'€'+nf(m.rev,2))+'</b></div>';
+  m.L.forEach(function(x){h+='<div class="rrow"><span>− '+x[0]+'</span><b>€'+nf(x[1],2)+'</b></div>';});
+  m.miss.forEach(function(x){h+='<div class="rrow miss"><span>− '+x+'</span><b>❓</b></div>';});
+  h+='<div class="rrow tot"><span>'+T(['Savikaina','Cost'])+(m.miss.length?' ('+T(['be ❓','without ❓'])+')':'')+'</span><b>€'+nf(m.cost,2)+'</b></div>';
+  if(m.miss.length){h+='<div class="pct g-q">❓</div><p class="small" style="margin:4px 0 0;color:var(--bad)"><b>❓ '+T(['Trūksta','Missing'])+':</b> '+m.miss.join(', ')+'.</p>'+(m.rev!=null?'<p class="small" style="margin:2px 0 0">🤖 '+T(['Kol kas be ❓ eilučių','So far without the ❓ rows'])+': €'+nf(m.con,2)+' · '+nf(m.pct,1)+' %. '+T(['Tai ne marža.','This is not the margin.'])+'</p>':'');}
+  else{var s=scale(m.pct);h+='<div class="pct '+s[0]+'">'+nf(m.pct,2)+' %</div><p class="small" style="margin:4px 0 0">'+T(['Įnašas','Contribution'])+' €'+nf(m.con,2)+' · '+T(['RA skalė','RA scale'])+': <b class="'+s[0]+'">'+s[1]+'</b> 🤖</p><p class="small" style="margin:4px 0 0;font-weight:700;color:var(--warn)">⚠️ '+T(['Scenarijus iš skaičiuoklės, ne 2026 m. faktas.','A calculator scenario, not a 2026 actual.'])+'</p>';}
+  return h+'</div>';}
+function mtabHTML(){var j=V3.tier,h='<table class="v3t"><tr><th>'+T(['Koncepcija','Concept'])+' · '+T(RV_TIERS[j].t)+'</th><th>€</th><th>'+T(['Vaikai','Kids'])+'</th><th>'+T(['Ment.','Ment.'])+'</th><th>'+T(['Pajamos','Revenue'])+'</th><th>'+T(['Įnašas','Contrib.'])+'</th><th>%</th></tr>';
+  RV_CONCEPTS.forEach(function(c){var m=money(c.id,j),pc;if(m.miss.length)pc='<span class="q3">❓ '+m.miss.length+'</span>';else{var s=scale(m.pct);pc='<span class="pp '+s[2]+'">'+nf(m.pct,0)+' %</span>';}
+    h+='<tr'+(c.id===V3.sel?' class="sel"':'')+' data-v3pick="'+c.id+'"><td>'+cname(c)+'</td><td class="num">'+c.prices[j][0]+'</td><td class="num">'+(m.kids==null?'❓':m.kids)+'</td><td class="num">'+(m.ment==null?'❓':m.ment)+(m.hlp?'+':'')+'</td><td class="num">'+(m.rev==null?'❓':nf(m.rev))+'</td><td class="num">'+(m.miss.length?'❓':nf(m.con))+'</td><td class="num">'+pc+'</td></tr>';});
+  return h+'</table>';}
+function fld(path,lab,shown,src,dflag){return '<label for="f-'+path.replace(/[.~]/g,'-')+'">'+lab+'</label><input type="text" inputmode="decimal" autocomplete="off" id="f-'+path.replace(/[.~]/g,'-')+'" data-v3="'+path+'"'+(dflag?' data-v3d="'+dflag+'"':'')+' value="'+esc(shown)+'" placeholder="❓">'+(src?'<span class="src">'+src+'</span>':'');}
+function shownOf(path,def){var v=g3(path);return v===undefined?nfIn(def):v;}
+function devHTML(c){var v=num(g3('ops.'+c.id+'.kpr'));if(v==null)v=kprDef(c);var k=kidsDef(c,1);return (v&&k)?String(Math.ceil(k/v)):'❓';}
+var V3_THEMES=[['sala',['Negyvenama sala','Desert island'],'7–12','8,83'],['robo',['Robotų komanda','Robot team'],'7–12','8,78'],['mars',['Marsas Minecrafte','Mars in Minecraft'],'7–12','8,66'],['world',['Pasaulio tyrinėjimas','Exploring the world'],'4–6','9,51'],['life',['Gyvybė aplink mus','Life around us'],'4–6','9,32'],['new',['Naujas lizdas: nieko nekeičia','A new slot: replaces nothing'],'','']];
+function ratHTML(cid){var v=g3('content.'+cid+'.rep')||'';for(var i=0;i<V3_THEMES.length;i++)if(V3_THEMES[i][0]===v)return V3_THEMES[i][3]?'<b>'+V3_THEMES[i][3]+'</b>':'·';return '❓';}
+/* kieno įranga: perrašyta iš koncepcijų „Įranga“ ir kainų lygių teksto (shared.js) */
+var V3_DEV={dog:['RA šunys + R1; didelis šuo ❓','RA dogs + R1; big dog ❓'],cup:['RA VinciBot','RA VinciBot'],vai:['RA VinciBot + kamera','RA VinciBot + camera'],tale:['RA Tale-Bot rinkinys (6)','RA Tale-Bot set (6)'],duck:['Reachy Mini + antis: ar turim ❓','Reachy Mini + duck: do we own ❓'],mc:['mokyklos kompiuteriai','school PCs'],roblox:['vaiko kompiuteris','the child\'s computer'],gamer:['kompiuterių klasė','computer room'],esport:['kompiuterių klasė + planšetės','computer room + tablets'],creator:['savi telefonai arba RA rinkiniai','own phones or RA kits'],lego:['sava planšetė arba RA','own tablet or RA'],xr:['BrainClub Quest 3S','BrainClub Quest 3S'],life:['robotas tik svečias','robot only as a guest'],detox:['partnerių inventorius','partners\' equipment'],cyber:['mokyklos kompiuteriai','school PCs'],comp:['varžybų rinkiniai ❓','competition kits ❓'],teen:['nereikia','none']};
+var V3_READY={cyber:['6–8 m.: Info Gynėjai (BrainClub Jr) · 9–12 m. dar nesukurta','Age 6–8: Info Gynėjai (BrainClub Jr) · age 9–12 not built yet'],mc:null};
+var V3_TX=[{id:'home',em:'🏠',n:['Robotas namuose','Robot at home'],test:['€20 grąžinamas depozitas klubo šeimoms','A €20 refundable deposit for club families'],kill:'KEEP ≥ 10 %'},{id:'game',em:'🎮',n:['ProKid žaidimas','ProKid game'],test:['Viena grupė 4 savaites','One group for 4 weeks'],kill:''}];
+
+/* ---------- tallies ---------- */
+function people(){return Object.keys(ST.people).map(function(k){return ST.people[k];});}
+/* klausimai iš telefonų: ✓ palikti / ✕ pašalinti saugoma ST.qst (išlieka per perkrovimą, ↺ išvalo) */
+function allQs(){var st=ST.qst||{},o=[];Object.keys(ST.people).forEach(function(k){var p=ST.people[k];var a=Array.isArray(p.qs)?p.qs.map(function(q){return {id:k+':'+q.i,t:q.t};}):(p.q?[{id:k+':q',t:p.q}]:[]);a.forEach(function(q){if(q.t&&st[q.id]!=='x')o.push({id:q.id,t:q.t,name:p.name||'',k:st[q.id]==='k'});});});
+  o.reverse();return o.filter(function(q){return q.k;}).concat(o.filter(function(q){return !q.k;}));}
+function man(k){return ST.manual[k]||0;}
+function tallyC(id){
+  var r={go:man(id+':go'),test:man(id+':test'),no:man(id+':no'),low:man(id+':low'),same:man(id+':same'),high:man(id+':high'),cm:[]};
+  people().forEach(function(p){var c=p.c&&p.c[id];if(!c)return;if(c.v&&r[c.v]!=null)r[c.v]++;if(c.p&&r[c.p]!=null)r[c.p]++;if(c.m)r.cm.push({n:p.name,m:c.m});});
+  r.n=r.go+r.test+r.no;r.score=r.go*2+r.test-r.no;return r;
+}
+function tallyU(id){var n=man(id);people().forEach(function(p){if(p.ups&&p.ups.indexOf(id)>=0)n++;});return n;}
+function tallyG(id){var s=0,n=0,cm=[];people().forEach(function(p){var g=p.gear&&p.gear[id];if(!g)return;if(g.r){s+=g.r;n++;}if(g.m)cm.push({n:p.name,m:g.m});});return {avg:n?s/n:0,n:n,cm:cm};}
+
+/* ---------- slide builders ---------- */
+function top(kick,title,em){return '<div class="top">'+(em?'<span class="em">'+em+'</span>':'')+'<h1><span class="kick">'+kick+'</span>'+title+'</h1><img class="logo" src="img/ra-logo-white.svg" alt="Robotikos akademija"></div>';}
+function bars(id){
+  var r=tallyC(id),mx=Math.max(1,r.go,r.test,r.no),h='<div class="vote">';
+  RV_VERDICTS.forEach(function(v){h+='<div class="bar '+v.k+'" data-man="'+id+':'+v.k+'"><span>'+v.em+' '+T(v.t)+'</span><i><u style="width:'+(r[v.k]/mx*100)+'%"></u></i><b>'+r[v.k]+'</b></div>';});
+  h+='</div>';
+  r.cm.slice(-3).forEach(function(c){h+='<div class="cm">'+esc(c.m)+' <small>· '+esc(c.n||'?')+'</small></div>';});
+  return h;
+}
+function conceptSlide(c,i){
+  if(typeof RD_IMG!=='undefined'&&RD_IMG[c.id]){c=Object.assign({},c,RD_IMG[c.id]);}
+  var r=tallyC(c.id);
+  var pr='<div class="prices">'+c.prices.map(function(p,j){var k=RV_TIERS[j].k;return '<div class="price" data-man="'+c.id+':'+k+'"><span class="lab">'+T(RV_TIERS[j].t)+'</span><b>€'+p[0]+'</b><span class="w">'+T(p[1])+'</span>'+(r[k]?'<span class="n">'+r[k]+'</span>':'')+'</div>';}).join('')+'</div>';
+  var day='<div class="day">'+c.day.map(function(d){return '<span class="t">'+d[0]+'</span><span>'+T(d[1])+'</span>';}).join('')+'</div>';
+  var rv=(typeof RD_VID!=='undefined'&&RD_VID[c.id])||null,vsrc=c.vid||(rv&&rv.s);var media=vsrc?'<video controls preload="metadata" poster="'+c.img+'" src="'+vsrc+'" data-fallback="'+c.img+'"></video>':'<img src="'+c.img+'" alt="">';
+  var x=RD_X[c.id]||{},cmp=RD_CMP[c.id],home=Math.round(+c.prices[1][0]*0.1);
+  return {id:c.id,title:c.em+' '+T(c.n),html:top(T(['Koncepcija','Concept'])+' '+(i+1)+' / '+RV_CONCEPTS.length,T(c.n),c.em)+
+   '<div class="body c3 cs">'+
+    '<div class="col"><div class="card" style="flex:1"><p class="lead">'+T(c.one)+'</p><div class="chips" style="margin-bottom:12px">'+(c.star?'<span class="chip s">⭐ '+T(['Bestseleris','Bestseller'])+'</span>':'')+'<span class="chip">'+T(c.age)+'</span><span class="chip b">👥 '+T(c.grp)+'</span><span class="chip b">🧑‍🏫 '+T(c.ratio)+'</span></div><h3>'+T(['Veiklos','Activities'])+'</h3><ul>'+c.acts.slice(0,3).map(function(a){return '<li>'+T(a)+'</li>';}).join('')+'</ul>'+((typeof RD_LESS!=='undefined'&&RD_LESS[c.id])?'<div class="less"><b>📚 '+T(RD_LESS[c.id].t)+'</b> '+RD_LESS[c.id].l.map(function(l){return '<a class="lk" href="'+l.u+'" target="_blank" rel="noopener">'+T(l.n)+' ↗</a>';}).join('')+'</div>':'')+'</div>'+
+     '<details class="tg"><summary>🧰 '+T(['Įranga','Equipment'])+'</summary>'+T(c.gear)+'</details><details class="tg"><summary>🧪 '+T(['Testas būreliuose ir susidomėjimas','Test in clubs and interest'])+'</summary>'+T(c.test)+(x.risk?'<br><b>⚠️</b> '+T(x.risk):'')+'</details></div>'+
+    '<div class="col"><div class="card"><h3>'+T(['Kaina už 5 dienas 🅰️ siūlymas','Price for 5 days 🅰️ proposal'])+'</h3>'+pr+'<div class="homeup">🏠 '+T(['+ Namų tęsinys: 4 sav. turinio namams už','+ Home sequel: 4 weeks of at-home content for'])+' <b>€'+home+'</b> '+T(['(10 % kainos)','(10 % of price)'])+'</div></div><details class="tg"><summary>🕘 '+T(['Viena diena','One day'])+'</summary>'+day+'</details></div>'+
+    '<div class="col"><div class="media'+(c.fit?' fit':'')+'"'+(c.fit?' style="background:'+c.fit+'"':'')+'>'+media+(vsrc?'<span class="tag">▶ '+T(rv&&!c.vid?rv.t:['video lietuviškai (DI įgarsinimas)','video in Lithuanian (AI dub)'])+'</span>':'')+(c.tag?'<span class="tag" style="font-size:11.5px">'+T(c.tag)+'</span>':'')+'</div>'+(cmp?'<details class="tg"><summary>🌍 '+T(['Kur tai jau veikia','Where it already works'])+'</summary>'+T(cmp)+(((typeof RD_LINKS!=='undefined'&&RD_LINKS[c.id])||[]).length?'<div class="lks">'+RD_LINKS[c.id].map(function(l){return '<a class="lk" href="'+l.u+'" target="_blank" rel="noopener">▶ '+T(l.n)+' ↗</a>';}).join('')+'</div>':'')+'</details>':'')+'<div class="card"><h3>📱 '+T(['Jūsų balsai','Your votes'])+'</h3>'+bars(c.id)+'</div></div>'+
+   '</div>'};
+}
+function build(){
+  var S=[],NC=RV_CONCEPTS.length,NU=RV_UPSELLS.length;
+  /* 1 cover */
+  S.push({id:'cover',title:T(['Pradžia','Start']),cls:'cover',style:'background-image:url(img/dogs2.jpg)',html:
+   '<div class="pan"><div style="flex:1"><h1>'+T(['Vasara 2027: idėjų dirbtuvės','Summer 2027: idea workshop'])+'</h1><p>'+T([NC+' stovyklų koncepcijų su kainomis ir palyginimu su pasauliu, '+NU+' papildomų pardavimų, RA atributika ir gyvas ProKid demo. Balsuojam telefonu, komentuojam, išbandom įrangą. Sprendimas iki gruodžio 18 d.',NC+' camp concepts with prices and a world comparison, '+NU+' upsells, RA merch and a live ProKid demo. We vote by phone, comment and try the equipment. Decision by December 18.'])+'</p><p style="font-size:20px;opacity:.85;margin-top:14px">Kristijonas Vasiliauskas · Povilas Zmejauskas · 2026-11-17</p></div>'+
+   '<div class="qr"><div class="q" id="qr1"></div><b>📱 '+T(['Nuskenuok ir balsuok','Scan and vote'])+'</b><small>'+RV_JOIN_URL.replace('https://','')+'</small></div></div>'});
+  /* 2 how */
+  S.push({id:'how',title:T(['Kaip dirbam','How we work']),html:top(T(['Šiandien','Today']),T(['Kaip dirbam šiandien','How we work today']))+
+   '<div class="body c2"><div class="col"><div class="flag" style="font-size:21px;line-height:1.3"><b>'+T(RD_PROBLEM)+'</b></div><div class="card" style="flex:1"><h3>'+T(['Tikslas','Goal'])+'</h3><p class="lead">'+T(['Šiandien nieko netvirtinam. Renkam jūsų balsus ir komentarus, kad iki <b>gruodžio 18 d.</b> nuspręstume, ką siūlom klientams 2027 vasarą.','We approve nothing today. We collect your votes and comments so that by <b>December 18</b> we decide what we offer clients in summer 2027.'])+'</p><ul><li>'+T(['Kiekviena koncepcija: 90 s pristatymas, 30 s balsavimas','Each concept: 90 s pitch, 30 s vote'])+'</li><li>'+T(['Trys kainos kiekvienai: pigiau, tiek pat, brangiau','Three prices for each: cheaper, same, premium'])+'</li><li>'+T(['Prie kiekvienos: kur pasaulyje tai jau veikia','With each: where in the world it already works'])+'</li><li>'+T(['Kas laimi vasarą, nuo rudens testuojama būreliuose','What wins the summer gets tested in clubs from autumn'])+'</li></ul></div>'+
+   '<div class="card"><p class="small" style="margin:0"><b>'+T(['Žymos','Marks'])+':</b> 🅰️ '+T(['siūlymas diskusijai, ne faktas','a proposal for discussion, not a fact'])+' · 🤖 '+T(['skaičiavimas ant prielaidų','arithmetic on assumptions'])+' · ⚠️ '+T(['nepatikrinta','unverified'])+' · ❓ '+T(['nežinom','unknown'])+'</p></div></div>'+
+   '<div class="col"><div class="card"><h3>📱 '+T(['Telefone','On your phone'])+'</h3><ul><li>❤️ '+T(['Darom 2027','Do it in 2027'])+' · 🧪 '+T(['Testuojam mažai','Test small'])+' · ✋ '+T(['Ne dabar','Not now'])+'</li><li>'+T(['Pasirenki kainos lygį','You pick the price tier'])+'</li><li>'+T(['Parašai, ką keistum','You write what you would change'])+'</li><li>'+T(['Įvertini įrangą, kurią išbandei','You rate the equipment you tried'])+'</li></ul></div>'+
+   '<div class="card" style="flex:1"><h3>'+T(['Kelias','Timeline'])+'</h3><table><tr><td class="num">11-16/17</td><td>'+T(['Idėjos + balsai (vadovai 11-16, komanda šiandien)','Ideas + votes (leadership 11-16, team today)'])+'</td></tr><tr><td class="num">'+T(['iki 12-01','by 12-01'])+'</td><td>'+T(['Patikrinimai: kainos, patalpos, taisyklės, robotų kainoraštis','Checks: prices, venues, rules, robot price list'])+'</td></tr><tr><td class="num">12-18</td><td>'+T(['Sprendimas: ką siūlom 2027 vasarą','Decision: what we offer in summer 2027'])+'</td></tr><tr><td class="num">2027-06</td><td>'+T(['Stovyklos = testas','Camps = the test'])+'</td></tr><tr><td class="num">2027-09</td><td>'+T(['Laimėtojai tampa būreliais','Winners become clubs'])+'</td></tr></table></div></div></div>'});
+  /* 3 advantage + facts */
+  S.push({id:'facts',title:T(['Pranašumas ir skaičiai','Advantage and numbers']),html:top(T(['Prieš pradedant','Before we start']),T(['Mūsų pranašumas ir 2026 m. skaičiai','Our advantage and the 2026 numbers']),'💪')+
+   '<div class="body c2"><div class="col"><div class="card" style="flex:1"><h3>💪 '+T(['Robotai gali būti mums pigiau, jei gausim perpardavėjo kainą raštu ❓','Robots can be cheaper for us if we get the reseller price in writing ❓'])+'</h3><p class="lead">'+T(['UAB Baltic Orbis yra oficialus MatataStudio (Tale-Bot Pro, VinciBot) atstovas Lietuvoje ir jau tiekia RA Matata būreliams. 2026-11-14 sąskaitoje nuolaidos dar nematyti: Tale-Bot Pro €149 su PVM (kaip mažmena), VinciBot €181,50 su PVM. Kainoraštis raštu iki 12-01 ❓.','UAB Baltic Orbis is the official MatataStudio (Tale-Bot Pro, VinciBot) representative in Lithuania and already supplies RA\'s Matata clubs. The 2026-11-14 invoice shows no discount yet: Tale-Bot Pro €149 incl VAT (same as retail), VinciBot €181.50 incl VAT. Written price list by 12-01 ❓.'])+'</p>'+coi()+'<ul><li>'+T(['LT mažmena: Tale-Bot Pro €149, VinciBot €159','LT retail: Tale-Bot Pro €149, VinciBot €159'])+' · <a class="lk" href="https://matatastudio.lt" target="_blank" rel="noopener">matatastudio.lt ↗</a></li><li>'+T(['Atskaita: Vokietijos B2B VinciBot €86 be PVM','Reference: German B2B VinciBot €86 ex VAT'])+'</li><li>'+T(['Jei gausim perpardavėjo kainą: konkurentas tą patį robotą perka mažmena, skirtumas liktų mūsų maržoje arba kainoje','If we get the reseller price: a competitor buys the same robot at retail, the difference would stay in our margin or our price'])+'</li></ul></div>'+
+   '<div class="media" style="flex:none;height:50px"><img src="img/tale-klase.jpg" alt=""></div><div class="card"><p class="small" style="margin:0">'+T(['Tas pats robotas dirba tris kartus: stovykloje, rudens būrelyje ir vaiko namuose.','The same robot works three times: in camp, in the autumn club and in the child\'s home.'])+'</p></div></div>'+
+   '<div class="card"><h3>'+T(['Vasara 2026 (KPI lentelė)','Summer 2026 (KPI sheet)'])+'</h3><div class="stats"><div class="stat"><span class="big">3 682</span><div class="l">'+T(['pardavimai (106,9 % tikslo)','sales (106.9 % of target)'])+'</div></div><div class="stat"><span class="big">€676,5K</span><div class="l">'+T(['pajamos (+8,8 % vs 2025)','revenue (+8.8 % vs 2025)'])+'</div></div><div class="stat"><span class="big">≈ €184</span><div class="l">'+T(['vid. pardavimas 🤖 ⚠️ įeina 2–4 d. ir B2B, PVM neaiškus','avg sale 🤖 ⚠️ includes 2–4 day camps and B2B, VAT unclear'])+'</div></div><div class="stat"><span class="big">+86,4</span><div class="l">'+T(['stovyklų NPS 2025 (mentorius 9,81) ⚠️ 741 atsakymo apklausoje +83,5: suderinti','camp NPS 2025 (mentor 9.81) ⚠️ the 741-answer survey says +83.5: reconcile'])+'</div></div></div>'+
+   '<ul style="margin-top:16px"><li>'+T(['Kainoraštis: regionai €199–219, Vilnius €299','Price list: regions €199–219, Vilnius €299'])+'</li><li>'+T(['LT dienos stovykla tipiškai €200–250 (LRT 2026-05)','LT day camp typically €200–250 (LRT 2026-05)'])+'</li><li>'+T(['Amžius: 7–12 m. ≈ 2 400, 4–6 m. ≈ 1 000 ⚠️','Age: 7–12 ≈ 2,400, 4–6 ≈ 1,000 ⚠️'])+'</li><li>'+T(['Faktinės maržos pagal temą neturim ❓','We have no actual margin by theme ❓'])+'</li></ul></div></div>'});
+  S.push({id:'base26',title:T(['2026 m. bazė','2026 baseline']),html:top(T(['Nuo ko pradedam 🅰️','Where we start 🅰️']),T(['2026 m. bazė: ką vertino mentoriai ir kaip pardavėm','2026 baseline: what mentors rated and how we sold']),'📊')+
+   '<div class="body c2"><div class="card"><h3>'+T(['Mentorių vertinimas pagal temą (510 dienos formų, 0–10)','Mentor rating by theme (510 day forms, 0–10)'])+'</h3><table class="tight2"><tr><th>'+T(['Tema','Theme'])+'</th><th>'+T(['Amžius','Age'])+'</th><th>'+T(['Formos','Forms'])+'</th><th>'+T(['Vid.','Avg'])+'</th></tr>'+
+   [['Pasaulio tyrinėjimas','4–6',80,'9,51'],['Gyvybė aplink mus','4–6',79,'9,32'],['Negyvenama sala','7–12',156,'8,83'],['Robotų komanda','7–12',77,'8,78'],['Marsas Minecrafte','7–12',106,'8,66']].map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="num">'+r[2]+'</td><td class="num"><b>'+r[3]+'</b></td></tr>';}).join('')+'</table>'+
+   '<p class="small" style="margin-top:10px">'+T(['Silpniausia diena: Marsas Minecrafte 5 diena 7,44. ⚠️ Vertino mentoriai, ne tėvai; birželio pradžios duomenys; formos ≠ vaikai.','Weakest day: Mars in Minecraft day 5 at 7.44. ⚠️ Rated by mentors, not parents; early-June data; forms ≠ kids.'])+'</p></div>'+
+   '<div class="card"><h3>'+T(['Pardavimų tempas 2026 (tikslas 3 446)','Sales pace 2026 (target 3,446)'])+'</h3><div class="stats"><div class="stat"><span class="big">26,7 %</span><div class="l">'+T(['parduota iki kovo pabaigos','sold by end of March'])+'</div></div><div class="stat"><span class="big">47,1 %</span><div class="l">'+T(['iki balandžio pabaigos','by end of April'])+'</div></div><div class="stat"><span class="big">90 %</span><div class="l">'+T(['iki birželio pabaigos','by end of June'])+'</div></div><div class="stat"><span class="big">106,9 %</span><div class="l">'+T(['rugpjūtį: 3 682','in August: 3,682'])+'</div></div></div>'+
+   '<ul style="margin-top:16px"><li>'+T(['Pusė vasaros parduodama iki gegužės: 2027 m. pasiūlymas turi būti paruoštas iki vasario','Half the summer sells before May: the 2027 offer must be ready by February'])+' 🤖</li><li>'+T(['Skaidymo pagal temą KPI lentelėje nėra ❓','The KPI sheet has no split by theme ❓'])+'</li></ul><p class="small">'+T(['Šaltinis: RA KPI lentelė 2026 ir mentorių dienos formos.','Source: RA KPI sheet 2026 and mentor day forms.'])+'</p></div></div>'});
+  /* 4 world */
+  S.push({id:'world',title:T(['Pasaulio stovyklos','World camps']),html:top(T(['Palyginimas','Comparison']),T(['Kaip atrodom šalia sėkmingiausių pasaulio stovyklų','How we look next to the world\'s most successful camps']),'🌍')+
+   '<div class="body c2" style="grid-template-columns:2.6fr 1fr"><div class="card"><table class="tight2 w7"><tr><th>'+T(['Kas','Who'])+'</th><th>'+T(['Mastas','Scale'])+'</th><th>'+T(['Kaina / sav.','Price / week'])+'</th><th>'+T(['Suaugęs : vaikai','Adult : kids'])+'</th><th>'+T(['Grupė 🤖','Group 🤖'])+'</th><th>'+T(['Kodėl veikia','Why it works'])+'</th></tr>'+
+   RD_WORLD.map(function(r){return '<tr'+(r.ra?' style="background:var(--warn-bg)"':(r.lt?' style="background:rgba(72,98,221,.14)"':''))+'><td><b>'+T(r.n)+'</b></td><td>'+T(r.sc)+'</td><td class="num">'+T(r.p)+'</td><td>'+T(r.g)+'</td><td>'+(r.gs?T(r.gs):'')+'</td><td>'+T(r.w)+'</td></tr>';}).join('')+'</table><p class="small" style="margin-top:8px">'+T(RD_WORLD_NOTE)+'</p></div>'+
+   '<div class="col"><div class="card" style="flex:1"><h3>'+T(['Ką tai sako apie mus 🅰️','What this says about us 🅰️'])+'</h3><ul>'+RD_WORLD_SO.map(function(x){return '<li>'+T(x)+'</li>';}).join('')+'</ul></div></div></div>'});
+  /* 5 map */
+  S.push({id:'map',title:T([NC+' koncepcijų',NC+' concepts']),html:top(T(['Žemėlapis','Map']),T([NC+' koncepcijų vienu žvilgsniu',NC+' concepts at a glance']))+
+   '<div class="body c1"><div class="grid10">'+RV_CONCEPTS.map(function(c){var r=tallyC(c.id);return '<div class="tile" data-go="'+c.id+'">'+(c.star?'<span class="st">⭐</span>':'')+'<img class="th" src="'+c.img+'" alt=""><span class="e">'+c.em+'</span><b>'+T(c.n)+'</b><span class="a">'+T(c.age)+' · €'+c.prices[0][0]+'–'+c.prices[2][0]+'</span><span class="s">❤️ '+r.go+' · 🧪 '+r.test+' · ✋ '+r.no+'</span></div>';}).join('')+
+   '<div class="tile grp"><b>📱 '+T(['Balsuok telefone','Vote on your phone'])+'</b><span class="a">❤️ '+T(['darom','do it'])+' · 🧪 '+T(['testuojam','test'])+' · ✋ '+T(['ne dabar','not now'])+'</span><span class="a">'+T(['Spausk kortelę, kad atidarytum','Click a card to open it'])+'</span></div></div></div>'});
+  /* concepts */
+  S.push({id:'frame',title:T(['Prieš pradedant','Before we start']),html:top(T(['Kontekstas','Context']),T(['17 idėjų. Visos jau veikia kažkur pasaulyje','17 ideas. Each already works somewhere in the world']),'🧭')+'<div class="body"><div class="card" style="flex:1"><ul style="font-size:34px;line-height:1.5"><li>'+T(['Kiekviena idėja turi analogą užsienyje','Every idea has an analogue abroad'])+'</li><li>'+T(['Didžiąją dalį įrangos jau turim','We already own most of the gear'])+'</li><li>'+T(['Kainos yra siūlymas, ne sprendimas','Prices are a proposal, not a decision'])+'</li><li>'+T(['Kiekvienai idėjai ~1 minutė: balsuok telefonu','About 1 minute per idea: vote on your phone'])+'</li><li>'+T(['Detalės paslėptos: klausk, ir atidarysim','Details are folded: ask and we open them'])+'</li></ul></div></div>'});
+  RV_CONCEPTS.forEach(function(c,i){S.push(conceptSlide(c,i));});
+  /* Alpha */
+  S.push({id:'alpha',title:'Alpha School',html:top(T(['Įkvėpimas','Inspiration']),T(['Alpha School: ką pasiimam, ko ne','Alpha School: what we borrow, what we do not']),'🅰')+
+   '<div class="body c2"><div class="card"><h3>'+T(['Ką jie daro','What they do'])+'</h3><ul><li>'+T(['Rytas: asmeninis mokymasis. Popietė: gyvenimo įgūdžių dirbtuvės','Morning: personalised academics. Afternoon: life-skills workshops'])+'</li><li>'+T(['2–3 kl.: išrask žaislą, sukurk prekės ženklą, parduok idėją','Grades 2–3: invent a toy, brand it, pitch it'])+'</li><li>'+T(['4–5 kl.: programėlė, pristatymas, išgyvenimo medicinos simuliacija','Grades 4–5: an app, a launch talk, a survival-medicine simulation'])+'</li><li>'+T(['Kasdien: tikslas ryte, gido koučingas, draugų pripažinimas, savaitės demonstracija','Daily: a morning goal, guide coaching, peer recognition, end-of-week demo'])+'</li><li>'+T(['Hamptons vasara 2026: $4 500 / sav. (B, šaltiniai nesutampa ⚠️)','Hamptons summer 2026: $4,500 / week (B, sources conflict ⚠️)'])+'</li></ul><div class="a3">'+[['img/alpha-1.jpg',['Vaikai mėgsta mokyklą','Kids love school']],['img/alpha-2.jpg',['2× daugiau per 2 val. (jų teiginys)','2x in 2 hours (their claim)']],['img/alpha-3.jpg',['Popietės: gyvenimo įgūdžiai','Afternoons: life skills']]].map(function(x){return '<div><img src="'+x[0]+'" alt=""><span>'+T(x[1])+'</span></div>';}).join('')+'</div><p class="small">'+T(['Paveikslai iš alpha.school („3 įsipareigojimai“). Rezultatų teiginiai („2× daugiau“, „top 1 %“) yra jų pačių, nepriklausomo pakartojimo nėra (C).','Images from alpha.school ("3 commitments"). Outcome claims ("2x", "top 1 %") are their own, with no independent replication (C).'])+'</p></div>'+
+   '<div class="col"><div class="card" style="flex:1"><h3>'+T(['Pasiimam į „5 įgūdžius“ ir „Tech Detox“ 🅰️','We borrow for "5 Skills" and "Tech Detox" 🅰️'])+'</h3><ul><li>'+T(['Dienos tikslo kortelė: vaikas ryte išsikelia vieną tikslą','Daily goal card: the child sets one goal in the morning'])+'</li><li>'+T(['Kiekviena diena baigiasi 2 min. pristatymu draugams','Every day ends with a 2-minute pitch to friends'])+'</li><li>'+T(['Pripažinimo ratas: pasakau, ką gero padarė draugas','Recognition circle: I say what a friend did well'])+'</li><li>'+T(['Mentorius = gidas, kuris klausia ir padeda','The mentor = a guide who asks and helps'])+'</li><li>'+T(['Vienas tikro gyvenimo įgūdis per dieną','One real-life skill per day'])+'</li></ul></div><div class="flag">'+T(['Nesiimam: „10× mokymosi“ pažado ir bet kokio rezultato skaičiaus.','We do not borrow: the "10x learning" promise or any outcome number.'])+'</div></div></div>'});
+  /* iD Tech */
+  S.push({id:'idtech',title:'iD Tech',html:top(T(['Įkvėpimas','Inspiration']),T(['iD Tech: kas jiems veikia, ko mes dar nedarom','iD Tech: what works for them that we do not do']),'💡')+
+   '<div class="body c2"><div class="card"><table><tr><th>'+T(['Mechanizmas','Mechanism'])+'</th><th>'+T(['Jie','They'])+'</th></tr>'+
+   [[['Universitetų erdvės = pasitikėjimas','University venues = trust'],['70+ universitetų miestelių (A)','70+ university campuses (A)']],
+    [['Produktų kopėčios','Product ladder'],['stovykla → paauglių akademija → online privačios pamokos (A)','camp → teen academy → online private lessons (A)']],
+    [['Apčiuopiamas įrodymas','Tangible proof'],['projektas + pažymėjimas + šeimos paroda (A)','project + certificate + family showcase (A)']],
+    [['Rekomendacijos kreditas','Referral credit'],['$25 už naują vaiką (A)','$25 per new child (A)']],
+    [['Atskiri priedai','Unbundled add-ons'],['pietūs +$70 / sav. (A)','lunch +$70 / week (A)']],
+    [['Mokėjimas dalimis','Payment plans'],['„registruokis dabar, mokėk vėliau“ (A)','"register now, pay later" (A)']],
+    [['Kursai pavadinti tuo, ką vaikai jau myli','Courses named after what kids already love'],['Minecraft, Roblox, Quest VR (A)','Minecraft, Roblox, Quest VR (A)']],
+    [['Kaina 2026','Price 2026'],['nuo $949 / sav. (A)','from $949 / week (A)']]
+   ].map(function(r){return '<tr><td>'+T(r[0])+'</td><td>'+T(r[1])+'</td></tr>';}).join('')+'</table></div>'+
+   '<div class="col"><div class="card" style="flex:1"><h3>'+T(['Ką tai reiškia RA 🅰️','What this means for RA 🅰️'])+'</h3><ul><li>'+T(['Masinę stovyklą daryti universitete ar muziejuje, ne tik mokykloje','Run the mass camp at a university or museum, not only a school'])+'</li><li>'+T(['Stovykla nesibaigia penktadienį: robotas, žaidimas arba rudens vieta','Camp does not end on Friday: a robot, a game or an autumn seat'])+'</li><li>'+T(['Pietūs ir prailginta diena kaip atskiri priedai','Lunch and extended day as separate add-ons'])+'</li><li>'+T(['„Atvesk draugą“ kreditas abiem šeimoms','"Bring a friend" credit for both families'])+'</li><li>'+T(['RA po 16 m.: jaunųjų mentorių akademija (praktika 16–20 m.)','RA after 16: the Junior Mentor Academy (work practice, age 16–20)'])+'</li></ul></div>'+
+   '<div class="a3" style="grid-template-columns:repeat(4,1fr)">'+[['📅',['1 savaitė','1 week']],['🎂',['7–17 m., amžiaus grupės','Age 7–17, age bands']],['🏛️',['universiteto miestelis','a university campus']],['🎁',['projektas keliauja namo','the project goes home']]].map(function(x){return '<div><span style="font-size:54px;display:block;line-height:1.2">'+x[0]+'</span><span>'+T(x[1])+'</span></div>';}).join('')+'</div><p class="small" style="margin:0">'+T(['iD Tech modelis piktogramomis; jų nuotraukų nenaudojam.','The iD Tech model in pictograms; we do not use their photos.'])+'</p></div></div>'});
+  /* Creator Camp */
+  S.push({id:'creatorcamp',title:'Creator Camp',html:top(T(['Įkvėpimas','Inspiration']),T(['Creator Camp: vaikas renkasi, kuo taps','Creator Camp: the child picks who to become']),'🎬')+
+   '<div class="body c2"><div class="card"><h3>'+T(['Ką jie daro','What they do'])+'</h3><ul>'+
+    '<li>'+T(['Parduoda vaidmenį, ne temą: „Holivudo režisierius“, ne „filmavimo stovykla“','They sell a role, not a topic: "Hollywood Filmmaker", not "a film camp"'])+'</li>'+
+    '<li>'+T(['2 ir 3 dienų stovyklos; savaitę šeima susideda iš dviejų vaidmenų','2 and 3 day camps; a family builds a week out of two roles'])+'</li>'+
+    '<li>'+T(['Trečia diena = „Oskarai“: statulėlė kiekvienam vaikui (A), raudonas kilimas (B)','Day three = the "Oscars": a statuette for every child (A), a red carpet (B)'])+'</li>'+
+    '<li>'+T(['Savas iPad arba nuoma stovykloje (A). 6–30 vaikų klasėje, nuomojamos mokyklų ir bendruomenių patalpos','Own iPad or a rental at camp (A). 6–30 kids per class, rented school and community rooms'])+'</li>'+
+    '<li>'+T(['Video tėvams el. paštu; į YouTube stovykloje nekeliama nieko, sprendžia tėvai (A)','Videos go to parents by email; nothing is uploaded to YouTube at camp, parents decide (A)'])+'</li>'+
+    '</ul><div class="chips" style="margin-top:10px">'+
+    [['🎥 Holivudo režisieriai','🎥 Hollywood Filmmaker'],['✨ Specialiųjų efektų kūrėjai','✨ Special Effects Filmmaker'],['▶️ YouTube kūrėjai','▶️ YouTube Creators'],['🕹️ YouTube žaidėjai','🕹️ YouTube Gamers'],['🧱 LEGO animatoriai','🧱 LEGO Animators'],['✏️ 2D animatoriai','✏️ 2D Cartoon Animators'],['🎧 Muzikos prodiuseriai','🎧 Music Beat Producers'],['💼 Jaunieji verslininkai','💼 Shark Tank Entrepreneurs']].map(function(x){return '<span class="chip b">'+T(x)+'</span>';}).join('')+
+    '</div><p class="small">'+T(['<b style="color:var(--ink);font-size:19px">👧 ~10 000+ vaikų nuo 2021 m., 30+ vietų JAV (B, spauda).</b> 2023 m.: 1 300 vaikų, 11 vietų. Šiai vasarai jie patys prognozuoja ~20 000 ⚠️. 3 d. $268–278, 2 d. $176–186 (A).','<b style="color:var(--ink);font-size:19px">👧 ~10,000+ kids since 2021, 30+ US sites (B, press).</b> 2023: 1,300 kids, 11 sites. For this summer they themselves forecast ~20,000 ⚠️. 3 days $268–278, 2 days $176–186 (A).'])+'</p></div>'+
+   '<div class="col"><div class="card" style="flex:1"><h3>'+T(['Pasiimam 🅰️','We borrow 🅰️'])+'</h3><ul>'+
+    '<li>'+T(['Kiekviena koncepcija gauna vaidmens pavadinimą: Robotų dresuotojas, Žaidimų kūrėjas, Režisierius, Animatorius','Every concept gets a role name: Robot Trainer, Game Maker, Director, Animator'])+'</li>'+
+    '<li>'+T(['3 dienų modulis kaip pigus paklausos testas: pavasario atostogos 2027, viena mokykla, 16 vaikų','A 3-day module as a cheap demand test: spring break 2027, one school, 16 kids'])+'</li>'+
+    '<li>'+T(['„RA Oskarai“ penktadienį: jungiasi su Atsiminimų paketu','"RA Oscars" on Friday: connects to the Memory pack'])+'</li>'+
+    '<li>'+T(['Mažos įrangos linija šalia robotų: LEGO stop-motion ir animacija 6–9 m. Šiam amžiui kūrybinės linijos dar neturim','A low-equipment line next to robots: LEGO stop-motion and animation for age 6–9. We have no creative line for this age yet'])+'</li>'+
+    '<li>'+T(['Patalpų partneris pats praneša savo šeimoms: mokykla, kurioje vyksta stovykla','The venue partner tells its own families: the school that hosts the camp'])+'</li>'+
+    '</ul></div><div class="flag">'+T(['Nesiimam: viešo YouTube kanalo vaikui iki 13 m., „tapk žvaigžde“ pažado, „Shark Tank“ vardo (svetimas ženklas, RA versija = „Idėjų turgus“), franšizės ir neribotų abonementų.','We do not borrow: a public YouTube channel for a child under 13, the "become a star" promise, the "Shark Tank" name (someone else\'s brand, RA version = "Idea Market"), franchising and unlimited passes.'])+'</div></div></div>'});
+  /* Creator Camp: price design */
+  S.push({id:'ccprice',title:T(['Creator Camp kainodara','Creator Camp pricing']),html:top(T(['Įkvėpimas','Inspiration']),T(['Creator Camp: savaitė iš dviejų dalių','Creator Camp: a week made of two parts']),'💵')+
+   '<div class="body c2"><div class="card"><h3>'+T(['Kaip jie parduoda (jų svetainė, A)','How they sell (their own site, A)'])+'</h3><table>'+
+   [[['3 dienos, Pr–Tr','3 days, Mon–Wed'],['$268–278, 8–13 m.','$268–278, age 8–13']],
+    [['2 dienos, Kt–Pn','2 days, Thu–Fri'],['$176–186','$176–186']],
+    [['Jaunių linija 5–7 m.','Junior line, age 5–7'],['3 d. $254 · 2 d. $174','3 days $254 · 2 days $174']],
+    [['Savaitės rinkinys','Full-week bundle'],['3 d. + 2 d. = $50 pigiau, pritaikoma automatiškai','3 + 2 days = $50 off, applied automatically']],
+    [['Vasaros pasas (Hiustonas, 2027)','Summer Pass (Houston, 2027)'],['$1 999 lapkritį → $2 850 vasarį, neribotai stovyklų','$1,999 in November → $2,850 in February, unlimited camps']],
+    [['Broliai ir seserys, mokytojai, kariai','Siblings, teachers, military'],['15 %, nuolaidos nesumuojamos','15 %, discounts do not stack']],
+    [['Garantija','Guarantee'],['Pirma stovykla: nepatiko po 1 dienos, grąžina visą kainą','First camp: unhappy after day one, a full refund']],
+    [['Keitimas','Swaps'],['Data, vieta ar stovykla keičiama nemokamai iki pradžios','Date, site or camp swapped for free before the start']]
+   ].map(function(r){return '<tr><td>'+T(r[0])+'</td><td>'+T(r[1])+'</td></tr>';}).join('')+'</table>'+
+   '<p class="small">'+T(['Kainos „nuo“, skiriasi pagal vietą. 2027 m. registracija dar uždaryta, todėl galutinių kainų nematėm ❓. Diena 8:30–15:30, pietūs savo.','Prices are "starting at" and vary by site. 2027 registration is still closed, so we did not see final prices ❓. The day runs 8:30–15:30, lunch from home.'])+'</p></div>'+
+   '<div class="col"><div class="card" style="flex:1"><h3>'+T(['Ką tai reiškia 🤖','What this means 🤖'])+'</h3><ul>'+
+    '<li>'+T(['Vaiko diena kainuoja ~$88–93: mažas pirmas pirkinys','A child-day costs ~$88–93: this is a small first purchase'])+'</li>'+
+    '<li>'+T(['Tėvai perka 3 dienas vietoj 5: mažesnė rizika, greitesnis „taip“','Parents buy 3 days instead of 5: lower risk, a faster "yes"'])+'</li>'+
+    '<li>'+T(['Antra savaitės dalis parduodama su nuolaida tam pačiam vaikui','The second part of the week is sold at a discount to the same child'])+'</li>'+
+    '<li>'+T(['Paso kaina kyla kas mėnesį: pinigai ateina lapkritį, ne birželį','The pass price rises every month: the cash arrives in November, not June'])+'</li>'+
+    '<li>'+T(['Jų pelno, patalpų nuomos ir kliento kainos viešai nėra ❓','Their profit, venue rent and customer cost are not public ❓'])+'</li>'+
+    '</ul></div><div class="flag">'+T(['Vadovo alga $13–17/val. (jų darbo skelbimas, A). Pajamos 2024 m. $840K = jų pačių žodžiai eteryje (B).','Lead counsellor pay $13–17/hour (their own job post, A). 2024 revenue $840K = their own on-air statement (B).'])+'</div></div></div>'});
+
+  /* Creator Camp: what RA does not use yet */
+  S.push({id:'ccgaps',title:T(['Ko, kiek žinom, dar nedarom','What, as far as we know, we do not do yet']),html:top(T(['Įkvėpimas','Inspiration']),T(['Creator Camp: 10 dalykų, kuriuos galim išbandyti','Creator Camp: 10 things we could try']),'🧩')+
+   '<div class="body c2"><div class="card"><h3>'+T(['Produktas 🅰️','Product 🅰️'])+'</h3><ul>'+
+    '<li>'+T(['<b>Savaitė iš dviejų vaidmenų:</b> 3 d. + 2 d., už abu pigiau','<b>A week of two roles:</b> 3 days + 2 days, cheaper together'])+'</li>'+
+    '<li>'+T(['<b>Finalas trečią dieną:</b> „RA Oskarai“, statulėlė ir mentoriaus laiškas kiekvienam','<b>A finale on day three:</b> the "RA Oscars", a statuette and a mentor\'s note for everyone'])+'</li>'+
+    '<li>'+T(['<b>Jaunių linija 5–7 m.</b> tais pačiais vaidmenimis, su teminiais pavadinimais','<b>A junior line for age 5–7</b> with the same roles and themed names'])+'</li>'+
+    '<li>'+T(['<b>Savas įrenginys arba nuoma:</b> mažiau RA įrangos','<b>Own device or rental:</b> less RA equipment'])+'</li>'+
+    '<li>'+T(['<b>Kepurė, kurią vaikas pats išpuošia:</b> atributika kaip veikla','<b>A cap the child decorates:</b> merch as an activity'])+'</li>'+
+    '</ul></div>'+
+   '<div class="col"><div class="card" style="flex:1"><h3>'+T(['Pardavimas 🅰️','Sales 🅰️'])+'</h3><ul>'+
+    '<li>'+T(['<b>Vasaros pasas,</b> kurio kaina kyla kas mėnesį nuo lapkričio','<b>A summer pass</b> whose price rises every month from November'])+'</li>'+
+    '<li>'+T(['<b>Pirmos dienos garantija:</b> nepatiko, grąžinam pinigus','<b>A day-one guarantee:</b> not happy, money back'])+'</li>'+
+    '<li>'+T(['<b>Nemokamas keitimas</b> iki stovyklos pradžios','<b>Free swaps</b> before the camp starts'])+'</li>'+
+    '<li>'+T(['<b>Mokytojų nuolaida 15 %:</b> mokytojai tampa rekomenduotojais','<b>A 15 % teacher discount:</b> teachers become referrers'])+'</li>'+
+    '<li>'+T(['<b>Laukiančiųjų sąrašas</b> prieš registraciją + online klubas tarp vasarų ($20/mėn.)','<b>A waitlist</b> before registration + an online club between summers ($20/month)'])+'</li>'+
+    '</ul></div><div class="flag">'+T(['⚠️ Ar RA kai kuriuos jau turi (2–4 d. stovyklos, brolių nuolaida), patikrina Povilas. Dažniausias jų tėvų priekaištas: „nematau, ko vaikas išmoko“ (B). Mūsų atsakymas: progreso lapas.','⚠️ Povilas checks which of these RA already has (2–4 day camps, sibling discount). Their parents\' most common complaint: "I cannot see what my child learned" (B). Our answer: the progress sheet.'])+'</div></div></div>'});
+  /* Creator Camp: why (data + their story video) */
+  S.push({id:'creatorwhy',title:T(['Kodėl kūrėjai','Why creators']),html:top(T(['Įkvėpimas · duomenys','Inspiration · data']),T(['Vaikai jau žiūri. Stovykloje jie kuria','Kids already watch. At camp they create']),'📊')+
+   '<div class="body c2"><div class="col"><a class="media" style="flex:none;height:185px;display:block" href="'+RD_WHY_URL+'" target="_blank" rel="noopener"><img src="img/creatorcamp-story.jpg" alt=""><span class="tag">▶ '+T(['Creator Camp „Mūsų istorija“ · atsidaro naujame lange','Creator Camp "Our Story" · opens in a new window'])+'</span></a>'+
+   '<div class="card"><p class="small" style="margin:0">'+T(RD_WHY_STORY)+'</p></div>'+
+   '<div class="card" style="flex:1"><h3>'+T(['RA versija 🅰️','The RA version 🅰️'])+'</h3><ul class="cs">'+RD_WHY_RA.map(function(x){return '<li style="font-size:18px;margin-bottom:4px">'+T(x)+'</li>';}).join('')+'</ul></div></div>'+
+   '<div class="col"><div class="card" style="flex:1"><table><tr><th>'+T(['Ką rodo duomenys','What the data shows'])+'</th><th>'+T(['Šaltinis','Source'])+'</th></tr>'+
+   RD_WHY.map(function(r){return '<tr><td>'+T(r[0])+'</td><td>'+T(r[1])+'</td></tr>';}).join('')+'</table></div>'+
+   '<div class="flag" style="font-size:15.5px;padding:8px 14px">'+T(RD_WHY_FLAG)+'</div></div></div>'});
+  /* gaps */
+  S.push({id:'gaps',title:T(['Ko dar nedarom','What we do not do yet']),html:top(T(['Nauji pajamų šaltiniai','New income sources']),T(['Ką kiti stovyklų tiekėjai parduoda, o mes dar ne','What other camp providers sell that we do not yet']),'💰')+
+   '<div class="body c1"><div class="card"><table class="big3"><tr><th>'+T(['Formatas','Format'])+'</th><th>'+T(['Kas parduoda ir už kiek','Who sells it and for how much'])+'</th><th>'+T(['RA versija 🅰️','RA version 🅰️'])+'</th></tr>'+
+   RD_GAPS.map(function(r){return '<tr><td><b>'+T(r.f)+'</b></td><td>'+T(r.w)+'</td><td>'+T(r.ra)+'</td></tr>';}).join('')+'</table><p class="small" style="margin-top:8px">'+T(RD_GAPS_NOTE)+'</p></div></div>'});
+  /* home ladder */
+  S.push({id:'home',title:T(['Pirmas robotas namuose','First robot at home']),html:top(T(['Po stovyklos','After camp']),T(['Pirmas RA robotas namuose: 4 pakopos','The first RA robot at home: 4 steps']),'🏠')+
+   '<div class="body c1"><div class="col"><div class="ladder">'+
+   [['img/prokid.jpg',['Tik skaitmeninis','Digital only'],['10 €/mėn.','€10/month'],['RA ProKid žaidimas pagal mūsų pamokas, visatą ir personažus. Be roboto, be mentoriaus.','The RA ProKid game based on our lessons, universe and characters. No robot, no mentor.']],
+    ['media/talebot-1.jpg',['Skaitmeninis + Tale-Bot Pro','Digital + Tale-Bot Pro'],['robotas €149 + 10 €/mėn.','robot €149 + €10/month'],['4–6 m. Be ekranų. LT mažmena €149; mūsų perpardavėjo kaina mažesnė ❓.','Age 4–6. Screen-free. LT retail €149; our reseller price is lower ❓.']],
+    ['media/vincibot-1.jpg',['Skaitmeninis + VinciBot','Digital + VinciBot'],['robotas €159–182 + 15 €/mėn.','robot €159–182 + €15/month'],['8–12 m. Svetainėje €159, sąskaitoje 11-14 €181,50 su PVM ⚠️. Arba robotas įskaičiuotas į 24 mėn. planą 🤖','Age 8–12. €159 on the site, €181.50 incl VAT on the 11-14 invoice ⚠️. Or the robot is included in a 24-month plan 🤖']],
+    ['media/creator-kit-1.jpg',['Papildymų rinkiniai','Expansion packs'],['€74–76 kiekvienas su PVM','€74–76 each incl VAT'],['Creator Kit · Inventor Kit · AI Vision Kit (kamera) · valdiklis. Kainos iš Baltic Orbis sąskaitos 11-14; JAV $49,99','Creator Kit · Inventor Kit · AI Vision Kit (camera) · controller. Prices from the Baltic Orbis invoice of 11-14; US $49.99']]
+   ].map(function(s){return '<div class="step"><img class="si" src="'+s[0]+'" alt=""><b>'+T(s[1])+'</b><span class="pr">'+T(s[2])+'</span><p>'+T(s[3])+'</p></div>';}).join('')+'</div>'+
+   '<div class="body c2" style="padding:0"><div class="card"><h3>'+T(['Kaip tai veiktų','How it would work'])+'</h3><ul><li>'+T(['2 metai turinio: mūsų būrelių pamokos perdarytos namams','2 years of content: our club lessons reworked for home'])+'</li><li>'+T(['Užduotys tarp pamokų + savaitinė žinutė tėvams','Tasks between lessons + a weekly message to parents'])+'</li><li>'+T(['Robotas užsakomas tik po depozito: RA nelaiko sandėlio','The robot is ordered only after a deposit: RA holds no stock'])+'</li><li>'+T(['Kainos 🅰️: žaidimas 10 €/mėn., su tėvų ataskaita ir šeimos misijomis 15 €/mėn.','Prices 🅰️: the game €10/month, with the parent report and family missions €15/month'])+'</li></ul></div>'+
+   '<div class="card"><h3>'+T(['Ką jau žinom','What we already know'])+'</h3><ul><li>'+T(['Tėvų demo 11-14 (n ≈ 5–6): „10–15 €/mėn.“ pasakė 1 tėvas po vedančio klausimo (C)','Parent demo 11-14 (n ≈ 5–6): "€10–15/month" said by 1 parent after a leading question (C)'])+'</li><li>'+T(['Robotas namie tik jei ≤ 100–150 €','A robot at home only if ≤ €100–150'])+'</li><li>'+T(['„Vaikas mokosi pats be suaugusio“: įrodymų nėra ⚠️','"The child learns alone without an adult": no evidence ⚠️'])+'</li><li>'+T(['Pigiausias testas: 20 € grąžinamas depozitas klubo šeimoms. KEEP ≥ 10 %','Cheapest test: a €20 refundable deposit for club families. KEEP ≥ 10 %'])+'</li></ul></div></div></div></div>'});
+  /* price list */
+  S.push({id:'pricelist',title:T(['Kainoraštis','Price list']),html:top(T(['Įranga','Equipment']),T(['Įrangos kainoraštis: Matata, šunys, antis, humanoidas','Equipment price list: Matata, dogs, the duck, the humanoid']),'💶')+
+   '<div class="body c2" style="grid-template-columns:1.55fr 1fr"><div class="card" style="zoom:.94"><table class="tight2 pl"><tr><th></th><th>'+T(['Produktas','Product'])+'</th><th>'+T(['Be PVM','Ex VAT'])+'</th><th>'+T(['Su PVM','Incl VAT'])+'</th><th>'+T(['Kitur ES','Elsewhere in EU'])+'</th><th>'+T(['JAV','US'])+'</th></tr>'+
+   RD_PL.map(function(r){return '<tr><td>'+(r.i?'<img src="'+r.i+'" alt="">':'')+'</td><td><b>'+T(r.n)+'</b></td><td class="num">'+r.a+'</td><td class="num"><b>'+r.b+'</b></td><td class="num">'+T(r.eu)+'</td><td class="num">'+r.us+'</td></tr>';}).join('')+'</table>'+
+   '<p class="small" style="margin:6px 0 0">'+T(RD_PL_NOTE)+' <a class="lk" href="https://matatastudio.lt" target="_blank" rel="noopener">matatastudio.lt ↗</a> <a class="lk" href="https://shop.matatastudio.com" target="_blank" rel="noopener">shop.matatastudio.com ↗</a></p>'+
+   '<div class="flag" style="margin-top:8px;font-size:16px">'+T(RD_PL_FLAG)+'</div>'+coi()+'</div>'+
+   '<div class="col"><div class="card cs"><h3>'+T(['Kiti robotai','Other robots'])+'</h3><div class="orb">'+RD_OTHER.map(function(x){return '<div>'+(x.i?'<img src="'+x.i+'" alt="">':'<span class="noi">🤖</span>')+'<p>'+T(x.t)+'<br><a class="lk" href="'+x.u+'" target="_blank" rel="noopener">'+x.l+' ↗</a></p></div>';}).join('')+'</div></div><div class="card lsn"><h3>📚 '+T(['Paruoštos pamokos','Ready-made lessons'])+'</h3><p><b>'+T(RD_LESS_ALL.h)+'.</b> '+T(RD_LESS_ALL.sum)+' <a class="lk" href="'+LD.hub+'" target="_blank" rel="noopener">'+T(['visa medžiaga','all materials'])+' ↗</a></p><p class="small" style="margin:4px 0 0">'+T(RD_LESS_ALL.note)+'</p></div></div></div>'});
+  /* game + DEMO */
+  S.push({id:'game',title:'🎮 '+T(['ProKid demo','ProKid demo']),html:top(T(['Skaitmeninis produktas · gyvas demo','Digital product · live demo']),T(['RA ProKid žaidimas: atidarom ir parodom','The RA ProKid game: we open it and show it']),'🎮')+
+   '<div class="body c2"><div class="col"><div class="card" style="flex:1"><p class="lead">'+T(['Žaidimas pagal mūsų pamokas, mūsų visatą ir mūsų personažus: Leo, Maja, Neo, Vėtra, Luna prieš Omikroną.','A game built on our lessons, our universe and our characters: Leo, Maja, Neo, Vėtra, Luna against Omikronas.'])+'</p><div class="chips" style="margin-bottom:12px"><span class="chip">10 €/'+T(['mėn. žaidimas','month game'])+' 🅰️</span><span class="chip">15 €/'+T(['mėn. šeimos planas','month family plan'])+' 🅰️</span><span class="chip b">'+T(['aktyvi prenumerata','active subscription'])+'</span></div><ul><li>'+T(['5 min. kasdien, be pralaimėjimo, be loot box','5 minutes a day, no losing, no loot boxes'])+'</li><li>'+T(['Kartojimo užduotys po 1, 3 ir 7 dienų (A: Vlach ir Sandhofer 2012)','Review tasks after 1, 3 and 7 days (A: Vlach and Sandhofer 2012)'])+'</li><li>'+T(['Tėvų puslapis: „ką mano vaikas sukūrė“','Parent page: "what my child made"'])+'</li><li>'+T(['Kiekviena stovykla gauna savo misijų skyrių: tai „Namų tęsinio“ variklis','Every camp gets its own mission chapter: this is the engine of the "Home sequel"'])+'</li></ul></div>'+
+   '<div class="card"><p class="small" style="margin:0">'+T(['Potencialas tik RA 8 500 vaikų 🤖: ~€9K / ~€39K / ~€115K bruto per metus, jei įsidiegia 30/40/50 %, iš jų moka 3/8/15 %, po €10/12/15 per mėn. Kiek tėvų mokėtų 10–15 €: ❓, testas = viena grupė 4 savaites.','Potential on RA\'s 8,500 kids only 🤖: ~€9K / ~€39K / ~€115K gross per year if 30/40/50 % install, 3/8/15 % of them pay, at €10/12/15 a month. How many parents would pay €10–15: ❓, the test = one group for 4 weeks.'])+'</p></div></div>'+
+   '<div class="col"><div class="card" style="flex:1"><h3>🎬 '+T(['DEMO: spausk arba klavišai 1–4 (atsidaro naujame lange)','DEMO: click or press keys 1–4 (opens in a new window)'])+'</h3><div class="demo">'+RD_DEMO.map(function(d,i){return '<a href="'+d.u+'" target="_blank" rel="noopener" data-demo="'+i+'"><span class="k">'+(i+1)+'</span><span>'+T(d.n)+'<small>'+T(d.d)+'</small></span><span class="go">↗</span></a>';}).join('')+'</div><p class="small" style="margin:8px 0 0;font-size:15px">'+T(['Rodymo tvarka: 1 → 3 → 2. Po demo grįžk į šį langą ir spausk →.','Show order: 1 → 3 → 2. After the demo come back to this window and press →.'])+'</p></div>'+
+   '<div class="media" style="flex:none;height:200px"><img src="img/prokid.jpg" alt=""></div></div></div>'});
+  /* packs */
+  S.push({id:'packs',title:T(['Du nauji paketai','Two new packs']),html:top(T(['Prie kiekvienos stovyklos','With every camp']),T(['Du nauji paketai: „Namų tęsinys“ ir „Atsiminimai“','Two new packs: "Home sequel" and "Memories"']),'🎁')+
+   '<div class="body c2 pk"><div class="card"><div class="media" style="height:120px;margin-bottom:10px"><img src="img/prokid.jpg" alt=""></div><h3>🏠 '+T(['Namų tęsinys = 10 % stovyklos kainos','Home sequel = 10 % of the camp price'])+'</h3><p class="lead">'+T(['Stovykla baigiasi penktadienį, o tema tęsiasi namie dar 4 savaites.','Camp ends on Friday, and the theme continues at home for 4 more weeks.'])+'</p><ul>'+RD_PACK_HOME.map(function(x){return '<li>'+T(x)+'</li>';}).join('')+'</ul><div class="flag" style="font-size:17px;margin-top:8px">'+T(RD_PACK_HOME_MATH)+'</div></div>'+
+   '<div class="card"><div class="media" style="height:120px;margin-bottom:10px"><img src="img/kids-floor.jpg" alt=""></div><h3>📸 '+T(['Atsiminimų paketas','Memory pack'])+' · €12–19 🅰️</h3><p class="lead">'+T(['Tėvai nemato, kas vyksta stovykloje. Šis paketas jiems tai parodo ir lieka visam laikui.','Parents do not see what happens at camp. This pack shows them and stays forever.'])+'</p><ul>'+RD_PACK_MEM.map(function(x){return '<li>'+T(x)+'</li>';}).join('')+'</ul><div class="flag" style="font-size:17px;margin-top:8px">'+T(RD_PACK_MEM_NOTE)+'</div></div></div>'});
+  /* merch */
+  S.push({id:'merch',title:T(['RA atributika','RA merch']),html:top(T(['RA visata ant daiktų','The RA universe on things']),T(['Atributika ir žaislai visoms amžiaus grupėms','Merch and toys for every age group']),'👕')+
+   '<div class="body c2" style="grid-template-columns:1.7fr 1fr"><div class="card"><div class="mg6">'+RD_MERCH6.map(function(m,i){return '<div><img src="img/merch-'+(i+1)+'.jpg" alt=""><b>'+T(m.n)+'</b><span>'+m.p+' 🅰️</span></div>';}).join('')+'</div><p class="small" style="margin-top:8px;font-size:14px">'+T(RD_MERCH6_NOTE)+'</p></div>'+
+   '<div class="col"><div class="card" style="flex:1"><h3>'+T(['Pagal amžių ir rinkiniai','By age and bundles'])+'</h3><ul class="cs">'+RD_MERCH_AGE.map(function(x){return '<li style="font-size:18px;margin-bottom:5px">'+T(x)+'</li>';}).join('')+'</ul></div><div class="flag" style="font-size:17px">'+T(RD_MERCH_30)+'</div></div></div>'});
+  /* upsells */
+  var mxu=1;RV_UPSELLS.forEach(function(u){mxu=Math.max(mxu,tallyU(u.id));});
+  S.push({id:'ups',title:T([NU+' papildomų pardavimų',NU+' upsells']),html:top(T(['Balsuok: rinkis 3','Vote: pick 3']),T([NU+' papildomų pardavimų stovyklų klientams',NU+' upsells for camp clients']),'➕')+
+   '<div class="body c1"><div class="card"><div class="ups">'+RV_UPSELLS.map(function(u,i){var n=tallyU(u.id);return '<div class="up" data-man="'+u.id+'"><span class="e">'+u.em+'</span><span><b>'+(i+1)+'. '+T(u.n)+'</b> · '+T(u.p)+'<small>'+T(u.d)+'</small></span><i><u style="width:'+(n/mxu*100)+'%"></u></i><b>'+n+'</b></div>';}).join('')+'</div><p class="small" style="margin-top:10px">'+T(['Kainos 🅰️ siūlymai. Kiek klientų perka priedus stovyklose: viešų skaičių neradom ❓. Atskaitos: prailginta diena ~$20/d. (JAV), iD Tech pietūs +$70/sav.','Prices are 🅰️ proposals. How many clients buy add-ons at camps: no public numbers found ❓. Anchors: extended care ~$20/day (US), iD Tech lunch +$70/week.'])+'</p></div></div>'});
+  /* gear */
+  S.push({id:'gear',title:T(['Išbandyk įrangą','Try the equipment']),html:top(T(['Rankos ant stalo','Hands on']),T(['Išbandyk įrangą ir įvertink telefone','Try the equipment and rate it on your phone']),'🧰')+
+   '<div class="body c2"><div class="card"><h3>'+T(['Ar vaikams patiks? 1–5','Will kids love it? 1–5'])+'</h3>'+RV_GEAR.map(function(g){var t=tallyG(g.id);var st=Math.round(t.avg);return '<div class="gearrow"><span>'+T(g.n)+'</span><span class="stars">'+'★★★★★'.slice(0,st)+'<span style="opacity:.25">'+'★★★★★'.slice(st)+'</span></span><b>'+(t.n?t.avg.toFixed(1)+' ('+t.n+')':'·')+'</b></div>';}).join('')+
+   '<p class="small" style="margin-top:12px">'+T(['Imk į rankas, pabandyk 3 minutes, tada telefone: žvaigždutės + vienas sakinys.','Pick it up, try it for 3 minutes, then on your phone: stars + one sentence.'])+'</p></div>'+
+   '<div class="col"><div class="media"><img src="img/dogs1.jpg" alt=""></div><div class="card">'+(function(){var h='';RV_GEAR.forEach(function(g){tallyG(g.id).cm.slice(-1).forEach(function(c){h+='<div class="cm"><b>'+T(g.n)+':</b> '+esc(c.m)+' <small>· '+esc(c.n||'?')+'</small></div>';});});return h||'<p class="small" style="margin:0">'+T(['Komentarai atsiras čia.','Comments will appear here.'])+'</p>';})()+'</div></div></div>'});
+  /* prices overview */
+  S.push({id:'prices',title:T(['Kainų žemėlapis','Price map']),html:top(T(['Kainos','Prices']),T(['Kainų žemėlapis: pigiau, tiek pat, brangiau','Price map: cheaper, same, premium']),'💶')+
+   '<div class="body c1"><div class="card"><table class="tight2 pmap"><tr><th>'+T(['Koncepcija','Concept'])+'</th><th>'+T(['Amžius','Age'])+'</th><th>'+T(['Grupė','Group'])+'</th><th>'+T(['Mentorius : vaikai','Mentor : kids'])+'</th>'+RV_TIERS.map(function(t){return '<th>'+T(t.t)+'</th>';}).join('')+'<th>🏠 10 %</th></tr>'+
+   RV_CONCEPTS.map(function(c){var r=tallyC(c.id);return '<tr><td>'+c.em+' '+T(c.n)+(c.star?' ⭐':'')+'</td><td>'+T(c.age)+'</td><td>'+T(c.grp)+'</td><td>'+T(c.ratio)+'</td>'+RV_TIERS.map(function(t,j){return '<td class="num">€'+c.prices[j][0]+(r[t.k]?' <span class="chip" style="font-size:13px;padding:0 8px">'+r[t.k]+'</span>':'')+'</td>';}).join('')+'<td class="num">€'+Math.round(+c.prices[1][0]*0.1)+'</td></tr>';}).join('')+'</table>'+
+   '<p class="small" style="margin-top:6px;font-size:15px">'+T(['Visos kainos 🅰️ siūlymai diskusijai. Šiandien: regionai €199–219, Vilnius €299. Masinė €179 su 75 vaikais ir 1:15 ≈ 45 % įnašo prieš marketingą, administraciją ir PVM 🤖 (sąnaudos = prielaidos). Geltonas skaičius = kiek jūsų pasirinko tą lygį. Mūsų Maržos skaičiuoklė: 17 vaikų × €199 = 18,39 % marža („prasta“, riba 40 %) 🅰️ KPI lentelė.','All prices are 🅰️ proposals for discussion. Today: regions €199–219, Vilnius €299. Mass camp at €179 with 75 kids and 1:15 ≈ 45 % contribution before marketing, admin and VAT 🤖 (costs = assumptions). Yellow number = how many of you picked that tier. Our Margin calculator: 17 kids × €199 = 18.39 % margin ("poor", threshold 40 %) 🅰️ KPI sheet.'])+'</p></div></div>'});
+  /* results */
+  var rk=RV_CONCEPTS.map(function(c){return {c:c,r:tallyC(c.id)};}).sort(function(a,b){return b.r.score-a.r.score;});
+  var allc=[];RV_CONCEPTS.forEach(function(c){tallyC(c.id).cm.forEach(function(m){allc.push({c:c,m:m});});});
+  var qs=allQs().map(function(x){return {q:x.t,name:x.name};}).reverse();var QA=allQs();
+  S.push({id:'results',title:T(['Rezultatai','Results']),html:top(T(['Gyvai','Live']),T(['Jūsų reitingas','Your ranking']),'📊')+
+   '<div class="body c2"><div class="card">'+rk.map(function(x,i){var n=Math.max(1,x.r.n);return '<div class="rank"><b>'+(i+1)+'</b><span>'+x.c.em+' '+T(x.c.n)+'</span><i><u class="g" style="width:'+(x.r.go/n*100)+'%"></u><u class="t" style="width:'+(x.r.test/n*100)+'%"></u><u class="n" style="width:'+(x.r.no/n*100)+'%"></u></i><span class="small">❤️ '+x.r.go+' · 🧪 '+x.r.test+' · ✋ '+x.r.no+'</span></div>';}).join('')+'<p class="small" style="margin-top:8px">'+T(['Rikiuojama: ❤️ × 2 + 🧪 − ✋. Lygios pozicijos lieka pristatymo tvarka.','Sorted by: ❤️ × 2 + 🧪 − ✋. Ties stay in presentation order.'])+'</p></div>'+
+   '<div class="card"><h3>🙋 '+T(['Klausimai iš telefonų','Questions from phones'])+' ('+qs.length+')</h3><div class="wall" style="columns:1;margin-bottom:10px">'+(qs.slice(-5).map(function(p){return '<div class="cm">'+esc(p.q)+' <small>· '+esc(p.name||'?')+'</small></div>';}).join('')||'<p class="small">'+T(['Parašyk telefone: „Klausimas ar komentaras komandai“.','Write on your phone: "A question or comment for the team".'])+'</p>')+'</div><h3>'+T(['Komentarai','Comments'])+' ('+allc.length+')</h3><div class="wall" style="columns:1">'+(allc.slice(-5).map(function(x){return '<div class="cm">'+x.c.em+' '+esc(x.m.m)+' <small>· '+esc(x.m.n||'?')+'</small></div>';}).join('')||'<p class="small">'+T(['Dar nėra.','None yet.'])+'</p>')+'</div></div></div>'});
+  /* leadership questions */
+  /* tikri tėvai 2025 */
+  S.push({id:'survey',title:'📋 '+T(['Tikri tėvai 2025','Real parents 2025']),html:top(T(['Mūsų duomenys 🅰️ · vasara 2025','Our own data 🅰️ · summer 2025']),T(['Ką sakė tikri tėvai: 741 atsakymas, vasara 2025','What real parents said: 741 answers, summer 2025']),'📋')+
+   '<div class="body sv"><div class="svt">'+RD_SURVEY.tiles.map(function(t){return '<div class="card"><b>'+t[0]+'</b><span>'+T(t[1])+'</span><i>'+T(t[2])+'</i></div>';}).join('')+'</div>'+
+   '<div class="card"><h3>'+T(['Pagal stovyklą','By camp'])+'</h3><table class="tight2 pnl"><tr><th>'+T(['Stovykla','Camp'])+'</th><th>n</th><th>NPS</th><th>'+T(['Turinys','Content'])+'</th></tr>'+RD_SURVEY.camps.map(function(r){return '<tr><td><b>'+r[0]+'</b></td><td class="num">'+r[1]+'</td><td class="num">'+r[2]+'</td><td class="num">'+r[3]+'</td></tr>';}).join('')+'</table><p class="small" style="margin:8px 0 0">'+T(RD_SURVEY.age)+'</p></div>'+
+   '<div class="card"><h3>'+T(['Ką tėvai rašė patys (% iš 741) ⚠️','What parents wrote themselves (% of 741) ⚠️'])+'</h3>'+RD_SURVEY.said.map(function(s){return '<div class="svb"><span class="l">'+T(s[1])+'</span><span class="b"><i style="width:'+Math.max(2,s[0]/32*100)+'%"></i></span><span class="v">'+String(s[0]).replace('.',',')+' %</span></div>';}).join('')+'</div>'+
+   '<div class="flag svf">'+T(RD_SURVEY.asked)+'<br><b>💡 '+T(RD_SURVEY.room)+'</b></div><p class="small svn">'+T(RD_SURVEY.foot)+'</p></div>'});
+  /* DI panelė: tik po balsavimo */
+  (function(){var by={};RV_CONCEPTS.forEach(function(c){by[c.id]=c;});
+   var rows=RV_PANEL.filter(function(p){return by[p.id];}).slice().sort(function(a,b){return (b.fit+b.par+b.kid)-(a.fit+a.par+a.kid);});
+   function pl(v){return '<span class="pp '+(v>=7?'g':v>=5?'a':'r')+'">'+v+'</span>';}
+   S.push({id:'panel',title:'🤖 '+T(['DI panelė','AI panel']),html:top(T(['Sintetinis vertinimas · po balsavimo','Synthetic estimate · after the vote']),T(['DI panelė: kaip reaguotų tėvai ir vaikai','AI panel: how parents and kids would react']),'🤖')+
+   '<div class="body c2" style="grid-template-columns:1.75fr 1fr"><div class="card"><table class="tight2 pnl"><tr><th>'+T(['Koncepcija','Concept'])+'</th><th>'+T(['Amžius','Age'])+'</th><th>'+T(['Tinka amžiui','Age fit'])+'</th><th>'+T(['Tėvai','Parents'])+'</th><th>'+T(['Vaikai','Kids'])+'</th><th>'+T(['Pirktų iš 20','Would buy of 20'])+'</th><th>'+T(['Pasitikėjimas','Confidence'])+'</th></tr>'+
+   rows.map(function(p){var c=by[p.id];return '<tr><td><b>'+c.em+' '+T(c.n).split(':')[0]+'</b></td><td>'+T(c.age)+'</td><td class="num">'+pl(p.fit)+'</td><td class="num">'+pl(p.par)+'</td><td class="num">'+pl(p.kid)+'</td><td class="num">'+p.buy.split('/')[0]+'</td><td>'+(p.conf==='low'?T(['žemas','low']):T(['vidutinis','medium']))+'</td></tr>';}).join('')+RV_CONCEPTS.filter(function(c){return !RV_PANEL.some(function(p){return p.id===c.id;});}).map(function(c){return '<tr><td><b>'+c.em+' '+T(c.n).split(':')[0]+'</b></td><td>'+T(c.age)+'</td><td colspan="5" style="opacity:.75">'+T(['nevertinta (pridėta po panelės)','not scored (added after the panel)'])+'</td></tr>';}).join('')+'</table></div>'+
+   '<div class="col"><div class="flag" style="font-size:16.5px"><b>⚠️ '+T(RV_PANEL_NOTE)+'</b> '+T(RV_PANEL_COI)+'</div><div class="card" style="flex:1"><h3>'+T(['Ką tai rodo','What it shows'])+'</h3><ul>'+RV_PANEL_SIDE.map(function(x){return '<li style="margin-bottom:10px">'+T(x)+'</li>';}).join('')+'</ul><p class="small">'+T(['Balai 1–10: žalia ≥ 7, geltona 5–6, raudona ≤ 4.','Scores 1–10: green ≥ 7, amber 5–6, red ≤ 4.'])+'</p></div></div></div>'});})();
+  S.push({id:'qa',title:T(['Jūsų klausimai','Your questions']),html:top(T(['Atsakymai iš anksto','Answers in advance']),T(['Klausimai, kuriuos turbūt turite','Questions you probably have']),'🙋')+
+   '<div class="body c2" style="grid-template-columns:1.9fr 1fr"><div class="card"><div class="qa">'+RD_QA.map(function(x){return '<div><b>'+T(x.q)+'</b><span>'+T(x.a)+'</span></div>';}).join('')+'</div></div>'+
+   '<div class="col"><div class="card"><h3>💰 '+T(['Potencialas, jei pavyksta 🤖','The upside if it works 🤖'])+'</h3><table class="tight2"><tr><th></th><th>10 %</th><th>20 %</th><th>30 %</th></tr>'+RD_UPSIDE.map(function(r){return '<tr'+(r.sum?' style="font-weight:800"':'')+'><td>'+T(r.n)+'</td><td class="num">'+r.v[0]+'</td><td class="num">'+r.v[1]+'</td><td class="num">'+r.v[2]+'</td></tr>';}).join('')+'</table><p class="small" style="font-size:14.5px;margin:6px 0 0">'+T(RD_UPSIDE_NOTE)+'</p></div><div class="card cs qam" style="flex:1"><h3>'+T(['Ko dar trūksta sprendimui ❓','What is still missing for a decision ❓'])+'</h3><ul>'+RD_MISSING.map(function(x){return '<li style="font-size:17px">'+T(x)+'</li>';}).join('')+'</ul></div></div></div>'});
+  /* next */
+  S.push({id:'next',title:T(['Kas toliau','What next']),html:top(T(['Iki gruodžio 18 d.','By December 18']),T(['Kas toliau','What happens next']),'🧭')+
+   '<div class="body c2"><div class="card"><h3>'+T(['3 sprendimai, kurių prašom 12-18','3 decisions we ask for on 12-18'])+'</h3><ul><li>'+T(['Kurios 3–4 koncepcijos eina į 2027 vasarą kaip testas','Which 3–4 concepts go into summer 2027 as a test'])+'</li><li>'+T(['Kaina kiekvienai: pigiau, tiek pat ar brangiau','The price for each: cheaper, same or premium'])+'</li><li>'+T(['Kurie 3 papildomi pardavimai paleidžiami kartu','Which 3 upsells launch with them'])+'</li></ul><h3 style="margin-top:16px">'+T(['Nuo rudens būreliuose','In clubs from autumn'])+'</h3><p>'+T(['Kas vasarą surenka pilnas grupes ir gerus tėvų įvertinimus, rugsėjį tampa būreliu.','Whatever fills its groups and earns good parent ratings in summer becomes a club in September.'])+'</p></div>'+
+   '<div class="card"><h3>'+T(['Patikrinimai iki gruodžio 1 d. (savininką sutariam dabar)','Checks by December 1 (we agree owners now)'])+'</h3><table class="tight">'+
+   RD_CHECKS.map(function(r){return '<tr><td>'+T(r)+'</td><td class="num" style="color:var(--muted)">'+T(['kas? ____','who? ____'])+'</td></tr>';}).join('')+'</table><p class="small" style="margin-top:10px">'+T(['Balsai ir komentarai: mygtukas ⬇ E apačioje nukopijuoja suvestinę.','Votes and comments: the ⬇ E button below copies the summary.'])+'</p></div></div>'});
+  /* sources */
+  S.push({id:'src',title:T(['Šaltiniai','Sources']),html:top(T(['Priedas','Appendix']),T(['Šaltiniai ir ko nežinom','Sources and what we do not know']),'📚')+
+   '<div class="body c2"><div class="card"><h3>'+T(['Šaltiniai (wiki)','Sources (wiki)'])+'</h3><ul><li>research/ra-vasaros-stovyklos-2027/00-sinteze + 06-brainstorm-faktu-lapas + 07-brainstorm-v2-palyginimai + 08-vadovu-panele</li><li>research/ra-produktu-kryptis-2026-11/13-vincibot-sinteze</li><li>research/ra-zaidimas-2026-11/00-sinteze</li><li>research/unitree-r1-edu-2026-10</li><li>RA KPI lentelė 2026 (05-kpi-lentele-2026)</li><li>10-creator-camp-gilus (creatorcamp.org skaityta 2026-11-15; video = Creator Camp autorių teisės, tik vidiniam rodymui)</li><li>research/ra-vasaros-stovyklos-2027/09-creator-camp (spauda: Community Impact 2026-03, ABC13 2024-03, The Hustle 2024-10)</li><li>'+RD_SRC.map(function(x){return '<a class="lk" href="'+x[1]+'" target="_blank" rel="noopener">'+x[0]+' ↗</a>';}).join(' ')+'</li></ul><p class="small">'+T(['Personažai ir viršeliai: RA 2026/27 turinys, tik vidiniam naudojimui. Produktų nuotraukos: gamintojų.','Characters and covers: RA 2026/27 content, internal use only. Product photos: from the makers.'])+'</p></div>'+
+   '<div class="card"><h3>'+T(['Ko nežinom ❓','What we do not know ❓'])+'</h3><ul><li>'+T(['Tiksli perpardavėjo kaina RA: laukiam rašytinio kainoraščio','The exact reseller price for RA: we wait for the written price list'])+'</li><li>'+T(['Faktinė stovyklų marža pagal temą','Actual camp margin by theme'])+'</li><li>'+T(['Kiek LT tėvų pirktų priedus ir atributiką: skaičių nėra','How many LT parents would buy add-ons and merch: no numbers'])+'</li><li>'+T(['LT taisyklės: maistas su vaikais, santykis privačiose stovyklose','LT rules: cooking with kids, ratio in private camps'])+'</li><li>'+T(['Nė vieno naujo roboto dar netestavom su RA vaikais','We have not yet tested a single new robot with RA kids'])+'</li><li>'+T(['Visi įvertinimai šioje salėje = vadovų nuomonė, ne tėvų','All ratings in this room = leaders\' opinion, not parents\''])+'</li></ul></div></div>'});
+  S.push({id:'thanks',title:T(['Ačiū','Thank you']),cls:'cover',style:'background-image:url(img/dogs2.jpg)',html:
+   '<div class="pan"><div style="flex:1"><h1>'+T(['Ačiū! Dar klausimų?','Thank you! Any more questions?'])+'</h1><p>'+T(['Parašyk klausimą ar komentarą telefone: jis atsiras čia. Balsuoti dar galima.','Write a question or comment on your phone: it shows up here. Voting is still open.'])+'</p><div class="qw">'+(QA.map(function(q){return '<div class="qc'+(q.k?' k':'')+'"><div class="qt">'+(q.k?'<b class="tk">✓ '+T(['Atsakysim','We will answer'])+'</b> ':'')+esc(q.t)+(q.name?' <small>· '+esc(q.name)+'</small>':'')+'</div><button type="button" class="qb y" data-qk="'+esc(q.id)+'" aria-label="'+T(['Palikti','Keep'])+'">✓</button><button type="button" class="qb n" data-qx="'+esc(q.id)+'" aria-label="'+T(['Pašalinti','Remove'])+'">✕</button></div>';}).join('')||'<p class="qe">📱 '+T(['Klausimus rašykite telefone: jie atsiras čia.','Write your questions on your phone: they appear here.'])+'</p>')+'</div><p style="font-size:20px;opacity:.85;margin-top:14px">Kristijonas Vasiliauskas · Povilas Zmejauskas</p></div>'+
+   '<div class="qr"><div class="q" id="qr2"></div><b>📱 '+T(['Klausk ir balsuok','Ask and vote'])+'</b><small>'+RV_JOIN_URL.replace('https://','')+'</small></div></div>'});
+  buildV3(S);
+  S.forEach(function(s){var p=RD_PIC[s.id],i=0;if(p)s.html=s.html.replace(/<li>/g,function(){var e=p[i++];return e?'<li class="pi"><span class="pe">'+e+'</span>':'<li>';});var q=RD_PIC_TR[s.id],j=0;if(q)s.html=s.html.replace(/<tr><td>/g,function(){var e=q[j++];return e?'<tr><td><span class="pe2">'+e+'</span> ':'<tr><td>';});});
+  return S;
+}
+
+/* ---------- V3 slides ---------- */
+function buildV3(S){
+  var NC=RV_CONCEPTS.length;
+  /* 1. Pinigai pagal koncepciją (CEO) */
+  (function(){var j=V3.tier,isM=V3.sel==='marza',m=money(V3.sel,j),c=m.c,key=m.key;
+   var f='<div class="v3f"><select data-v3sel="1" aria-label="'+T(['Koncepcija','Concept'])+'"><option value="marza"'+(isM?' selected':'')+'>📐 '+T(['Marža lentelės pavyzdys: 17 × €199','Margin tab example: 17 × €199'])+'</option>'+RV_CONCEPTS.map(function(x){return '<option value="'+x.id+'"'+(x.id===V3.sel?' selected':'')+'>'+cname(x)+'</option>';}).join('')+'</select>'+
+    (isM?'<span class="src" style="margin:2px 0 4px">'+T(['KPI lentelės „Marža“ skirtukas: 1 stovykla, 5 dienos, tik jo eilutės.','KPI sheet "Margin" tab: 1 camp, 5 days, its rows only.'])+'</span>':'<div class="tiers">'+RV_TIERS.map(function(t,i){return '<button type="button" data-v3tier="'+i+'" class="'+(i===j?'on':'')+'">'+T(t.t)+' €'+c.prices[i][0]+'</button>';}).join('')+'</div><span class="src" style="margin:3px 0 2px">'+T(c.prices[j][1])+' · 🧑‍🏫 '+T(c.ratio)+'</span>')+
+    '<span class="hd">'+T(['Ši koncepcija','This concept'])+'</span>'+
+    fld('cc.'+key+'.kids',T(['Vaikų grupėje','Kids per group']),shownOf('cc.'+key+'.kids',m.kidsD),isM?'📊 Marža skaičiuoklė':'🅰️ '+T(['iš koncepcijos','from the concept'])+': „'+T(c.grp)+'“','kids')+
+    fld('cc.'+key+'.ment',T(['Mentorių','Mentors']),shownOf('cc.'+key+'.ment',m.mentD),isM?'📊 Marža skaičiuoklė':'🤖 '+T(['iš santykio','from the ratio'])+' '+T(c.ratio),'ment')+
+    (isM?'':fld('cc.'+m.cid+'.eq',T(['Įranga, amortizacija €/sav.','Equipment, amortisation €/week']),shownOf('cc.'+m.cid+'.eq',null),'❓ '+T(['Marža lentelėje nėra','not in the Margin tab']))+fld('cc.'+m.cid+'.mat',T(['Medžiagos €/sav.','Materials €/week']),shownOf('cc.'+m.cid+'.mat',null),'❓ '+T(['Marža lentelėje nėra · 0 = nereikia','not in the Margin tab · 0 = none needed'])))+
+    '<span class="hd">'+T(['Bendra visoms','Shared by all'])+'</span>'+
+    CST.filter(function(x){return !(isM&&x.k==='help');}).map(function(x){return fld('cost.'+x.k,T(x.t),shownOf('cost.'+x.k,x.d),T(x.s));}).join('')+'</div>';
+   S.push({id:'money',title:'💶 '+T(['Pinigai pagal koncepciją','Money per concept']),html:top(T(['CEO · skaičiuoklė 🤖','CEO · calculator 🤖']),T(['Kiek lieka iš vienos grupės per savaitę','What one group leaves per week']),'💶')+
+    '<div class="body" style="grid-template-columns:410px 370px 1fr;gap:16px"><div class="card" style="padding:12px 16px">'+f+'</div>'+
+    '<div class="col"><div class="card" style="flex:1;padding:10px 14px"><h3 class="mh3">'+(isM?'📐 '+T(['Marža pavyzdys','Margin example']):cname(c)+' · '+T(RV_TIERS[j].t))+'</h3><div id="v3mres">'+mresHTML()+'</div></div>'+
+    '<div class="card" style="padding:8px 12px"><p class="small" style="margin:0;font-size:13px">'+T(['RA skalė: > 50 % gera · 40–50 % vidutiniška · < 40 % prasta (KPI lentelė). Prieš PVM ⚠️, marketingą ir administraciją. Tuščias langelis = nežinom ❓, 0 = nėra išlaidų.','RA scale: > 50 % good · 40–50 % average · < 40 % poor (KPI sheet). Before VAT ⚠️, marketing and admin. Empty cell = unknown ❓, 0 = no cost.'])+'</p>'+coi()+'</div></div>'+
+    '<div class="card" style="padding:10px 14px"><h3 style="margin-bottom:4px">'+T(['Visos koncepcijos su tomis pačiomis sąnaudomis','All concepts with the same costs'])+'</h3><div id="v3mtab">'+mtabHTML()+'</div><p class="small" style="margin:4px 0 0;font-size:12.5px">'+T(['❓ n = tiek eilučių dar tuščia. Ment. su + = dar padėjėjas. Spausk eilutę, kad ją atidarytum kairėje.','❓ n = that many rows still empty. Ment. with + = plus a helper. Click a row to open it on the left.'])+'</p></div></div>'});
+  })();
+  /* 2. Operacijos */
+  S.push({id:'ops',title:'🧑‍🏫 '+T(['Operacijos','Operations']),html:top(T(['Operacijų vadovui','For the Head of Operations']),T(['Kiek vaikų, mentorių ir įrenginių reikia','How many kids, mentors and devices we need']),'🧑‍🏫')+
+   '<div class="body c1" style="gap:10px;grid-template-rows:auto 1fr"><div class="card" style="padding:8px 14px"><p class="small" style="margin:0;font-size:14.5px;color:var(--ink)"><b>2026 '+T(['pajamos prieš tikslą 📊 KPI lentelė','revenue vs target 🅰️'])+':</b> Panevėžys 133,5 % · Alytus 126,6 % · '+T(['Pietų LT','South LT'])+' 119,3 % · Vilnius 102,3 % · Kaunas 102,3 % · Šiauliai 99,0 % · '+T(['Vakarų LT','West LT'])+' 89,1 % · Tauragė 85,7 % · Klaipėda 82,9 %. '+T(['Temų ir užpildymo pagal savaitę lentelėje nėra ❓.','The sheet has no split by theme or weekly fill ❓.'])+'</p></div>'+
+   '<div class="card" style="padding:6px 12px"><table class="v3t ops"><tr><th>'+T(['Koncepcija','Concept'])+'</th><th>'+T(['Amžius','Age'])+'</th><th>'+T(['Vaikai 🅰️','Kids 🅰️'])+'</th><th>'+T(['Santykis','Ratio'])+'</th><th>'+T(['Mentorių 🤖','Mentors 🤖'])+'</th><th style="width:128px">'+T(['Vaikai / 1 įrenginiui ✎','Kids / 1 device ✎'])+'</th><th>'+T(['Įrenginių 🤖','Devices 🤖'])+'</th><th>'+T(['Kieno įranga','Whose equipment'])+'</th><th style="width:220px">'+T(['Miestai ✎','Cities ✎'])+'</th></tr>'+
+   RV_CONCEPTS.map(function(c){var k=kidsDef(c,1),K=ratioK(c),d=kprDef(c);var ag=T(c.age),am=/\(([^)]*)\)/.exec(ag);return '<tr><td>'+cname(c)+'</td><td>'+(am?am[1].replace(/^(age|Age) /,''):ag.replace(/^Age /,''))+'</td><td class="num">'+(k==null?'❓':k)+'</td><td>'+T(c.ratio).replace(/mentorius/,'m.').replace(/vaikams/,'')+'</td><td class="num">'+(K&&k?Math.ceil(k/K):'❓')+(helperOf(c,1)?' +👤':'')+'</td><td><input type="text" inputmode="decimal" autocomplete="off" data-v3="ops.'+c.id+'.kpr" value="'+esc(g3('ops.'+c.id+'.kpr')||'')+'" placeholder="'+(d?d+' 🅰️':'❓ '+T(['kas pildo?','who fills?']))+'" aria-label="'+esc(cname(c))+' '+T(['vaikai įrenginiui','kids per device'])+'"></td><td class="num" id="v3dev-'+c.id+'">'+devHTML(c)+'</td><td>'+T(V3_DEV[c.id]||['❓','❓'])+'</td><td><input type="text" autocomplete="off" data-v3="ops.'+c.id+'.city" value="'+esc(g3('ops.'+c.id+'.city')||'')+'" placeholder="❓ '+T(['kas užpildo?','who fills it?'])+'" aria-label="'+esc(cname(c))+' '+T(['miestai','cities'])+'"></td></tr>';}).join('')+'</table>'+
+   '<p class="small" style="margin:4px 0 0;font-size:12.5px">'+T(['Vaikai = „tiek pat“ kainos lygis. Mentorių = vaikai ÷ santykis, apvalinta į viršų; +👤 = dar padėjėjas. Pilka 🅰️ reikšmė = iš kainos aprašo; įrašyk savo, jei kitaip. Įvestys išlieka ir patenka į ⬇ E.','Kids = the "same price" tier. Mentors = kids ÷ ratio, rounded up; +👤 = plus a helper. Grey 🅰️ value = from the price text; type your own if different. Entries persist and go into ⬇ E.'])+'</p></div></div>'});
+  /* 5. Turinio krūvis */
+  S.push({id:'content',title:'📚 '+T(['Turinio krūvis','Content load']),html:top(T(['Turinio vadovui','For the Head of Content']),T(['Kiek turinio jau turim ir ką reikia sukurti','How much content we have and what we must build']),'📚')+
+   '<div class="body c1" style="gap:10px"><div class="card" style="padding:8px 12px"><table class="v3t"><tr><th>'+T(['Koncepcija','Concept'])+'</th><th>'+T(['Jau paruošta (šaltinis)','Ready now (source)'])+'</th><th>'+T(['Kalba','Language'])+'</th><th style="width:230px">'+T(['Ką sukurti ✎','What to build ✎'])+'</th><th style="width:250px">'+T(['Kurią 2026 temą keičia ✎','Which 2026 theme it replaces ✎'])+'</th><th>'+T(['Temos balas','Theme score'])+'</th></tr>'+
+   RV_CONCEPTS.map(function(c){var L=(typeof RD_LESS!=='undefined'&&RD_LESS[c.id])?RD_LESS[c.id].l:null,rd=V3_READY[c.id];var ready=L?L.map(function(l){return '<a class="lk3" href="'+l.u+'" target="_blank" rel="noopener">'+T(l.n)+' ↗</a>';}).join(' · '):(rd?T(rd):'<span class="q3">❓</span>');var v=g3('content.'+c.id+'.rep')||'';
+    return '<tr><td>'+cname(c)+'</td><td style="font-size:13px">'+ready+'</td><td>'+(L?T(['EN','EN']):(rd?'LT ⚠️':'❓'))+'</td><td><input type="text" autocomplete="off" data-v3="content.'+c.id+'.build" value="'+esc(g3('content.'+c.id+'.build')||'')+'" placeholder="❓ '+T(['kas, iki kada?','who, by when?'])+'" aria-label="'+esc(cname(c))+'"></td><td><select data-v3="content.'+c.id+'.rep" aria-label="'+esc(cname(c))+'"><option value="">❓ '+T(['kurią?','which one?'])+'</option>'+V3_THEMES.map(function(t){return '<option value="'+t[0]+'"'+(v===t[0]?' selected':'')+'>'+T(t[1])+(t[2]?' ('+t[2]+')':'')+'</option>';}).join('')+'</select></td><td class="num" id="v3rat-'+c.id+'">'+ratHTML(c.id)+'</td></tr>';}).join('')+'</table>'+
+   '<p class="small" style="margin:4px 0 0;font-size:12.5px">'+T(['Minecraft: išorinės pamokos anglų k., licencija ❓; RA jau turi savo LT stovyklą „Marsas Minecrafte“ (2026, balas 8,66). VinciBot iš viso: 35 pamokos ≈ 27+ val. ⚠️; 5 dienų stovyklai reikia ~15–20 val. Matata ir Minecraft medžiaga anglų k. Temos balas = mentorių vertinimas 2026 (510 formų, 0–10), ne tėvų ⚠️. Planas A: Negyvenama sala lieka.','Minecraft: external lessons are in English, licence ❓; RA already has its own LT camp "Mars in Minecraft" (2026, score 8.66). VinciBot total: 35 lessons ≈ 27+ h ⚠️; a 5-day camp needs ~15–20 h. Matata and Minecraft material is in English. Theme score = mentor rating 2026 (510 forms, 0–10), not parents ⚠️. Plan A: Desert island stays.'])+'</p></div></div>'});
+  /* 3. Planas A */
+  (function(){var rk=RV_CONCEPTS.map(function(c,i){return {c:c,i:i,r:tallyC(c.id),a:ageR(c)};}).sort(function(a,b){return (b.r.go-a.r.go)||(b.r.test-a.r.test)||(a.i-b.i);});
+   function fit(a){return !!(a&&a[0]<=11&&a[1]>=7);} /* 12–16 m. stovyklos neužima 7–12 m. lizdo */
+   var cand=rk.filter(function(x){return fit(x.a)&&(x.r.go+x.r.test)>0;}),any=rk.some(function(x){return x.r.n>0;});
+   function same(a,b){return a&&b&&a.r.go===b.r.go&&a.r.test===b.r.test;}
+   function free(k){var x=cand[k];if(!x)return '<div class="slot free"><span class="k">'+T(['Laisvas lizdas','Free slot'])+' '+(k+1)+'</span><b>❓ '+T(['laukiam balsų','waiting for votes'])+'</b><small>'+T(['Užsipildo gyvai: ❤️, tada 🧪','Fills live: ❤️ first, then 🧪'])+'</small></div>';
+     var tie=[];if(k===1){for(var q=2;q<cand.length;q++)if(same(cand[q],x))tie.push(cname(cand[q].c));}
+     return '<div class="slot free won"><span class="k">'+T(['Laisvas lizdas','Free slot'])+' '+(k+1)+'</span><b>'+cname(x.c)+'</b><small>❤️ '+x.r.go+' · 🧪 '+x.r.test+' · ✋ '+x.r.no+' · '+T(x.c.age)+'</small>'+(tie.length?'<small style="color:var(--bad);font-weight:700">⚖️ '+T(['Lygiosios su','Tied with'])+': '+tie.join(', ')+'</small>':'')+'</div>';}
+   var tale=v3byId('tale'),tr=tale?tallyC('tale'):null;
+   S.push({id:'plana',title:'🧩 '+T(['Planas A gyvai','Plan A live']),html:top(T(['CEO · gyvai iš telefonų','CEO · live from phones']),T(['Planas A: 5 stovyklos, 2 laisvi lizdai','Plan A: 5 camps, 2 free slots']),'🧩')+
+    '<div class="body c2" style="grid-template-columns:1.1fr 1fr"><div class="card"><div class="slots"><div class="sg"><h4>4–6 m.</h4>'+
+    '<div class="slot"><span class="k">1</span><b>'+T(['Naujas 2026 m. produktas, gerai įvertintas','A new 2026 product, rated well'])+'</b><small>'+T(['Kuris? ❓ Mentorių balai: Pasaulio tyrinėjimas 9,51 · Gyvybė aplink mus 9,32','Which one? ❓ Mentor scores: Exploring the world 9.51 · Life around us 9.32'])+'</small></div>'+
+    '<div class="slot"><span class="k">2</span><b>'+T(['Atnaujintas vizualas ir turinys','Refreshed visuals and content'])+'</b><small>'+T(['Kuris? ❓','Which one? ❓'])+(tale?' · '+T(['4–6 m. kandidatas šiandien','age 4–6 candidate today'])+': '+cname(tale)+' ❤️ '+tr.go+' · 🧪 '+tr.test:'')+'</small></div></div>'+
+    '<div class="sg"><h4>7–12 m.</h4><div class="slot"><span class="k">3</span><b>'+T(['Negyvenama sala','Desert island'])+'</b><small>'+T(['Lieka; pataisyti mentoriaus įrankį · balas 8,83','Stays; fix the mentor tool · score 8.83'])+'</small></div>'+free(0)+free(1)+'</div></div>'+
+    '<p class="small" style="margin:10px 0 0">'+T(['Planas A iš 2026-10-20 susitikimo (pristatytas vadovams). Laisvi lizdai = 2 daugiausiai ❤️ surinkusios 7–12 m. tinkančios koncepcijos; lygiu atveju 🧪, tada pristatymo tvarka. Balsai = komandos nuomonė, ne tėvų paklausa. 12+ m. koncepcijos į lizdą nepatenka: tai mūsų taisyklė 🤖, ne 10-20 sprendimas.','Plan A from the 2026-10-20 meeting (shown to leadership). Free slots = the 2 concepts for age 7–12 with the most ❤️; on a tie 🧪, then presentation order. Votes = team opinion, not parent demand. Concepts for age 12+ cannot take a slot: that is our rule 🤖, not a 10-20 decision.'])+'</p></div>'+
+    '<div class="card"><h3>'+T(['Gyvas reitingas (❤️, tada 🧪)','Live ranking (❤️, then 🧪)'])+'</h3><table class="v3t"><tr><th>#</th><th>'+T(['Koncepcija','Concept'])+'</th><th>❤️</th><th>🧪</th><th>✋</th><th>7–12?</th></tr>'+rk.slice(0,12).map(function(x,i){return '<tr><td class="num">'+(i+1)+'</td><td>'+cname(x.c)+'</td><td class="num">'+x.r.go+'</td><td class="num">'+x.r.test+'</td><td class="num">'+x.r.no+'</td><td>'+(fit(x.a)?'✓':'<span style="color:var(--muted)">'+T(x.c.age).replace(/ \(.*\)/,'')+'</span>')+'</td></tr>';}).join('')+'</table>'+(any?'':'<p class="small" style="margin:6px 0 0">📱 '+T(['Balsų dar nėra: rodoma pristatymo tvarka.','No votes yet: shown in presentation order.'])+'</p>')+'</div></div>'});
+  })();
+  /* 4. Testų planas */
+  var TX=RV_CONCEPTS.map(function(c){return {id:c.id,em:c.em,n:c.n,test:c.test,kill:''};}).concat(V3_TX);
+  S.push({id:'tests',title:'🧪 '+T(['Testų planas','Test pipeline']),html:top(T(['Procesų vadovui','For the Head of Process']),T(['Mažiausias testas, KEEP / KILL riba, data, savininkas','Smallest test, KEEP / KILL line, date, owner']),'🧪')+
+   '<div class="body c1"><div class="card" style="padding:8px 12px"><table class="v3t"><tr><th>'+T(['Kas','What'])+'</th><th>'+T(['Mažiausias testas 🅰️','Smallest test 🅰️'])+'</th><th style="width:230px">'+T(['KEEP / KILL riba ✎','KEEP / KILL line ✎'])+'</th><th style="width:120px">'+T(['Data ✎','Date ✎'])+'</th><th style="width:170px">'+T(['Savininkas (rolė) ✎','Owner (role) ✎'])+'</th></tr>'+
+   TX.map(function(x){var kv=g3('tests.'+x.id+'.kill');var kill=kv===undefined?x.kill:kv;return '<tr><td>'+x.em+' '+T(x.n).split(':')[0]+'</td><td>'+T(x.test)+'</td><td><input type="text" autocomplete="off" data-v3="tests.'+x.id+'.kill" value="'+esc(kill)+'" placeholder="❓ '+T(['kokia riba?','what line?'])+'"></td><td><input type="text" autocomplete="off" data-v3="tests.'+x.id+'.date" value="'+esc(g3('tests.'+x.id+'.date')||'')+'" placeholder="❓"></td><td><input type="text" autocomplete="off" data-v3="tests.'+x.id+'.own" value="'+esc(g3('tests.'+x.id+'.own')||'')+'" placeholder="❓ '+T(['rolė','role'])+'"></td></tr>';}).join('')+'</table>'+
+   '<p class="small" style="margin:4px 0 0;font-size:12.5px">'+T(['Užpildyta tik riba, kuri jau buvo V2: robotas namuose KEEP ≥ 10 %. Pavyzdys iš 10-20 susitikimo: mažiau nei 100 registracijų per mėnesį = nepraėjo ⚠️ (pasiūlymas, ne sprendimas). Viskas patenka į ⬇ E.','Only the line that was already in V2 is filled: robot at home KEEP ≥ 10 %. Example from the 10-20 meeting: fewer than 100 sign-ups a month = failed ⚠️ (a proposal, not a decision). Everything goes into ⬇ E.'])+'</p></div></div>'});
+  /* 6. Į rinką */
+  var PACE=[['Vas','Feb',2.4],['Kov','Mar',26.7],['Bal','Apr',47.1],['Geg','May',72.0],['Bir','Jun',90.0],['Lie','Jul',101.5],['Rgp','Aug',106.9]],EB={Kov:'−15 %',Bal:'−10 %',Geg:'−5 %',Bir:'0 %'},VP={Kov:'254,15',Bal:'269,10',Geg:'284,05',Bir:'299'};
+  S.push({id:'gtm',title:'📣 '+T(['Į rinką','Go to market']),html:top(T(['Marketingo vadovui','For the Head of Marketing']),T(['Beveik pusė vasaros (47,1 %) parduodama iki gegužės','Almost half the summer (47.1 %) sells before May']),'📣')+
+   '<div class="body c2" style="grid-template-columns:1.25fr 1fr"><div class="card"><h3>'+T(['2026 pardavimų tempas: parduota nuo tikslo 3 446 📊 KPI lentelė','2026 sales pace: sold vs the 3,446 target 📊 KPI sheet'])+'</h3><div class="pace"><div class="tl" style="bottom:'+(100/110*100)+'%"><span>'+T(['tikslas 3 446','target 3,446'])+'</span></div>'+
+   PACE.map(function(p){return '<div class="bw'+(p[2]>=100?' over':'')+'"><div class="bb" style="height:'+(p[2]/110*100)+'%"><span class="bv">'+nf(p[2],1)+' %</span></div></div>';}).join('')+'</div>'+
+   '<div class="pmon">'+PACE.map(function(p){return '<div>'+T([p[0],p[1]])+(EB[p[0]]?'<small><span class="eb">'+EB[p[0]]+'</span></small><small style="font-weight:500;color:var(--muted)">€'+VP[p[0]]+'</small>':'<small>&nbsp;</small><small>&nbsp;</small>')+'</div>';}).join('')+'</div>'+
+   '<p class="small" style="margin:8px 0 0">'+T(['Geltona = 2026 ankstyvo pirkimo nuolaida; po ja Vilniaus 5 d. kaina. Rugpjūtį 3 682 (106,9 %). Pagal temą skaidymo nėra ❓.','Yellow = 2026 early-bird discount; below it the Vilnius 5-day price. August: 3,682 (106.9 %). No split by theme ❓.'])+'</p></div>'+
+   '<div class="col"><div class="card"><h3>'+T(['Kalendorius atgal 🤖','Backwards calendar 🤖'])+'</h3><table class="v3t" style="font-size:15px"><tr><td class="num">12-18</td><td>'+T(['Sprendimas: koncepcijos ir kainos','Decision: concepts and prices'])+'</td></tr><tr><td class="num">2027-01</td><td>'+T(['Puslapiai, nuotraukos, tekstai, €20 depozito testas ⚠️','Pages, photos, copy, the €20 deposit test ⚠️'])+'</td></tr><tr><td class="num"><b>2027-02</b></td><td><b>'+T(['Pasiūlymas paruoštas ⚠️ 🤖 išvada iš tempo','Offer ready ⚠️ 🤖 inferred from the pace'])+'</b></td></tr><tr><td class="num">2027-03</td><td>'+T(['Startas su −15 %, jei kartojam 2026 schemą ❓','Launch at −15 %, if we repeat the 2026 scheme ❓'])+'</td></tr><tr><td class="num">2027-06</td><td>'+T(['Sąrašo kaina, stovyklos prasideda','List price, camps start'])+'</td></tr></table></div>'+
+   '<div class="card" style="flex:1"><h3>⚖️ '+T(['Pavadinimai: teisininkas prieš pardavimą ❓','Names: lawyer before sale ❓'])+'</h3><ul style="margin:0"><li style="font-size:17px">'+T(['„YouTuberių stovykla“: darbinis pavadinimas','"YouTuber camp": a working title'])+'</li><li style="font-size:17px">'+T(['„RA Oskarai“: darbinis pavadinimas','"RA Oscars": a working title'])+'</li><li style="font-size:17px">'+T(['LEGO® yra prekės ženklas: rašom „kaladėlių“','LEGO® is a trademark: we write "brick"'])+'</li></ul><p class="small" style="margin:6px 0 0">'+T(['10-20 testo būdas: puslapis → FB reklama → laukiančiųjų sąrašas + €20 rezervacija; Vilnius, Kaunas, Klaipėda ⚠️.','10-20 test method: page → FB ad → waitlist + €20 reservation; Vilnius, Kaunas, Klaipėda ⚠️.'])+'</p></div></div></div>'});
+  /* 7 + 8. Potencialas ir tiltas į rudens būrelius */
+  var FEED=RV_CONCEPTS.filter(function(c){return c.id!=='detox'&&/būrel|klub|grup/i.test(c.test[0]);}); /* detox testas = partnerių būreliai, ne RA ruduo */
+  var UPF=['u5','u9','u1','u2'];
+  S.push({id:'upside',title:'💰 '+T(['Potencialas ir ruduo','Upside and autumn']),html:top(T(['Viename vaizde 🤖','In one view 🤖']),T(['Potencialas ir kaip vasara pildo rudens būrelius','The upside and how summer fills autumn clubs']),'💰')+
+   '<div class="body c2" style="grid-template-columns:1.2fr 1fr"><div class="col"><div class="card"><h3>'+T(['Priedai, jei perka 10 / 20 / 30 % iš 3 682 pardavimų 🤖','Add-ons if 10 / 20 / 30 % of 3,682 sales buy 🤖'])+'</h3><table class="v3t" style="font-size:16px"><tr><th></th><th>10 %</th><th>20 %</th><th>30 %</th></tr>'+RD_UPSIDE.map(function(r){return '<tr'+(r.sum?' style="font-weight:800"':'')+'><td style="font-size:16px">'+T(r.n)+'</td><td class="num" style="font-size:16px">'+r.v[0]+'</td><td class="num" style="font-size:16px">'+r.v[1]+'</td><td class="num" style="font-size:16px">'+r.v[2]+'</td></tr>';}).join('')+'</table></div>'+
+   '<div class="card"><h3>'+T(['Kitos prielaidos, todėl atskirai 🤖','Other assumptions, so shown apart 🤖'])+'</h3><ul style="margin:0"><li style="font-size:16px">'+T(['ProKid žaidimas: ~€9K / €39K / €115K bruto per metus (8 500 RA vaikų; 30/40/50 % įsidiegia, 3/8/15 % moka)','ProKid game: ~€9K / €39K / €115K gross a year (8,500 RA kids; 30/40/50 % install, 3/8/15 % pay)'])+'</li><li style="font-size:16px">'+T(['Trys skirtingi atributikos rinkiniai (ne scenarijai), jei 30 % perka: €21K, €38,7K arba €65K pajamų','Three different merch kits (not scenarios), if 30 % buy: €21K, €38.7K or €65K revenue'])+'</li><li style="font-size:16px">'+T(['Viena masinė 75 vaikų vieta per 8 sav. ≈ +€48K įnašo (sąnaudos = prielaidos). <b>Rizika: jei 20 % dabartinių pirkėjų pereina į €179, ≈ −€85K</b>','One 75-kid mass site over 8 weeks ≈ +€48K contribution (costs = assumptions). <b>Risk: if 20 % of current buyers switch to €179, ≈ −€85K</b>'])+'</li></ul></div>'+
+   '<div class="flag" style="font-size:16px;padding:8px 14px"><b>'+T(['Pajamos ≠ pelnas. Palyginimui: vasaros 2026 pajamos €676,5K 📊.','Revenue ≠ profit. For scale: summer 2026 revenue €676.5K 📊.'])+'</b> '+T(['10 / 20 / 30 % yra 🤖 prielaida, ne prognozė; unikalių šeimų mažiau nei pardavimų ⚠️. Kiek pirks iš tikrųjų: ❓.','10 / 20 / 30 % is a 🤖 assumption, not a forecast; unique families are fewer than sales ⚠️. Real uptake: ❓.'])+'</div></div>'+
+   '<div class="col"><div class="card" style="flex:1"><h3>🍂 '+T(['Tiltas į misiją: aktyvūs vaikai rudenį','Bridge to the mission: active kids in autumn'])+'</h3><p style="font-size:18px">'+T(['Kas vasarą surenka pilnas grupes ir gerus tėvų įvertinimus, rugsėjį tampa būreliu.','Whatever fills its groups and earns good parent ratings in summer becomes a club in September.'])+'</p><p class="small" style="margin:6px 0 4px;color:var(--ink)"><b>'+T(['Koncepcijos, kurių testas jau būrelyje ar grupėje 🅰️','Concepts whose test already runs in a club or group 🅰️'])+'</b></p><table class="v3t">'+FEED.map(function(c){var r=tallyC(c.id);return '<tr><td>'+cname(c)+'</td><td class="num">❤️ '+r.go+' · 🧪 '+r.test+'</td></tr>';}).join('')+'</table>'+
+   '<p class="small" style="margin:10px 0 4px;color:var(--ink)"><b>'+T(['Priedai, kurie veda į rudenį (jūsų balsai)','Add-ons that lead into autumn (your votes)'])+'</b></p><table class="v3t">'+UPF.map(function(id){var u=null;RV_UPSELLS.forEach(function(x){if(x.id===id)u=x;});return u?'<tr><td>'+u.em+' '+T(u.n)+'</td><td>'+T(u.p)+'</td><td class="num">📱 '+tallyU(u.id)+'</td></tr>':'';}).join('')+'</table><p class="small" style="margin:6px 0 0">'+T(['Kiek tai prideda aktyvių vaikų: ❓, naujo skaičiaus nekuriam. Matuojam rudens vietų registracijas.','How many active kids this adds: ❓, we invent no number. We measure autumn seat sign-ups.'])+'</p></div></div></div>'});
+  /* 9. Ko reikia iš jūsų */
+  var ASK=[[['CEO','CEO'],['Kurios 3–4 koncepcijos ir kokia kaina; įrangos amortizacija ir 2026 P&L pagal temą','Which 3–4 concepts and at what price; equipment amortisation and the 2026 P&L by theme'],'12-18'],
+   [['Operacijų vadovas','Head of Operations'],['Miestai, patalpos, vaikai vienam įrenginiui, kiek mentorių samdom','Cities, venues, kids per device, how many mentors we hire'],'____'],
+   [['Procesų vadovas','Head of Process'],['Kiekvienam testui: KEEP / KILL riba, data, savininkas','For every test: KEEP / KILL line, date, owner'],'____'],
+   [['Turinio vadovas','Head of Content'],['Kurią 2026 temą keičia kiekviena koncepcija; kas kuria pamokas, kokia kalba','Which 2026 theme each concept replaces; who builds the lessons, in which language'],'____'],
+   [['Marketingo vadovas','Head of Marketing'],['Data, kada pasiūlymas paruoštas; 2027 nuolaidų etapai; pavadinimų patikra','The date the offer is ready; 2027 early-bird stages; the name check'],'____']];
+  S.push({id:'ask',title:'🙏 '+T(['Ko reikia iš jūsų','What we need from you']),html:top(T(['Prieš išeinant','Before we leave']),T(['Ko man reikia iš jūsų','What I need from you']),'🙏')+
+   '<div class="body c1"><div class="card"><table class="ask"><tr><th>'+T(['Rolė','Role'])+'</th><th>'+T(['Skaičius ar sprendimas','Number or decision'])+'</th><th>'+T(['Iki kada','By when'])+'</th></tr>'+ASK.map(function(r){return '<tr><td class="who">'+T(r[0])+'</td><td>'+T(r[1])+'</td><td class="by">'+r[2]+'</td></tr>';}).join('')+'</table><p class="small" style="margin:12px 0 0">'+T(['Rašom roles, ne vardus. Tuščius ❓ langelius pildom skaidrėse „Pinigai“, „Operacijos“, „Turinys“, „Testų planas“; ⬇ E viską nukopijuoja.','We write roles, not names. Fill the empty ❓ cells on the "Money", "Operations", "Content" and "Test pipeline" slides; ⬇ E copies everything.'])+'</p></div></div>'});
+}
+
+/* ---------- render / nav ---------- */
+function render(){
+  /* V3 tvarka: paslėpti lieka world, map, alpha, idtech, ccprice, ccgaps, creatorwhy, gaps, packs, panel; grąžinti gear ir src */
+  var all=build(),by={},out=[];all.forEach(function(s){by[s.id]=s;});
+  V3_ORDER.forEach(function(id){if(id==='*C')RV_CONCEPTS.forEach(function(c){if(by[c.id])out.push(by[c.id]);});else if(by[id])out.push(by[id]);});
+  SLIDES=out;if(CUR>SLIDES.length-1)CUR=SLIDES.length-1;
+  var box=$('slides'),h='';
+  /* jei rašoma į V3 langelį, po perpiešimo grąžinam fokusą ir kursorių */
+  var ae=document.activeElement,fk=null,fs=null,fe=null;if(ae&&ae.getAttribute&&box.contains(ae)&&ae.getAttribute('data-v3')){fk=ae.getAttribute('data-v3');try{fs=ae.selectionStart;fe=ae.selectionEnd;}catch(e){}}
+  /* remember open folds + scroll of the visible slide: a phone vote rebuilds the DOM and must not close them */
+  var keepI=-1,keepOpen=[],keepScroll=[];
+  var old=box.querySelector('.slide.on');
+  if(old){keepI=+old.getAttribute('data-i');old.querySelectorAll('details').forEach(function(d,n){if(d.open)keepOpen.push(n);});old.querySelectorAll('.body,.col,.card,details').forEach(function(el,n){if(el.scrollTop)keepScroll.push([n,el.scrollTop]);});var ov=old.querySelector('video');var keepT=ov?ov.currentTime:0;}
+  SLIDES.forEach(function(s,i){h+='<section class="slide '+(s.cls||'')+(i===CUR?' on':'')+'" data-i="'+i+'"'+(s.style?' style="'+s.style+'"':'')+'>'+s.html+'</section>';});
+  box.innerHTML=h;
+  if(keepI===CUR){var now=box.querySelector('.slide.on');if(now){var ds=now.querySelectorAll('details');keepOpen.forEach(function(n){if(ds[n])ds[n].open=true;});var sc=now.querySelectorAll('.body,.col,.card,details');keepScroll.forEach(function(p){if(sc[p[0]])sc[p[0]].scrollTop=p[1];});var nv=now.querySelector('video');if(nv&&keepT){try{nv.currentTime=keepT;}catch(e){}}}}
+  if(fk){var ne=box.querySelector('.slide.on [data-v3="'+fk+'"]');if(ne){try{ne.focus({preventScroll:true});if(fs!=null&&ne.setSelectionRange)ne.setSelectionRange(fs,fe);}catch(e){}}}
+  try{sessionStorage.setItem('ravasara-v3-cur',String(CUR));}catch(e){}
+  box.querySelectorAll('video').forEach(function(v){v.addEventListener('error',function(){var im=document.createElement('img');im.src=v.getAttribute('data-fallback');var t=v.parentNode.querySelector('.tag');if(t)t.remove();v.parentNode.replaceChild(im,v);});});
+  $('pos').textContent=(CUR+1)+' / '+SLIDES.length;
+  $('bLang').textContent=LANG==='lt'?'EN':'LT';
+  $('cnt').textContent='📱 '+people().length;
+  document.documentElement.lang=LANG;
+  qr();
+}
+var playing=false,pend=false;
+var V3_ORDER=['cover','how','facts','base26','frame','*C','creatorcamp','home','pricelist','game','merch','ups','gear','prices','money','ops','content','results','plana','tests','gtm','upside','survey','qa','next','ask','thanks','src'];
+function typing(){var a=document.activeElement;return !!(a&&a.closest&&a.closest('#slides')&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName));}
+function softRender(){ /* do not rebuild while a video plays or while someone types in a V3 cell */
+  var v=document.querySelector('.slide.on video');
+  if(v&&!v.paused){playing=true;$('cnt').textContent='📱 '+people().length;return;}
+  if(typing()){pend=true;$('cnt').textContent='📱 '+people().length+' ✎';return;}
+  render();
+}
+function go(i){CUR=Math.max(0,Math.min(SLIDES.length-1,i));render();sendState();}
+function goId(id){for(var i=0;i<SLIDES.length;i++)if(SLIDES[i].id===id){go(i);return;}}
+function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/900);$('stage').style.transform='scale('+s+')';}
+function flash(t){var m=$('msg');m.textContent=t;m.hidden=false;clearTimeout(flash.t);flash.t=setTimeout(function(){m.hidden=true;},2200);}
+function qr(){['qr1','qr2'].forEach(function(id){var el=$(id);if(!el)return;if(window.QRCode){try{el.innerHTML='';new QRCode(el,{text:RV_JOIN_URL,width:200,height:200,correctLevel:QRCode.CorrectLevel.M});}catch(e){}}else{el.textContent='QR';}});}
+function remoteURL(){return RV_JOIN_URL+(RV_JOIN_URL.indexOf('?')>=0?'&':'?')+'remote='+PIN;}
+function overview(){var o=$('over');if(!o.hidden){o.hidden=true;return;}o.innerHTML='<div class="pinbox"><div id="qrR"></div><div><b>📱 '+T(['Pultas telefone (tik vedėjui)','Phone remote (presenter only)'])+'</b><br>'+esc(remoteURL().replace('https://',''))+'<br><span class="small">'+T(['Nuskenuok savo telefonu PRIEŠ jungdamas projektorių: kas mato PIN, gali versti skaidres.','Scan with your own phone BEFORE connecting the projector: whoever sees the PIN can move the slides.'])+'</span></div><span class="sp" style="flex:1"></span><span>PIN</span><b class="pin">'+PIN+'</b></div>'+SLIDES.map(function(s,i){return '<button type="button" data-i="'+i+'" class="'+(i===CUR?'cur':'')+'">'+(i+1)+'. '+s.title+'</button>';}).join('');o.hidden=false;var qe=$('qrR');if(qe){if(window.QRCode){try{new QRCode(qe,{text:remoteURL(),width:120,height:120,correctLevel:QRCode.CorrectLevel.M});}catch(e){}}else qe.textContent='QR';}}
+function exportAll(){
+  var L=['# RA Vasara 2027 · idėjų dirbtuvės · '+new Date().toISOString().slice(0,16),'Telefonai: '+people().length,'','## Koncepcijos (❤️ / 🧪 / ✋ · pigiau / tiek pat / brangiau)'];
+  RV_CONCEPTS.forEach(function(c){var r=tallyC(c.id);L.push('- '+c.n[0]+': '+r.go+' / '+r.test+' / '+r.no+' · '+r.low+' / '+r.same+' / '+r.high);r.cm.forEach(function(m){L.push('  - „'+m.m+'“ ('+(m.n||'?')+')');});});
+  L.push('','## Papildomi pardavimai');RV_UPSELLS.forEach(function(u){L.push('- '+u.n[0]+': '+tallyU(u.id));});
+  L.push('','## Įranga');RV_GEAR.forEach(function(g){var t=tallyG(g.id);L.push('- '+g.n[0]+': '+(t.n?t.avg.toFixed(1)+' ('+t.n+')':'nevertinta'));t.cm.forEach(function(m){L.push('  - „'+m.m+'“ ('+(m.n||'?')+')');});});
+  /* V3: ✕ pašalinti klausimai lieka suvestinėje su žyma [pašalinta] */
+  L.push('','## Klausimai komandai');(function(){var st=ST.qst||{};allQs().forEach(function(q){L.push('- '+(q.k?'[✓ atsakysim] ':'')+'„'+q.t+'“ ('+(q.name||'?')+')');});Object.keys(ST.people).forEach(function(k){var p=ST.people[k];var a=Array.isArray(p.qs)?p.qs.map(function(q){return {id:k+':'+q.i,t:q.t};}):(p.q?[{id:k+':q',t:p.q}]:[]);a.forEach(function(q){if(q.t&&st[q.id]==='x')L.push('- [pašalinta] „'+q.t+'“ ('+(p.name||'?')+')');});});})();
+  L.push('','## V3: Pinigai (įvestys; tuščia = ❓)');L.push('- pasirinkta: '+V3.sel+' · lygis '+(RV_TIERS[V3.tier]||{t:['?']}).t[0]);CST.forEach(function(x){var v=costVal(x.k);L.push('- '+x.t[0]+': '+(v==null?'❓':v));});
+  Object.keys(V3.cc).forEach(function(k){var o=V3.cc[k]||{};Object.keys(o).forEach(function(f){L.push('- '+k+' · '+f+': '+(o[f]===''?'❓':o[f]));});});
+  (function(){var m=money(V3.sel,V3.tier);L.push('- rezultatas: pajamos '+(m.rev==null?'❓':m.rev.toFixed(2))+' · savikaina '+m.cost.toFixed(2)+(m.miss.length?' · trūksta: '+m.miss.join(', '):' · '+m.pct.toFixed(2)+' %'));})();
+  L.push('','## V3: Operacijos (vaikai / įrenginiui · miestai)');RV_CONCEPTS.forEach(function(c){var o=V3.ops[c.id]||{};if(o.kpr||o.city)L.push('- '+c.n[0]+': '+(o.kpr||'❓')+' · '+(o.city||'❓'));});
+  L.push('','## V3: Testų planas (riba · data · savininkas)');RV_CONCEPTS.map(function(c){return {id:c.id,n:c.n}; }).concat(V3_TX).forEach(function(x){var o=V3.tests[x.id]||{};var kill=o.kill===undefined?(x.kill||''):o.kill;if(kill||o.date||o.own)L.push('- '+x.n[0]+': '+(kill||'❓')+' · '+(o.date||'❓')+' · '+(o.own||'❓'));});
+  L.push('','## V3: Turinys (ką sukurti · keičia 2026 temą)');RV_CONCEPTS.forEach(function(c){var o=V3.content[c.id]||{};if(o.build||o.rep)L.push('- '+c.n[0]+': '+(o.build||'❓')+' · '+(o.rep||'❓'));});L.push('','## Naudingumas 1–10');people().forEach(function(p){if(p.sc)L.push('- '+p.sc+(p.scm?' · „'+p.scm+'“':'')+' ('+(p.name||'?')+')');});
+  L.push('','## JSON','```json',JSON.stringify(ST),'```','','## V3 JSON','```json',JSON.stringify(V3),'```');
+  $('expT').textContent=T(['Suvestinė: nukopijuok ir įklijuok Neuron','Summary: copy and paste to Neuron']);
+  $('expA').value=L.join('\n');$('exp').hidden=false;
+}
+var resetArm=0;
+function resetAll(){var n=Date.now();if(n-resetArm>3000){resetArm=n;flash(T(['Tikrai išvalyti visus balsus? Spausk ↺ arba Shift+X dar kartą per 3 s','Really clear all votes? Press ↺ or Shift+X again within 3 s']));return;}
+  ST={epoch:Math.max(Date.now(),(+ST.epoch||0)+1),people:{},manual:{}};save();send('reset',{epoch:ST.epoch});CUR=0;render();flash(T(['Išvalyta','Cleared']));}
+
+/* ---------- live room (Supabase Realtime broadcast, nothing stored on a server) ---------- */
+var ch=null,ok=false;
+function adoptEpoch(e){ST={epoch:e,people:{},manual:{}};save();softRender();}
+function send(ev,pl){if(!ch||!ok)return;try{ch.send({type:'broadcast',event:ev,payload:pl});}catch(e){}}
+function sendState(){var s=SLIDES[CUR]||{};send('state',{slide:s.id,epoch:ST.epoch,title:String(s.title||'').replace(/<[^>]*>/g,'').slice(0,60),n:CUR+1,of:SLIDES.length});}
+function connect(){
+  if(typeof supabase==='undefined'||!supabase.createClient){$('conn').textContent='🔴 '+T(['be ryšio: M = rankinis režimas','offline: M = manual mode']);return;}
+  try{
+    var cl=supabase.createClient(RV_SB_URL,RV_SB_KEY);
+    ch=cl.channel(RV_CHANNEL,{config:{broadcast:{self:false}}});
+    ch.on('broadcast',{event:'full'},function(m){var p=m&&m.payload;if(!p||!p.cid)return;var pe=+p.epoch||0;if(pe>ST.epoch)adoptEpoch(pe);else if(pe&&pe<ST.epoch)return;
+      ST.people[String(p.cid).slice(0,40)]={name:String(p.name||'').slice(0,30),c:p.c||{},ups:(p.ups||[]).slice(0,3),gear:p.gear||{},sc:p.sc||0,scm:String(p.scm||'').slice(0,400),q:String(p.q||'').slice(0,300),qs:Array.isArray(p.qs)?p.qs.slice(0,10).map(function(q){return {i:String((q&&q.i)||'').slice(0,24),t:String((q&&q.t)||'').slice(0,200)};}):null};save();softRender();});
+    /* kitas ekranas tame pačiame kambaryje: perimam didesnę epochą, nesipešam */
+    ch.on('broadcast',{event:'state'},function(m){var e=+((m&&m.payload)||{}).epoch||0;if(e>ST.epoch)adoptEpoch(e);});
+    ch.on('broadcast',{event:'reset'},function(m){var e=+((m&&m.payload)||{}).epoch||0;if(e>ST.epoch)adoptEpoch(e);});
+    /* V3 pultas: telefonas su ?remote=PIN siunčia nav {pin,dir}; kitas PIN ignoruojamas */
+    ch.on('broadcast',{event:'nav'},function(m){var p=(m&&m.payload)||{};if(String(p.pin||'')!==PIN)return;var d=+p.dir;if(d===1||d===-1){go(CUR+d);}});
+    ch.subscribe(function(st){ok=(st==='SUBSCRIBED');$('conn').textContent=ok?'🟢 '+RV_ROOM+' · '+T(['gyvai','live']):((st==='CHANNEL_ERROR'||st==='TIMED_OUT')?'🔴 '+T(['be ryšio: M = rankinis režimas','offline: M = manual mode']):'🟡 …');if(ok)sendState();});
+    setInterval(sendState,4000);
+  }catch(e){$('conn').textContent='🔴';}
+}
+function lib(u,cb){var s=document.createElement('script');s.src=u;s.onload=cb;s.onerror=cb;document.head.appendChild(s);}
+
+/* ---------- events ---------- */
+document.addEventListener('keydown',function(e){
+  if(!$('exp').hidden){if(e.key==='Escape')$('exp').hidden=true;return;}
+  var tg=e.target;if(tg&&/^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName||'')){if(e.key==='Escape'||e.key==='Enter')tg.blur();return;} /* rašant langelyje rodyklės ir tarpas neperjungia skaidrių */
+  var k=e.key;
+  if(k==='ArrowRight'||k===' '||k==='PageDown'){e.preventDefault();go(CUR+1);}
+  else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();go(CUR-1);}
+  else if(k==='Home')go(0); else if(k==='End')go(SLIDES.length-1);
+  else if(k==='g'||k==='G')overview();
+  else if(k==='d'||k==='D')goId('game');
+  else if(k>='1'&&k<='9'&&(SLIDES[CUR]||{}).id==='game'){var dl=document.querySelector('.slide.on [data-demo="'+(+k-1)+'"]');if(dl)window.open(dl.href,'_blank','noopener');}
+  else if(k==='l'||k==='L')$('bLang').click();
+  else if(k==='t'||k==='T')$('bTheme').click();
+  else if(k==='m'||k==='M')$('bManual').click();
+  else if(k==='e'||k==='E')exportAll();
+  else if(k==='f'||k==='F')$('bFull').click();
+  else if(k==='X'&&e.shiftKey)resetAll();
+  else if(k==='y'||k==='Y'){var v=document.querySelector('.slide.on video');if(v){if(v.paused)v.play();else v.pause();}}
+  else if(k==='Escape')$('over').hidden=true;
+});
+$('bPrev').onclick=function(){go(CUR-1);};$('bNext').onclick=function(){go(CUR+1);};
+$('bGrid').onclick=overview;$('bDemo').onclick=function(){goId('game');};$('bExp').onclick=exportAll;$('bReset').onclick=resetAll;
+$('bLang').onclick=function(){LANG=LANG==='lt'?'en':'lt';try{localStorage.setItem('ravasara-lang',LANG);}catch(e){}render();};
+$('bTheme').onclick=function(){var r=document.documentElement,c=r.getAttribute('data-theme');var dark=c?c==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;r.setAttribute('data-theme',dark?'light':'dark');};
+$('bManual').onclick=function(){MANUAL_ON=!MANUAL_ON;document.body.classList.toggle('manual',MANUAL_ON);flash(MANUAL_ON?T(['Rankinis režimas: spausk juostą +1, Shift −1','Manual mode: click a bar +1, Shift −1']):T(['Rankinis režimas išjungtas','Manual mode off']));};
+$('bFull').onclick=function(){var d=document;if(d.fullscreenElement)d.exitFullscreen();else if(d.documentElement.requestFullscreen)d.documentElement.requestFullscreen().catch(function(){});};
+$('expX').onclick=function(){$('exp').hidden=true;};
+$('expC').onclick=function(){var a=$('expA');a.select();if(navigator.clipboard)navigator.clipboard.writeText(a.value).then(function(){flash('✓');},function(){});};
+$('over').addEventListener('click',function(e){var b=e.target.closest('button');if(b){$('over').hidden=true;go(+b.getAttribute('data-i'));}});
+$('slides').addEventListener('click',function(e){
+  var qb=e.target.closest('[data-qk],[data-qx]');if(qb){ST.qst=ST.qst||{};var qi=qb.getAttribute('data-qk');if(qi){if(ST.qst[qi]==='k')delete ST.qst[qi];else ST.qst[qi]='k';}else{ST.qst[qb.getAttribute('data-qx')]='x';}save();render();return;}
+  var t=e.target.closest('[data-go]');if(t){goId(t.getAttribute('data-go'));return;}
+  var vt=e.target.closest('[data-v3tier]');if(vt){V3.tier=+vt.getAttribute('data-v3tier');save3();render();return;}
+  var vp=e.target.closest('[data-v3pick]');if(vp){V3.sel=vp.getAttribute('data-v3pick');save3();render();return;}
+  if(!MANUAL_ON)return;var m=e.target.closest('[data-man]');if(!m)return;
+  var k=m.getAttribute('data-man');ST.manual[k]=Math.max(0,(ST.manual[k]||0)+(e.shiftKey?-1:1));save();render();
+});
+/* V3 langeliai: saugom iškart, perskaičiuojam tik rezultatų vietas (be pilno perpiešimo) */
+function upd3(p){var on=document.querySelector('.slide.on');if(!on)return;
+  if(/^(cost|cc)\./.test(p)){var r=on.querySelector('#v3mres');if(r)r.innerHTML=mresHTML();var tb=on.querySelector('#v3mtab');if(tb)tb.innerHTML=mtabHTML();var m=money(V3.sel,V3.tier);on.querySelectorAll('[data-v3d]').forEach(function(el){if(el===document.activeElement)return;if(g3(el.getAttribute('data-v3'))===undefined){var d=el.getAttribute('data-v3d')==='ment'?m.mentD:m.kidsD;el.value=nfIn(d);}});}
+  var mm=/^ops\.([^.]+)\.kpr$/.exec(p);if(mm){var c=v3byId(mm[1]),el=on.querySelector('#v3dev-'+mm[1]);if(c&&el)el.innerHTML=devHTML(c);}
+  var mc=/^content\.([^.]+)\.rep$/.exec(p);if(mc){var e2=on.querySelector('#v3rat-'+mc[1]);if(e2)e2.innerHTML=ratHTML(mc[1]);}
+}
+$('slides').addEventListener('input',function(e){var t=e.target,p=t.getAttribute&&t.getAttribute('data-v3');if(!p||t.tagName==='SELECT')return;set3(p,t.value);upd3(p);});
+$('slides').addEventListener('change',function(e){var t=e.target;if(t.hasAttribute('data-v3sel')){V3.sel=t.value;save3();t.blur();render();return;}var p=t.getAttribute('data-v3');if(p&&t.tagName==='SELECT'){set3(p,t.value);upd3(p);}});
+$('slides').addEventListener('focusout',function(){setTimeout(function(){if(pend&&!typing()){pend=false;render();}},200);});
+document.addEventListener('pause',function(){if(playing){playing=false;render();}},true);
+document.addEventListener('ended',function(){if(playing){playing=false;render();}},true);
+window.addEventListener('resize',fit);
+try{CUR=+sessionStorage.getItem('ravasara-v3-cur')||0;}catch(e){}
+fit();render();
+lib('https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js',function(){qr();lib('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js',connect);});
+})();
+</script>
+</body>
+</html>

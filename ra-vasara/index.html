@@ -102,6 +102,26 @@ function $(i){return document.getElementById(i);}
 function C(id){if(!ME.c[id])ME.c[id]={v:'',p:'',m:''};return ME.c[id];}
 function G(id){if(!ME.gear[id])ME.gear[id]={r:0,m:''};return ME.gear[id];}
 
+/* ---------- V3 pultas (2026-11-17): tik su ?remote=PIN. Be šio parametro telefonas veikia kaip anksčiau. Pultas nebalsuoja ir nesiunčia „full“. ---------- */
+var RMT='';try{RMT=(new URLSearchParams(location.search).get('remote')||'').replace(/\D/g,'').slice(0,4);}catch(e){}
+if(RMT){remoteMode();return;}
+function remoteMode(){
+  var st=document.createElement('style');st.textContent='.rmb{display:grid;grid-template-columns:1fr 1fr;gap:14px}.rmb button{min-height:42vh;font-size:72px;font-weight:800;border:0;border-radius:24px;background:var(--acc);color:var(--acc-ink);touch-action:manipulation}.rmb button:active{transform:scale(.96);background:var(--yel);color:var(--yel-ink)}#rt{font-size:22px;min-height:2.6em}';document.head.appendChild(st);
+  ['qfab','jump','prog','progt'].forEach(function(i){var el=$(i);if(el)el.hidden=true;});
+  var ch2=null,ok2=false,last=null;
+  function draw(){$('ttl').textContent=T(['Pultas · V3','Remote · V3']);$('bLang').textContent=LANG==='lt'?'EN':'LT';document.documentElement.lang=LANG;
+    $('main').innerHTML='<div class="card" style="text-align:center"><p class="meta" style="margin:0">'+T(['Dabar ekrane','On screen now'])+'</p><h2 id="rt">'+(last?esc(last.title||last.slide||''):'…')+'</h2><p class="meta" id="rn" style="margin:0">'+(last&&last.n?last.n+' / '+last.of:T(['Laukiam ekrano (V3)…','Waiting for the screen (V3)…']))+'</p></div><div class="rmb"><button type="button" id="rPrev" aria-label="'+T(['Atgal','Back'])+'">◀</button><button type="button" id="rNext" aria-label="'+T(['Pirmyn','Forward'])+'">▶</button></div><p class="note" id="rs" aria-live="polite">PIN '+RMT+'</p>';
+    $('rPrev').onclick=function(){nav(-1);};$('rNext').onclick=function(){nav(1);};}
+  function nav(d){if(!ch2||!ok2){$('rs').textContent='🔴 '+T(['Nėra ryšio','No connection']);return;}try{ch2.send({type:'broadcast',event:'nav',payload:{pin:RMT,dir:d}});$('rs').textContent=(d>0?'▶':'◀')+' '+T(['išsiųsta','sent'])+' · PIN '+RMT;if(navigator.vibrate)navigator.vibrate(30);}catch(e){}}
+  $('bLang').onclick=function(){LANG=LANG==='lt'?'en':'lt';try{localStorage.setItem('ravasara-lang',LANG);}catch(e){}draw();};
+  draw();
+  function conn2(){if(typeof supabase==='undefined'||!supabase.createClient){$('conn').textContent='🔴 '+T(['Nėra ryšio','No connection']);return;}
+    try{var cl=supabase.createClient(RV_SB_URL,RV_SB_KEY);ch2=cl.channel(RV_CHANNEL,{config:{broadcast:{self:false}}});
+      ch2.on('broadcast',{event:'state'},function(m){var p=(m&&m.payload)||{};if(!p.title)return;last=p;var t=$('rt'),n=$('rn');if(t)t.textContent=p.title;if(n)n.textContent=p.n+' / '+p.of;$('conn').textContent='🟢 '+T(['Prisijungta prie ekrano','Connected to the screen']);});
+      ch2.subscribe(function(s){ok2=(s==='SUBSCRIBED');$('conn').textContent=ok2?'🟡 '+T(['Laukiam ekrano…','Waiting for the screen…']):'⚪ …';});}catch(e){$('conn').textContent='🔴';}}
+  var s3=document.createElement('script');s3.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js';s3.onload=conn2;s3.onerror=conn2;document.head.appendChild(s3);
+}
+
 function render(){
   $('ttl').textContent=T(['RA Vasara 2027 · balsuok','RA Summer 2027 · vote']);
   $('bLang').textContent=LANG==='lt'?'EN':'LT';document.documentElement.lang=LANG;
